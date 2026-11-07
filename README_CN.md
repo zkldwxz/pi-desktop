@@ -6,13 +6,15 @@ pi-desktop 是使用 [Pi coding agent](https://github.com/earendil-works/pi) 的
 
 本分支通过 Pi 的 JSONL RPC 和受支持的标准 API 原生供应商协议工作，避免额外的协议转换。同一会话保留上下文，并在供应商提供数据时按请求记录缓存读取与写入。稳定的提示词和会话上下文可能有助于缓存复用，但目前没有实测更高命中率；结果取决于供应商、模型、提示词和缓存 TTL，也不保证速度或成本优势。
 
-在“设置 → 模型”配置自己的 HTTPS 供应商；兼容 newapi/sub2api 的渠道配置仍在测试中。密钥使用本应用独立的密钥服务，Pi 配置和会话位于 `<数据目录>/pi-agent/`。
+在“设置 → 模型”配置自己的 HTTPS 供应商。手动 newapi/sub2api 渠道配置和账号适配器已通过本地 HTTP 集成测试；托管激活需要自行配置服务端点。密钥使用本应用独立的密钥服务，Pi 配置和会话位于 `<数据目录>/pi-agent/`。
 
 ## 更新与平台
 
-随包 Pi 运行时初始锁定 **1.5.0**；独立更新器在启动后 30 秒首次检查官方 Pi 发布端点，之后每六小时检查，安装到用户数据目录并供新会话使用。桌面应用使用独立发布渠道和 Ed25519 签名验证；分支更新配置已设置，首次发布后才能使用。详见[自动更新](docs/auto-update.md)和[发布说明](docs/release.md)。
+随包 Pi 运行时初始锁定 **1.5.0**；独立更新器在启动后 30 秒首次检查官方 Pi 发布端点，之后每六小时检查，安装到用户数据目录并供新会话使用。桌面应用使用独立发布渠道和 Ed25519 签名验证；生产 GitHub 更新源和真实安装包下载已通过应用自身更新器的校验。详见[自动更新](docs/auto-update.md)和[发布说明](docs/release.md)。
 
-计划发布版本为 **0.1.2+3**，通过 Actions 构建 macOS 和 Windows 安装包；打包及安装仍待验证。本次不构建 Linux 安装包。仓库为 [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop)。
+**[下载 pi-desktop 0.1.2+3](https://github.com/zkldwxz/pi-desktop/releases/tag/pi-v0.1.2)**：macOS Apple Silicon、Intel 的 ZIP/DMG，以及 Windows x64 安装器。三个 Actions 构建均通过；Apple Silicon 应用已通过签名、运行时检查，并使用隔离数据目录启动。macOS 采用 ad-hoc 签名且未经公证，Windows 安装器未签名。视觉 GUI 检查和 Windows 交互安装尚未验证。本次不构建 Linux 桌面安装包。
+
+GitHub 已通过静态分析、Pi 运行时与集成测试、304 项相关桌面测试，以及真实 Dart 语言服务器检查。仓库为 [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop)。
 
 支持本地项目。直接 SSH Pi 会话使用远程已安装的 Pi 和 Node，通过批处理/密钥认证；真实 SSH stub 对话已验证，更多远程工作流仍待验证。远程 IDE 服务或语言服务器不会自动保证安装。真实 Dart 语言服务器的诊断、悬停、补全与重命名已通过冒烟检查。
 

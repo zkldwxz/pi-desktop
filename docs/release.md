@@ -4,7 +4,7 @@
 
 ## 当前状态与边界
 
-当前源码版本为 `0.1.2+3`，对应标签 `pi-v0.1.2`。独立发布目标为已创建的 [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop)；更新变量和签名密钥已配置，首次发布后更新源才能使用。`.github/workflows/release.yml` 为 macOS 和 Windows 构建资源，使用 `tool/release_manifest.dart` 生成并签名桌面更新清单。桌面更新仍需进行端到端验证；本次不构建 Linux 安装包，Linux 自动更新关闭。GitHub 下载的重定向来源必须显式配置。Pi 官方运行时更新独立于桌面更新，见 [auto-update.md](auto-update.md#pi-运行时更新)。
+当前源码版本为 `0.1.2+3`，对应的 [pi-v0.1.2 Release](https://github.com/zkldwxz/pi-desktop/releases/tag/pi-v0.1.2) 已发布。macOS arm64、macOS x64、Windows x64 三个 Actions 构建均成功；`.github/workflows/release.yml` 使用 `tool/release_manifest.dart` 生成并签名独立桌面更新清单。生产 GitHub 清单和 Windows 安装包已通过应用自身更新器的真实下载、重定向策略、大小、SHA-256 和 Ed25519 验证。Apple Silicon 应用已验证深度代码签名、随包运行时和隔离目录启动。视觉 GUI、Windows 交互安装和旧版本自动替换安装仍待验证；本次不构建 Linux 桌面安装包，Linux 自动更新关闭。GitHub 下载的重定向来源必须显式配置。Pi 官方运行时更新独立于桌面更新，见 [auto-update.md](auto-update.md#pi-运行时更新)。
 
 ## 版本和标签
 
@@ -12,7 +12,7 @@
 
 `pi-v*` 标签推送触发发布，工作流验证标签与 `pubspec.yaml` 的 marketing 版本一致，并运行版本一致性测试检查更新器版本。`workflow_dispatch` 手动运行只构建并上传 Actions 产物，不注入生产更新配置。标签运行要求工作流变量 `PI_DESKTOP_UPDATE_URL` 为 HTTPS 清单地址，以及非空的 `PI_DESKTOP_UPDATE_PUBLIC_KEY`；通过 `PI_DESKTOP_UPDATE_ALLOWED_ORIGINS` 配置资源及重定向所需的额外精确 HTTPS origin，以逗号分隔。各平台构建将三者作为 Dart define 注入。签名步骤使用 secret `PI_DESKTOP_UPDATE_SIGNING_KEY` 中的 base64 私钥 seed。发布目标通过工作流变量 `PI_DESKTOP_RELEASE_REPOSITORY` 指定为 `owner/repo`；发布使用 secret `PI_DESKTOP_RELEASE_TOKEN`，未设置时使用 `github.token`。跨仓库发布需要有目标仓库 contents 写权限的 token，且目标仓库须预先有指向同一提交的同名标签。
 
-工作流构建 macOS arm64、macOS x64 和 Windows x64，上传两个 macOS ZIP、两个 DMG、Windows setup.exe 和清单；清单的更新条目指向 ZIP 和 Windows 安装器。发布先创建包含所有资源和清单的草稿，再公开草稿；已有 Release 会使发布失败，不覆盖资源。中断后检查草稿和资源，确认无人使用后手动处理草稿，或发布新版本；已公开版本应保持不变。macOS 检查主程序及 Node 包含目标架构，签名框架、运行时内的 Mach-O 文件、浏览器宿主和 Finder 扩展，再以 ad-hoc 签名封装应用；这不保证所有嵌入组件的架构均正确。重试工作流只在首次标签发布运行失败且存在失败的 `Build ` 作业时，重新运行失败作业一次。构建产物、签名和实际安装仍需验证。
+工作流构建 macOS arm64、macOS x64 和 Windows x64，上传两个 macOS ZIP、两个 DMG、Windows setup.exe 和清单；清单的更新条目指向 ZIP 和 Windows 安装器。发布先创建包含所有资源和清单的草稿，再公开草稿；已有 Release 会使发布失败，不覆盖资源。中断后检查草稿和资源，确认无人使用后手动处理草稿，或发布新版本；已公开版本应保持不变。macOS 检查主程序及 Node 包含目标架构，签名框架、运行时内的 Mach-O 文件、浏览器宿主和 Finder 扩展，再以 ad-hoc 签名封装应用；这不保证所有嵌入组件的架构均正确。重试工作流只在首次标签发布运行失败且存在失败的 `Build ` 作业时，重新运行失败作业一次。构建产物已生成，Apple Silicon 包签名与运行时验证已通过；实际交互安装和完整升级仍需真机验证。
 
 远程服务器资源不由此工作流发布：Windows 打包脚本生成服务器元数据和资源，但工作流只收集安装器；macOS 路径也未打包服务器元数据。直接 SSH Pi 会话使用远程已安装的 Pi 和 Node，通过批处理/密钥认证；真实 SSH stub 对话已验证，其他远程工作流仍需验证，不保证自动安装远程 IDE 服务或语言服务器。
 

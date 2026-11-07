@@ -6,13 +6,15 @@ pi-desktop is a Flutter desktop workspace using the [Pi coding agent](https://gi
 
 The fork uses Pi's JSONL RPC and native provider protocols for supported standard APIs, avoiding an extra protocol translation layer. It preserves context within a session and tracks cache-read and cache-write usage per request when reported by the provider. Stable prompts and session context may improve cache reuse, but no higher hit rate has been measured: results depend on the provider, model, prompt contents, and cache TTL. Speed and cost are not guaranteed.
 
-Configure your own HTTPS provider in Settings → Models; newapi/sub2api-compatible channel setup remains under test. Keys use the application's own keychain service. Pi configuration and sessions are stored under `<app-data>/pi-agent/`.
+Configure your own HTTPS provider in Settings → Models. Manual newapi/sub2api channel configuration and account adapters are covered by local HTTP integration tests; hosted activation requires your own service endpoints. Keys use the application's own keychain service. Pi configuration and sessions are stored under `<app-data>/pi-agent/`.
 
 ## Updates and platforms
 
-The bundled Pi runtime starts from the locked 1.5.0 release. Its independent updater checks the official Pi release endpoint after 30 seconds and then every six hours, installing into user data for new sessions. Desktop updates have their own release channel and Ed25519 signature verification; the fork's update settings are configured for its release, which becomes usable after publication. See [auto-update](docs/auto-update.md) and [release](docs/release.md).
+The bundled Pi runtime starts from the locked 1.5.0 release. Its independent updater checks the official Pi release endpoint after 30 seconds and then every six hours, installing into user data for new sessions. Desktop updates have their own release channel and Ed25519 signature verification. The production GitHub feed and a real installer download have passed verification through the app's update backend. See [auto-update](docs/auto-update.md) and [release](docs/release.md).
 
-The planned release is **0.1.2+3**, with macOS and Windows packages built through Actions; packaging and installation still need validation. No Linux packages are being built for this release. The repository is [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop).
+**[Download pi-desktop 0.1.2+3](https://github.com/zkldwxz/pi-desktop/releases/tag/pi-v0.1.2)**: macOS Apple Silicon and Intel ZIP/DMG packages, plus a Windows x64 installer. All three Actions builds passed; the Apple Silicon app passes signature and runtime checks and launches with isolated data. macOS packages are ad-hoc signed and not notarized; Windows is unsigned. Visual GUI checks and interactive Windows installation remain unverified. No Linux desktop packages are built for this release.
+
+GitHub checks passed static analysis, Pi runtime/integration tests, 304 focused desktop tests and a real Dart language-server smoke test. The repository is [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop).
 
 Local projects are supported. Direct SSH Pi sessions use a remote-installed Pi and Node with batch/key authentication. A real SSH stub turn has been verified; broader remote workflows remain to be validated. A remote IDE server or remote language server is not automatically installed or guaranteed. A real Dart language-server smoke check covered diagnostics, hover, completion and rename.
 
