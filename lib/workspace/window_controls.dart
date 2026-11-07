@@ -26,7 +26,7 @@ enum WindowButton { minimize, maximize, close }
 /// lib/window/). What is asked without saying of which window (a dialog,
 /// a menu) is the window in front's, [activeViewId].
 abstract final class WindowControls {
-  static const _main = MethodChannel('baocode/window');
+  static const _main = MethodChannel('pi-desktop/window');
   static final Map<int, MethodChannel> _channels = {};
 
   /// The channel of [viewId]'s window.
@@ -34,7 +34,7 @@ abstract final class WindowControls {
       ? _main
       : _channels.putIfAbsent(
           viewId,
-          () => MethodChannel('baocode/window.$viewId'),
+          () => MethodChannel('pi-desktop/window.$viewId'),
         );
 
   /// The window in front, the keyboard's: where a dialog or a menu asked

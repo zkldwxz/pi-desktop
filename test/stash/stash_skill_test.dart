@@ -1,4 +1,4 @@
-import 'package:baocode/stash/stash_skill.dart';
+import 'package:pi_desktop/stash/stash_skill.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

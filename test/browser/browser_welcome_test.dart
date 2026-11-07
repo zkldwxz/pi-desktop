@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/browser/browser_bridge.dart';
-import 'package:baocode/browser/browser_welcome.dart';
+import 'package:pi_desktop/browser/browser_bridge.dart';
+import 'package:pi_desktop/browser/browser_welcome.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/markdown/markdown_front_matter.dart';
+import 'package:pi_desktop/ide/markdown/markdown_front_matter.dart';
 
 void main() {
   test('a skill\'s front matter reads as its keys and values', () {
@@ -55,10 +55,19 @@ void main() {
       setFrontMatterValue(source, 'note', "it's"),
       contains("note: 'it''s'\n"),
     );
-    expect(setFrontMatterValue(source, 'name', 'pdf-2'), contains('name: pdf-2\n'));
+    expect(
+      setFrontMatterValue(source, 'name', 'pdf-2'),
+      contains('name: pdf-2\n'),
+    );
     // Bare where YAML would read it otherwise.
-    expect(setFrontMatterValue(source, 'name', 'a: b'), contains('name: "a: b"\n'));
-    expect(setFrontMatterValue(source, 'name', 'true'), contains('name: "true"\n'));
+    expect(
+      setFrontMatterValue(source, 'name', 'a: b'),
+      contains('name: "a: b"\n'),
+    );
+    expect(
+      setFrontMatterValue(source, 'name', 'true'),
+      contains('name: "true"\n'),
+    );
     expect(setFrontMatterValue(source, 'name', ''), contains('name: ""\n'));
     // Each read back as written.
     for (final value in ['Says "hi": \\o/', 'a: b', 'true', "it's", '']) {

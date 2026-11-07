@@ -5,7 +5,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:baocode/diagnostics/diagnostics_bundle.dart';
+import 'package:pi_desktop/diagnostics/diagnostics_bundle.dart';
 
 /// The files of a tar: name → content.
 Map<String, Uint8List> untar(List<int> tar) {

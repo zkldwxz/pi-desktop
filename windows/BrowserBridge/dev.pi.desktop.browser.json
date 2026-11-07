@@ -1,0 +1,9 @@
+{
+  "name": "dev.pi.desktop.browser",
+  "description": "pi-desktop",
+  "path": "pi-desktop-browser-host.exe",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://lhdkmdjhjipndmialanjbblnmfhkehpc/"
+  ]
+}

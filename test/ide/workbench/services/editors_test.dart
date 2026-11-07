@@ -1,15 +1,15 @@
 import 'package:bao_editor/monaco/vs/editor/common/core/position.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/ide/services/editors.dart';
-import 'package:baocode/ide/services/navigation_history.dart';
-import 'package:baocode/ide/workbench/contributions.dart';
-import 'package:baocode/ide/workbench/contributions/editor_status.dart';
-import 'package:baocode/ide/workbench/editor_panes.dart';
-import 'package:baocode/ide/workbench/services.dart';
-import 'package:baocode/ide/workbench/statusbar.dart';
-import 'package:baocode/l10n/app_localizations.dart';
+import 'package:pi_desktop/ide/ide_workspace.dart';
+import 'package:pi_desktop/ide/services/editors.dart';
+import 'package:pi_desktop/ide/services/navigation_history.dart';
+import 'package:pi_desktop/ide/workbench/contributions.dart';
+import 'package:pi_desktop/ide/workbench/contributions/editor_status.dart';
+import 'package:pi_desktop/ide/workbench/editor_panes.dart';
+import 'package:pi_desktop/ide/workbench/services.dart';
+import 'package:pi_desktop/ide/workbench/statusbar.dart';
+import 'package:pi_desktop/l10n/app_localizations.dart';
 
 import '../fake_files.dart';
 import 'fake_host.dart';

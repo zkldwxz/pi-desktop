@@ -5,14 +5,14 @@ library;
 
 import 'dart:io';
 
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/review/change_review.dart';
-import 'package:baocode/chat/review/review_store_io.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/claude_code/process_transport.dart';
-import 'package:baocode/kernel/kernel_types.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/chat/review/change_review.dart';
+import 'package:pi_desktop/chat/review/review_store_io.dart';
+import 'package:pi_desktop/kernel/agent_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/process_transport.dart';
+import 'package:pi_desktop/kernel/kernel_types.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;

@@ -45,7 +45,7 @@ bool FlutterWindow::OnCreate() {
   flutter::BinaryMessenger* messenger =
       flutter_controller_->engine()->messenger();
   HostView(messenger, flutter_controller_->view()->GetNativeWindow(),
-           "baocode/window", "baocode/drop");
+           "pi-desktop/window", "pi-desktop/drop");
 
   // The data folder's logs\, which Flutter names (see log_folder.h).
   logs_ = log_folder::Listen(messenger);

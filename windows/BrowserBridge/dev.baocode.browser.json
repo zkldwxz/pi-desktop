@@ -1,9 +1,0 @@
-{
-  "name": "dev.baocode.browser",
-  "description": "BaoCode",
-  "path": "baocode-browser-host.exe",
-  "type": "stdio",
-  "allowed_origins": [
-    "chrome-extension://jfjagocghaaheooicmdnhcholmgdkngk/"
-  ]
-}

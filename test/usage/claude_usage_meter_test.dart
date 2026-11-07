@@ -1,9 +1,9 @@
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/usage/claude_usage_meter.dart';
-import 'package:baocode/usage/usage_prices.dart';
-import 'package:baocode/usage/usage_quota.dart';
-import 'package:baocode/usage/usage_record.dart';
-import 'package:baocode/usage/usage_trace.dart';
+import 'package:pi_desktop/kernel/kernel_types.dart';
+import 'package:pi_desktop/usage/claude_usage_meter.dart';
+import 'package:pi_desktop/usage/usage_prices.dart';
+import 'package:pi_desktop/usage/usage_quota.dart';
+import 'package:pi_desktop/usage/usage_record.dart';
+import 'package:pi_desktop/usage/usage_trace.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

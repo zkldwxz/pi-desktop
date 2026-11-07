@@ -5,11 +5,11 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:baocode/update/update_io.dart';
-import 'package:baocode/update/update_manifest.dart';
-import 'package:baocode/update/update_service.dart';
-import 'package:baocode/update/update_signature.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/update/update_io.dart';
+import 'package:pi_desktop/update/update_manifest.dart';
+import 'package:pi_desktop/update/update_service.dart';
+import 'package:pi_desktop/update/update_signature.dart';
+import 'package:pi_desktop/update/version.dart';
 
 /// A local server, in place of baocode.dev: what it serves by path, what it
 /// was asked.
@@ -24,6 +24,8 @@ class _Server {
   final HttpServer _server;
   final Map<String, Uint8List> files = {};
   final List<String?> ranges = [];
+  final Map<String, String> redirects = {};
+  final List<String> requests = [];
 
   /// Ignores Range requests, as some servers do.
   bool ranged = true;
@@ -35,7 +37,16 @@ class _Server {
 
   Future<void> _handle(HttpRequest request) async {
     final response = request.response;
-    final file = files[request.uri.path.substring(1)];
+    final path = request.uri.path.substring(1);
+    requests.add(path);
+    final redirect = redirects[path];
+    if (redirect != null) {
+      response.statusCode = HttpStatus.found;
+      response.headers.set(HttpHeaders.locationHeader, redirect);
+      await response.close();
+      return;
+    }
+    final file = files[path];
     if (file == null) {
       response.statusCode = HttpStatus.notFound;
       await response.close();
@@ -156,6 +167,39 @@ void main() {
         throwsA(isA<HttpException>()),
       );
     });
+
+    test(
+      'validates every redirect before contacting its destination',
+      () async {
+        final other = await _Server.start();
+        addTearDown(other.close);
+        server.redirects['start'] = '/next';
+        server.redirects['next'] = other.url('target').toString();
+        other.files['target'] = Uint8List.fromList('ok'.codeUnits);
+        final policy = UpdateUrlPolicy.exactOrigins({
+          server.url('').origin,
+        }, allowLocalhost: true);
+        final restricted = IoUpdateBackend(
+          directory: directory.path,
+          urlPolicy: policy,
+        );
+        await expectLater(
+          restricted.fetchManifest(server.url('start')),
+          throwsA(isA<HttpException>()),
+        );
+        expect(server.requests, ['start', 'next']);
+        expect(other.requests, isEmpty);
+        final allowed = IoUpdateBackend(
+          directory: directory.path,
+          urlPolicy: UpdateUrlPolicy.exactOrigins({
+            server.url('').origin,
+            other.url('').origin,
+          }, allowLocalhost: true),
+        );
+        expect(await allowed.fetchManifest(server.url('start')), 'ok');
+        expect(other.requests, ['target']);
+      },
+    );
 
     test('downloads, checks and keeps a release', () async {
       final progress = <int>[];

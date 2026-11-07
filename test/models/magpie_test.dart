@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/kernel/claude_code/claude_environment.dart';
-import 'package:baocode/models/magpie.dart';
-import 'package:baocode/models/magpie_follow.dart';
-import 'package:baocode/models/magpie_io.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/models/upstream.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_environment.dart';
+import 'package:pi_desktop/models/magpie.dart';
+import 'package:pi_desktop/models/magpie_follow.dart';
+import 'package:pi_desktop/models/magpie_io.dart';
+import 'package:pi_desktop/models/model_provider.dart';
+import 'package:pi_desktop/models/model_providers.dart';
+import 'package:pi_desktop/models/upstream.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

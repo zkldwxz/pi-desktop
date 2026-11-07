@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/diagnostics/hang_watch.dart';
-import 'package:baocode/platform/event_log.dart';
+import 'package:pi_desktop/diagnostics/hang_watch.dart';
+import 'package:pi_desktop/platform/event_log.dart';
 
 void main() {
   late Directory folder;

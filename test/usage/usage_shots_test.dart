@@ -7,23 +7,23 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/chat_width.dart';
-import 'package:baocode/chat/panels/context_usage_panel.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/kernel/extension_switches.dart';
-import 'package:baocode/l10n/app_localizations.dart';
-import 'package:baocode/theme/code_font.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/usage/ui/conversation_usage_view.dart';
-import 'package:baocode/usage/ui/usage_calls.dart';
-import 'package:baocode/usage/ui/usage_dashboard.dart';
-import 'package:baocode/usage/usage_ledger.dart';
-import 'package:baocode/usage/usage_prices.dart';
-import 'package:baocode/usage/usage_query.dart';
-import 'package:baocode/usage/usage_record.dart';
-import 'package:baocode/usage/usage_trace.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/chat/chat_width.dart';
+import 'package:pi_desktop/chat/panels/context_usage_panel.dart';
+import 'package:pi_desktop/kernel/kernel_types.dart';
+import 'package:pi_desktop/kernel/extension_switches.dart';
+import 'package:pi_desktop/l10n/app_localizations.dart';
+import 'package:pi_desktop/theme/code_font.dart';
+import 'package:pi_desktop/theme/codicons.dart';
+import 'package:pi_desktop/theme/workbench_theme.dart';
+import 'package:pi_desktop/usage/ui/conversation_usage_view.dart';
+import 'package:pi_desktop/usage/ui/usage_calls.dart';
+import 'package:pi_desktop/usage/ui/usage_dashboard.dart';
+import 'package:pi_desktop/usage/usage_ledger.dart';
+import 'package:pi_desktop/usage/usage_prices.dart';
+import 'package:pi_desktop/usage/usage_query.dart';
+import 'package:pi_desktop/usage/usage_record.dart';
+import 'package:pi_desktop/usage/usage_trace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -438,38 +438,41 @@ void main() {
     ExtensionSwitches.save = (next) async => switches = next;
     // Some models priced on their upstreams; Claude Code's own at
     // Anthropic's.
-    UsagePrices.current = UsagePrices({
-      'relay/claude-opus-5-5': ModelPrice(
-        input: 5,
-        output: 25,
-        cacheRead: 0.5,
-        cacheWrite: 6.25,
-        source: 'https://www.anthropic.com/pricing',
-        updated: DateTime(2026, 10, 30, 9),
-      ),
-      // By the prompt's length and the hours, as Chinese upstreams price.
-      'glm/glm-5': ModelPrice(
-        input: 4,
-        output: 16,
-        cacheRead: 1,
-        currency: 'CNY',
-        tiers: const [
-          PriceTier(over: 32000, upTo: 128000, input: 6, output: 24),
-          PriceTier(over: 128000, input: 8, output: 32),
-        ],
-        schedule: PriceSchedule.fromJson(const {
-          'timezone': 'UTC+8',
-          'windows': [
-            {
-              'days': [1, 2, 3, 4, 5],
-              'from': '14:00',
-              'to': '18:00',
-              'factor': 2,
-            },
+    UsagePrices.current = UsagePrices(
+      {
+        'relay/claude-opus-5-5': ModelPrice(
+          input: 5,
+          output: 25,
+          cacheRead: 0.5,
+          cacheWrite: 6.25,
+          source: 'https://www.anthropic.com/pricing',
+          updated: DateTime(2026, 10, 30, 9),
+        ),
+        // By the prompt's length and the hours, as Chinese upstreams price.
+        'glm/glm-5': ModelPrice(
+          input: 4,
+          output: 16,
+          cacheRead: 1,
+          currency: 'CNY',
+          tiers: const [
+            PriceTier(over: 32000, upTo: 128000, input: 6, output: 24),
+            PriceTier(over: 128000, input: 8, output: 32),
           ],
-        }),
-      ),
-    }, {'relay': const UpstreamRate(multiplier: 0.3, currency: 'CNY')});
+          schedule: PriceSchedule.fromJson(const {
+            'timezone': 'UTC+8',
+            'windows': [
+              {
+                'days': [1, 2, 3, 4, 5],
+                'from': '14:00',
+                'to': '18:00',
+                'factor': 2,
+              },
+            ],
+          }),
+        ),
+      },
+      {'relay': const UpstreamRate(multiplier: 0.3, currency: 'CNY')},
+    );
   });
   tearDown(() {
     UsagePrices.current = UsagePrices();

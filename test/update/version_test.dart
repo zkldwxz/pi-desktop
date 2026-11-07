@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/update/version.dart';
 
 AppVersion v(String text) => AppVersion.parse(text);
 

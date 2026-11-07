@@ -1,4 +1,4 @@
-import 'package:baocode/icons/site_icon.dart';
+import 'package:pi_desktop/icons/site_icon.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

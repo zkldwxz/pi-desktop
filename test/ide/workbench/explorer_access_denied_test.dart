@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/file_service.dart';
-import 'package:baocode/ide/ide_explorer.dart';
-import 'package:baocode/theme/codicons.dart';
+import 'package:pi_desktop/ide/file_service.dart';
+import 'package:pi_desktop/ide/ide_explorer.dart';
+import 'package:pi_desktop/theme/codicons.dart';
 
 import 'fake_files.dart';
 

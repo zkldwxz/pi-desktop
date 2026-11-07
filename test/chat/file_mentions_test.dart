@@ -1,8 +1,8 @@
-import 'package:baocode/chat/composer/composer_mock_data.dart';
-import 'package:baocode/chat/composer/file_mentions.dart';
-import 'package:baocode/ide/file_service.dart';
-import 'package:baocode/ide/ide_quick_open.dart';
-import 'package:baocode/kernel/kernel_types.dart';
+import 'package:pi_desktop/chat/composer/composer_mock_data.dart';
+import 'package:pi_desktop/chat/composer/file_mentions.dart';
+import 'package:pi_desktop/ide/file_service.dart';
+import 'package:pi_desktop/ide/ide_quick_open.dart';
+import 'package:pi_desktop/kernel/kernel_types.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
@@ -82,8 +82,11 @@ void main() {
     );
     // The project's own folder is not one of them.
     expect(
-      (await mentions().suggest('app', root: app, kernel: (_) async => []))
-          .where((s) => s.kind == SuggestionKind.folder),
+      (await mentions().suggest(
+        'app',
+        root: app,
+        kernel: (_) async => [],
+      )).where((s) => s.kind == SuggestionKind.folder),
       isEmpty,
     );
   });

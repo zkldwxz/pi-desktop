@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/file_service.dart';
-import 'package:baocode/ide/git/git_service.dart';
-import 'package:baocode/ide/git/repository_scan.dart';
+import 'package:pi_desktop/ide/file_service.dart';
+import 'package:pi_desktop/ide/git/git_service.dart';
+import 'package:pi_desktop/ide/git/repository_scan.dart';
 import 'package:path/path.dart' as p;
 
 /// Lists the folders of [tree] (every path's folders, by `/`).

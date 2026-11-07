@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:baocode/channel/account/channel_account.dart';
-import 'package:baocode/channel/channel_gate.dart';
-import 'package:baocode/channel/channel_setup.dart';
-import 'package:baocode/channel/channel_setup_welcome.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/models/upstream.dart';
-import 'package:baocode/settings/user_settings.dart';
+import 'package:pi_desktop/channel/account/channel_account.dart';
+import 'package:pi_desktop/channel/channel_gate.dart';
+import 'package:pi_desktop/channel/channel_setup.dart';
+import 'package:pi_desktop/channel/channel_setup_welcome.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/models/model_providers.dart';
+import 'package:pi_desktop/models/upstream.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -72,6 +72,8 @@ void main() {
   }) => ChannelSetup(
     store: store,
     installId: _id,
+    activationUrl: _activationUrl,
+    lookupBase: lookUpBase,
     again: again,
     lookUp: server.lookUp,
     open: (url) async {
@@ -264,14 +266,35 @@ void main() {
   });
 
   group('ChannelSetup', () {
+    test('unconfigured attribution does not open or poll', () async {
+      final setup = ChannelSetup(
+        store: store,
+        installId: _id,
+        lookUp: server.lookUp,
+        open: (uri) async {
+          opened.add(uri);
+          return true;
+        },
+        activationUrl: '',
+        lookupBase: '',
+      );
+      addTearDown(setup.dispose);
+      expect(setup.hasAttributionService, isFalse);
+      await setup.check();
+      await setup.openPage(zh: false);
+      expect(opened, isEmpty);
+      expect(server.asked, isEmpty);
+      expect(setup.waiting, isFalse);
+    });
+
     test('opens the page with the install id, in the app language', () async {
       final setup = setupOf(poll: const Duration(hours: 1));
       addTearDown(setup.dispose);
       await setup.openPage(zh: false);
       await setup.openPage(zh: true);
       expect(opened, [
-        Uri.parse('https://baocode.dev/activate#i=$_id'),
-        Uri.parse('https://baocode.dev/zh/activate#i=$_id'),
+        Uri.parse('https://setup.pi.example/activate#i=$_id'),
+        Uri.parse('https://setup.pi.example/activate#i=$_id'),
       ]);
       expect(setup.waiting, isTrue);
     });
@@ -357,7 +380,7 @@ void main() {
       final setup = setupOf();
       addTearDown(setup.dispose);
       expect(
-        setup.acceptLink(' baocode://activate?i=$_id&s=channel&c=YouTube\n'),
+        setup.acceptLink(' pi-desktop://activate?i=$_id&s=channel&c=YouTube\n'),
         ChannelLinkResult.accepted,
       );
       expect(setup.done, isTrue);
@@ -368,7 +391,7 @@ void main() {
       final setup = setupOf();
       addTearDown(setup.dispose);
       expect(
-        setup.acceptLink('baocode://activate?i=$_id&s=none'),
+        setup.acceptLink('pi-desktop://activate?i=$_id&s=none'),
         ChannelLinkResult.accepted,
       );
       expect(store.attribution, const ChannelAttribution('none', null));
@@ -379,17 +402,17 @@ void main() {
       addTearDown(setup.dispose);
       for (final link in [
         '',
-        'https://baocode.dev/activate#i=$_id',
-        'baocode://provider/import?v=1',
-        'baocode://activate?i=$_id',
-        'baocode://activate?i=$_id&s=channel',
-        'baocode://activate?i=$_id&s=ads&c=x',
+        'https://setup.pi.example/activate#i=$_id',
+        'pi-desktop://provider/import?v=1',
+        'pi-desktop://activate?i=$_id',
+        'pi-desktop://activate?i=$_id&s=channel',
+        'pi-desktop://activate?i=$_id&s=ads&c=x',
       ]) {
         expect(setup.acceptLink(link), ChannelLinkResult.invalid, reason: link);
       }
       expect(
         setup.acceptLink(
-          'baocode://activate?i=00000000-0000-4000-8000-000000000000&s=direct',
+          'pi-desktop://activate?i=00000000-0000-4000-8000-000000000000&s=direct',
         ),
         ChannelLinkResult.otherInstall,
       );
@@ -407,7 +430,7 @@ void main() {
       expect(setup.done, isFalse);
       await setup.openPage(zh: false);
       expect(opened, [
-        Uri.parse('https://baocode.dev/activate#i=$_id&again=$_again'),
+        Uri.parse('https://setup.pi.example/activate#i=$_id&again=$_again'),
       ]);
       server.kept = const ChannelAttribution('channel', 'aijws');
       await until(() => setup.done);
@@ -416,10 +439,10 @@ void main() {
       expect(store.state, ChannelSetup.doneState);
     });
 
-    test('tells its links from the other baocode:// links', () {
-      expect(ChannelSetup.isLink('baocode://activate?i=x'), isTrue);
-      expect(ChannelSetup.isLink('baocode://provider/import?v=1'), isFalse);
-      expect(ChannelSetup.isLink('https://baocode.dev/activate'), isFalse);
+    test('tells its links from the other pi-desktop:// links', () {
+      expect(ChannelSetup.isLink('pi-desktop://activate?i=x'), isTrue);
+      expect(ChannelSetup.isLink('pi-desktop://provider/import?v=1'), isFalse);
+      expect(ChannelSetup.isLink('https://setup.pi.example/activate'), isFalse);
     });
   });
 
@@ -542,15 +565,15 @@ void main() {
       final setup = setupOf(poll: const Duration(hours: 1));
       addTearDown(setup.dispose);
       await open(tester, setup);
-      expect(find.text('欢迎使用 BaoCode'), findsOneWidget);
+      expect(find.text('欢迎使用 pi-desktop'), findsOneWidget);
       await tester.sendKeyEvent(LogicalKeyboardKey.escape);
       await tester.sendKeyEvent(LogicalKeyboardKey.enter);
       await tester.tapAt(const Offset(5, 5));
       await tester.pump(const Duration(milliseconds: 400));
-      expect(find.text('欢迎使用 BaoCode'), findsOneWidget);
+      expect(find.text('欢迎使用 pi-desktop'), findsOneWidget);
       await tester.state<NavigatorState>(find.byType(Navigator)).maybePop();
       await tester.pump(const Duration(milliseconds: 400));
-      expect(find.text('欢迎使用 BaoCode'), findsOneWidget);
+      expect(find.text('欢迎使用 pi-desktop'), findsOneWidget);
     });
 
     testWidgets('opens the page, waits for it, then welcomes the channel’s '
@@ -562,7 +585,7 @@ void main() {
       final shown = await open(tester, setup);
       await tester.tap(find.text('在浏览器中完成设置').last);
       await tester.pump();
-      expect(opened, [Uri.parse('https://baocode.dev/zh/activate#i=$_id')]);
+      expect(opened, [Uri.parse('https://setup.pi.example/activate#i=$_id')]);
       expect(find.text('正在等待浏览器完成…'), findsOneWidget);
       expect(find.text('重新打开网页'), findsOneWidget);
 
@@ -620,7 +643,7 @@ void main() {
       await tester.pump();
       await tester.enterText(
         find.byType(EditableText),
-        'baocode://activate?i=$_id&s=direct',
+        'pi-desktop://activate?i=$_id&s=direct',
       );
       await tester.tap(find.text('确定'));
       await tester.pump();
@@ -667,7 +690,7 @@ void main() {
       await tester.tap(find.text('去浏览器确认'));
       await tester.pump();
       expect(opened, [
-        Uri.parse('https://baocode.dev/zh/activate#i=$_id&again=$_again'),
+        Uri.parse('https://setup.pi.example/activate#i=$_id&again=$_again'),
       ]);
       expect(shown.gate.stage, ChannelStage.setup);
       expect(find.text('正在等待浏览器完成…'), findsOneWidget);
@@ -690,14 +713,14 @@ void main() {
       expect(find.byType(EditableText), findsNothing);
       await tester.tap(find.text('浏览器没反应？'));
       await tester.pump();
-      await tester.enterText(find.byType(EditableText), 'baocode://nope');
+      await tester.enterText(find.byType(EditableText), 'pi-desktop://nope');
       await tester.tap(find.text('确定'));
       await tester.pump();
       expect(find.textContaining('这不是网页上的链接'), findsOneWidget);
 
       await tester.enterText(
         find.byType(EditableText),
-        'baocode://activate?i=$_id&s=channel&c=youtube',
+        'pi-desktop://activate?i=$_id&s=channel&c=youtube',
       );
       await tester.tap(find.text('确定'));
       await tester.pump();
@@ -731,7 +754,7 @@ void main() {
       await tester.pump();
       expect(find.text('浏览器没有打开'), findsOneWidget);
       expect(find.text('正在等待浏览器完成…'), findsNothing);
-      final address = 'https://baocode.dev/zh/activate#i=$_id';
+      final address = 'https://setup.pi.example/activate#i=$_id';
       expect(find.text(address), findsOneWidget);
       await tester.tap(find.text('复制'));
       await tester.pump();
@@ -774,4 +797,5 @@ void main() {
   });
 }
 
-const lookUpBase = ChannelSetup.lookUpBase;
+const _activationUrl = 'https://setup.pi.example/activate';
+const lookUpBase = 'https://stats.pi.example/v1/attribution/';

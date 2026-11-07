@@ -1,12 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_status_bar.dart';
-import 'package:baocode/ide/workbench/actions.dart';
-import 'package:baocode/ide/workbench/context_keys.dart';
-import 'package:baocode/ide/workbench/contributions.dart';
-import 'package:baocode/ide/workbench/services.dart';
-import 'package:baocode/ide/workbench/statusbar.dart';
-import 'package:baocode/ide/workbench/storage.dart';
+import 'package:pi_desktop/ide/ide_status_bar.dart';
+import 'package:pi_desktop/ide/workbench/actions.dart';
+import 'package:pi_desktop/ide/workbench/context_keys.dart';
+import 'package:pi_desktop/ide/workbench/contributions.dart';
+import 'package:pi_desktop/ide/workbench/services.dart';
+import 'package:pi_desktop/ide/workbench/statusbar.dart';
+import 'package:pi_desktop/ide/workbench/storage.dart';
 
 class _Counter extends ChangeNotifier {
   bool disposed = false;

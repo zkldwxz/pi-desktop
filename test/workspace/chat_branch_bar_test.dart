@@ -4,11 +4,11 @@
 // its path copied by a click, without a repository. Worktrees made and
 // switched to from it.
 
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/ide/git/git_repository.dart';
-import 'package:baocode/ide/git/git_service.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/workspace/chat_branch_bar.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/ide/git/git_repository.dart';
+import 'package:pi_desktop/ide/git/git_service.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
+import 'package:pi_desktop/workspace/chat_branch_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

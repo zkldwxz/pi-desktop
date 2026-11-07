@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/workspace/agent_title.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/workspace/agent_title.dart';
 
 void main() {
   test('images alone are titled after the first with a file name', () {

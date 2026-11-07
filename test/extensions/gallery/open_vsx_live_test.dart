@@ -5,11 +5,11 @@ library;
 
 import 'dart:io';
 
-import 'package:baocode/extensions/capabilities/capability_analysis.dart';
-import 'package:baocode/extensions/gallery/gallery_models.dart';
-import 'package:baocode/extensions/gallery/open_vsx_client.dart';
-import 'package:baocode/extensions/vsix/target_platform.dart';
-import 'package:baocode/extensions/vsix/vsix_reader.dart';
+import 'package:pi_desktop/extensions/capabilities/capability_analysis.dart';
+import 'package:pi_desktop/extensions/gallery/gallery_models.dart';
+import 'package:pi_desktop/extensions/gallery/open_vsx_client.dart';
+import 'package:pi_desktop/extensions/vsix/target_platform.dart';
+import 'package:pi_desktop/extensions/vsix/vsix_reader.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

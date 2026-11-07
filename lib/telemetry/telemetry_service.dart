@@ -49,14 +49,14 @@ class MemoryTelemetryStore implements TelemetryStore {
 ///
 /// A day not reported (offline) is kept and sent later, the latest
 /// [maxPendingDays] of them. Not a setting: what is sent tells nothing of
-/// the user. Made once, in main.dart, only for release builds.
+/// the user. Made once in main.dart when an endpoint is configured.
 class TelemetryService {
   TelemetryService({
     required this.current,
     required this.os,
     required this.arch,
     required this.sender,
-    Uri? url,
+    required this.url,
     TelemetryStore? store,
     DateTime Function()? now,
     bool Function()? inFront,
@@ -67,13 +67,10 @@ class TelemetryService {
     this.linkPathsSent,
     this.firstDelay = const Duration(seconds: 10),
     this.interval = const Duration(hours: 1),
-  }) : url = url ?? Uri.parse(defaultUrl),
-       store = store ?? MemoryTelemetryStore(),
+  }) : store = store ?? MemoryTelemetryStore(),
        _now = now ?? DateTime.now,
        _inFront = inFront ?? (() => true),
        _newId = newId ?? randomInstallId;
-
-  static const defaultUrl = 'https://stats.baocode.dev/v1/ping';
 
   /// The version of the report's body.
   static const schema = 1;

@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/models/featured_upstreams.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/upstream_import.dart';
+import 'package:pi_desktop/models/featured_upstreams.dart';
+import 'package:pi_desktop/models/model_provider.dart';
+import 'package:pi_desktop/models/upstream_import.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 String _link(Map<String, String> query) => Uri(
-  scheme: 'baocode',
+  scheme: 'pi-desktop',
   host: 'provider',
   path: '/import',
   queryParameters: query,
@@ -72,7 +72,7 @@ void main() {
         isNull,
       );
       // Other links of the scheme, and other schemes.
-      expect(UpstreamImport.parse('baocode://agent?path=/tmp'), isNull);
+      expect(UpstreamImport.parse('pi-desktop://agent?path=/tmp'), isNull);
       expect(
         UpstreamImport.parse('https://provider/import?url=https://a.com'),
         isNull,

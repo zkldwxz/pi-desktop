@@ -2,12 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_editor.dart';
-import 'package:baocode/ide/ide_hover.dart';
-import 'package:baocode/ide/ide_tab_bar.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart';
-import 'package:baocode/theme/codicons.dart';
+import 'package:pi_desktop/ide/ide_editor.dart';
+import 'package:pi_desktop/ide/ide_hover.dart';
+import 'package:pi_desktop/ide/ide_tab_bar.dart';
+import 'package:pi_desktop/ide/ide_workbench.dart';
+import 'package:pi_desktop/ide/lsp/lsp_protocol.dart';
+import 'package:pi_desktop/theme/codicons.dart';
 
 import 'fake_files.dart';
 

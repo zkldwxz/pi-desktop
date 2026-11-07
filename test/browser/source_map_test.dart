@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:baocode/browser/source_map.dart';
+import 'package:pi_desktop/browser/source_map.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// [segments] of each generated line ([column, source, line, column, name?],

@@ -4,16 +4,8 @@ import 'dart:convert';
 
 import 'version.dart';
 
-/// Where the app looks for its next version: the release manifest
-/// dl.baocode.dev serves (docs/auto-update.md has its format).
-const defaultManifestUrl = 'https://dl.baocode.dev/releases/latest.json';
-
-/// The environment variable that points the app at another manifest, to
-/// try a release before it is published (a local server's, say).
-const manifestUrlVariable = 'BAOCODE_UPDATE_URL';
-
-/// A manifest that cannot be used: not JSON, a field missing or wrong, a
-/// download not on baocode.dev.
+/// A manifest that cannot be used: not JSON, a field missing or wrong,
+/// or a download outside the configured origins.
 class UpdateManifestException implements Exception {
   const UpdateManifestException(this.message);
 
@@ -23,37 +15,38 @@ class UpdateManifestException implements Exception {
   String toString() => 'Invalid update manifest: $message';
 }
 
-/// Which download links a manifest may give: https on baocode.dev (or a
-/// subdomain of it), and [extraOrigins] besides — the origin of a manifest
-/// [manifestUrlVariable] points at, so a release can be tried from where it
-/// is served before it is published.
+/// Which download origins a manifest may use. No origin is trusted by default.
 class UpdateUrlPolicy {
-  const UpdateUrlPolicy({this.extraOrigins = const {}});
+  const UpdateUrlPolicy({
+    this.extraOrigins = const {},
+    this.exact = false,
+    this.allowLocalhost = false,
+  });
 
-  /// For the manifest at [manifest]: its origin allowed too when it is not
-  /// the default one.
+  const UpdateUrlPolicy.exactOrigins(
+    this.extraOrigins, {
+    this.allowLocalhost = false,
+  }) : exact = true;
+
   factory UpdateUrlPolicy.forManifest(Uri manifest) =>
-      manifest.toString() == defaultManifestUrl ||
-          !(manifest.scheme == 'http' || manifest.scheme == 'https')
-      ? const UpdateUrlPolicy()
-      : UpdateUrlPolicy(extraOrigins: {manifest.origin});
-
-  static const domain = 'baocode.dev';
+      manifest.host.isNotEmpty &&
+          manifest.userInfo.isEmpty &&
+          (manifest.scheme == 'http' || manifest.scheme == 'https')
+      ? UpdateUrlPolicy(extraOrigins: {manifest.origin}, allowLocalhost: true)
+      : const UpdateUrlPolicy();
 
   final Set<String> extraOrigins;
+  final bool exact;
+  final bool allowLocalhost;
 
   bool allows(Uri url) {
-    if (url.hasScheme &&
-        (url.scheme == 'http' || url.scheme == 'https') &&
+    final loopback =
+        url.host == 'localhost' || url.host == '127.0.0.1' || url.host == '::1';
+    return url.userInfo.isEmpty &&
         url.host.isNotEmpty &&
-        extraOrigins.contains(url.origin)) {
-      return true;
-    }
-    final host = url.host.toLowerCase();
-    return url.scheme == 'https' &&
-        !url.hasPort &&
-        url.userInfo.isEmpty &&
-        (host == domain || host.endsWith('.$domain'));
+        (url.scheme == 'https' ||
+            (url.scheme == 'http' && allowLocalhost && loopback)) &&
+        extraOrigins.contains(url.origin);
   }
 }
 
@@ -219,9 +212,7 @@ class UpdateManifest {
     };
     if (url == null) throw const UpdateManifestException('"url" is missing');
     if (!policy.allows(url)) {
-      throw UpdateManifestException(
-        '"$url" is not an https link on ${UpdateUrlPolicy.domain}',
-      );
+      throw UpdateManifestException('"$url" is not an allowed https link');
     }
     final size = json['size'];
     if (size is! int || size <= 0) {

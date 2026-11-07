@@ -1,8 +1,8 @@
 import 'package:bao_editor/monaco/flutter/editor_surface.dart';
 import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
-import 'package:baocode/ide/ide_code_editor.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/theme/code_font.dart';
+import 'package:pi_desktop/ide/ide_code_editor.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
+import 'package:pi_desktop/theme/code_font.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

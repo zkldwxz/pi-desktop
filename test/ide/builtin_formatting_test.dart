@@ -1,11 +1,11 @@
 import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
 import 'package:bao_editor/monaco/flutter/editor_surface.dart';
 import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
-import 'package:baocode/ide/builtin_formatting.dart';
-import 'package:baocode/ide/ide_code_editor.dart';
-import 'package:baocode/ide/ide_notifications.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart';
+import 'package:pi_desktop/ide/builtin_formatting.dart';
+import 'package:pi_desktop/ide/ide_code_editor.dart';
+import 'package:pi_desktop/ide/ide_notifications.dart';
+import 'package:pi_desktop/ide/ide_workspace.dart';
+import 'package:pi_desktop/ide/lsp/lsp_protocol.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

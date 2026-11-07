@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:baocode/browser/browser_bridge.dart';
-import 'package:baocode/l10n/app_localizations_en.dart';
-import 'package:baocode/settings/pages/browser_page.dart';
+import 'package:pi_desktop/browser/browser_bridge.dart';
+import 'package:pi_desktop/l10n/app_localizations_en.dart';
+import 'package:pi_desktop/settings/pages/browser_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -284,12 +284,13 @@ void main() {
   test('the Windows manifest names the host beside it, for the extension '
       'alone', () {
     final manifest = jsonDecode(
-      File('windows/BrowserBridge/dev.baocode.browser.json').readAsStringSync(),
+      File('windows/BrowserBridge/dev.pi.desktop.browser.json')
+          .readAsStringSync(),
     ) as Map<String, Object?>;
     expect(manifest, {
       'name': BrowserBridge.hostName,
-      'description': 'BaoCode',
-      'path': 'baocode-browser-host.exe',
+      'description': 'pi-desktop',
+      'path': 'pi-desktop-browser-host.exe',
       'type': 'stdio',
       'allowed_origins': [
         for (final id in BrowserBridge.extensionIds) 'chrome-extension://$id/',

@@ -5,9 +5,9 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/telemetry/telemetry_io.dart';
-import 'package:baocode/telemetry/telemetry_service.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/telemetry/telemetry_io.dart';
+import 'package:pi_desktop/telemetry/telemetry_service.dart';
+import 'package:pi_desktop/update/version.dart';
 
 /// Answers each report with [status]; throws when it is null (offline).
 class FakeSender implements TelemetrySender {
@@ -28,6 +28,32 @@ class FakeSender implements TelemetrySender {
 class _RealHttp extends HttpOverrides {}
 
 void main() {
+  test('platform telemetry requires an explicit pi-desktop URL', () {
+    expect(platformTelemetry(environment: {}, buildUrl: ''), isNull);
+    expect(
+      platformTelemetry(
+        environment: {'BAOCODE_TELEMETRY_URL': 'https://old.test'},
+        buildUrl: '',
+      ),
+      isNull,
+    );
+    expect(platformTelemetry(environment: {}, buildUrl: 'invalid'), isNull);
+    expect(
+      platformTelemetry(
+        environment: {},
+        buildUrl: 'https://example.test/ping',
+      )?.url.host,
+      'example.test',
+    );
+    expect(
+      platformTelemetry(
+        environment: {'PI_DESKTOP_TELEMETRY_URL': 'http://localhost:8080/ping'},
+        buildUrl: '',
+      )?.url.host,
+      'localhost',
+    );
+  });
+
   group('TelemetryService', () {
     late FakeSender sender;
     late MemoryTelemetryStore store;

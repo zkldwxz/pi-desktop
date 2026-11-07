@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/debug/service/debug_service.dart';
-import 'package:baocode/ide/ide_columns.dart';
-import 'package:baocode/ide/ide_editor.dart';
-import 'package:baocode/ide/ide_find_widget.dart';
-import 'package:baocode/ide/ide_status_bar.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/workspace/back_to_chat_button.dart';
-import 'package:baocode/workspace/pin_window_button.dart';
+import 'package:pi_desktop/debug/service/debug_service.dart';
+import 'package:pi_desktop/ide/ide_columns.dart';
+import 'package:pi_desktop/ide/ide_editor.dart';
+import 'package:pi_desktop/ide/ide_find_widget.dart';
+import 'package:pi_desktop/ide/ide_status_bar.dart';
+import 'package:pi_desktop/theme/codicons.dart';
+import 'package:pi_desktop/theme/workbench_theme.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
+import 'package:pi_desktop/workspace/back_to_chat_button.dart';
+import 'package:pi_desktop/workspace/pin_window_button.dart';
 
 import '../../debug/support/fake_debug_adapter.dart';
 import 'fake_files.dart';

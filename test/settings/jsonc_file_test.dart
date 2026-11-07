@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/settings/jsonc_file.dart';
-import 'package:baocode/settings/user_settings.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/workspace/preference_store.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/platform/data_dir.dart';
+import 'package:pi_desktop/settings/jsonc_file.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
+import 'package:pi_desktop/theme/workbench_theme.dart';
+import 'package:pi_desktop/workspace/preference_store.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:path/path.dart' as p;
 
 /// Settings files read leniently, kept up to date as they change on disk,

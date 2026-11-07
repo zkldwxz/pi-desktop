@@ -2,9 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_explorer.dart';
-import 'package:baocode/ide/ide_input.dart';
-import 'package:baocode/theme/codicons.dart';
+import 'package:pi_desktop/ide/ide_explorer.dart';
+import 'package:pi_desktop/ide/ide_input.dart';
+import 'package:pi_desktop/theme/codicons.dart';
 
 import '../git/fake_git.dart';
 import 'fake_files.dart';
@@ -261,15 +261,16 @@ void main() {
       'into the chat; a cut one is not', (tester) async {
     final written = <Object?>[];
     final messenger = tester.binding.defaultBinaryMessenger;
-    messenger.setMockMethodCallHandler(const MethodChannel('baocode/window'), (
-      call,
-    ) async {
-      if (call.method == 'writePasteboardFiles') written.add(call.arguments);
-      return null;
-    });
+    messenger.setMockMethodCallHandler(
+      const MethodChannel('pi-desktop/window'),
+      (call) async {
+        if (call.method == 'writePasteboardFiles') written.add(call.arguments);
+        return null;
+      },
+    );
     addTearDown(
       () => messenger.setMockMethodCallHandler(
-        const MethodChannel('baocode/window'),
+        const MethodChannel('pi-desktop/window'),
         null,
       ),
     );

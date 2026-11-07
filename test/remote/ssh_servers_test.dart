@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:bao_remote/client.dart';
-import 'package:baocode/models/secret_store.dart';
-import 'package:baocode/remote/ssh_host.dart';
-import 'package:baocode/remote/ssh_passwords.dart';
-import 'package:baocode/remote/ssh_server_form.dart';
+import 'package:pi_desktop/models/secret_store.dart';
+import 'package:pi_desktop/remote/ssh_host.dart';
+import 'package:pi_desktop/remote/ssh_passwords.dart';
+import 'package:pi_desktop/remote/ssh_server_form.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

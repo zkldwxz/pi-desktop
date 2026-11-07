@@ -4,15 +4,15 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/ide/terminal/pty.dart';
-import 'package:baocode/ide/terminal/pty_io.dart';
-import 'package:baocode/kernel/claude_code/process_transport_io.dart';
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/window/app_windows.dart';
-import 'package:baocode/window/window_host.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/ide/terminal/pty.dart';
+import 'package:pi_desktop/ide/terminal/pty_io.dart';
+import 'package:pi_desktop/kernel/claude_code/process_transport_io.dart';
+import 'package:pi_desktop/platform/data_dir.dart';
+import 'package:pi_desktop/window/app_windows.dart';
+import 'package:pi_desktop/window/window_host.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 // Runs against the real Windows embedder, not FakeWindowHost:
 // flutter run -d windows -t tool/windows_close_smoke.dart
@@ -30,7 +30,7 @@ Future<void> main() async {
     hasTray: () => true,
   );
   if (!await windows.start()) throw StateError('Windows host unavailable');
-  runWidget(BaoCodeApp(workspace: workspace, windows: windows));
+  runWidget(PiDesktopApp(workspace: workspace, windows: windows));
   await WidgetsBinding.instance.endOfFrame;
   for (var cycle = 1; cycle <= 5; cycle++) {
     stdout.writeln('WINDOW_SMOKE $cycle: opening IDE');

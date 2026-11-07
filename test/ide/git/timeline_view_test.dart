@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/git/ide_timeline_view.dart';
-import 'package:baocode/ide/ide_dates.dart';
+import 'package:pi_desktop/ide/git/ide_timeline_view.dart';
+import 'package:pi_desktop/ide/ide_dates.dart';
 
 import '../workbench/fake_files.dart';
 import 'fake_git.dart';

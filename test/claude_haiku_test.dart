@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:baocode/kernel/claude_code/claude_haiku.dart';
-import 'package:baocode/usage/usage_record.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_haiku.dart';
+import 'package:pi_desktop/usage/usage_record.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/update/update_signature.dart';
+import 'package:pi_desktop/update/update_signature.dart';
 
 void main() {
   final seed = UpdateSignature.generateSeed();
@@ -17,7 +17,7 @@ void main() {
     test('signs the version, platform, size and digest', () {
       expect(
         utf8.decode(payload),
-        'baocode-update-v1\n1.2.0+12\nwindows-x64\n1234\n${'ab' * 32}\n',
+        'pi-desktop-update-v1\n1.2.0+12\nwindows-x64\n1234\n${'ab' * 32}\n',
       );
     });
 
@@ -87,9 +87,7 @@ void main() {
       }
     });
 
-    test("the app's key is an Ed25519 public key", () {
-      expect(base64.decode(updatePublicKey), hasLength(32));
-      // And not the test's.
+    test('verification fails without a configured key', () {
       final signature = UpdateSignature.sign(payload: payload, seed: seed);
       expect(
         UpdateSignature.verify(payload: payload, signature: signature),

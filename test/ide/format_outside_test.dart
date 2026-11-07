@@ -1,6 +1,6 @@
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/ide/lsp/language_features.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart';
+import 'package:pi_desktop/ide/ide_workspace.dart';
+import 'package:pi_desktop/ide/lsp/language_features.dart';
+import 'package:pi_desktop/ide/lsp/lsp_protocol.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'lsp_ui/fake_language_features.dart';

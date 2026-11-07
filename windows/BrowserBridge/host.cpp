@@ -1,14 +1,14 @@
-// baocode-browser-host.exe: the native messaging host of BaoCode's browser
+// pi-desktop-browser-host.exe: the native messaging host of BaoCode's browser
 // extension (browser_extension/) on Windows, as macos/BrowserBridge/host.c
 // is on macOS. The browser starts it for the extension, as
-// dev.baocode.browser.json beside it says (the installer's keys point the
+// dev.pi.desktop.browser.json beside it says (the installer's keys point the
 // browsers there, see tool/baocode.iss). It passes the extension's
 // messages to BaoCode and BaoCode's back: waiting for BaoCode while it is
 // not running, and again once it quits.
 //
 // Dart has no Unix sockets on Windows: BaoCode (lib/browser/
 // browser_bridge.dart) listens on 127.0.0.1, at the port its file in the
-// user's temporary folder says, baocode-browser.port: "<port> <token>".
+// user's temporary folder says, pi-desktop-browser.port: "<port> <token>".
 // Any program may connect there, so the host's hello says the token, which
 // only the user can read; BaoCode lets in no one who does not.
 //
@@ -118,7 +118,7 @@ static bool find_bao(unsigned* port, char* token, size_t size) {
   wchar_t path[MAX_PATH + 32];
   const DWORD n = GetTempPathW(MAX_PATH + 1, path);
   if (n == 0 || n > MAX_PATH) return false;
-  if (wcscat_s(path, L"baocode-browser.port") != 0) return false;
+  if (wcscat_s(path, L"pi-desktop-browser.port") != 0) return false;
   HANDLE file = CreateFileW(
       path, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
       nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);

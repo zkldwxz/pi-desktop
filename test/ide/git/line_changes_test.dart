@@ -6,9 +6,9 @@
 
 import 'package:bao_editor/monaco/flutter/editor_surface.dart';
 import 'package:bao_editor/monaco/vs/editor/common/diff/range_mapping.dart';
-import 'package:baocode/ide/git/git_line_changes.dart';
-import 'package:baocode/ide/ide_line_change_popup.dart';
-import 'package:baocode/ide/ide_workspace.dart';
+import 'package:pi_desktop/ide/git/git_line_changes.dart';
+import 'package:pi_desktop/ide/ide_line_change_popup.dart';
+import 'package:pi_desktop/ide/ide_workspace.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 

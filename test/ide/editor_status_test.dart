@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
 import 'package:bao_editor/monaco/vs/editor/common/core/range.dart';
-import 'package:baocode/ide/file_service.dart';
-import 'package:baocode/ide/ide_editor.dart';
-import 'package:baocode/ide/ide_tab_bar.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/ide/file_service.dart';
+import 'package:pi_desktop/ide/ide_editor.dart';
+import 'package:pi_desktop/ide/ide_tab_bar.dart';
+import 'package:pi_desktop/ide/ide_workbench.dart';
+import 'package:pi_desktop/ide/ide_workspace.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:path/path.dart' as p;
 
 import 'workbench/fake_files.dart';

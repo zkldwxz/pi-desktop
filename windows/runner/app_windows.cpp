@@ -233,8 +233,8 @@ bool IdeWindow::OnCreate() {
   const HWND view = FlutterDesktopViewGetHWND(
       FlutterDesktopViewControllerGetView(controller_));
   const std::string suffix = "." + std::to_string(view_id_);
-  HostView(messenger_, view, "baocode/window" + suffix,
-           "baocode/drop" + suffix);
+  HostView(messenger_, view, "pi-desktop/window" + suffix,
+           "pi-desktop/drop" + suffix);
   return true;
 }
 
@@ -301,7 +301,7 @@ AppWindows::AppWindows(flutter::BinaryMessenger* messenger, HWND main)
     : messenger_(messenger),
       main_(main),
       channel_(std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-          messenger, "baocode/windows",
+          messenger, "pi-desktop/windows",
           &flutter::StandardMethodCodec::GetInstance())) {
   g_app_windows = this;
   channel_->SetMethodCallHandler(
@@ -665,7 +665,7 @@ std::optional<int64_t> AppWindows::Create(
   // Made hidden, at the default size, then put in place (in physical
   // pixels, which Create does not take); shown when Flutter focuses it,
   // once it has drawn.
-  if (!window->Create(title.empty() ? L"BaoCode" : title,
+  if (!window->Create(title.empty() ? L"pi-desktop" : title,
                       Win32Window::Point(10, 10),
                       Win32Window::Size(kDefaultWidth, kDefaultHeight))) {
     return std::nullopt;

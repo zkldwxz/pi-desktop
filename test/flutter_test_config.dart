@@ -10,17 +10,17 @@ import 'package:bao_editor/textmate/textmate_manifest.dart'
     show textMateAssetRoot;
 import 'package:bao_editor/textmate/textmate_syntax.dart';
 import 'package:bao_editor/textmate/textmate_worker.dart';
-import 'package:baocode/chat/user_message_style.dart';
-import 'package:baocode/customize/customize_view.dart';
-import 'package:baocode/ide/ide_diff_options.dart';
-import 'package:baocode/ide/lsp/packs/language_packs.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/kernel_registry.dart';
-import 'package:baocode/models/featured_upstreams.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/platform/context_menu.dart';
-import 'package:baocode/platform/shell_command.dart';
-import 'package:baocode/theme/workbench_theme.dart';
+import 'package:pi_desktop/chat/user_message_style.dart';
+import 'package:pi_desktop/customize/customize_view.dart';
+import 'package:pi_desktop/ide/ide_diff_options.dart';
+import 'package:pi_desktop/ide/lsp/packs/language_packs.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi_desktop/kernel/kernel_registry.dart';
+import 'package:pi_desktop/models/featured_upstreams.dart';
+import 'package:pi_desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi_desktop/platform/context_menu.dart';
+import 'package:pi_desktop/platform/shell_command.dart';
+import 'package:pi_desktop/theme/workbench_theme.dart';
 
 import 'semantics_tree.dart';
 

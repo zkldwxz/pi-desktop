@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/git/ide_git_commit_panel.dart';
-import 'package:baocode/ide/git/commit_message.dart';
-import 'package:baocode/ide/ide_input.dart';
-import 'package:baocode/ide/ide_list.dart';
+import 'package:pi_desktop/ide/git/ide_git_commit_panel.dart';
+import 'package:pi_desktop/ide/git/commit_message.dart';
+import 'package:pi_desktop/ide/ide_input.dart';
+import 'package:pi_desktop/ide/ide_list.dart';
 
 import '../workbench/fake_files.dart';
 import 'fake_git.dart';

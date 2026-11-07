@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:baocode/forge/forge_accounts.dart';
-import 'package:baocode/forge/forge_api.dart';
-import 'package:baocode/forge/forge_ref.dart';
-import 'package:baocode/models/secret_store.dart';
+import 'package:pi_desktop/forge/forge_accounts.dart';
+import 'package:pi_desktop/forge/forge_api.dart';
+import 'package:pi_desktop/forge/forge_ref.dart';
+import 'package:pi_desktop/models/secret_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Answers requests by method and URL (its path and query), and keeps
@@ -196,10 +196,10 @@ void main() {
         'https://gitee.com/baocode/app/issues/I8ABCD?from=project-issue',
       )!;
       expect(issue.repo.kind, ForgeKind.gitee);
-      expect(issue.repo.path, 'baocode/app');
+      expect(issue.repo.path, 'pi-desktop/app');
       expect(issue.kind, ForgeItemKind.issue);
       expect(issue.code, 'I8ABCD');
-      expect(issue.fullTag, 'baocode/app#I8ABCD');
+      expect(issue.fullTag, 'pi-desktop/app#I8ABCD');
       expect(
         issue.url.toString(),
         'https://gitee.com/baocode/app/issues/I8ABCD',
@@ -222,7 +222,7 @@ void main() {
         const ForgeRepo(
           kind: ForgeKind.gitee,
           host: 'gitee.com',
-          path: 'baocode/app',
+          path: 'pi-desktop/app',
         ),
       );
       expect(ForgeRepo.fromRemote('https://gitee.com/a/b/c.git'), isNull);

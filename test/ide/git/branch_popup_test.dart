@@ -2,10 +2,10 @@
 // repository's actions, then the recent, local and remote branches, typed
 // to narrow; a branch opens its actions.
 
-import 'package:baocode/ide/git/git_service.dart';
-import 'package:baocode/ide/git/ide_git_branch_popup.dart';
-import 'package:baocode/ide/git/ide_git_push_dialog.dart';
-import 'package:baocode/ide/ide_status_bar.dart';
+import 'package:pi_desktop/ide/git/git_service.dart';
+import 'package:pi_desktop/ide/git/ide_git_branch_popup.dart';
+import 'package:pi_desktop/ide/git/ide_git_push_dialog.dart';
+import 'package:pi_desktop/ide/ide_status_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,7 +22,12 @@ void main() {
   setUp(() {
     git = FakeGit(testRoot)
       ..status = '## main...origin/main\x00'
-      ..log = gitLogRecord(_main, [], 'Main work', refs: 'HEAD -> refs/heads/main')
+      ..log = gitLogRecord(
+        _main,
+        [],
+        'Main work',
+        refs: 'HEAD -> refs/heads/main',
+      )
       ..forEachRef = [
         gitRefRecord('refs/heads/main', _main, upstream: 'origin/main'),
         gitRefRecord('refs/heads/feature', _feature),

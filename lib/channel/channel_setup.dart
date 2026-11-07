@@ -168,7 +168,11 @@ class ChannelAccountSite {
         .firstOrNull;
     Uri? https(Object? value) => switch (value) {
       final String text => switch (Uri.tryParse(text.trim())) {
-        final Uri uri when uri.scheme == 'https' && uri.host.isNotEmpty => uri,
+        final Uri uri
+            when uri.scheme == 'https' &&
+                uri.host.isNotEmpty &&
+                uri.userInfo.isEmpty =>
+          uri,
         _ => null,
       },
       _ => null,
@@ -304,18 +308,34 @@ class ChannelSetup extends ChangeNotifier {
     this.again,
     this.pollInterval = const Duration(seconds: 3),
     this.offlineAfter = 2,
+    this.activationUrl = const String.fromEnvironment(
+      'PI_DESKTOP_CHANNEL_ACTIVATION_URL',
+    ),
+    this.lookupBase = const String.fromEnvironment(
+      'PI_DESKTOP_CHANNEL_LOOKUP_URL',
+    ),
   }) : _done = again == null && store.state == doneState;
 
-  /// Made with `--dart-define=BAOCODE_CHANNEL=true`: the build the site
-  /// gives a visitor who came by a channel.
-  static const channelBuild = bool.fromEnvironment('BAOCODE_CHANNEL');
+  /// The optional channel edition, configured at build time.
+  static const channelBuild = bool.fromEnvironment('PI_DESKTOP_CHANNEL');
 
   static const pendingState = 'pending';
   static const doneState = 'done';
 
-  static const pageUrl = 'https://baocode.dev/activate';
-  static const zhPageUrl = 'https://baocode.dev/zh/activate';
-  static const lookUpBase = 'https://stats.baocode.dev/v1/attribution/';
+  final String activationUrl;
+  final String lookupBase;
+
+  bool get hasAttributionService {
+    bool valid(String value) {
+      final uri = Uri.tryParse(value);
+      return uri != null &&
+          uri.scheme == 'https' &&
+          uri.host.isNotEmpty &&
+          uri.userInfo.isEmpty;
+    }
+
+    return valid(activationUrl) && valid(lookupBase);
+  }
 
   /// The app's, while it is to be set up (main.dart sets it).
   static ChannelSetup? current;
@@ -390,12 +410,12 @@ class ChannelSetup extends ChangeNotifier {
   }
 
   Uri get lookUpUrl =>
-      Uri.parse('$lookUpBase$installId${again == null ? '' : '?again=$again'}');
+      Uri.parse('$lookupBase$installId${again == null ? '' : '?again=$again'}');
 
   /// The page, in Chinese for a Chinese app (its English one sends a
   /// Chinese browser there too).
   Uri page({required bool zh}) => Uri.parse(
-    '${zh ? zhPageUrl : pageUrl}#i=$installId'
+    '$activationUrl#i=$installId'
     '${again == null ? '' : '&again=$again'}',
   );
 
@@ -406,7 +426,7 @@ class ChannelSetup extends ChangeNotifier {
   /// Opens the page in the user's browser, and waits for it: asking the
   /// stats server every [pollInterval]. Again, the page again.
   Future<void> openPage({required bool zh}) async {
-    if (_done) return;
+    if (_done || !hasAttributionService) return;
     _opened = true;
     _failures = 0;
     _offline = false;
@@ -428,7 +448,7 @@ class ChannelSetup extends ChangeNotifier {
   }
 
   Future<void> _ask() async {
-    if (_done || _asking || _disposed) return;
+    if (_done || _asking || _disposed || !hasAttributionService) return;
     _asking = true;
     try {
       final told = await lookUp(lookUpUrl);
@@ -454,7 +474,7 @@ class ChannelSetup extends ChangeNotifier {
   /// Whether [link] is the page's (`baocode://activate…`), not another
   /// `baocode://` link.
   static bool isLink(String link) => switch (Uri.tryParse(link.trim())) {
-    Uri(scheme: 'baocode', host: 'activate') => true,
+    Uri(scheme: 'pi-desktop', host: 'activate') => true,
     _ => false,
   };
 

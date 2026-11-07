@@ -91,7 +91,7 @@ std::wstring TemporaryFolder() {
 LoginWindow::LoginWindow(flutter::BinaryMessenger* messenger, HWND owner)
     : owner_(owner) {
   channel_ = std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-      messenger, "baocode/login_window",
+      messenger, "pi-desktop/login_window",
       &flutter::StandardMethodCodec::GetInstance());
   channel_->SetMethodCallHandler([this](const auto& call, auto result) {
     HandleMethodCall(call, std::move(result));

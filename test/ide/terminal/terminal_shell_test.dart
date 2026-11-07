@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/terminal/terminal_shell.dart';
+import 'package:pi_desktop/ide/terminal/terminal_shell.dart';
 
 /// The shell and environment of a new terminal, as VS Code picks them.
 void main() {

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/customize/mcp_probe.dart';
-import 'package:baocode/kernel/claude_code/claude_environment.dart';
+import 'package:pi_desktop/customize/mcp_probe.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_environment.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Checking a remote MCP server as `claude mcp list` does: its

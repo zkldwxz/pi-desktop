@@ -3,9 +3,9 @@
 // to it, tag it, compare it with the working tree, go to its parent or
 // child; each the Git command it runs.
 
-import 'package:baocode/ide/git/git_service.dart';
-import 'package:baocode/ide/ide_code_diff.dart';
-import 'package:baocode/ide/ide_input.dart';
+import 'package:pi_desktop/ide/git/git_service.dart';
+import 'package:pi_desktop/ide/ide_code_diff.dart';
+import 'package:pi_desktop/ide/ide_input.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

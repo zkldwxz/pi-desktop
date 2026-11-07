@@ -5,19 +5,12 @@ import 'dart:convert';
 
 import '../../chat/chat_models.dart' show ImageAttachment;
 import '../../models/model_providers.dart';
-import '../../models/model_runtime.dart';
-import '../../remote/remote_claude.dart';
-import '../../remote/remote_location.dart';
-import '../../remote/ssh_host.dart';
+import '../pi/pi_jobs.dart';
 import '../../models/launch_environment.dart';
 import '../../usage/usage_capture.dart';
 import '../../usage/usage_ledger.dart';
 import '../../usage/usage_record.dart';
 import 'claude_code_transport.dart' show ClaudeLaunch;
-import 'claude_core_setting.dart';
-import 'claude_haiku_stub.dart'
-    if (dart.library.io) 'claude_haiku_io.dart'
-    as platform;
 
 /// Asks Claude Haiku [prompt], with [system] as its system prompt (one
 /// line, so that it passes through a shell unchanged): one turn, no tools,
@@ -51,63 +44,29 @@ Future<String> askClaudeHaiku(
   ClaudeHaikuTools? tools,
   String? session,
 }) async {
-  final host = location == null ? null : RemoteLocation.hostOf(location);
   final providers = ModelProviders.current;
-  var custom = providers.resolve(model);
-  if (custom == null && !providers.builtinAvailable) {
-    custom = providers.resolve(providers.firstModel);
-    if (custom == null) throw const ClaudeHaikuException(ClaudeCore.noModel);
-    exact = false;
-  }
-  if (custom == null) {
-    if (host != null) {
-      return askRemoteHaiku(
-        SshHosts.instance[host],
-        system,
-        prompt,
-        cancel: cancel,
-      );
-    }
-    return platform.askClaudeHaiku(
-      system,
-      prompt,
-      cancel: cancel,
-      images: images,
-      tools: tools,
-      session: session,
-    );
-  }
-  final (provider, info) = custom;
-  final name = exact ? info.id : provider.roles.haiku ?? info.id;
-  Map<String, String> env;
+  final custom = providers.resolve(model);
+  final selected = custom == null || exact
+      ? model
+      : custom.$1.roles.haiku == null
+      ? model
+      : '@${custom.$1.id}/${custom.$1.roles.haiku}';
   try {
-    env = await providerLaunchEnvironment(provider, name);
-  } on Object catch (error) {
-    throw ClaudeHaikuException('${provider.name}: $error');
-  }
-  // Through the proxy, which keeps it under [session].
-  if (session != null && UsageLedger.current.enabled) {
-    env = withUsageSession(env, session);
-  }
-  if (host != null) {
-    return askRemoteHaiku(
-      SshHosts.instance[host],
-      system,
-      prompt,
+    return (await askPi(
+      system: system,
+      prompt: prompt,
+      model: selected,
+      cwd: tools?.directory ?? location,
       cancel: cancel,
-      model: name,
-      env: env,
-    );
+      images: [for (final named in images) named.image],
+      tools: tools?.tools ?? const [],
+      maxTurns: tools?.maxTurns ?? 1,
+    )).text;
+  } on PiJobCancelled {
+    throw const ClaudeHaikuCancelled();
+  } on Object catch (error) {
+    throw ClaudeHaikuException('$error');
   }
-  return platform.askClaudeHaiku(
-    system,
-    prompt,
-    cancel: cancel,
-    model: name,
-    env: env,
-    images: images,
-    tools: tools,
-  );
 }
 
 /// [env] with a header naming the conversation [session] a call is for
@@ -233,22 +192,24 @@ Future<ClaudeTimedAnswer> timeClaudeAnswer(
   required String model,
   Future<void>? cancel,
 }) async {
-  final custom = ModelProviders.current.resolve(model);
-  if (custom == null) throw ClaudeHaikuException('No model $model.');
-  final (provider, info) = custom;
-  final Map<String, String> env;
   try {
-    env = await providerLaunchEnvironment(provider, info.id);
+    final answer = await askPi(
+      system: system,
+      prompt: prompt,
+      model: model,
+      cancel: cancel,
+    );
+    return ClaudeTimedAnswer(
+      answer.text,
+      firstText: answer.firstText,
+      lastText: answer.lastText,
+      outputTokens: answer.outputTokens,
+    );
+  } on PiJobCancelled {
+    throw const ClaudeHaikuCancelled();
   } on Object catch (error) {
-    throw ClaudeHaikuException('${provider.name}: $error');
+    throw ClaudeHaikuException('$error');
   }
-  return platform.timeClaudeAnswer(
-    system,
-    prompt,
-    cancel: cancel,
-    model: info.id,
-    env: env,
-  );
 }
 
 /// An answer, and how it came.

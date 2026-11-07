@@ -14,7 +14,8 @@ import 'crash_reports.dart';
 import 'diagnostics_bundle.dart';
 
 /// Where to upload instead, to try a server.
-const diagnosticsUrlVariable = 'BAOCODE_DIAGNOSTICS_URL';
+const diagnosticsUrlVariable = 'PI_DESKTOP_DIAGNOSTICS_URL';
+const _diagnosticsUrlDefine = String.fromEnvironment(diagnosticsUrlVariable);
 
 /// Why an upload did not get through.
 enum DiagnosticsFailure {
@@ -59,7 +60,7 @@ final class DiagnosticsFailed extends DiagnosticsResult {
 }
 
 /// Uploads the logs folder's files and the system's crash reports of the
-/// app ([packDiagnostics]) to stats.baocode.dev
+/// app ([packDiagnostics]) to a configured endpoint
 /// when the user asks to (Settings → Updates → Diagnostic Logs): with
 /// the note they typed, the app's version, the system's and the display
 /// language; nothing that tells who sent it, not the usage statistics'
@@ -67,7 +68,7 @@ final class DiagnosticsFailed extends DiagnosticsResult {
 class DiagnosticsUploader {
   DiagnosticsUploader({
     required this.folder,
-    Uri? url,
+    required this.url,
     String? version,
     String? os,
     String? osVersion,
@@ -78,8 +79,7 @@ class DiagnosticsUploader {
     this.timeout = const Duration(seconds: 15),
     this.uploadTimeout = const Duration(minutes: 3),
     HttpClient Function()? client,
-  }) : url = url ?? Uri.parse(defaultUrl),
-       version = version ?? '$currentAppVersion',
+  }) : version = version ?? '$currentAppVersion',
        os = os ?? Platform.operatingSystem,
        osVersion = osVersion ?? Platform.operatingSystemVersion,
        arch = arch ?? abiArch(Abi.current()),
@@ -88,22 +88,32 @@ class DiagnosticsUploader {
   /// The app's: the data folder's `logs`, the system's crash reports
   /// ([crashReportFolders]), [url] the one [diagnosticsUrlVariable] names,
   /// if any.
-  factory DiagnosticsUploader.platform() {
-    final environment = Platform.environment;
-    final override = environment[diagnosticsUrlVariable]?.trim() ?? '';
+  static DiagnosticsUploader? platform({
+    Map<String, String>? environment,
+    String? buildUrl,
+  }) {
+    environment ??= Platform.environment;
+    final value =
+        environment[diagnosticsUrlVariable] ??
+        buildUrl ??
+        _diagnosticsUrlDefine;
+    final url = Uri.tryParse(value.trim());
+    if (url == null ||
+        !(url.isScheme('https') || url.isScheme('http')) ||
+        url.host.isEmpty) {
+      return null;
+    }
     final home = Platform.isWindows
         ? environment['USERPROFILE']
         : environment['HOME'];
     return DiagnosticsUploader(
       folder: DataDirectory.current.logsDir,
-      url: override.isEmpty ? null : Uri.tryParse(override),
+      url: url,
       crashFolders: platformCrashReportFolders(),
       home: home,
       windows: Platform.isWindows,
     );
   }
-
-  static const defaultUrl = 'https://stats.baocode.dev/v1/diagnostics';
 
   /// The version of the report's `meta`.
   static const schema = 1;

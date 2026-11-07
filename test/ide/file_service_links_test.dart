@@ -3,7 +3,7 @@ library;
 
 import 'dart:io';
 
-import 'package:baocode/ide/file_service.dart';
+import 'package:pi_desktop/ide/file_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

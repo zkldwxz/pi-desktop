@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_feed.dart';
-import 'package:baocode/chat/chat_history_view.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer_draft.dart';
-import 'package:baocode/chat/widgets/markdown_view.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi_desktop/chat/chat_feed.dart';
+import 'package:pi_desktop/chat/chat_history_view.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/chat/composer/composer_draft.dart';
+import 'package:pi_desktop/chat/widgets/markdown_view.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
 
 class _Feed extends ChangeNotifier implements ChatFeed {
   _Feed(this.items);

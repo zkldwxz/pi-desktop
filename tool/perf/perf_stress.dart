@@ -9,8 +9,8 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart' show CustomPaint, Offset;
 
-import 'package:baocode/chat/widgets/chat_minimap.dart';
-import 'package:baocode/workspace/chat_grid.dart';
+import 'package:pi_desktop/chat/widgets/chat_minimap.dart';
+import 'package:pi_desktop/workspace/chat_grid.dart';
 
 import 'perf_probe.dart';
 import 'perf_scenarios.dart';

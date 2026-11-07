@@ -20,17 +20,15 @@ Future<ChannelAttribution?> lookUpChannel(Uri url) async {
 /// Where the channels the site lists are read from instead (`…/channels.json`
 /// and their logos), to try a channel's welcome before the site has it:
 /// `site/` served locally, say.
-const channelsUrlVariable = 'BAOCODE_CHANNELS_URL';
-
-/// The site's.
-const channelsBase = 'https://baocode.dev';
+const channelsUrlVariable = 'PI_DESKTOP_CHANNELS_URL';
 
 /// The channel [id]'s entry as the site lists it (site/channels.json),
 /// its logo with it; null for one not listed. Throws when the site could
 /// not be read.
 Future<ChannelEntry?> channelEntry(String id) async {
   final override = Platform.environment[channelsUrlVariable]?.trim() ?? '';
-  final base = Uri.parse(override.isEmpty ? channelsBase : override);
+  if (override.isEmpty) return null;
+  final base = Uri.parse(override);
   final body = await _get(base.resolve('/channels.json'));
   if (body == null) return null;
   final json = switch (jsonDecode(utf8.decode(body))) {

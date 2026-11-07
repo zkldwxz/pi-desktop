@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:baocode/update/update_service.dart';
-import 'package:baocode/update/update_settings.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/update/update_service.dart';
+import 'package:pi_desktop/update/update_settings.dart';
+import 'package:pi_desktop/update/version.dart';
 
 /// A manifest of [version] with downloads for both platforms.
 String manifestOf(
@@ -19,7 +19,7 @@ String manifestOf(
   'platforms': {
     for (final platform in platforms)
       platform: {
-        'url': 'https://baocode.dev/releases/$version/$platform.bin',
+        'url': 'https://updates.example/releases/$version/$platform.bin',
         'size': 100,
         'sha256': 'a' * 64,
         'signature': base64.encode(List.filled(64, 1)),
@@ -119,6 +119,7 @@ UpdateService serviceOf(
     current: AppVersion.parse(current),
     platform: platform,
     backend: backend,
+    manifestUrl: Uri.parse('https://updates.example/latest.json'),
     installer: installer ?? FakeInstaller(),
     mode: () => setting.mode,
     settingsChanges: setting,

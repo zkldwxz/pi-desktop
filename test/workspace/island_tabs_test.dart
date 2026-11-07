@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart' show RenderClipRect;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/tab_strip_scroll.dart';
-import 'package:baocode/workspace/islands.dart';
+import 'package:pi_desktop/ide/tab_strip_scroll.dart';
+import 'package:pi_desktop/workspace/islands.dart';
 
 /// Tabs 100 wide over a card 250 wide, the [active]th in front, the strip
 /// scrolling across.

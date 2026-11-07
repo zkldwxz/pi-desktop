@@ -1,62 +1,32 @@
-// Signs a release's installers and writes the manifest the app reads to
-// update itself (https://dl.baocode.dev/releases/latest.json; see
-// docs/auto-update.md). Run from anywhere in the repository:
-//
-//   dart run tool/release_manifest.dart \
-//     --windows build/installers/BaoCode-1.2.0-setup.exe \
-//     [--windows-arm64 build/installers/BaoCode-1.2.0-setup-arm64.exe] \
-//     --macos-arm64 build/installers/BaoCode-1.2.0-mac-arm64.zip \
-//     --macos-x64 build/installers/BaoCode-1.2.0-mac-x64.zip \
-//     [--dmg-arm64 build/installers/BaoCode-1.2.0-arm64.dmg] \
-//     [--dmg-x64 build/installers/BaoCode-1.2.0-x64.dmg] \
-//     [--linux-x64 build/installers/BaoCode-1.2.0-linux-amd64.deb] \
-//     [--linux-arm64 build/installers/BaoCode-1.2.0-linux-arm64.deb] \
-//     [--notes-en <text or file>] [--notes-zh <text or file>] \
-//     [--minimum-version 1.0.0] [--version 1.2.0+12] \
-//     [--manifest build/installers/latest.json]
-//
-// The channel build's (lib/channel/) beside them, each option with
-// -channel after it (--windows-channel, --macos-arm64-channel,
-// --dmg-arm64-channel, --linux-x64-channel…): signed for its own platform
-// keys (`windows-x64-channel`…), which the channel build alone updates from
-// (each edition updates to itself), and given to the download page as
-// `downloads.<os>.channel`, for whoever came through the site.
-//
-//   dart run tool/release_manifest.dart --generate-key <file>
-//   dart run tool/release_manifest.dart --public-key
-//
-// The private key is a file holding 32 random bytes, base64; its path is
-// in BAOCODE_UPDATE_SIGNING_KEY. Never in the repository: whoever has it
-// can make every installed BaoCode run their program.
-//
-// The version is pubspec.yaml's unless given. A manifest already there for
-// the same version keeps the other platforms' entries, so the Windows and the
-// macOS installers can be signed on their own machines one after the other.
-//
-// Each link ends in `?sha256=<the file's first 16 hex digits>`: a file
-// published again under the same name (a release redone) is another address
-// to the CDN, which keeps downloads for a year, so no one is served the old
-// one. The app names a download by the path alone.
-//
-// Besides what the app reads, `downloads` gives the download page
-// (site/site.js) what it offers: the disk images (--dmg-arm64, --dmg-x64),
-// which the app does not update from, the Windows installers (`windows`,
-// and `windows-arm64`), and the Linux packages (which the app updates from
-// too).
+// Creates a pi-desktop update manifest for GitHub release assets.
+// Configure PI_DESKTOP_RELEASE_REPOSITORY as owner/repository,
+// PI_DESKTOP_UPDATE_SIGNING_KEY as the private seed file, and
+// PI_DESKTOP_UPDATE_URL and PI_DESKTOP_UPDATE_PUBLIC_KEY to match the app.
+// Set PI_DESKTOP_UPDATE_ALLOW_LOCALHOST=true for a loopback HTTP feed.
+// --build-only needs no release configuration and does not sign or publish.
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/update/update_manifest.dart';
-import 'package:baocode/update/update_signature.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/update/pi_desktop_update_config.dart';
+import 'package:pi_desktop/update/update_manifest.dart';
+import 'package:pi_desktop/update/update_signature.dart';
+import 'package:pi_desktop/update/version.dart';
 import 'package:crypto/crypto.dart' as crypto;
 
-/// Where the downloads go: `<base>/<1.2.0>/<file>`.
-const _releasesBase = 'https://dl.baocode.dev/releases';
+const _repositoryVariable = 'PI_DESKTOP_RELEASE_REPOSITORY';
+const _keyVariable = 'PI_DESKTOP_UPDATE_SIGNING_KEY';
+const _signatureContext = 'pi-desktop-update-v1';
 
-/// [name]'s link, for the file whose SHA-256 is [sha256].
-Uri _link(AppVersion version, String name, String sha256) => Uri.parse(
-  '$_releasesBase/${version.marketing}/$name?sha256=${sha256.substring(0, 16)}',
+Uri _link(String repository, AppVersion version, String name) => Uri(
+  scheme: 'https',
+  host: 'github.com',
+  pathSegments: [
+    ...repository.split('/'),
+    'releases',
+    'download',
+    'pi-v${version.marketing}',
+    name,
+  ],
 );
 
 /// The Macs built for, each its own download (tool/build_macos.dart), and
@@ -77,9 +47,6 @@ String _windowsOption(String arch) =>
 const _channel = '-channel';
 const _editions = ['', _channel];
 
-/// Where the private key's path is given.
-const _keyVariable = 'BAOCODE_UPDATE_SIGNING_KEY';
-
 const _usage = '''
 Usage:
   dart run tool/release_manifest.dart [--windows <setup.exe>]
@@ -93,6 +60,7 @@ Usage:
       [--manifest <latest.json>]
   dart run tool/release_manifest.dart --generate-key <file>
   dart run tool/release_manifest.dart --public-key
+  dart run tool/release_manifest.dart --build-only
 
 The private key's path is read from \$$_keyVariable.''';
 
@@ -102,6 +70,10 @@ Future<void> main(List<String> arguments) async {
     stdout.writeln(_usage);
     return;
   }
+  if (options.containsKey('build-only')) {
+    stdout.writeln('Build only: no update manifest generated.');
+    return;
+  }
   if (options['generate-key'] case final path?) return _generateKey(path);
   final seed = _readKey();
   final publicKey = UpdateSignature.publicKeyOf(seed);
@@ -109,12 +81,29 @@ Future<void> main(List<String> arguments) async {
     stdout.writeln(publicKey);
     return;
   }
-  if (publicKey != updatePublicKey) {
+  final environment = Platform.environment;
+  final config = PiDesktopUpdateConfig.fromEnvironment(environment);
+  if (config == null) {
     _fail(
-      'The key in \$$_keyVariable is not the one the app checks against.\n'
-      '  its public key:   $publicKey\n'
-      '  the app expects:  $updatePublicKey (lib/update/update_signature.dart)\n'
-      'Releases signed with it would be refused by every installed BaoCode.',
+      'Set PI_DESKTOP_UPDATE_URL and PI_DESKTOP_UPDATE_PUBLIC_KEY to '
+      'valid independent updater configuration (HTTP loopback also requires '
+      'PI_DESKTOP_UPDATE_ALLOW_LOCALHOST=true).',
+    );
+  }
+  if (publicKey != config.publicKey) {
+    _fail('The signing key does not match PI_DESKTOP_UPDATE_PUBLIC_KEY.');
+  }
+  final repository = environment[_repositoryVariable]?.trim() ?? '';
+  if (!RegExp(r'^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$').hasMatch(repository) ||
+      repository.split('/').any((part) => part == '.' || part == '..')) {
+    _fail('Set $_repositoryVariable to a GitHub owner/repository.');
+  }
+  final assetOrigin = Uri.parse('https://github.com');
+  if (!config.policy.allows(assetOrigin)) {
+    _fail(
+      'GitHub release asset URLs require PI_DESKTOP_UPDATE_URL to have '
+      '$assetOrigin to be an allowed origin (configure '
+      'PI_DESKTOP_UPDATE_ALLOWED_ORIGINS when necessary).',
     );
   }
 
@@ -154,11 +143,31 @@ Future<void> main(List<String> arguments) async {
   AppVersion? minimum;
   if (manifestFile.existsSync()) {
     final text = manifestFile.readAsStringSync();
-    final old = UpdateManifest.parse(text);
+    final old = UpdateManifest.parse(text, policy: config.policy);
     if (old.version == version) {
+      final entries =
+          (jsonDecode(text) as Map<String, dynamic>)['platforms'] as Map;
       previous = {
-        for (final platform in old.platforms) platform: old.assetFor(platform)!,
+        for (final platform in entries.keys.cast<String>())
+          platform: old.assetFor(platform)!,
       };
+      for (final entry in previous.entries) {
+        final asset = entry.value;
+        final payload = UpdateSignature.payload(
+          version: '$version',
+          platform: entry.key,
+          size: asset.size,
+          sha256: asset.sha256,
+          context: _signatureContext,
+        );
+        if (!UpdateSignature.verify(
+          payload: payload,
+          signature: asset.signature,
+          publicKey: publicKey,
+        )) {
+          _fail('Existing ${entry.key} signature is invalid for this key.');
+        }
+      }
       notes = {...old.notes};
       minimum = old.minimumVersion;
       if (jsonDecode(text) case {'downloads': final Map<String, Object?> d}) {
@@ -186,14 +195,19 @@ Future<void> main(List<String> arguments) async {
       platform: platform,
       size: size,
       sha256: sha256,
+      context: _signatureContext,
     );
     final signature = UpdateSignature.sign(payload: payload, seed: seed);
-    if (!UpdateSignature.verify(payload: payload, signature: signature)) {
+    if (!UpdateSignature.verify(
+      payload: payload,
+      signature: signature,
+      publicKey: publicKey,
+    )) {
       _fail('The signature does not check out against the app\'s key.');
     }
     final name = file.uri.pathSegments.last;
     assets[platform] = UpdateAsset(
-      url: _link(version, name, sha256),
+      url: _link(repository, version, name),
       size: size,
       sha256: sha256,
       signature: signature,
@@ -244,7 +258,7 @@ Future<void> main(List<String> arguments) async {
     if (!dmg.existsSync()) _fail('No such file: ${dmg.path}');
     final sha256 = '${await crypto.sha256.bind(dmg.openRead()).first}';
     offer(os, edition, {
-      'url': '${_link(version, dmg.uri.pathSegments.last, sha256)}',
+      'url': '${_link(repository, version, dmg.uri.pathSegments.last)}',
       'size': dmg.lengthSync(),
       'sha256': sha256,
     });
@@ -263,7 +277,10 @@ Future<void> main(List<String> arguments) async {
   };
   final text = '${const JsonEncoder.withIndent('  ').convert(json)}\n';
   // What the app will read: it has to read it back the same.
-  UpdateManifest.parse(text);
+  final checked = UpdateManifest.parse(text, policy: config.policy);
+  for (final platform in assets.keys) {
+    checked.assetFor(platform);
+  }
   manifestFile.parent.createSync(recursive: true);
   manifestFile.writeAsStringSync(text);
 
@@ -271,7 +288,7 @@ Future<void> main(List<String> arguments) async {
     ..writeln()
     ..writeln('Wrote ${manifestFile.path}')
     ..writeln()
-    ..writeln('Upload, the installers first, the manifest last:');
+    ..writeln('Upload assets to GitHub release pi-v${version.marketing}:');
   for (final MapEntry(key: platform, value: file) in files.entries) {
     stdout.writeln('  ${file.path}\n    -> ${assets[platform]!.url}');
   }
@@ -280,7 +297,7 @@ Future<void> main(List<String> arguments) async {
     final file = edition == _channel ? entry['channel'] as Map : entry;
     stdout.writeln('  ${dmg.path}\n    -> ${file['url']}');
   }
-  stdout.writeln('  ${manifestFile.path}\n    -> $defaultManifestUrl');
+  stdout.writeln('  ${manifestFile.path}\n    -> ${config.manifestUrl}');
   // The channel build's too, once there is one.
   final missing = {
     for (final edition in _editions)
@@ -312,8 +329,7 @@ void _generateKey(String path) {
     ..writeln('Wrote the private key to $path. Keep it safe, and out of the')
     ..writeln('repository; point \$$_keyVariable at it to sign releases.')
     ..writeln()
-    ..writeln('Its public key, for updatePublicKey in')
-    ..writeln('lib/update/update_signature.dart:')
+    ..writeln('Its public key, for PI_DESKTOP_UPDATE_PUBLIC_KEY:')
     ..writeln()
     ..writeln('  ${UpdateSignature.publicKeyOf(seed)}');
 }
@@ -351,7 +367,7 @@ String _textOrFile(String value) {
 
 /// `--name value` pairs; `--flag` alone for those without one.
 Map<String, String?> _parse(List<String> arguments) {
-  const flags = {'public-key', 'help'};
+  const flags = {'public-key', 'help', 'build-only'};
   const files = {
     'windows',
     'windows-arm64',

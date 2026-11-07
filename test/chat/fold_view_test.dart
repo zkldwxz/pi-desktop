@@ -2,14 +2,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_feed.dart';
-import 'package:baocode/chat/chat_history_view.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer_draft.dart';
-import 'package:baocode/chat/widgets/fold_line.dart';
-import 'package:baocode/chat/widgets/live_selectable_text.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi_desktop/chat/chat_feed.dart';
+import 'package:pi_desktop/chat/chat_history_view.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/chat/composer/composer_draft.dart';
+import 'package:pi_desktop/chat/widgets/fold_line.dart';
+import 'package:pi_desktop/chat/widgets/live_selectable_text.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
 /// A conversation held in a list, changed by hand.

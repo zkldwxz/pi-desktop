@@ -13,7 +13,7 @@
 // writes, so run this and commit the files when a target changes.
 import 'dart:io';
 
-import 'package:baocode/link/phone_downloads.dart';
+import 'package:pi_desktop/link/phone_downloads.dart';
 import 'package:qr/qr.dart';
 
 /// Each phone card's target, as site/download.html links it, by the card

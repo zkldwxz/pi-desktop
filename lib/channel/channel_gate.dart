@@ -71,7 +71,37 @@ class ChannelGate extends ChangeNotifier {
   bool _offline = false;
   bool _found = false;
   bool _asked = false;
+  int _generation = 0;
   String? _language;
+
+  static const manualId = 'manual';
+
+  /// Configure an account directly, without an attribution service.
+  Future<bool> configureManual(String address, ChannelAccountType type) async {
+    final site = ChannelAccountSite.parse({'type': type.id, 'url': address});
+    if (site == null) return false;
+    final entry = (
+      id: manualId,
+      json: <String, Object?>{
+        'name': {'en': site.url.host, 'zh': site.url.host},
+        'account': {'type': type.id, 'url': '${site.url}'},
+      },
+      logo: null,
+    );
+    ++_generation;
+    _setup?.removeListener(_setupChanged);
+    _setup = null;
+    setupStore.attribution = const ChannelAttribution('channel', manualId);
+    setupStore.state = ChannelSetup.doneState;
+    accountStore.entry = entry;
+    _asked = true;
+    _finding = false;
+    _offline = false;
+    await _take(entry, _language ?? 'en');
+    _found = true;
+    notifyListeners();
+    return true;
+  }
 
   /// The channel as the site lists it, once read.
   ChannelShown? get channel => _channel;
@@ -120,8 +150,14 @@ class ChannelGate extends ChangeNotifier {
     notifyListeners();
     if (accountStore.entry case final kept? when kept.id == id) {
       await _take(kept, language);
+      if (id == manualId) {
+        _finding = false;
+        _found = true;
+        notifyListeners();
+        return;
+      }
     }
-    fetched = _fetch(id, language);
+    fetched = _fetch(id, language, _generation);
   }
 
   /// [find] once more: the site not read, or the channel not listed, the
@@ -151,9 +187,10 @@ class ChannelGate extends ChangeNotifier {
   /// be).
   Future<void> fetched = Future.value();
 
-  Future<void> _fetch(String id, String language) async {
+  Future<void> _fetch(String id, String language, int generation) async {
     try {
       final entry = await fetch(id);
+      if (generation != _generation) return;
       accountStore.entry = entry;
       if (entry == null) {
         _drop();
@@ -162,13 +199,16 @@ class ChannelGate extends ChangeNotifier {
       }
       _found = true;
     } on Object catch (error) {
+      if (generation != _generation) return;
       debugPrint('Channel $id not read: $error');
       // What was kept, if anything.
       _offline = _channel == null;
       _found = _channel != null;
     } finally {
-      _finding = false;
-      notifyListeners();
+      if (generation == _generation) {
+        _finding = false;
+        notifyListeners();
+      }
     }
   }
 

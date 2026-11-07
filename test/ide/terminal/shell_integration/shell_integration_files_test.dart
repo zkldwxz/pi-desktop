@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/terminal/pty.dart';
-import 'package:baocode/ide/terminal/shell_integration/shell_integration_files.dart';
-import 'package:baocode/ide/terminal/shell_integration/shell_integration_injection.dart';
-import 'package:baocode/ide/terminal/shell_integration/shell_integration_scripts.dart';
-import 'package:baocode/ide/terminal/terminal_shell.dart';
+import 'package:pi_desktop/ide/terminal/pty.dart';
+import 'package:pi_desktop/ide/terminal/shell_integration/shell_integration_files.dart';
+import 'package:pi_desktop/ide/terminal/shell_integration/shell_integration_injection.dart';
+import 'package:pi_desktop/ide/terminal/shell_integration/shell_integration_scripts.dart';
+import 'package:pi_desktop/ide/terminal/terminal_shell.dart';
 import 'package:path/path.dart' as p;
 
 /// VS Code's scripts written where a shell loads them, in a temp folder of

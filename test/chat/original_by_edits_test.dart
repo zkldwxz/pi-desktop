@@ -1,4 +1,4 @@
-import 'package:baocode/chat/chat_models.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

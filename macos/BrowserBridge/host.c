@@ -1,4 +1,4 @@
-// baocode-browser-host: the native messaging host of BaoCode's browser
+// pi-desktop-browser-host: the native messaging host of BaoCode's browser
 // extension (browser_extension/), which the browser starts for it. It
 // passes the extension's messages to BaoCode and BaoCode's back, over a
 // Unix socket of BaoCode's (lib/browser/browser_bridge.dart): waiting for
@@ -112,7 +112,7 @@ static int socket_path(char* path, size_t size) {
   if (!dir || !*dir) dir = "/tmp";
   const size_t n = strlen(dir);
   const char* slash = n > 0 && dir[n - 1] == '/' ? "" : "/";
-  return snprintf(path, size, "%s%sbaocode-browser.sock", dir, slash) <
+  return snprintf(path, size, "%s%spi-desktop-browser.sock", dir, slash) <
                  (int)size
              ? 0
              : -1;

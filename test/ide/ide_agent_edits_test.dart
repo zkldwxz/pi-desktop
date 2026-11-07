@@ -1,7 +1,7 @@
 import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
 import 'package:bao_editor/monaco/vs/editor/common/diff/default_lines_diff_computer/default_lines_diff_computer.dart';
 import 'package:bao_editor/monaco/vs/editor/common/diff/range_mapping.dart';
-import 'package:baocode/ide/ide_agent_edits.dart';
+import 'package:pi_desktop/ide/ide_agent_edits.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// The changes from [original] to [modified], as the editor's diff has

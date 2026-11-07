@@ -5,10 +5,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/lsp/lsp_process.dart';
-import 'package:baocode/ide/lsp/lsp_process_io.dart';
-import 'package:baocode/kernel/claude_code/claude_environment.dart';
-import 'package:baocode/platform/child_process_registry.dart';
+import 'package:pi_desktop/ide/lsp/lsp_process.dart';
+import 'package:pi_desktop/ide/lsp/lsp_process_io.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_environment.dart';
+import 'package:pi_desktop/platform/child_process_registry.dart';
 import 'package:path/path.dart' as p;
 
 import '../../../fixtures/lsp/fake_lsp.dart';

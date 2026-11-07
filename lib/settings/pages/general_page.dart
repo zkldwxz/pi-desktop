@@ -7,7 +7,8 @@ import '../../ide/explorer_excludes.dart';
 import '../../ide/ide_button.dart';
 import '../../ide/ide_menu.dart';
 import '../../ide/ide_notifications.dart' show IdeSeverity;
-import '../../kernel/claude_code/claude_core_setting.dart';
+import '../../kernel/pi/pi_transport.dart';
+import '../../kernel/pi/pi_runtime_updates.dart';
 import '../../kernel/claude_code/claude_path_setting.dart';
 import '../../kernel/commit_attribution.dart';
 import '../../kernel/prompt_suggestions.dart';
@@ -387,35 +388,39 @@ class GeneralSettingsPage extends StatelessWidget {
                 ),
               ],
             ),
-            if (claudeStatus case final claudeStatus? when !kIsWeb)
+            if (!kIsWeb)
               SettingsGroup(
-                title: 'Claude Code',
+                title: 'PI',
                 children: [
+                  _PiRuntimeUpdateSettings(settings: settings),
                   SettingsCard(
                     children: [
-                      _choiceRow(
-                        context,
-                        key: ClaudeCore.settingKey,
-                        label: l10n.generalSettingsClaudeCore,
-                        description: l10n.generalSettingsClaudeCoreDescription,
-                        values: {
-                          ClaudeCore.cli.name:
-                              l10n.generalSettingsClaudeCoreCli,
-                          ClaudeCore.builtin.name:
-                              l10n.generalSettingsClaudeCoreBuiltin,
-                        },
-                        fallback: ClaudeCore.fallback.name,
-                      ),
-                      _ClaudePathSetting(
-                        path: ClaudePathSetting.parse(
-                          settings?[ClaudePathSetting.settingKey],
+                      for (final field in const [
+                        (
+                          PiRuntimeSettings.pathKey,
+                          'Pi CLI',
+                          'Uses the latest installed official Pi release when empty.',
                         ),
-                        status: claudeStatus,
-                        onChanged: (path) => _write(
-                          ClaudePathSetting.settingKey,
-                          path.isEmpty ? null : path,
+                        (
+                          PiRuntimeSettings.nodeKey,
+                          'Node.js',
+                          'Bundled Node.js is used when empty; requires Node 22.19 or newer.',
                         ),
-                      ),
+                      ])
+                        SettingsRow(
+                          label: field.$2,
+                          description: '${field.$3} (${field.$1})',
+                          trailing: SettingsTextField(
+                            value: settings?[field.$1] as String? ?? '',
+                            hint: 'Bundled runtime',
+                            semanticLabel: field.$2,
+                            width: 260,
+                            onSubmitted: (value) => _write(
+                              field.$1,
+                              value.trim().isEmpty ? null : value.trim(),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ],
@@ -456,6 +461,61 @@ class GeneralSettingsPage extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class _PiRuntimeUpdateSettings extends StatelessWidget {
+  const _PiRuntimeUpdateSettings({this.settings});
+  final UserSettings? settings;
+
+  @override
+  Widget build(BuildContext context) {
+    final updates = PiRuntimeUpdates.current;
+    final zh = Localizations.localeOf(context).languageCode == 'zh';
+    return ListenableBuilder(
+      listenable: updates,
+      builder: (context, _) => SettingsCard(
+        children: [
+          SettingsSwitchRow(
+            label: zh ? '自动更新 PI 内核' : 'Update Pi automatically',
+            description: zh ? '默认跟随 PI 官方稳定发行版。新会话使用更新，正在运行的会话不受影响。' : 'Follow official stable Pi releases. New sessions use updates; running sessions keep their runtime.',
+            value: settings?[PiRuntimeUpdates.autoKey] != false,
+            onChanged: (on) => unawaited(
+              settings?.update(PiRuntimeUpdates.autoKey, on ? null : false),
+            ),
+          ),
+          SettingsRow(
+            label: updates.info == null
+                ? (zh ? 'PI 发行版本' : 'Pi release')
+                : 'PI ${updates.info!.version}',
+            description:
+                updates.error ??
+                (updates.info?.latest == null
+                    ? (zh
+                          ? '从 PI 官方稳定发行渠道检查更新。'
+                          : 'Check the official Pi stable release channel.')
+                    : '${zh ? '官方最新版本' : 'Official latest'}: ${updates.info!.latest}'),
+            trailing: SettingsButtons(
+              children: [
+                IdeButton(
+                  label: zh ? '检查更新' : 'Check for Updates',
+                  onPressed: updates.busy
+                      ? null
+                      : () => unawaited(updates.check()),
+                ),
+                IdeButton(
+                  label: zh ? '更新 PI' : 'Update Pi',
+                  secondary: true,
+                  onPressed: updates.busy
+                      ? null
+                      : () => unawaited(updates.check(install: true)),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -643,7 +703,7 @@ class _ContextMenuSettingState extends State<_ContextMenuSetting> {
                 ? () => unawaited(
                     _run(
                       () => ContextMenu.install((
-                        agent: l10n.contextMenuOpenWith('BaoCode'),
+                        agent: l10n.contextMenuOpenWith('pi-desktop'),
                         ide: l10n.contextMenuOpenWith('Fast Ide'),
                       )),
                     ),

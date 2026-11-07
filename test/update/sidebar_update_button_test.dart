@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/sidebar/sidebar.dart';
-import 'package:baocode/update/update_service.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/sidebar/sidebar.dart';
+import 'package:pi_desktop/update/update_service.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 import 'update_fakes.dart';
 

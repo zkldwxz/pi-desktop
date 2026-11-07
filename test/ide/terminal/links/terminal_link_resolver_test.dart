@@ -5,8 +5,8 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/terminal/links/terminal_link_parsing.dart';
-import 'package:baocode/ide/terminal/links/terminal_link_resolver.dart';
+import 'package:pi_desktop/ide/terminal/links/terminal_link_parsing.dart';
+import 'package:pi_desktop/ide/terminal/links/terminal_link_resolver.dart';
 import 'package:path/path.dart' as p;
 
 void main() {

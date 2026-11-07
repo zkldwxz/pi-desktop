@@ -52,8 +52,9 @@ import 'icons/icon_storage.dart';
 import 'icons/site_icons.dart';
 import 'kernel/claude_code/claude_code_kernel.dart';
 import 'kernel/claude_code/claude_core_setting.dart';
-import 'kernel/claude_code/claude_onboarding.dart';
-import 'kernel/claude_code/claude_path_setting.dart';
+import 'kernel/pi/pi_storage.dart';
+import 'kernel/pi/pi_transport.dart';
+import 'kernel/pi/pi_runtime_updates.dart';
 import 'kernel/claude_code/process_transport.dart';
 import 'kernel/claude_code/turn_stats_stub.dart'
     if (dart.library.io) 'kernel/claude_code/turn_stats_io.dart'
@@ -89,7 +90,7 @@ import 'platform/shell_command.dart';
 import 'remote/project_host.dart';
 import 'remote/remote_claude.dart';
 import 'remote/ssh_host.dart';
-import 'search/claude_conversation_search.dart';
+import 'search/pi_conversation_search.dart';
 import 'search/conversation_search.dart';
 import 'channel/account/account_send.dart';
 import 'channel/account/channel_account.dart';
@@ -167,7 +168,7 @@ Future<void> main(List<String> arguments) async {
     );
     watchExit(DataDirectory.current.logsDir);
   }
-  unawaited(reapClaudeProcesses());
+  unawaited(reapPiProcesses());
   unawaited(reapLspProcesses());
   unawaited(reapPtyProcesses());
   AppBinding.ensureInitialized();
@@ -205,7 +206,6 @@ Future<void> main(List<String> arguments) async {
   // Emoji as pictures: fetched into the cache the first run, in the
   // background, through the proxy.
   EmojiSheet.start(EmojiSheetStore.cache());
-  await prepareClaudeOnboarding();
   final locale = AppLocale(storage: files?.argv);
   // The agents to go on once the usage limit resets, kept beside
   // state.json: one due while the app was closed goes on as it opens.
@@ -245,7 +245,10 @@ Future<void> main(List<String> arguments) async {
       .name;
   // Claude Code's skills, agents, commands, rules, servers, hooks and
   // plugins: the Customize view beside the chat, and Settings → Customize.
-  final customizations = CustomizationStore();
+  final customizations = CustomizationStore(
+    configDir: PiStorage.agentDirectory,
+    pi: true,
+  );
   // The phones paired with this computer (Settings → Mobile): listening
   // for them, if they are allowed to connect.
   // The user's bots: agents that chat as a person does, with the phones.
@@ -407,7 +410,6 @@ Future<void> main(List<String> arguments) async {
       updates: _startUpdates(files),
       diagnostics: DiagnosticsUploader.platform(),
       workspace: workspace,
-      claudeStatus: localClaudeStatus,
       link: link,
       customizations: customizations,
     );
@@ -431,7 +433,7 @@ Future<void> main(List<String> arguments) async {
     unawaited(themeExtensions.apply());
     themeExtensions.followIconThemeSetting(files!.settings);
   }
-  final app = BaoCodeApp(
+  final app = PiDesktopApp(
     windows: windows,
     workspace: workspace,
     appLocale: locale,
@@ -454,10 +456,10 @@ Future<void> main(List<String> arguments) async {
     terminalBackend: TerminalBackend(settings: files?.settings),
     // What Claude Code keeps: its sessions to search, its skills, agents,
     // commands, rules, servers, hooks and plugins to customize.
-    conversations: ClaudeConversationSearch(),
+    conversations: PiConversationSearch(),
     customizations: customizations,
   );
-  // With windows, each is a view of its own (see [BaoCodeApp.build]).
+  // With windows, each is a view of its own (see [PiDesktopApp.build]).
   if (windows.started) {
     runWidget(app);
   } else {
@@ -519,19 +521,20 @@ void followSettingsFiles(SettingsFiles files) {
       }
     }
   };
-  // Settings → General → Claude Code: the build to run, read as each
-  // agent starts.
-  ClaudePathSetting.current = () =>
-      ClaudePathSetting.parse(files.settings[ClaudePathSetting.settingKey]);
-  // Settings → General → Claude Code: the core sessions run on (BaoCode's
-  // own, or the CLI), read as each agent starts. Unset, the CLI where it
-  // is installed (looked for on the app's PATH, then the shell's), else
-  // the built-in core.
-  ClaudeCore.cliInstalled = localClaudeInstalled;
-  unawaited(lookForLocalClaude());
-  ClaudeCore.current = () =>
-      ClaudeCore.parse(files.settings[ClaudeCore.settingKey]);
-  ClaudeCore.changes = files.settings;
+  // Pi is the only app runtime. Paths override the bundled, pinned copy.
+  PiRuntimeSettings.cliPath = () =>
+      switch (files.settings[PiRuntimeSettings.pathKey]) {
+        final String path when path.trim().isNotEmpty => path.trim(),
+        _ => null,
+      };
+  PiRuntimeSettings.nodePath = () =>
+      switch (files.settings[PiRuntimeSettings.nodeKey]) {
+        final String path when path.trim().isNotEmpty => path.trim(),
+        _ => null,
+      };
+  PiRuntimeUpdates.current.follow(files.settings);
+  // Legacy helpers cannot select or download the original agent.
+  ClaudeCore.current = () => ClaudeCore.builtin;
   // Settings → Models: the upstreams, kept in settings.json.
   ModelProviders.current = ModelProviders.settings(files.settings);
   // The upstream that follows magpie: its models got again as it starts,
@@ -754,8 +757,8 @@ void _startTelemetry(SettingsFiles files, LinkHost? link) {
   AppLifecycleListener(onResume: telemetry.markActive);
 }
 
-class BaoCodeApp extends StatefulWidget {
-  const BaoCodeApp({
+class PiDesktopApp extends StatefulWidget {
+  const PiDesktopApp({
     super.key,
     this.workspace,
     this.themeExtensions,
@@ -807,10 +810,10 @@ class BaoCodeApp extends StatefulWidget {
   final TerminalBackend? terminalBackend;
 
   @override
-  State<BaoCodeApp> createState() => _BaoCodeAppState();
+  State<PiDesktopApp> createState() => _PiDesktopAppState();
 }
 
-class _BaoCodeAppState extends State<BaoCodeApp>
+class _PiDesktopAppState extends State<PiDesktopApp>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late final Workspace _workspace =
       widget.workspace ??
@@ -861,7 +864,9 @@ class _BaoCodeAppState extends State<BaoCodeApp>
         appEvent('app', 'quit cancelled: the update would not start');
         return AppExitResponse.cancel;
       }
+      PiRuntimeUpdates.current.stop();
       await Future.wait([
+        stopPiProcesses(),
         stopClaudeProcesses(),
         RemoteClaudeTransport.stopAll(),
         stopModelProxy(),
@@ -1018,7 +1023,7 @@ class _BaoCodeAppState extends State<BaoCodeApp>
   /// A window's app: its own navigator, dialogs, overlay and focus; what
   /// it shows built anew as its folder changes.
   Widget _app(AppWindow window) => MaterialApp(
-    title: 'BaoCode',
+    title: 'pi-desktop',
     debugShowCheckedModeBanner: false,
     theme: buildAppTheme(),
     themeAnimationDuration: Duration.zero,

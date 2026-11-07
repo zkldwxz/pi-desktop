@@ -26,7 +26,7 @@
 //
 // Writes <sample>.symbolized.txt (or --out): the sample as it was, each such
 // frame named, e.g. `FrameWatch._ended  (in App) + 4  [0x10a2b65f0]`, or
-// `app.so+0x196ca2  busyInner  package:baocode/….dart:9`.
+// `app.so+0x196ca2  busyInner  package:pi_desktop/….dart:9`.
 import 'dart:convert';
 import 'dart:io';
 

@@ -100,7 +100,7 @@ class ChannelAttentionHost implements AttentionHost {
   /// The one host: the channel has one handler.
   static final instance = ChannelAttentionHost._();
 
-  static const _channel = MethodChannel('baocode/attention');
+  static const _channel = MethodChannel('pi-desktop/attention');
 
   static bool get _available => AppPlatform.isMacOS || AppPlatform.isWindows;
 

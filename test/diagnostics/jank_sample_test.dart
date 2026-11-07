@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:bao_sampler/bao_sampler.dart';
-import 'package:baocode/diagnostics/jank_sample.dart';
+import 'package:pi_desktop/diagnostics/jank_sample.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

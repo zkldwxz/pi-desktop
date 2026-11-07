@@ -15,19 +15,37 @@ import 'browser_bridge.dart';
 /// the cache for when the site does not answer, and before the first
 /// answer the page the extension's id makes.
 abstract final class ExtensionStore {
-  static final manifest = Uri.https(
-    'dl.baocode.dev',
-    '/releases/extension/latest.json',
+  static final manifest = Uri.tryParse(
+    const String.fromEnvironment('PI_DESKTOP_EXTENSION_MANIFEST_URL'),
   );
 
-  /// The extension's page, by its id: the store's address for it.
-  static final fallback = Uri.https(
-    'chromewebstore.google.com',
-    '/detail/${BrowserBridge.extensionIds.first}',
-  );
+  /// Until our own store listing is configured, open the bundled extension.
+  static Uri get fallback {
+    const configured = String.fromEnvironment('PI_DESKTOP_EXTENSION_STORE_URL');
+    return _valid(configured) ?? zip;
+  }
 
-  /// The zip to load unpacked: baocode.dev sends it to the newest.
-  static final zip = Uri.https('baocode.dev', '/dl/browser-extension');
+  static Uri get zip {
+    final executable = p.dirname(Platform.resolvedExecutable);
+    final candidates = [
+      if (Platform.isMacOS)
+        p.join(
+          executable,
+          '..',
+          'Resources',
+          'pi-runtime',
+          'browser-extension',
+        ),
+      p.join(executable, 'data', 'pi-runtime', 'browser-extension'),
+      p.join(Directory.current.path, 'browser_extension'),
+    ];
+    return Uri.directory(
+      candidates.firstWhere(
+        (path) => File(p.join(path, 'manifest.json')).existsSync(),
+        orElse: () => candidates.first,
+      ),
+    );
+  }
 
   /// The store's page as last known: fetched, or kept; [fallback] before.
   static Uri get page => _page ?? fallback;
@@ -40,7 +58,11 @@ abstract final class ExtensionStore {
   static Future<Uri> fetch({
     @visibleForTesting Uri? from,
     @visibleForTesting String? cacheDir,
-  }) => _fetched ??= _fetch(from ?? manifest, cacheDir);
+  }) {
+    final source = from ?? manifest;
+    if (source == null || !source.hasAuthority) return Future.value(page);
+    return _fetched ??= _fetch(source, cacheDir);
+  }
 
   /// [fetch]'s page, waiting for it [patience] at most: a click opens the
   /// page then, the one known so far if the site is slow.
@@ -105,7 +127,9 @@ abstract final class ExtensionStore {
     final url?
         when url.scheme == 'https' &&
             (url.host == 'chromewebstore.google.com' ||
-                url.host == 'chrome.google.com') =>
+                url.host == 'chrome.google.com') &&
+            url.userInfo.isEmpty &&
+            url.pathSegments.contains(BrowserBridge.extensionIds.first) =>
       url,
     _ => null,
   };

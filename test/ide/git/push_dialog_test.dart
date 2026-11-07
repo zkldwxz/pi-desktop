@@ -3,7 +3,7 @@
 // changed); Push, Force Push (with lease, once confirmed), the tags too
 // where asked.
 
-import 'package:baocode/ide/git/ide_git_push_dialog.dart';
+import 'package:pi_desktop/ide/git/ide_git_push_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';

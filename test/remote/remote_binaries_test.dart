@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bao_remote/client.dart';
-import 'package:baocode/remote/remote_binaries.dart';
+import 'package:pi_desktop/remote/remote_binaries.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;

@@ -1,94 +1,37 @@
-# BaoCode
+# pi-desktop
 
-[English](README.md) · **简体中文** · [日本語](README_JA.md) · [Français](README_FR.md) · [Español](README_ES.md)
+[English](README.md) · [日本語](README_JA.md) · [Français](README_FR.md) · [Español](README_ES.md)
 
-一个出色、易用的 [Claude Code](https://github.com/anthropics/claude-code) 桌面界面，内置毫秒级响应的快速 IDE。
+pi-desktop 是使用 [Pi coding agent](https://github.com/earendil-works/pi) 的 Flutter 桌面工作区，独立分支源自 [BaoCode](https://github.com/baocode-dev/baocode)，保留 GPL 许可证与上游声明。
 
-[官网](https://baocode.dev) · [下载](https://baocode.dev/download) · [更新日志](https://baocode.dev/changelog)
+本分支通过 Pi 的 JSONL RPC 和受支持的标准 API 原生供应商协议工作，避免额外的协议转换。同一会话保留上下文，并在供应商提供数据时按请求记录缓存读取与写入。稳定的提示词和会话上下文可能有助于缓存复用，但目前没有实测更高命中率；结果取决于供应商、模型、提示词和缓存 TTL，也不保证速度或成本优势。
 
-![用户对 BaoCode 的评价](docs/readme/reviews-zh.png)
+在“设置 → 模型”配置自己的 HTTPS 供应商；兼容 newapi/sub2api 的渠道配置仍在测试中。密钥使用本应用独立的密钥服务，Pi 配置和会话位于 `<数据目录>/pi-agent/`。
 
-![BaoCode 主窗口：按项目分组的智能体、并排显示的两个对话，以及模型选择器](site/shots/main.png)
+## 更新与平台
 
-> 本文是英文 README 的中文介绍；如内容有差异，以 [English](README.md) 为准。链接指向的文档和网站不一定提供中文版本。
+随包 Pi 运行时初始锁定 **1.5.0**；独立更新器在启动后 30 秒首次检查官方 Pi 发布端点，之后每六小时检查，安装到用户数据目录并供新会话使用。桌面应用使用独立发布渠道和 Ed25519 签名验证；分支更新配置已设置，首次发布后才能使用。详见[自动更新](docs/auto-update.md)和[发布说明](docs/release.md)。
 
-## 为什么做 BaoCode
+计划发布版本为 **0.1.1+2**，通过 Actions 构建 macOS 和 Windows 安装包；打包及安装仍待验证。本次不构建 Linux 安装包。仓库为 [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop)。
 
-我们每天都在使用 Claude Code。终端适合运行它，却不适合阅读它：长篇 diff 很容易滚出视野，先前的步骤难以重新找到，审查修改又需要切换应用。BaoCode 就是我们希望为它提供的那个窗口。
+支持本地项目。直接 SSH Pi 会话使用远程已安装的 Pi 和 Node，通过批处理/密钥认证；真实 SSH stub 对话已验证，更多远程工作流仍待验证。远程 IDE 服务或语言服务器不会自动保证安装。真实 Dart 语言服务器的诊断、悬停、补全与重命名已通过冒烟检查。
 
-BaoCode 有意不包含自己的智能体。Claude Code 才是智能体，它拥有工具、技能、插件、MCP 服务器、子智能体和 hooks 生态。BaoCode 为它提供易于阅读的界面，并让周边功能开箱即用。它运行你已经安装的 Claude Code，沿用你的设置和 `CLAUDE.md`。
+## 可复现的缓存对比
 
-## 功能
+对比上游时，使用相同的供应商端点、模型、参数、账号、提示词、工具定义、工作区和对话顺序；记录版本、时间戳、缓存 TTL 与供应商设置。从冷缓存开始，在 TTL 内于同一会话重复相同轮次，多次独立运行，逐请求记录供应商报告的输入、缓存读取和缓存写入 token。按供应商的指标定义比较总量和分布，说明缺失数据、提示词或时序差异；不要根据单次运行推断普遍的命中率、延迟或成本优势。
 
-- **为阅读而生的界面。** 文件读取、搜索和命令可以折叠为单行。Claude 做出的修改可以逐文件保留或撤销；检查点保存在 BaoCode 自己的数据目录中，不会写入仓库的 `.git`。
-- **目标。** 输入 `/goal` 和你希望完成的任务，Claude 会持续工作直到达成目标，输入框上方会显示目标及进度。
-- **富文本输入。** 从编辑器复制的代码会以文件和行号引用的形式加入输入；粘贴的图片和拖入的文件可以放在句子中指定的位置。
-- **快速 IDE。** 内置编辑器、终端，以及带提交图的源代码管理。Claude Code 可以起草提交信息，并支持快捷键映射和语言服务器。
-- **统一主题。** 编辑器、对话和侧边栏采用一致的主题样式。
-- **技能、MCP 服务器及更多扩展。** 在同一处管理插件、MCP 服务器、技能、子智能体、规则、命令和 hooks，可供个人使用或限定于某个项目。
-- **多种模型。** 可以添加兼容 Anthropic API、OpenAI Chat Completions 或 OpenAI Responses 的供应商，本地代理负责与 Claude Code 之间的协议转换。密钥保存在系统密钥环中。
-- **通过 SSH 使用远程项目。** 窗口留在本机，文件、Git、搜索、终端、语言服务器和 Claude Code 则运行在远程主机上（Linux，x64 或 arm64）。
-- **通知。** 智能体需要你的操作或完成任务时，会通过系统通知、声音和角标提醒。关闭窗口后，智能体可以继续在菜单栏或系统托盘中运行。
-- **自动更新。** 可选择后台自动更新、手动更新，或关闭更新。
+## 开发
 
-## 速度
-
-BaoCode 是原生应用，直接通过 GPU 绘制界面。以下为英文 README 中列出的 BaoCode 数值，并非本翻译重新测量的结果；实际表现取决于硬件、版本和使用场景。
-
-| 指标 | BaoCode |
-| --- | --- |
-| 启动时间 | 约 0.18 秒 |
-| 单窗口空闲内存占用 | 约 120 MB |
-| 单窗口进程数 | 2 |
-| Windows 下载大小 | 约 16 MB |
-
-## 系统要求
-
-- macOS 12 或更新版本（Apple 芯片和 Intel 各提供一个下载版本），Windows 10 或更新版本（x64），或 Linux：Ubuntu 22.04 或更新版本及其他基于 Debian 的发行版（x64 和 arm64 各一个 .deb）。
-- 已安装 [Claude Code](https://github.com/anthropics/claude-code)。
-
-## 从源码构建
-
-BaoCode 使用 Flutter 开发，Dart SDK 要求为 `^3.13.4`。
+需要 Flutter **3.47.5**、Node.js **22.19+** 和相应 Flutter 桌面工具链；macOS 构建需要完整 Xcode。
 
 ```sh
 flutter pub get
-flutter run -d macos        # Windows 使用：flutter run -d windows
+npm ci --prefix runtime/pi --ignore-scripts
+flutter run -d macos  # 或 windows
 ```
 
-构建发行版本，产物写入 `build/installers/`：
+“设置 → 常规”中的 `pi.path` 和 `pi.nodePath` 可覆盖 CLI 和 Node。开发环境还支持 `PI_DESKTOP_RUNTIME_DIR`、`PI_DESKTOP_PI_CLI`、`PI_DESKTOP_NODE`。请运行与改动相关的测试，参见[贡献指南](CONTRIBUTING.md)。
 
-```sh
-dart run tool/build_macos.dart            # BaoCode-<version>-{arm64,x64}.dmg 和 BaoCode-<version>-mac-{arm64,x64}.zip
-dart run tool/build_windows.dart          # BaoCode-<version>-setup.exe（需要 Inno Setup）
-flutter build linux --release && sh tool/package_linux_deb.sh   # BaoCode-<version>-linux-{amd64,arm64}.deb 和 .tar.gz，在 Ubuntu 上
-dart run tool/build_remote_server.dart    # 用于 Linux x64 和 arm64 的 SSH 远程服务器
-```
+应用使用独立标识和数据目录（macOS 为 `~/Library/Application Support/pi-desktop`，Windows 为 `%APPDATA%/pi-desktop`），可用 `PI_DESKTOP_DATA_DIR` 覆盖。历史文档可能仍描述上游行为。
 
-完整测试套件运行较慢，开发时应只运行与修改相关的测试，例如 `flutter test test/update`。
-
-推送 `v*` 标签后，CI 会构建并发布发行版本。版本号、签名及发布位置的说明见 [docs/release.md](docs/release.md)。更多文档位于 [docs/](docs)，包括[自动更新](docs/auto-update.md)、[SSH 远程](docs/ssh-remote.md)和 [Windows](docs/windows.md)，其中部分文档为中文。
-
-## 仓库结构
-
-| 路径 | 内容 |
-| --- | --- |
-| [lib/](lib) | 应用代码 |
-| [packages/bao_editor](packages/bao_editor) | 编辑器，以及语法高亮、主题和快捷键支持 |
-| [packages/bao_xterm](packages/bao_xterm) | xterm.js 的 Dart 移植版本 |
-| [packages/bao_pty](packages/bao_pty) | Dart 伪终端支持：macOS、Linux 使用 forkpty，Windows 使用 ConPTY |
-| [packages/bao_remote](packages/bao_remote) | 通过 SSH 提供服务的远程端 |
-| [macos/](macos)、[windows/](windows)、[linux/](linux) | 原生平台启动器 |
-| [tool/](tool) | 构建、打包及发布脚本 |
-| [site/](site) | 官网 [baocode.dev](https://baocode.dev) 的源码 |
-| [docs/](docs) | 设计文档 |
-
-## 反馈
-
-欢迎提交 Issue 和 Pull Request。改动请先在 Issue 里讨论；太大的 PR、未经讨论的 PR，不会被接受。详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
-
-## 许可证
-
-BaoCode 使用 [GNU General Public License v3.0](LICENSE)（GPL-3.0-only）许可证。[packages/](packages) 中的编辑器和终端相关包（bao_editor、bao_xterm、bao_pty）使用 MIT 许可证。第三方组件保留其自身许可证，具体文件位于对应源码旁。
-
-BaoCode 是独立项目，与 Anthropic 无隶属关系，也未获得其背书。
+应用采用 [GPL-3.0-only](LICENSE)，第三方组件保留各自许可证和声明。

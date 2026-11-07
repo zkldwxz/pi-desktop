@@ -7,6 +7,7 @@ import 'package:crypto/crypto.dart' as crypto;
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 
+import 'update_manifest.dart';
 import 'update_service.dart';
 import 'update_signature.dart';
 import 'version.dart';
@@ -16,12 +17,14 @@ import 'version.dart';
 /// kept. A download is written to `<file>.part` and picks up where it
 /// stopped; renamed to `<file>` once its size, SHA-256 and signature check
 /// out.
-class IoUpdateBackend implements UpdateBackend {
+class IoUpdateBackend implements UpdateBackend, UpdatePolicyProvider {
   IoUpdateBackend({
     required this.directory,
     HttpClient Function()? client,
-    this.userAgent = 'BaoCode',
-    this.publicKey = updatePublicKey,
+    this.userAgent = 'pi-desktop',
+    this.publicKey = '',
+    this.signatureContext = 'pi-desktop-update-v1',
+    this.urlPolicy,
     this.timeout = const Duration(seconds: 30),
   }) : _client = client ?? HttpClient.new;
 
@@ -32,6 +35,9 @@ class IoUpdateBackend implements UpdateBackend {
 
   /// What releases are signed with (base64), as [UpdateSignature] checks.
   final String publicKey;
+  final String signatureContext;
+  @override
+  final UpdateUrlPolicy? urlPolicy;
 
   /// For connecting, and for a response that stops sending.
   final Duration timeout;
@@ -49,9 +55,7 @@ class IoUpdateBackend implements UpdateBackend {
   Future<String> fetchManifest(Uri url) async {
     final client = _newClient();
     try {
-      final request = await client.getUrl(url).timeout(timeout);
-      request.headers.set(HttpHeaders.acceptHeader, 'application/json');
-      final response = await request.close().timeout(timeout);
+      final response = await _request(client, url, acceptJson: true);
       if (response.statusCode != HttpStatus.ok) {
         await response.drain<void>();
         throw HttpException('HTTP ${response.statusCode}', uri: url);
@@ -77,7 +81,9 @@ class IoUpdateBackend implements UpdateBackend {
     final name = release.asset.fileName;
     return p.join(
       versionDirectory(release.version),
-      name == '.' || name == '..' ? 'update' : name,
+      name == '.' || name == '..' || name.contains('/') || name.contains('\\')
+          ? 'update'
+          : name,
     );
   }
 
@@ -125,11 +131,12 @@ class IoUpdateBackend implements UpdateBackend {
         platform: release.platform,
         size: asset.size,
         sha256: asset.sha256,
+        context: signatureContext,
       ),
       signature: asset.signature,
       publicKey: publicKey,
     );
-    if (!signed) return 'The download is not signed by BaoCode';
+    if (!signed) return 'The download is not signed with the configured key';
     return null;
   }
 
@@ -194,9 +201,41 @@ class IoUpdateBackend implements UpdateBackend {
     Uri url, {
     required int from,
   }) async {
-    final request = await client.getUrl(url).timeout(timeout);
-    if (from > 0) request.headers.set(HttpHeaders.rangeHeader, 'bytes=$from-');
-    return request.close().timeout(timeout);
+    return _request(client, url, from: from);
+  }
+
+  Future<HttpClientResponse> _request(
+    HttpClient client,
+    Uri url, {
+    int from = 0,
+    bool acceptJson = false,
+  }) async {
+    var current = url;
+    final policy = urlPolicy ?? UpdateUrlPolicy.forManifest(url);
+    for (var redirects = 0; redirects <= 5; redirects++) {
+      if (!policy.allows(current)) {
+        throw HttpException('Update URL is not allowed', uri: current);
+      }
+      final request = await client.getUrl(current).timeout(timeout);
+      request.followRedirects = false;
+      if (from > 0) {
+        request.headers.set(HttpHeaders.rangeHeader, 'bytes=$from-');
+      }
+      if (acceptJson) {
+        request.headers.set(HttpHeaders.acceptHeader, 'application/json');
+      }
+      final response = await request.close().timeout(timeout);
+      if (![301, 302, 303, 307, 308].contains(response.statusCode)) {
+        return response;
+      }
+      final location = response.headers.value(HttpHeaders.locationHeader);
+      await response.drain<void>();
+      if (location == null || redirects == 5) {
+        throw HttpException('Invalid update redirect', uri: current);
+      }
+      current = current.resolve(location);
+    }
+    throw HttpException('Too many update redirects', uri: current);
   }
 
   @override

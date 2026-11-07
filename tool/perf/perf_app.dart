@@ -1,4 +1,4 @@
-// The perf app: BaoCodeApp, whole (the sidebar, the chat, the IDE), on
+// The perf app: PiDesktopApp, whole (the sidebar, the chat, the IDE), on
 // agents that answer as a scenario says (perf_transport.dart), driven by
 // input as the engine delivers it (perf_input.dart), measured as it goes
 // (perf_probe.dart). Run in profile mode by tool/perf/run.dart, which
@@ -32,21 +32,21 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:bao_editor/monaco/flutter/language_assets.dart';
-import 'package:baocode/diagnostics/app_event_watch.dart';
-import 'package:baocode/diagnostics/frame_watch.dart';
-import 'package:baocode/diagnostics/hang_watch.dart';
-import 'package:baocode/platform/event_log.dart';
-import 'package:baocode/ide/lsp/packs/language_packs.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/kernel_registry.dart';
-import 'package:baocode/main.dart' show BaoCodeApp;
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/platform/memory_budget.dart';
-import 'package:baocode/stash/stash_controller.dart';
-import 'package:baocode/stash/stash_disk.dart';
-import 'package:baocode/stash/stash_store.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/diagnostics/app_event_watch.dart';
+import 'package:pi_desktop/diagnostics/frame_watch.dart';
+import 'package:pi_desktop/diagnostics/hang_watch.dart';
+import 'package:pi_desktop/platform/event_log.dart';
+import 'package:pi_desktop/ide/lsp/packs/language_packs.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi_desktop/kernel/kernel_registry.dart';
+import 'package:pi_desktop/main.dart' show PiDesktopApp;
+import 'package:pi_desktop/platform/data_dir.dart';
+import 'package:pi_desktop/platform/memory_budget.dart';
+import 'package:pi_desktop/stash/stash_controller.dart';
+import 'package:pi_desktop/stash/stash_disk.dart';
+import 'package:pi_desktop/stash/stash_store.dart';
+import 'package:pi_desktop/theme/workbench_theme.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 import 'perf_content.dart';
 import 'perf_input.dart';
@@ -447,7 +447,7 @@ Future<Map<String, Object>> _runScenario(
     _PerfFrame(
       size: size,
       shotKey: shotKey,
-      child: BaoCodeApp(key: UniqueKey(), workspace: workspace),
+      child: PiDesktopApp(key: UniqueKey(), workspace: workspace),
     ),
   );
   final context = PerfContext(

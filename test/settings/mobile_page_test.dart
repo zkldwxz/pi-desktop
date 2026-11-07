@@ -1,9 +1,9 @@
 import 'package:bao_link/bao_link.dart';
-import 'package:baocode/link/link_host.dart';
-import 'package:baocode/link/phone_downloads.dart';
-import 'package:baocode/link/qr_view.dart';
-import 'package:baocode/settings/pages/mobile_page.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/link/link_host.dart';
+import 'package:pi_desktop/link/phone_downloads.dart';
+import 'package:pi_desktop/link/qr_view.dart';
+import 'package:pi_desktop/settings/pages/mobile_page.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

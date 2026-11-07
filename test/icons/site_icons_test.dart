@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:baocode/icons/icon_library.dart';
-import 'package:baocode/icons/site_icons.dart';
+import 'package:pi_desktop/icons/icon_library.dart';
+import 'package:pi_desktop/icons/site_icons.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// A 1×1 GIF: kept as given, never decoded.

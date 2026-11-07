@@ -8,12 +8,12 @@ import 'package:bao_editor/monaco/vs/workbench/services/themes/common/color_them
 import 'package:bao_editor/textmate/textmate_manifest.dart';
 import 'package:bao_editor/textmate/textmate_syntax.dart'
     show textMateWorkerLauncher;
-import 'package:baocode/workspace/islands.dart';
-import 'package:baocode/ide/lsp_ui/problems_panel.dart';
-import 'package:baocode/ide/terminal/terminal_colors.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/workspace/islands.dart';
+import 'package:pi_desktop/ide/lsp_ui/problems_panel.dart';
+import 'package:pi_desktop/ide/terminal/terminal_colors.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/theme/workbench_theme.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 import '../ide/workbench/fake_files.dart';
 
@@ -74,7 +74,7 @@ void main() {
         ..restore(setting: theme.settingsId, data: theme.toStorage());
       expect(service.colorThemeId, theme.settingsId);
       final name = theme.settingsId.replaceAll(RegExp(r'[^A-Za-z0-9]+'), '_');
-      // As BaoCodeApp does, which the workbench here is outside of.
+      // As PiDesktopApp does, which the workbench here is outside of.
       terminalColorTheme.value = TerminalColorTheme.resolve(
         service.colors.get,
         type: service.colors.type,
@@ -118,7 +118,7 @@ void main() {
       await tester.sendKeyEvent(LogicalKeyboardKey.escape);
       await tester.pumpWidget(const SizedBox());
 
-      await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+      await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
       await tester.pump();
       expect(tester.takeException(), isNull, reason: theme.settingsId);
       await _snapshot(tester, 'chat_$name');

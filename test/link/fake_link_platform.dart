@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bao_link/bao_link.dart';
-import 'package:baocode/link/link_platform.dart';
+import 'package:pi_desktop/link/link_platform.dart';
 
 /// The machine, in memory: its node is on [network], where phones' nodes
 /// dial it; what it advertises is in [advertised].

@@ -1,15 +1,15 @@
-import 'package:baocode/channel/account/account_api.dart';
-import 'package:baocode/channel/account/channel_account.dart';
-import 'package:baocode/channel/account/newapi_adapter.dart';
-import 'package:baocode/channel/account/sub2api_adapter.dart';
-import 'package:baocode/channel/channel_gate.dart';
-import 'package:baocode/channel/channel_setup.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/models/upstream.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/settings/pages/channel_account_page.dart';
-import 'package:baocode/settings/pages/settings_dropdown.dart';
+import 'package:pi_desktop/channel/account/account_api.dart';
+import 'package:pi_desktop/channel/account/channel_account.dart';
+import 'package:pi_desktop/channel/account/newapi_adapter.dart';
+import 'package:pi_desktop/channel/account/sub2api_adapter.dart';
+import 'package:pi_desktop/channel/channel_gate.dart';
+import 'package:pi_desktop/channel/channel_setup.dart';
+import 'package:pi_desktop/models/model_provider.dart';
+import 'package:pi_desktop/models/model_providers.dart';
+import 'package:pi_desktop/models/upstream.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/settings/pages/channel_account_page.dart';
+import 'package:pi_desktop/settings/pages/settings_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -451,6 +451,43 @@ void main() {
       }
     });
 
+    test(
+      'manual account survives restart without a channel directory',
+      () async {
+        setupStore.state = ChannelSetup.pendingState;
+        final gate = gateOf();
+        expect(
+          await gate.configureManual(
+            'http://panel.example',
+            ChannelAccountType.newApi,
+          ),
+          isFalse,
+        );
+        expect(
+          await gate.configureManual(
+            'https://user@panel.example',
+            ChannelAccountType.newApi,
+          ),
+          isFalse,
+        );
+        expect(
+          await gate.configureManual(
+            'https://panel.example',
+            ChannelAccountType.sub2api,
+          ),
+          isTrue,
+        );
+        expect(gate.stage, ChannelStage.signIn);
+        gate.dispose();
+        offline = true;
+        final restarted = gateOf();
+        addTearDown(restarted.dispose);
+        await restarted.find('en');
+        expect(restarted.stage, ChannelStage.signIn);
+        expect(restarted.account!.site.type, ChannelAccountType.sub2api);
+      },
+    );
+
     test('is not set up before its setup is', () {
       setupStore.state = ChannelSetup.pendingState;
       final gate = gateOf();
@@ -560,7 +597,7 @@ void main() {
       (s) => s.method == 'POST' && s.url.path == '/api/token/',
     );
     expect(create.json, containsPair('group', 'vip'));
-    expect(create.json, containsPair('name', 'BaoCode'));
+    expect(create.json, containsPair('name', 'pi-desktop'));
     expect(find.text('分组'), findsNothing);
     expect(tester.takeException(), isNull);
   });

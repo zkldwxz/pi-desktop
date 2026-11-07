@@ -1,6 +1,6 @@
-import 'package:baocode/chat/agent_view.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/theme/codicons.dart';
+import 'package:pi_desktop/chat/agent_view.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
+import 'package:pi_desktop/theme/codicons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

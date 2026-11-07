@@ -6,18 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/widgets/pixel_loader.dart';
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/ide/ide_chat_title.dart';
-import 'package:baocode/ide/ide_chat_history.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/chat/composer/composer.dart';
+import 'package:pi_desktop/chat/widgets/pixel_loader.dart';
+import 'package:pi_desktop/chat/chat_screen.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/ide/ide_chat_title.dart';
+import 'package:pi_desktop/ide/ide_chat_history.dart';
+import 'package:pi_desktop/ide/ide_workbench.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
-const _window = MethodChannel('baocode/window');
-const _open = MethodChannel('baocode/open');
+const _window = MethodChannel('pi-desktop/window');
+const _open = MethodChannel('pi-desktop/open');
 
 /// The app over the mock agents, its window's calls answered.
 Future<Workspace> _pumpApp(WidgetTester tester) async {
@@ -35,7 +35,7 @@ Future<Workspace> _pumpApp(WidgetTester tester) async {
     ),
   );
   final workspace = Workspace.mock();
-  await tester.pumpWidget(BaoCodeApp(workspace: workspace));
+  await tester.pumpWidget(PiDesktopApp(workspace: workspace));
   await tester.pump();
   return workspace;
 }

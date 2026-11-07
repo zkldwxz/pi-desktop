@@ -8,10 +8,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_transport.dart';
-import 'package:baocode/kernel/claude_code/mock_claude_code_transport.dart';
+import 'package:pi_desktop/kernel/agent_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_transport.dart';
+import 'package:pi_desktop/kernel/claude_code/mock_claude_code_transport.dart';
 
 import 'perf_probe.dart';
 

@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/kernel/claude_code/turn_stats.dart';
-import 'package:baocode/kernel/claude_code/turn_stats_io.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/kernel/claude_code/turn_stats.dart';
+import 'package:pi_desktop/kernel/claude_code/turn_stats_io.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/notifications/attention_host.dart';
-import 'package:baocode/notifications/attention_settings.dart';
-import 'package:baocode/settings/pages/notifications_page.dart';
-import 'package:baocode/settings/pages/settings_dropdown.dart';
-import 'package:baocode/settings/user_settings.dart';
+import 'package:pi_desktop/notifications/attention_host.dart';
+import 'package:pi_desktop/notifications/attention_settings.dart';
+import 'package:pi_desktop/settings/pages/notifications_page.dart';
+import 'package:pi_desktop/settings/pages/settings_dropdown.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
 import 'package:path/path.dart' as p;
 
 class _FakeHost implements AttentionHost {

@@ -4,15 +4,15 @@
 // pastes back as the thing, and elsewhere as its text.
 
 import 'package:bao_markdown/bao_markdown.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/composer/composer_controller.dart';
-import 'package:baocode/chat/composer/composer_embeds.dart';
-import 'package:baocode/chat/composer/composer_files.dart';
-import 'package:baocode/chat/composer/composer_mock_data.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/chat/composer/composer.dart';
+import 'package:pi_desktop/chat/composer/composer_controller.dart';
+import 'package:pi_desktop/chat/composer/composer_embeds.dart';
+import 'package:pi_desktop/chat/composer/composer_files.dart';
+import 'package:pi_desktop/chat/composer/composer_mock_data.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -149,13 +149,13 @@ class _Clipboard {
       return null;
     });
     messenger.setMockMethodCallHandler(
-      const MethodChannel('baocode/window'),
+      const MethodChannel('pi-desktop/window'),
       (call) async => null,
     );
     addTearDown(() {
       messenger.setMockMethodCallHandler(SystemChannels.platform, null);
       messenger.setMockMethodCallHandler(
-        const MethodChannel('baocode/window'),
+        const MethodChannel('pi-desktop/window'),
         null,
       );
     });

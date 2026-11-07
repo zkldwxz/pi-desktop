@@ -4,14 +4,14 @@ import 'dart:io';
 import 'package:bao_agent/testing.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/claude_code/claude_environment.dart';
-import 'package:baocode/kernel/claude_code/claude_haiku.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/network/network_proxy_io.dart';
-import 'package:baocode/network/proxy_settings.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_environment.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_haiku.dart';
+import 'package:pi_desktop/models/model_provider.dart';
+import 'package:pi_desktop/models/model_providers.dart';
+import 'package:pi_desktop/network/network_proxy_io.dart';
+import 'package:pi_desktop/network/proxy_settings.dart';
 import 'package:path/path.dart' as p;
 
 void main() {

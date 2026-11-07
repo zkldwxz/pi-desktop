@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/tips/feature_tip.dart';
-import 'package:baocode/tips/star_prompt.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/kernel/kernel_types.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/tips/feature_tip.dart';
+import 'package:pi_desktop/tips/star_prompt.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 class _Storage implements TipStorage {
   final Map<String, Object?> values = {};

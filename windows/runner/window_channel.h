@@ -52,7 +52,7 @@ class WindowChannel {
  public:
   // |view| is the Flutter view's window, in |window|.
   WindowChannel(flutter::BinaryMessenger* messenger, HWND window, HWND view,
-                const std::string& name = "baocode/window");
+                const std::string& name = "pi-desktop/window");
   ~WindowChannel();
 
   WindowChannel(const WindowChannel&) = delete;

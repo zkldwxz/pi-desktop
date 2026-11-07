@@ -5,21 +5,25 @@
 // contribution). `getBreakpointMessageAndIcon` is
 // `breakpointPresentation` from lib/debug/ui/debug_icons.dart.
 
-import 'package:baocode/base/uri.dart' show VsUri;
-import 'package:baocode/debug/base/event.dart';
-import 'package:baocode/debug/common/debug_model.dart';
-import 'package:baocode/debug/common/debug_storage.dart';
-import 'package:baocode/debug/common/debug_types.dart';
-import 'package:baocode/debug/service/debug_service.dart';
-import 'package:baocode/debug/session/debug_session.dart';
-import 'package:baocode/debug/ui/debug_icons.dart';
-import 'package:baocode/debug/ui/debug_strings.dart';
-import 'package:baocode/theme/codicons.dart';
+import 'package:pi_desktop/base/uri.dart' show VsUri;
+import 'package:pi_desktop/debug/base/event.dart';
+import 'package:pi_desktop/debug/common/debug_model.dart';
+import 'package:pi_desktop/debug/common/debug_storage.dart';
+import 'package:pi_desktop/debug/common/debug_types.dart';
+import 'package:pi_desktop/debug/service/debug_service.dart';
+import 'package:pi_desktop/debug/session/debug_session.dart';
+import 'package:pi_desktop/debug/ui/debug_icons.dart';
+import 'package:pi_desktop/debug/ui/debug_strings.dart';
+import 'package:pi_desktop/theme/codicons.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'mock_debug.dart';
 
-List<Breakpoint> addBreakpointsAndCheckEvents(DebugModel model, VsUri uri, List<BreakpointData> data) {
+List<Breakpoint> addBreakpointsAndCheckEvents(
+  DebugModel model,
+  VsUri uri,
+  List<BreakpointData> data,
+) {
   var eventCount = 0;
   late DebugDisposable toDispose;
   toDispose = model.onDidChangeBreakpoints((e) {
@@ -98,7 +102,11 @@ void main() {
         BreakpointData(lineNumber: 10, enabled: false),
       ]);
       addBreakpointsAndCheckEvents(model, modelUri, const [
-        BreakpointData(lineNumber: 12, enabled: true, condition: 'fake condition'),
+        BreakpointData(
+          lineNumber: 12,
+          enabled: true,
+          condition: 'fake condition',
+        ),
       ]);
       expect(model.getBreakpoints().length, 3);
       final bp = model.getBreakpoints().removeLast();
@@ -134,7 +142,9 @@ void main() {
       expect(model.getBreakpoints(column: 5).length, 0);
 
       final bp = model.getBreakpoints()[0];
-      final update = <String, BreakpointUpdateData>{bp.getId(): const BreakpointUpdateData(lineNumber: 100)};
+      final update = <String, BreakpointUpdateData>{
+        bp.getId(): const BreakpointUpdateData(lineNumber: 100),
+      };
       var eventFired = false;
       late DebugDisposable toDispose;
       toDispose = model.onDidChangeBreakpoints((e) {
@@ -236,7 +246,9 @@ void main() {
       expect(breakpoints[1].lineNumber, 500);
 
       expect(breakpoints[0].supported, false);
-      model.setBreakpointSessionData(session2.getId(), {'supportsConditionalBreakpoints': true}, data2);
+      model.setBreakpointSessionData(session2.getId(), {
+        'supportsConditionalBreakpoints': true,
+      }, data2);
       expect(breakpoints[0].supported, true);
     });
 
@@ -248,7 +260,9 @@ void main() {
         {'filter': 'uncaught', 'label': 'UNCAUGHT', 'default': true},
       ]);
       expect(eventCount, 1);
-      var exceptionBreakpoints = model.getExceptionBreakpointsForSession('session-id-1');
+      var exceptionBreakpoints = model.getExceptionBreakpointsForSession(
+        'session-id-1',
+      );
       expect(exceptionBreakpoints.length, 1);
       expect(exceptionBreakpoints[0].filter, 'uncaught');
       expect(exceptionBreakpoints[0].enabled, true);
@@ -258,7 +272,9 @@ void main() {
         {'filter': 'caught', 'label': 'CAUGHT'},
       ]);
       expect(eventCount, 2);
-      exceptionBreakpoints = model.getExceptionBreakpointsForSession('session-id-2');
+      exceptionBreakpoints = model.getExceptionBreakpointsForSession(
+        'session-id-2',
+      );
       expect(exceptionBreakpoints.length, 2);
       expect(exceptionBreakpoints[0].filter, 'uncaught');
       expect(exceptionBreakpoints[0].enabled, true);
@@ -292,7 +308,8 @@ void main() {
       ]);
       model.setExceptionBreakpointFallbackSession('session-id-4');
       expect(eventCount, 1);
-      var exceptionBreakpointsForSession = model.getExceptionBreakpointsForSession('session-id-4');
+      var exceptionBreakpointsForSession = model
+          .getExceptionBreakpointsForSession('session-id-4');
       expect(exceptionBreakpointsForSession.length, 2);
       expect(exceptionBreakpointsForSession[0].filter, 'uncaught');
       expect(exceptionBreakpointsForSession[1].filter, 'caught');
@@ -302,8 +319,11 @@ void main() {
         {'filter': 'caught', 'label': 'CAUGHT'},
       ]);
       expect(eventCount, 2);
-      exceptionBreakpointsForSession = model.getExceptionBreakpointsForSession('session-id-5');
-      var exceptionBreakpointsForUndefined = model.getExceptionBreakpointsForSession(null);
+      exceptionBreakpointsForSession = model.getExceptionBreakpointsForSession(
+        'session-id-5',
+      );
+      var exceptionBreakpointsForUndefined = model
+          .getExceptionBreakpointsForSession(null);
       expect(exceptionBreakpointsForSession.length, 2);
       expect(exceptionBreakpointsForSession[0].filter, 'caught');
       expect(exceptionBreakpointsForSession[1].filter, 'all');
@@ -313,14 +333,16 @@ void main() {
 
       model.removeExceptionBreakpointsForSession('session-id-4');
       expect(eventCount, 2);
-      exceptionBreakpointsForUndefined = model.getExceptionBreakpointsForSession(null);
+      exceptionBreakpointsForUndefined = model
+          .getExceptionBreakpointsForSession(null);
       expect(exceptionBreakpointsForUndefined.length, 2);
       expect(exceptionBreakpointsForUndefined[0].filter, 'uncaught');
       expect(exceptionBreakpointsForUndefined[1].filter, 'caught');
 
       model.setExceptionBreakpointFallbackSession('session-id-5');
       expect(eventCount, 2);
-      exceptionBreakpointsForUndefined = model.getExceptionBreakpointsForSession(null);
+      exceptionBreakpointsForUndefined = model
+          .getExceptionBreakpointsForSession(null);
       expect(exceptionBreakpointsForUndefined.length, 2);
       expect(exceptionBreakpointsForUndefined[0].filter, 'caught');
       expect(exceptionBreakpointsForUndefined[1].filter, 'all');
@@ -335,7 +357,12 @@ void main() {
       addTearDown(listener.dispose);
       //address: string, offset: number, condition?: string, hitCondition?: string
       model.addInstructionBreakpoint(
-        InstructionBreakpoint(instructionReference: '0xCCCCFFFF', offset: 0, address: BigInt.zero, canPersist: false),
+        InstructionBreakpoint(
+          instructionReference: '0xCCCCFFFF',
+          offset: 0,
+          address: BigInt.zero,
+          canPersist: false,
+        ),
       );
 
       expect(eventCount, 1);
@@ -345,7 +372,12 @@ void main() {
       expect(instructionBreakpoints[0].offset, 0);
 
       model.addInstructionBreakpoint(
-        InstructionBreakpoint(instructionReference: '0xCCCCEEEE', offset: 1, address: BigInt.zero, canPersist: false),
+        InstructionBreakpoint(
+          instructionReference: '0xCCCCEEEE',
+          offset: 1,
+          address: BigInt.zero,
+          canPersist: false,
+        ),
       );
       expect(eventCount, 2);
       instructionBreakpoints = model.getInstructionBreakpoints();
@@ -385,7 +417,10 @@ void main() {
       model.updateDataBreakpoint('2', hitCondition: '10');
       final dataBreakpoints = model.getDataBreakpoints();
       expect(dataBreakpoints[0].canPersist, true);
-      expect(dataBreakpoints[0].src.toJson(), {'type': 'variable', 'dataId': 'id'});
+      expect(dataBreakpoints[0].src.toJson(), {
+        'type': 'variable',
+        'dataId': 'id',
+      });
       expect(dataBreakpoints[0].accessType, 'read');
       expect(dataBreakpoints[0].condition, 'aCondition');
       expect(dataBreakpoints[1].canPersist, false);
@@ -416,23 +451,53 @@ void main() {
       final breakpoints = model.getBreakpoints();
       const ls = DebugStrings.en;
 
-      var result = breakpointPresentation(DebugState.stopped, true, breakpoints[0], ls, model: model);
+      var result = breakpointPresentation(
+        DebugState.stopped,
+        true,
+        breakpoints[0],
+        ls,
+        model: model,
+      );
       expect(result.message, 'Condition: x > 5');
       expect(result.icon, Codicons.debugBreakpointConditional);
 
-      result = breakpointPresentation(DebugState.stopped, true, breakpoints[1], ls, model: model);
+      result = breakpointPresentation(
+        DebugState.stopped,
+        true,
+        breakpoints[1],
+        ls,
+        model: model,
+      );
       expect(result.message, 'Disabled Breakpoint');
       expect(result.icon, Codicons.debugBreakpointDisabled);
 
-      result = breakpointPresentation(DebugState.stopped, true, breakpoints[2], ls, model: model);
+      result = breakpointPresentation(
+        DebugState.stopped,
+        true,
+        breakpoints[2],
+        ls,
+        model: model,
+      );
       expect(result.message, 'Log Message: hello');
       expect(result.icon, Codicons.debugBreakpointLog);
 
-      result = breakpointPresentation(DebugState.stopped, true, breakpoints[3], ls, model: model);
+      result = breakpointPresentation(
+        DebugState.stopped,
+        true,
+        breakpoints[3],
+        ls,
+        model: model,
+      );
       expect(result.message, 'Hit Count: 12');
       expect(result.icon, Codicons.debugBreakpointConditional);
 
-      result = breakpointPresentation(DebugState.stopped, true, breakpoints[4], ls, model: model);
+      result = breakpointPresentation(
+        DebugState.stopped,
+        true,
+        breakpoints[4],
+        ls,
+        model: model,
+      );
       // `ls.getUriLabel(breakpoints[4].uri)` upstream.
       expect(result.message, breakpoints[4].uri.fsPath());
       expect(result.icon, Codicons.debugBreakpoint);
@@ -450,19 +515,37 @@ void main() {
         ),
       );
       final dataBreakpoints = model.getDataBreakpoints();
-      result = breakpointPresentation(DebugState.stopped, true, dataBreakpoints[0], ls, model: model);
+      result = breakpointPresentation(
+        DebugState.stopped,
+        true,
+        dataBreakpoints[0],
+        ls,
+        model: model,
+      );
       expect(result.message, 'Data Breakpoint');
       expect(result.icon, Codicons.debugBreakpointData);
 
-      final functionBreakpoint = model.addFunctionBreakpoint(FunctionBreakpoint(name: 'foo', id: '1'));
-      result = breakpointPresentation(DebugState.stopped, true, functionBreakpoint, ls, model: model);
+      final functionBreakpoint = model.addFunctionBreakpoint(
+        FunctionBreakpoint(name: 'foo', id: '1'),
+      );
+      result = breakpointPresentation(
+        DebugState.stopped,
+        true,
+        functionBreakpoint,
+        ls,
+        model: model,
+      );
       expect(result.message, 'Function Breakpoint');
       expect(result.icon, Codicons.debugBreakpointFunction);
 
       final data = <String, Json?>{
         breakpoints[0].getId(): {'verified': false, 'line': 10},
         breakpoints[1].getId(): {'verified': true, 'line': 50},
-        breakpoints[2].getId(): {'verified': true, 'line': 50, 'message': 'world'},
+        breakpoints[2].getId(): {
+          'verified': true,
+          'line': 50,
+          'message': 'world',
+        },
         functionBreakpoint.getId(): {'verified': true},
       };
       model.setBreakpointSessionData('mocksessionid', {
@@ -471,13 +554,25 @@ void main() {
         'supportsLogPoints': true,
       }, data);
 
-      result = breakpointPresentation(DebugState.stopped, true, breakpoints[0], ls, model: model);
+      result = breakpointPresentation(
+        DebugState.stopped,
+        true,
+        breakpoints[0],
+        ls,
+        model: model,
+      );
       expect(result.message, 'Unverified Breakpoint');
       expect(result.icon, Codicons.debugBreakpointUnverified);
 
       // See 'message and class name: unsupported function breakpoint' below.
 
-      result = breakpointPresentation(DebugState.stopped, true, breakpoints[2], ls, model: model);
+      result = breakpointPresentation(
+        DebugState.stopped,
+        true,
+        breakpoints[2],
+        ls,
+        model: model,
+      );
       expect(result.message, 'Log Message: hello, world');
       expect(result.icon, Codicons.debugBreakpointLog);
     });
@@ -491,7 +586,13 @@ void main() {
         addBreakpointsAndCheckEvents(model, modelUri, const [
           BreakpointData(lineNumber: 12, enabled: true, logMessage: 'hello'),
         ]);
-        final result = breakpointPresentation(DebugState.stopped, false, model.getBreakpoints()[0], DebugStrings.en, model: model);
+        final result = breakpointPresentation(
+          DebugState.stopped,
+          false,
+          model.getBreakpoints()[0],
+          DebugStrings.en,
+          model: model,
+        );
         expect(result.message, 'Disabled Logpoint');
         expect(result.icon, Codicons.debugBreakpointLogDisabled);
       },
@@ -501,14 +602,31 @@ void main() {
     test(
       'message and class name: unsupported function breakpoint',
       () {
-        final functionBreakpoint = model.addFunctionBreakpoint(FunctionBreakpoint(name: 'foo', id: '1'));
-        model.setBreakpointSessionData('mocksessionid', {
-          'supportsFunctionBreakpoints': false,
-          'supportsDataBreakpoints': true,
-          'supportsLogPoints': true,
-        }, {functionBreakpoint.getId(): {'verified': true}});
-        final result = breakpointPresentation(DebugState.stopped, true, functionBreakpoint, DebugStrings.en, model: model);
-        expect(result.message, 'Function breakpoints not supported by this debug type');
+        final functionBreakpoint = model.addFunctionBreakpoint(
+          FunctionBreakpoint(name: 'foo', id: '1'),
+        );
+        model.setBreakpointSessionData(
+          'mocksessionid',
+          {
+            'supportsFunctionBreakpoints': false,
+            'supportsDataBreakpoints': true,
+            'supportsLogPoints': true,
+          },
+          {
+            functionBreakpoint.getId(): {'verified': true},
+          },
+        );
+        final result = breakpointPresentation(
+          DebugState.stopped,
+          true,
+          functionBreakpoint,
+          DebugStrings.en,
+          model: model,
+        );
+        expect(
+          result.message,
+          'Function breakpoints not supported by this debug type',
+        );
         expect(result.icon, Codicons.debugBreakpointFunctionUnverified);
       },
       skip: 'breakpointPresentation lacks the `!breakpoint.supported` branches for function/data breakpoints',

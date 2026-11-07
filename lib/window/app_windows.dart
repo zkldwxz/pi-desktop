@@ -152,7 +152,7 @@ class AppWindow {
   };
 
   /// The title the system shows: `folder — BaoCode`.
-  String title(AppLocalizations l10n) => '${label(l10n)} — BaoCode';
+  String title(AppLocalizations l10n) => '${label(l10n)} — pi-desktop';
 
   /// The folder's name; a remote one's with its host, as VS Code shows
   /// one (`app [SSH: dev]`, `app [WSL: Ubuntu]`).

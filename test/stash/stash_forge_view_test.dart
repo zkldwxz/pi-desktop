@@ -1,14 +1,14 @@
-import 'package:baocode/forge/forge_accounts.dart';
-import 'package:baocode/forge/forge_ref.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/models/secret_store.dart';
-import 'package:baocode/stash/stash_disk.dart';
-import 'package:baocode/stash/stash_forge.dart';
-import 'package:baocode/stash/stash_forge_view.dart';
-import 'package:baocode/stash/stash_note.dart';
-import 'package:baocode/stash/stash_store.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/forge/forge_accounts.dart';
+import 'package:pi_desktop/forge/forge_ref.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/models/secret_store.dart';
+import 'package:pi_desktop/stash/stash_disk.dart';
+import 'package:pi_desktop/stash/stash_forge.dart';
+import 'package:pi_desktop/stash/stash_forge_view.dart';
+import 'package:pi_desktop/stash/stash_note.dart';
+import 'package:pi_desktop/stash/stash_store.dart';
+import 'package:pi_desktop/theme/codicons.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

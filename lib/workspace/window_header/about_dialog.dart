@@ -59,7 +59,7 @@ class _AboutBaoCodeDialog extends StatelessWidget {
                 ),
                 SizedBox(width: 10),
                 Text(
-                  'BaoCode',
+                  'pi-desktop',
                   style: TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 15,

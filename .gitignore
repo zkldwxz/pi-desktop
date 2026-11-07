@@ -63,3 +63,6 @@ app.*.map.json
 
 # npm dependencies of the extension host code generators.
 tool/exthost_codegen/node_modules/
+
+# The pinned PI runtime is installed from runtime/pi/package-lock.json.
+runtime/pi/node_modules/

@@ -15,7 +15,7 @@
 // not what the notes make.
 import 'dart:io';
 
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/update/version.dart';
 import 'package:markdown/markdown.dart' as md;
 
 Future<void> main(List<String> arguments) async {

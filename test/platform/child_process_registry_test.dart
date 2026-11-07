@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/platform/child_process_registry.dart';
+import 'package:pi_desktop/platform/child_process_registry.dart';
 import 'package:path/path.dart' as p;
 
 /// The list is written aside and renamed over; nothing written aside is

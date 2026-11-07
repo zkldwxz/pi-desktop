@@ -7,18 +7,18 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:baocode/ide/ide_editor.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/ide/lsp/catalog/standard_lsp.dart';
-import 'package:baocode/ide/lsp/language_features.dart';
-import 'package:baocode/ide/lsp/lsp_manager.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart';
-import 'package:baocode/ide/lsp_ui/problems_panel.dart';
-import 'package:baocode/main.dart' show BaoCodeApp;
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/settings/app_locale.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/ide/ide_editor.dart';
+import 'package:pi_desktop/ide/ide_workbench.dart';
+import 'package:pi_desktop/ide/lsp/catalog/standard_lsp.dart';
+import 'package:pi_desktop/ide/lsp/language_features.dart';
+import 'package:pi_desktop/ide/lsp/lsp_manager.dart';
+import 'package:pi_desktop/ide/lsp/lsp_protocol.dart';
+import 'package:pi_desktop/ide/lsp_ui/problems_panel.dart';
+import 'package:pi_desktop/main.dart' show PiDesktopApp;
+import 'package:pi_desktop/platform/data_dir.dart';
+import 'package:pi_desktop/settings/app_locale.dart';
+import 'package:pi_desktop/theme/workbench_theme.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -110,7 +110,7 @@ Future<void> main() async {
     runApp(
       RepaintBoundary(
         key: boundary,
-        child: BaoCodeApp(
+        child: PiDesktopApp(
           workspace: workspace,
           appLocale: AppLocale(storage: MemoryLocaleStorage(AppLocale.english)),
           languagesFor: (folder) {

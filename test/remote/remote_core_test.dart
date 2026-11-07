@@ -1,7 +1,7 @@
 import 'package:bao_remote/claude.dart';
 import 'package:bao_remote/client.dart';
-import 'package:baocode/remote/remote_claude.dart';
-import 'package:baocode/remote/ssh_host.dart';
+import 'package:pi_desktop/remote/remote_claude.dart';
+import 'package:pi_desktop/remote/ssh_host.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class _Process implements RemoteProcess {

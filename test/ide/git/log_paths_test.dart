@@ -5,8 +5,8 @@
 // numbers at HEAD.
 
 import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:baocode/ide/git/git_model.dart';
-import 'package:baocode/ide/ide_explorer.dart';
+import 'package:pi_desktop/ide/git/git_model.dart';
+import 'package:pi_desktop/ide/ide_explorer.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -134,14 +134,11 @@ void main() {
         'diff --git a/lib/a.dart b/lib/a.dart\n@@ -1 +1 @@\n'
         '\x1d${gitLogRecord('c1', [], 'First')}\n'
         'diff --git a/lib/a.dart b/lib/a.dart\n';
-    final commits = await git
-        .repository()
-        .service
-        .log(
-          filter: IdeGitLogFilter(
-            lines: (path: '$testRoot/lib/a.dart', start: 1, end: 2),
-          ),
-        );
+    final commits = await git.repository().service.log(
+      filter: IdeGitLogFilter(
+        lines: (path: '$testRoot/lib/a.dart', start: 1, end: 2),
+      ),
+    );
     expect(commits.map((commit) => commit.subject), ['Second', 'First']);
   });
 }

@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_notifications.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/update/update_controller.dart';
-import 'package:baocode/update/update_service.dart';
-import 'package:baocode/update/update_settings.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/ide/ide_notifications.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/update/update_controller.dart';
+import 'package:pi_desktop/update/update_service.dart';
+import 'package:pi_desktop/update/update_settings.dart';
+import 'package:pi_desktop/update/version.dart';
 
 import 'update_fakes.dart';
 
@@ -83,24 +83,18 @@ void main() {
         l10n.updateLater,
         l10n.updateSkip,
       ]);
-      expect(offer.secondary.single.label, l10n.updateReleaseNotes);
-      offer.secondary.single.run();
-      expect(opened, [Uri.parse('https://baocode.dev/changelog#v1.2.0')]);
+      expect(offer.secondary, isEmpty);
+      expect(opened, isEmpty);
 
       offer.primary[2].run();
       expect(service.skippedVersion, '1.2.0');
     });
 
-    test('Release Notes opens the changelog in the app\'s language', () {
+    test('changelog is unavailable without configuration', () {
       make();
-      final version = AppVersion.parse('1.2.0+13');
       expect(
-        UpdateController.changelogUrl(version, 'zh'),
-        Uri.parse('https://baocode.dev/zh/changelog#v1.2.0'),
-      );
-      expect(
-        UpdateController.changelogUrl(version, 'en'),
-        Uri.parse('https://baocode.dev/changelog#v1.2.0'),
+        UpdateController.changelogUrl(AppVersion.parse('1.2.0'), 'en').host,
+        isEmpty,
       );
     });
 
@@ -136,12 +130,8 @@ void main() {
       expect(note.message, l10n.updateManual('read-only'));
       expect(quits, 0);
       expect(service.armed, isFalse);
-      note.primary.single.run();
-      expect(opened, [ManualUpdateRequired.downloadPage]);
-      expect(
-        '${ManualUpdateRequired.downloadPage}',
-        'https://baocode.dev/download',
-      );
+      expect(note.primary, isEmpty);
+      expect(opened, isEmpty);
     });
 
     test('a download that fails its checks is told, not installed', () async {
@@ -201,9 +191,7 @@ void main() {
       final note = notifications.notifications.single;
       expect(note.severity, IdeSeverity.warning);
       expect(note.message, l10n.updateUnfinished('1.2.0', '1.0.0'));
-      expect(labels(note), [l10n.updateOpenDownloadPage, l10n.updateShowLog]);
-      note.primary.first.run();
-      expect(opened, [ManualUpdateRequired.downloadPage]);
+      expect(labels(note), [l10n.updateShowLog]);
       note.primary.last.run();
       expect(files, ['/updates/install.log']);
 

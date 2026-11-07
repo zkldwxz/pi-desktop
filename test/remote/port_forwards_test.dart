@@ -4,9 +4,9 @@ library;
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/remote/port_forwards.dart';
-import 'package:baocode/remote/remote_host_settings.dart';
-import 'package:baocode/remote/ssh_host.dart';
+import 'package:pi_desktop/remote/port_forwards.dart';
+import 'package:pi_desktop/remote/remote_host_settings.dart';
+import 'package:pi_desktop/remote/ssh_host.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

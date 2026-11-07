@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/kernel/claude_code/process_transport_io.dart';
+import 'package:pi_desktop/kernel/claude_code/process_transport_io.dart';
 import 'package:path/path.dart' as p;
 
 /// The app's Claude Code processes end with it, and leftovers of an earlier

@@ -1,19 +1,19 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/ide/ide_chat_title.dart';
-import 'package:baocode/ide/ide_welcome.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/search/search_palette.dart';
-import 'package:baocode/sidebar/sidebar.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/window/app_windows.dart';
-import 'package:baocode/window/window_settings.dart';
-import 'package:baocode/workbench.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/chat/chat_screen.dart';
+import 'package:pi_desktop/ide/ide_chat_title.dart';
+import 'package:pi_desktop/ide/ide_welcome.dart';
+import 'package:pi_desktop/ide/ide_workbench.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/search/search_palette.dart';
+import 'package:pi_desktop/sidebar/sidebar.dart';
+import 'package:pi_desktop/theme/codicons.dart';
+import 'package:pi_desktop/window/app_windows.dart';
+import 'package:pi_desktop/window/window_settings.dart';
+import 'package:pi_desktop/workbench.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 import 'fake_window_host.dart';
 
@@ -28,8 +28,8 @@ Future<(AppWindows, FakeWindowHost, Workspace)> _pumpApp(
   addTearDown(tester.view.reset);
   final messenger = tester.binding.defaultBinaryMessenger;
   for (final name in [
-    'baocode/window',
-    for (var id = 1; id < 6; id++) 'baocode/window.$id',
+    'pi-desktop/window',
+    for (var id = 1; id < 6; id++) 'pi-desktop/window.$id',
   ]) {
     messenger.setMockMethodCallHandler(
       MethodChannel(name),
@@ -52,7 +52,7 @@ Future<(AppWindows, FakeWindowHost, Workspace)> _pumpApp(
   );
   await windows.start();
   await tester.pumpWidget(
-    BaoCodeApp(workspace: workspace, windows: windows),
+    PiDesktopApp(workspace: workspace, windows: windows),
     wrapWithView: false,
   );
   await tester.pump();

@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:baocode/base/quiet_view.dart';
+import 'package:pi_desktop/base/quiet_view.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 

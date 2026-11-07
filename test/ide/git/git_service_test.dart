@@ -8,9 +8,9 @@ import 'dart:typed_data';
 
 import 'package:bao_remote/local.dart' show runGit;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/git/git_model.dart';
-import 'package:baocode/ide/git/git_repository.dart';
-import 'package:baocode/ide/git/git_service.dart';
+import 'package:pi_desktop/ide/git/git_model.dart';
+import 'package:pi_desktop/ide/git/git_repository.dart';
+import 'package:pi_desktop/ide/git/git_service.dart';
 import 'package:path/path.dart' as p;
 
 /// Runs local Git (no network) in a temporary repository whose own config

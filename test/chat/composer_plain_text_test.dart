@@ -1,7 +1,7 @@
 import 'package:bao_markdown/bao_markdown.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/chat/composer/composer.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -64,15 +64,11 @@ void main() {
 
   // A rich text editor's shortcuts for these: nothing here.
   for (final (name, key, shift) in shortcuts) {
-    testWidgets(
-      'the $name shortcut leaves the text as it is',
-      (tester) async {
-        final controller = await pumpComposer(tester);
-        await press(tester, key, shift: shift);
-        expect(controller.text, 'hello');
-      },
-      variant: TargetPlatformVariant.only(TargetPlatform.macOS),
-    );
+    testWidgets('the $name shortcut leaves the text as it is', (tester) async {
+      final controller = await pumpComposer(tester);
+      await press(tester, key, shift: shift);
+      expect(controller.text, 'hello');
+    }, variant: TargetPlatformVariant.only(TargetPlatform.macOS));
   }
 
   testWidgets('markdown typed is the text, not what it would make', (

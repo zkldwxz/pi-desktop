@@ -9,13 +9,13 @@ library;
 import 'dart:async';
 import 'dart:io';
 
-import 'package:baocode/base/uri.dart' show VsUri;
-import 'package:baocode/debug/common/debug_model.dart';
-import 'package:baocode/debug/common/debug_types.dart';
-import 'package:baocode/debug/common/repl_model.dart';
-import 'package:baocode/debug/service/debug_service.dart';
-import 'package:baocode/debug/session/debug_session.dart';
-import 'package:baocode/debug/session/stream_debug_adapter.dart';
+import 'package:pi_desktop/base/uri.dart' show VsUri;
+import 'package:pi_desktop/debug/common/debug_model.dart';
+import 'package:pi_desktop/debug/common/debug_types.dart';
+import 'package:pi_desktop/debug/common/repl_model.dart';
+import 'package:pi_desktop/debug/service/debug_service.dart';
+import 'package:pi_desktop/debug/session/debug_session.dart';
+import 'package:pi_desktop/debug/session/stream_debug_adapter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/real_adapter.dart';
@@ -40,7 +40,9 @@ final String? _lldbDap = firstExisting([
 // The PATH clang (on macOS, the /usr/bin shim that finds the SDK).
 final String? _clang = findExecutable('clang');
 
-final String _source = File('test/debug/real/fixtures/lldb/program.c').absolute.path;
+final String _source = File('test/debug/real/fixtures/lldb/program.c')
+    .absolute
+    .path;
 
 void main() {
   final skip = _lldbDap == null
@@ -65,10 +67,16 @@ void main() {
     await dir.delete(recursive: true);
   });
 
-  Future<RealDebug> start(Future<void> Function(DebugService service) breakpoints) async {
+  Future<RealDebug> start(
+    Future<void> Function(DebugService service) breakpoints,
+  ) async {
     late final RealAdapterFactory factory;
     factory = RealAdapterFactory(
-      (_) => StdioDebugAdapterTransport(_lldbDap!, const [], onStderr: (t) => factory.log.add('stderr: $t')),
+      (_) => StdioDebugAdapterTransport(
+        _lldbDap!,
+        const [],
+        onStderr: (t) => factory.log.add('stderr: $t'),
+      ),
     );
     final d = await createRealDebugService(
       type: 'lldb-dap',
@@ -92,7 +100,10 @@ void main() {
     return d;
   }
 
-  Future<DebugSessionEndEvent> runToExit(RealDebug d, DebugSession session) async {
+  Future<DebugSessionEndEvent> runToExit(
+    RealDebug d,
+    DebugSession session,
+  ) async {
     final ended = Completer<DebugSessionEndEvent>();
     d.service.onDidEndSession((e) {
       if (!ended.isCompleted) ended.complete(e);
@@ -100,70 +111,110 @@ void main() {
     await d.service.viewModel.focusedThread!.continue_();
     final e = await ended.future.timeout(
       const Duration(seconds: 30),
-      onTimeout: () => throw TimeoutException('no end of session\n${d.factory.tail()}'),
+      onTimeout: () =>
+          throw TimeoutException('no end of session\n${d.factory.tail()}'),
     );
-    await waitFor(d, () => d.service.model.getSessions().isEmpty, 'the session to go');
+    await waitFor(
+      d,
+      () => d.service.model.getSessions().isEmpty,
+      'the session to go',
+    );
     expect(d.service.state, DebugState.inactive);
     return e;
   }
 
-  test('line breakpoint: stop, call stack, locals, step, REPL, run to exit', () async {
-    final addLine = markerLine(_source, 'add');
-    final d = await start(
-      (service) => service.addBreakpoints(VsUri.file(_source), [BreakpointData(lineNumber: addLine)]),
-    );
-    final session = d.service.model.getSessions().single;
+  test(
+    'line breakpoint: stop, call stack, locals, step, REPL, run to exit',
+    () async {
+      final addLine = markerLine(_source, 'add');
+      final d = await start(
+        (service) => service.addBreakpoints(VsUri.file(_source), [
+          BreakpointData(lineNumber: addLine),
+        ]),
+      );
+      final session = d.service.model.getSessions().single;
 
-    var frame = await waitForStop(d, line: addLine, reason: 'breakpoint', function: 'add');
-    expect(session.state, DebugState.stopped);
-    expect(session.capabilities.flag('supportsConfigurationDoneRequest'), isTrue);
-    expect(frame.source.uri.fsPath(), _source);
-    final bp = d.service.model.getBreakpoints().single;
-    expect(bp.verified, isTrue, reason: bp.message);
-    expect(bp.lineNumber, addLine);
-    expect(d.host.breaks, greaterThanOrEqualTo(1));
+      var frame = await waitForStop(
+        d,
+        line: addLine,
+        reason: 'breakpoint',
+        function: 'add',
+      );
+      expect(session.state, DebugState.stopped);
+      expect(
+        session.capabilities.flag('supportsConfigurationDoneRequest'),
+        isTrue,
+      );
+      expect(frame.source.uri.fsPath(), _source);
+      final bp = d.service.model.getBreakpoints().single;
+      expect(bp.verified, isTrue, reason: bp.message);
+      expect(bp.lineNumber, addLine);
+      expect(d.host.breaks, greaterThanOrEqualTo(1));
 
-    // The stack: add called from main.
-    final thread = d.service.viewModel.focusedThread!;
-    await waitFor(d, () => thread.getCallStack().any((f) => f.name.contains('main')), 'main on the stack');
-    final names = thread.getCallStack().map((f) => f.name).toList();
-    expect(names.first, contains('add'));
-    expect(names.indexWhere((n) => n.contains('main')), greaterThan(0), reason: '$names');
+      // The stack: add called from main.
+      final thread = d.service.viewModel.focusedThread!;
+      await waitFor(
+        d,
+        () => thread.getCallStack().any((f) => f.name.contains('main')),
+        'main on the stack',
+      );
+      final names = thread.getCallStack().map((f) => f.name).toList();
+      expect(names.first, contains('add'));
+      expect(
+        names.indexWhere((n) => n.contains('main')),
+        greaterThan(0),
+        reason: '$names',
+      );
 
-    final locals = await scopeValues(frame, 'Locals');
-    expect(locals['a'], '40');
-    expect(locals['b'], '2');
+      final locals = await scopeValues(frame, 'Locals');
+      expect(locals['a'], '40');
+      expect(locals['b'], '2');
 
-    // One step, to the next line, with the sum computed.
-    await thread.next();
-    frame = await waitForStop(d, line: markerLine(_source, 'add-next'), reason: 'step', function: 'add');
-    expect((await scopeValues(frame, 'Locals'))['sum'], '42');
+      // One step, to the next line, with the sum computed.
+      await thread.next();
+      frame = await waitForStop(
+        d,
+        line: markerLine(_source, 'add-next'),
+        reason: 'step',
+        function: 'add',
+      );
+      expect((await scopeValues(frame, 'Locals'))['sum'], '42');
 
-    // The REPL evaluates in the focused frame.
-    await session.addReplExpression(frame, 'sum * 2');
-    final result = session.getReplElements().whereType<ReplEvaluationResult>().last;
-    // lldb-dap 21 answers in lldb's expression format (`(int) $0 = 84`).
-    expect(result.value, anyOf('84', endsWith(' = 84')));
+      // The REPL evaluates in the focused frame.
+      await session.addReplExpression(frame, 'sum * 2');
+      final result = session
+          .getReplElements()
+          .whereType<ReplEvaluationResult>()
+          .last;
+      // lldb-dap 21 answers in lldb's expression format (`(int) $0 = 84`).
+      expect(result.value, anyOf('84', endsWith(' = 84')));
 
-    // A watch expression too.
-    d.service.addWatchExpression('a - b');
-    final watch = d.service.model.getWatchExpressions().single;
-    await watch.evaluate(session, frame, 'watch');
-    expect(watch.value, '38');
+      // A watch expression too.
+      d.service.addWatchExpression('a - b');
+      final watch = d.service.model.getWatchExpressions().single;
+      await watch.evaluate(session, frame, 'watch');
+      expect(watch.value, '38');
 
-    final end = await runToExit(d, session);
-    expect(end.session, session);
-    expect(d.factory.events('exited').single.obj('body')!['exitCode'], 0);
-    final output = session.getReplElements().whereType<ReplOutputElement>().map((e) => e.value).join();
-    expect(output, contains('answer=42 total=10'), reason: d.factory.tail());
-  });
+      final end = await runToExit(d, session);
+      expect(end.session, session);
+      expect(d.factory.events('exited').single.obj('body')!['exitCode'], 0);
+      final output = session
+          .getReplElements()
+          .whereType<ReplOutputElement>()
+          .map((e) => e.value)
+          .join();
+      expect(output, contains('answer=42 total=10'), reason: d.factory.tail());
+    },
+  );
 
   test('function, conditional and log point breakpoints', () async {
     final entryLine = markerLine(_source, 'accumulate-entry');
     final loopLine = markerLine(_source, 'loop');
     final returnLine = markerLine(_source, 'accumulate-return');
     final d = await start((service) async {
-      await service.addFunctionBreakpoint(FunctionBreakpoint(name: 'accumulate'));
+      await service.addFunctionBreakpoint(
+        FunctionBreakpoint(name: 'accumulate'),
+      );
       await service.addBreakpoints(VsUri.file(_source), [
         BreakpointData(lineNumber: loopLine, condition: 'i == 3'),
         BreakpointData(lineNumber: returnLine, logMessage: 'total is {total}'),
@@ -187,33 +238,57 @@ void main() {
 
     // The condition skips i = 0, 1, 2.
     await d.service.viewModel.focusedThread!.continue_();
-    frame = await waitForStop(d, line: loopLine, reason: 'breakpoint', function: 'accumulate');
+    frame = await waitForStop(
+      d,
+      line: loopLine,
+      reason: 'breakpoint',
+      function: 'accumulate',
+    );
     final locals = await scopeValues(frame, 'Locals');
     expect(locals['i'], '3');
     expect(locals['total'], '3');
 
     // The log point logs and does not stop; the program runs to its end.
     await runToExit(d, session);
-    final output = session.getReplElements().whereType<ReplOutputElement>().map((e) => e.value).join();
+    final output = session
+        .getReplElements()
+        .whereType<ReplOutputElement>()
+        .map((e) => e.value)
+        .join();
     expect(output, contains('total is 10'), reason: d.factory.tail());
     expect(d.factory.events('stopped').length, 2);
   });
 
-  test('stopping a stopped session kills the program and the adapter', () async {
-    final addLine = markerLine(_source, 'add');
-    final d = await start(
-      (service) => service.addBreakpoints(VsUri.file(_source), [BreakpointData(lineNumber: addLine)]),
-    );
-    final session = d.service.model.getSessions().single;
-    await waitForStop(d, line: addLine, reason: 'breakpoint');
+  test(
+    'stopping a stopped session kills the program and the adapter',
+    () async {
+      final addLine = markerLine(_source, 'add');
+      final d = await start(
+        (service) => service.addBreakpoints(VsUri.file(_source), [
+          BreakpointData(lineNumber: addLine),
+        ]),
+      );
+      final session = d.service.model.getSessions().single;
+      await waitForStop(d, line: addLine, reason: 'breakpoint');
 
-    final ended = Completer<DebugSessionEndEvent>();
-    d.service.onDidEndSession(ended.complete);
-    await d.service.stopSession(session);
-    final e = await ended.future.timeout(const Duration(seconds: 15));
-    expect(e.restart, isFalse);
-    await waitFor(d, () => d.service.model.getSessions().isEmpty, 'the session to go');
-    final sent = d.factory.log.where((l) => l.startsWith('-> ')).join('\n');
-    expect(sent, anyOf(contains('"command":"terminate"'), contains('"command":"disconnect"')));
-  });
+      final ended = Completer<DebugSessionEndEvent>();
+      d.service.onDidEndSession(ended.complete);
+      await d.service.stopSession(session);
+      final e = await ended.future.timeout(const Duration(seconds: 15));
+      expect(e.restart, isFalse);
+      await waitFor(
+        d,
+        () => d.service.model.getSessions().isEmpty,
+        'the session to go',
+      );
+      final sent = d.factory.log.where((l) => l.startsWith('-> ')).join('\n');
+      expect(
+        sent,
+        anyOf(
+          contains('"command":"terminate"'),
+          contains('"command":"disconnect"'),
+        ),
+      );
+    },
+  );
 }

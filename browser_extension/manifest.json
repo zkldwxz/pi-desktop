@@ -4,7 +4,7 @@
   "version": "0.2.0",
   "description": "__MSG_description__",
   "default_locale": "en",
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw/z7XPTL8VYzRrKO5N7N14kL3MuvHD528smBkU6Odvd3L4/BHTaNmtwhOhEEE1q6DamfoekiwcgQWM2aoH32QAi1La7ZM7MXpFsQYkFQh8G7rbzrX5eronOSiPEeoeiXUNyNgnk4jxSAr0HKc7oiFzKtw7lAEXf83A0dFSbhNrLwRZIAqqA9s1qHNeglbG2j7UBf4C92NpdQXqJzs00MXb2gMh7IWIQwigL61nQtS2ZJKkWMTJJpE6TPiqGYiMEpBSjazUOcNzu28/X03iuPUVNgEzWbKe1DvqIOr7keI2QCnOlC2PkWIx2oNQnBZWgQsvffpdakemj7YC/MTIoyywIDAQAB",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw/UTmoVwlgsBFhyi5jZ/M/tcudbefgGnXRL7Mrlzzy9gfWSbpkvRW+jjNIhGttH6pOe0l5qXEzW07SebNxVK7uOpvQeJakpA09GQD8qAuvewk7+owNUsyl8bz9CrOdHoveUob8/t2KyYaSbjzlAkcT+2no9BWmWTaNAlKy14DJtI3UJ2tUajXO6BCj/1kI1uOqEorv5gFVobK3JQs80LeHKGb7Sydj4z2pmu741y4mozH0SlT2LrjPtJek74N6RjQL/AWtFNbGsMdwBzKAOFcYXqtk7YofYbWM9kYOxMHRoV+NDsfPKg3QPHIBSchd3lnAq7COrjjF/l36S0S71CVQIDAQAB",
   "minimum_chrome_version": "125",
   "background": {
     "service_worker": "background.js"
@@ -18,7 +18,7 @@
     "alarms"
   ],
   "action": {
-    "default_title": "BaoCode",
+    "default_title": "pi-desktop",
     "default_icon": {
       "16": "icons/icon-16.png",
       "32": "icons/icon-32.png"

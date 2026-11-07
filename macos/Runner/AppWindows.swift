@@ -51,7 +51,7 @@ final class AppWindows: NSObject {
     self.engine = engine
     self.main = main
     channel = FlutterMethodChannel(
-      name: "baocode/windows", binaryMessenger: engine.binaryMessenger)
+      name: "pi-desktop/windows", binaryMessenger: engine.binaryMessenger)
     super.init()
     channel.setMethodCallHandler { [weak self] call, result in
       guard let self else {

@@ -5,23 +5,18 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 
 import '../channel/channel_setup.dart' show ChannelSetup;
+import 'pi_desktop_update_config.dart';
 import 'update_io.dart';
-import 'update_manifest.dart';
 import 'update_service.dart';
 import 'version.dart';
 
-/// What updates the app where it runs: the platform's download, and what
-/// installs it. Null where there are none: not macOS, Windows or Linux, or a
-/// debug build (which would replace the build folder's app), unless
-/// [manifestUrlVariable] points at a manifest to try.
+/// The configured pi-desktop updater, or null when it is unavailable.
+/// Linux remains disabled until its native package identity is defined.
 PlatformUpdates? platformUpdates({required String updatesDirectory}) {
   final environment = Platform.environment;
-  final override = environment[manifestUrlVariable]?.trim() ?? '';
-  if (!kReleaseMode && override.isEmpty) return null;
-  final manifestUrl = Uri.tryParse(
-    override.isEmpty ? defaultManifestUrl : override,
-  );
-  if (manifestUrl == null) return null;
+  final config = PiDesktopUpdateConfig.fromEnvironment(environment);
+  if (config == null) return null;
+  final manifestUrl = config.manifestUrl;
   final executable = Platform.resolvedExecutable;
   final UpdateInstaller installer;
   final String platform;
@@ -44,12 +39,8 @@ PlatformUpdates? platformUpdates({required String updatesDirectory}) {
       updatesDirectory: updatesDirectory,
     );
   } else if (Platform.isLinux) {
-    platform = linuxUpdatePlatform(arm64: Abi.current() == Abi.linuxArm64);
-    installer = LinuxUpdateInstaller(
-      executable: executable,
-      pid: pid,
-      updatesDirectory: updatesDirectory,
-    );
+    // The existing installer targets a different native package.
+    return null;
   } else {
     return null;
   }
@@ -62,7 +53,10 @@ PlatformUpdates? platformUpdates({required String updatesDirectory}) {
     manifestUrl: manifestUrl,
     backend: IoUpdateBackend(
       directory: updatesDirectory,
-      userAgent: 'BaoCode/$currentAppVersion ($edition)',
+      userAgent: 'pi-desktop/$currentAppVersion ($edition)',
+      publicKey: config.publicKey,
+      signatureContext: 'pi-desktop-update-v1',
+      urlPolicy: config.policy,
     ),
     installer: installer,
   );
@@ -218,7 +212,7 @@ class WindowsUpdateInstaller implements UpdateInstaller {
 /// tool/baocode.iss's AppId, which never changes.
 const windowsUninstallKey =
     r'Software\Microsoft\Windows\CurrentVersion\Uninstall\'
-    '{6fdd732b-95c6-4c37-af6f-ff574358deb5}_is1';
+    '{0e68886f-e925-4f6d-9928-5999aecf5449}_is1';
 
 /// Whether [executable] is under one of the Program Files folders, where
 /// a per-machine install puts it.

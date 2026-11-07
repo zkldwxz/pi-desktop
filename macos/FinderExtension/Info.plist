@@ -6,7 +6,7 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<!-- The name System Settings lists the extension by. -->
 	<key>CFBundleDisplayName</key>
-	<string>BaoCode</string>
+	<string>pi-desktop</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:baocode/browser/browser_steps.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/kernel/claude_code/claude_code_translator.dart';
-import 'package:baocode/kernel/claude_code/claude_sdk_tools.dart';
-import 'package:baocode/kernel/transcript.dart';
+import 'package:pi_desktop/browser/browser_steps.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_translator.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_sdk_tools.dart';
+import 'package:pi_desktop/kernel/transcript.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

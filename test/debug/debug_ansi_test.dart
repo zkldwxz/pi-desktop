@@ -3,7 +3,7 @@
 // (1.135.0) checks it: the runs and their classes and colors.
 
 import 'package:bao_editor/monaco/vs/base/common/color.dart' as vs;
-import 'package:baocode/debug/ui/debug_ansi.dart';
+import 'package:pi_desktop/debug/ui/debug_ansi.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -34,13 +34,19 @@ void main() {
       expect(cancelled.foreground, isNull);
     }
     for (var i = 40; i <= 47; i++) {
-      expect(_single('\x1b[${i}m').classes, contains('code-background-colored'));
+      expect(
+        _single('\x1b[${i}m').classes,
+        contains('code-background-colored'),
+      );
       final cancelled = _single('\x1b[$i;49m');
       expect(cancelled.classes, isNot(contains('code-background-colored')));
       expect(cancelled.background, isNull);
     }
     for (var i = 0; i <= 255; i++) {
-      expect(_single('\x1b[58;5;${i}m').classes, contains('code-underline-colored'));
+      expect(
+        _single('\x1b[58;5;${i}m').classes,
+        contains('code-underline-colored'),
+      );
       final cancelled = _single('\x1b[58;5;${i}m\x1b[59m');
       expect(cancelled.classes, isNot(contains('code-underline-colored')));
       expect(cancelled.underline, isNull);
@@ -60,7 +66,8 @@ void main() {
 
     // Nor accumulate more than one copy of each class.
     expect(
-      _single('\x1b[1;1;2;2;3;3;4;4;5;5;6;6;8;8;9;9;21;21;53;53;73;73;74;74m').classes,
+      _single('\x1b[1;1;2;2;3;3;4;4;5;5;6;6;8;8;9;9;21;21;53;53;73;73;74;74m')
+          .classes,
       unorderedEquals([
         'code-bold',
         'code-italic',
@@ -93,8 +100,14 @@ void main() {
       unorderedEquals(['code-background-colored', 'code-foreground-colored']),
     );
     // Duplicates and a terminating semicolon change nothing.
-    expect(_single('\x1b[1;1;4;1;4;4;1;4m').classes, containsAll(['code-bold', 'code-underline']));
-    expect(_single('\x1b[1;4;m').classes, containsAll(['code-bold', 'code-underline']));
+    expect(
+      _single('\x1b[1;1;4;1;4;4;1;4m').classes,
+      containsAll(['code-bold', 'code-underline']),
+    );
+    expect(
+      _single('\x1b[1;4;m').classes,
+      containsAll(['code-bold', 'code-underline']),
+    );
 
     // Reset clears everything.
     final reset = _single('\x1b[1;4;30;41;32;43;34;45;36;47;0m');
@@ -105,8 +118,14 @@ void main() {
 
   test('Expected single 8-bit color sequence operation', () {
     for (var i = 0; i <= 15; i++) {
-      expect(_single('\x1b[38;5;${i}m').classes, contains('code-foreground-colored'));
-      expect(_single('\x1b[48;5;${i}m').classes, contains('code-background-colored'));
+      expect(
+        _single('\x1b[38;5;${i}m').classes,
+        contains('code-foreground-colored'),
+      );
+      expect(
+        _single('\x1b[48;5;${i}m').classes,
+        contains('code-background-colored'),
+      );
     }
     for (var i = 16; i <= 255; i++) {
       final c = calcAnsi8bitColor(i)!;
@@ -152,11 +171,18 @@ void main() {
     // Multiple codes affect the same text.
     expect(
       _single('\x1b[1m\x1b[3m\x1b[4m\x1b[32m').classes,
-      containsAll(['code-bold', 'code-italic', 'code-underline', 'code-foreground-colored']),
+      containsAll([
+        'code-bold',
+        'code-italic',
+        'code-underline',
+        'code-foreground-colored',
+      ]),
     );
 
     // Styles apply to the text after them, until changed.
-    final runs = handleAnsiOutput('\x1b[31mred\x1b[0m plain \x1b[1;32mbold green');
+    final runs = handleAnsiOutput(
+      '\x1b[31mred\x1b[0m plain \x1b[1;32mbold green',
+    );
     expect([for (final r in runs) r.text], ['red', ' plain ', 'bold green']);
     expect(runs[0].foreground, 'terminal.ansiRed');
     expect(runs[1].classes, isEmpty);
@@ -189,7 +215,10 @@ void main() {
     }
     // The other terminators end (and hide) a sequence too.
     for (final terminator in 'ABCDHIJKfhmpsu'.split('')) {
-      expect(handleAnsiOutput('\x1b[content${terminator}content').single.text, 'content');
+      expect(
+        handleAnsiOutput('\x1b[content${terminator}content').single.text,
+        'content',
+      );
     }
   });
 

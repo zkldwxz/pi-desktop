@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/widgets/activity_row.dart';
-import 'package:baocode/l10n/app_localizations_zh.dart';
-import 'package:baocode/l10n/l10n.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/chat/widgets/activity_row.dart';
+import 'package:pi_desktop/l10n/app_localizations_zh.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
 
 void main() {
   group('what a command runs, in a word or two', () {

@@ -1,13 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_commands.dart';
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/ide/services/commands.dart';
-import 'package:baocode/ide/services/quick_input.dart';
-import 'package:baocode/ide/workbench/actions.dart';
-import 'package:baocode/ide/workbench/quick_access.dart';
-import 'package:baocode/ide/workbench/services.dart';
-import 'package:baocode/l10n/app_localizations.dart';
+import 'package:pi_desktop/ide/ide_commands.dart';
+import 'package:pi_desktop/ide/ide_quick_input.dart';
+import 'package:pi_desktop/ide/services/commands.dart';
+import 'package:pi_desktop/ide/services/quick_input.dart';
+import 'package:pi_desktop/ide/workbench/actions.dart';
+import 'package:pi_desktop/ide/workbench/quick_access.dart';
+import 'package:pi_desktop/ide/workbench/services.dart';
+import 'package:pi_desktop/l10n/app_localizations.dart';
 
 import 'fake_host.dart';
 

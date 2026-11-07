@@ -15,7 +15,7 @@ class UpdateController {
   UpdateController({
     required this.service,
     required this.quit,
-    required this.openUrl,
+    required this._openUrl,
     this.openFile,
   });
 
@@ -27,17 +27,30 @@ class UpdateController {
   final Future<void> Function() quit;
 
   /// Opens a link in the browser: the download page, the changelog.
-  final Future<void> Function(Uri url) openUrl;
+  final Future<void> Function(Uri url) _openUrl;
+
+  Future<void> openUrl(Uri url) async {
+    if (url.scheme == 'https' && url.host.isNotEmpty && url.userInfo.isEmpty) {
+      await _openUrl(url);
+    }
+  }
 
   /// Opens a file in the app the system opens it with: the install's log.
   final Future<void> Function(String path)? openFile;
 
-  /// [version]'s notes on the site's changelog (tool/build_changelog.dart
-  /// makes it), the Chinese page for [languageCode] `zh`.
-  static Uri changelogUrl(AppVersion version, String languageCode) => Uri.parse(
-    'https://baocode.dev/${languageCode.startsWith('zh') ? 'zh/' : ''}'
-    'changelog#v${version.marketing}',
-  );
+  /// A configured changelog URL, or an empty URI when none is available.
+  static Uri changelogUrl(AppVersion version, String languageCode) {
+    final base = Uri.tryParse(
+      const String.fromEnvironment('PI_DESKTOP_CHANGELOG_URL'),
+    );
+    if (base == null ||
+        base.scheme != 'https' ||
+        base.host.isEmpty ||
+        base.userInfo.isNotEmpty) {
+      return Uri();
+    }
+    return base.replace(fragment: 'v${version.marketing}');
+  }
 
   bool _restarting = false;
 
@@ -88,10 +101,11 @@ class UpdateController {
           l10n.updateManual(problem.reason),
           sticky: true,
           primary: [
-            IdeNotificationAction(
-              l10n.updateOpenDownloadPage,
-              () => unawaited(openUrl(ManualUpdateRequired.downloadPage)),
-            ),
+            if (ManualUpdateRequired.downloadPage.host.isNotEmpty)
+              IdeNotificationAction(
+                l10n.updateOpenDownloadPage,
+                () => unawaited(openUrl(ManualUpdateRequired.downloadPage)),
+              ),
           ],
         );
       default:
@@ -134,7 +148,8 @@ class UpdateController {
         ],
       ],
       secondary: [
-        if (hasNotes)
+        if (hasNotes &&
+            changelogUrl(release.version, l10n.localeName).host.isNotEmpty)
           IdeNotificationAction(
             l10n.updateReleaseNotes,
             () => unawaited(
@@ -183,10 +198,11 @@ class UpdateController {
       l10n.updateUnfinished(version.marketing, service.current.marketing),
       sticky: true,
       primary: [
-        IdeNotificationAction(
-          l10n.updateOpenDownloadPage,
-          () => unawaited(openUrl(ManualUpdateRequired.downloadPage)),
-        ),
+        if (ManualUpdateRequired.downloadPage.host.isNotEmpty)
+          IdeNotificationAction(
+            l10n.updateOpenDownloadPage,
+            () => unawaited(openUrl(ManualUpdateRequired.downloadPage)),
+          ),
         if (log != null && openFile != null)
           IdeNotificationAction(
             l10n.updateShowLog,

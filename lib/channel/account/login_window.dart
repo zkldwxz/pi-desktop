@@ -28,7 +28,7 @@ abstract interface class LoginWindow {
 /// Linux: login_window.cc), over `baocode/login_window`.
 class ChannelLoginWindow implements LoginWindow {
   ChannelLoginWindow({MethodChannel? channel})
-    : _channel = channel ?? const MethodChannel('baocode/login_window') {
+    : _channel = channel ?? const MethodChannel('pi-desktop/login_window') {
     _channel.setMethodCallHandler((call) async {
       if (call.method == 'closed' && !_closed.isCompleted) _closed.complete();
     });

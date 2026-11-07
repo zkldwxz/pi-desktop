@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/kernel/claude_code/claude_onboarding.dart';
-import 'package:baocode/kernel/claude_code/claude_environment.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_onboarding.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_environment.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;

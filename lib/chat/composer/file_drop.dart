@@ -70,11 +70,11 @@ class RenderFileDropRegion extends RenderProxyBoxWithHitTestBehavior {
 /// Each of the app's windows has its own: the main one's `baocode/drop`,
 /// another's `baocode/drop.<viewId>`.
 abstract final class FileDrops {
-  static const channel = MethodChannel('baocode/drop');
+  static const channel = MethodChannel('pi-desktop/drop');
 
   /// The channel of [viewId]'s window.
   static MethodChannel channelFor(int viewId) =>
-      viewId == 0 ? channel : MethodChannel('baocode/drop.$viewId');
+      viewId == 0 ? channel : MethodChannel('pi-desktop/drop.$viewId');
 
   /// Starts taking [viewId]'s window's drags (once, from its workbench).
   static void listen([int viewId = 0]) {

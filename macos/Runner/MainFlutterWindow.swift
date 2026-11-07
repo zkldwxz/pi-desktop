@@ -78,7 +78,7 @@ class BaoWindow: NSWindow {
 
     // Files dragged onto the window from other apps (see file_drop.dart).
     let drops = FileDropView(channel: FlutterMethodChannel(
-      name: "baocode/drop" + suffix, binaryMessenger: messenger))
+      name: "pi-desktop/drop" + suffix, binaryMessenger: messenger))
     drops.frame = flutterViewController.view.frame
     drops.autoresizingMask = [.width, .height]
     flutterViewController.view.superview?.addSubview(
@@ -87,7 +87,7 @@ class BaoWindow: NSWindow {
 
     // Window controls the Flutter side asks for (see window_controls.dart).
     let channel = FlutterMethodChannel(
-      name: "baocode/window" + suffix, binaryMessenger: messenger)
+      name: "pi-desktop/window" + suffix, binaryMessenger: messenger)
     self.channel = channel
     channel.setMethodCallHandler { [weak self] call, result in
       guard let self else {

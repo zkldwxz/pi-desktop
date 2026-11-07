@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:baocode/update/installer_io.dart';
-import 'package:baocode/update/update_manifest.dart';
-import 'package:baocode/update/update_service.dart';
+import 'package:pi_desktop/update/installer_io.dart';
+import 'package:pi_desktop/update/update_manifest.dart';
+import 'package:pi_desktop/update/update_service.dart';
 
 import 'update_fakes.dart';
 
@@ -33,7 +33,10 @@ ProcessResult _result(int exitCode, [String stdout = '', String stderr = '']) =>
     ProcessResult(0, exitCode, stdout, stderr);
 
 UpdateRelease _release() {
-  final manifest = UpdateManifest.parse(manifestOf('1.2.0+12'));
+  final manifest = UpdateManifest.parse(
+    manifestOf('1.2.0+12'),
+    policy: const UpdateUrlPolicy(extraOrigins: {'https://updates.example'}),
+  );
   return UpdateRelease(
     manifest: manifest,
     platform: 'macos-arm64',

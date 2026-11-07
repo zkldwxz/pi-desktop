@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_transport.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/kernel/prompt_suggestions.dart';
+import 'package:pi_desktop/kernel/agent_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_transport.dart';
+import 'package:pi_desktop/kernel/kernel_types.dart';
+import 'package:pi_desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi_desktop/kernel/prompt_suggestions.dart';
 
 import '../kernel_test.dart' show FakeCli;
 

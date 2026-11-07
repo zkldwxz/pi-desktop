@@ -12,8 +12,21 @@ import 'customizations.dart';
 /// unless moved), a project's under `<project>/.claude` and the project's
 /// root (CLAUDE.md, `.mcp.json`).
 class CustomizationStore {
-  CustomizationStore({this.configDir, this.homeDir, CustomizationDisk? disk})
-    : _disk = disk ?? CustomizationDisk.local;
+  CustomizationStore({
+    this.configDir,
+    this.homeDir,
+    bool pi = false,
+    CustomizationDisk? disk,
+  }) : // Keep the public constructor option out of the store's interface.
+       // ignore: prefer_initializing_formals
+       _pi = pi,
+       _disk = disk ?? CustomizationDisk.local;
+
+  /// Pi resources belong to this fork, separate from Claude Code's files.
+  final bool _pi;
+  String get _projectConfig => _pi ? '.pi' : '.claude';
+  String get _contextFile => _pi ? 'AGENTS.md' : 'CLAUDE.md';
+  String get _templates => _pi ? 'prompts' : 'commands';
 
   /// Claude Code's config folder; by default as the disk's finds it.
   final String? configDir;
@@ -45,6 +58,7 @@ class CustomizationStore {
   /// default config folder, inside one moved elsewhere.
   Future<String> _claudeJson() async {
     final config = await this.config();
+    if (_pi) return _paths.join(config, 'mcp.json');
     final home = homeDir ?? await _files.homeDir();
     if (home != null && _paths.equals(config, _paths.join(home, '.claude'))) {
       return _paths.join(home, '.claude.json');
@@ -59,8 +73,18 @@ class CustomizationStore {
     String? project,
   }) async {
     if (!supported) return const [];
+    if (_pi &&
+        const {
+          CustomizationKind.subagents,
+          CustomizationKind.hooks,
+          CustomizationKind.plugins,
+        }.contains(kind)) {
+      return const [];
+    }
     final config = await this.config();
-    final dotClaude = project == null ? null : _paths.join(project, '.claude');
+    final dotClaude = project == null
+        ? null
+        : _paths.join(project, _projectConfig);
     final items = switch (kind) {
       CustomizationKind.skills => [
         ...await _skills(
@@ -90,13 +114,13 @@ class CustomizationStore {
         ...await _markdown(
           kind,
           CustomizationScope.user,
-          _paths.join(config, 'commands'),
+          _paths.join(config, _templates),
         ),
         if (dotClaude != null)
           ...await _markdown(
             kind,
             CustomizationScope.project,
-            _paths.join(dotClaude, 'commands'),
+            _paths.join(dotClaude, _templates),
           ),
       ],
       CustomizationKind.rules => await _rules(config, project),
@@ -193,11 +217,11 @@ class CustomizationStore {
     }
     final base = scope == CustomizationScope.user
         ? await config()
-        : _paths.join(project!, '.claude');
+        : _paths.join(project!, _projectConfig);
     final path = switch (kind) {
       CustomizationKind.skills => _paths.join(base, 'skills', name, 'SKILL.md'),
       CustomizationKind.subagents => _paths.join(base, 'agents', '$name.md'),
-      CustomizationKind.commands => _paths.join(base, 'commands', '$name.md'),
+      CustomizationKind.commands => _paths.join(base, _templates, '$name.md'),
       _ => _paths.join(base, 'rules', '$name.md'),
     };
     final taken = kind == CustomizationKind.skills
@@ -216,8 +240,15 @@ class CustomizationStore {
     CustomizationScope scope, {
     String? project,
   }) async {
-    if (!kind.configuredIn(scope) || !supported) return null;
+    if (!supported || (!_pi && !kind.configuredIn(scope))) return null;
     if (kind == CustomizationKind.mcps) {
+      if (_pi) {
+        return scope == CustomizationScope.user
+            ? _paths.join(await config(), 'mcp.json')
+            : project == null
+            ? null
+            : _paths.join(project, _projectConfig, 'mcp.json');
+      }
       return project == null ? null : _paths.join(project, '.mcp.json');
     }
     for (final (own, path) in _settingsFiles(await config(), project)) {
@@ -382,7 +413,7 @@ class CustomizationStore {
     return [
       ?await memory(
         CustomizationScope.user,
-        _paths.join(config, 'CLAUDE.md'),
+        _paths.join(config, _contextFile),
         config,
       ),
       ...await folder(
@@ -393,17 +424,17 @@ class CustomizationStore {
       if (project != null) ...[
         ?await memory(
           CustomizationScope.project,
-          _paths.join(project, 'CLAUDE.md'),
+          _paths.join(project, _contextFile),
           project,
         ),
         ?await memory(
           CustomizationScope.project,
-          _paths.join(project, '.claude', 'CLAUDE.md'),
+          _paths.join(project, _projectConfig, _contextFile),
           project,
         ),
         ...await folder(
           CustomizationScope.project,
-          _paths.join(project, '.claude', 'rules'),
+          _paths.join(project, _projectConfig, 'rules'),
           project,
         ),
         ?await memory(
@@ -465,13 +496,17 @@ class CustomizationStore {
           ),
     ];
 
-    final mcpJson = project == null ? null : _paths.join(project, '.mcp.json');
+    final mcpJson = project == null
+        ? null
+        : _pi
+        ? _paths.join(project, _projectConfig, 'mcp.json')
+        : _paths.join(project, '.mcp.json');
     return [
       ...servers(
         CustomizationScope.user,
         state?['mcpServers'],
         claudeJson,
-        editable: false,
+        editable: _pi,
       ),
       if (state?['claudeAiMcpEverConnected'] case final List<Object?> names)
         for (final name in names.whereType<String>().toSet())
@@ -528,11 +563,11 @@ class CustomizationStore {
     if (project != null) ...[
       (
         CustomizationScope.project,
-        _paths.join(project, '.claude', 'settings.json'),
+        _paths.join(project, _projectConfig, 'settings.json'),
       ),
       (
         CustomizationScope.local,
-        _paths.join(project, '.claude', 'settings.local.json'),
+        _paths.join(project, _projectConfig, 'settings.local.json'),
       ),
     ],
   ];

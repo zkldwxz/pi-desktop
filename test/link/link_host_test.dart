@@ -3,16 +3,16 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:bao_link/bao_link.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/customize/customization_store.dart';
-import 'package:baocode/icons/project_icon.dart';
-import 'package:baocode/ide/file_service.dart';
-import 'package:baocode/kernel/agent_kernel.dart' show KernelChoiceKind;
-import 'package:baocode/link/chat_codec.dart';
-import 'package:baocode/link/link_host.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/workspace/project_workspace.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/customize/customization_store.dart';
+import 'package:pi_desktop/icons/project_icon.dart';
+import 'package:pi_desktop/ide/file_service.dart';
+import 'package:pi_desktop/kernel/agent_kernel.dart' show KernelChoiceKind;
+import 'package:pi_desktop/link/chat_codec.dart';
+import 'package:pi_desktop/link/link_host.dart';
+import 'package:pi_desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi_desktop/workspace/project_workspace.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

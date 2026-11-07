@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/explorer_excludes.dart';
+import 'package:pi_desktop/ide/explorer_excludes.dart';
 import 'package:path/path.dart' as p;
 
 void main() {
@@ -36,10 +36,7 @@ void main() {
       expect(excludes.hides('/project/debug.log', root, p.posix), isTrue);
       expect(excludes.hides('/project/logs/debug.log', root, p.posix), isTrue);
       // A path is relative to the folder the entry is in.
-      expect(
-        excludes.hides('/project/build/output.js', root, p.posix),
-        isTrue,
-      );
+      expect(excludes.hides('/project/build/output.js', root, p.posix), isTrue);
       expect(excludes.hides('/project/build', root, p.posix), isTrue);
       // Not matched.
       expect(excludes.hides('/project/lib/a.dart', root, p.posix), isFalse);
@@ -53,7 +50,9 @@ void main() {
       expect(one.withPattern('  ').patterns, ['node_modules']);
       expect(one.withPattern('node_modules').patterns, ['node_modules']);
       expect(
-        one.withPattern('build').withPattern('node_modules', exclude: false)
+        one
+            .withPattern('build')
+            .withPattern('node_modules', exclude: false)
             .patterns,
         ['build'],
       );

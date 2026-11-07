@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_status_bar.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/ide/workbench/actions.dart';
-import 'package:baocode/ide/workbench/context_keys.dart';
-import 'package:baocode/ide/workbench/statusbar.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
+import 'package:pi_desktop/ide/ide_status_bar.dart';
+import 'package:pi_desktop/ide/ide_workbench.dart';
+import 'package:pi_desktop/ide/workbench/actions.dart';
+import 'package:pi_desktop/ide/workbench/context_keys.dart';
+import 'package:pi_desktop/ide/workbench/statusbar.dart';
+import 'package:pi_desktop/keybindings/keybinding_service.dart';
 
 import '../fake_files.dart';
 

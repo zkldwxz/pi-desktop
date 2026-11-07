@@ -4,7 +4,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/models/featured_upstreams_io.dart';
+import 'package:pi_desktop/models/featured_upstreams_io.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
@@ -13,6 +13,16 @@ import 'package:path/path.dart' as p;
 class _RealHttp extends HttpOverrides {}
 
 void main() {
+  test('no configured feed makes no network request', () async {
+    final result = await fetchFeaturedUpstreams(environment: {}, buildUrl: '');
+    expect(result, isEmpty);
+    final invalid = await fetchFeaturedUpstreams(
+      environment: {},
+      buildUrl: 'bad',
+    );
+    expect(invalid, isEmpty);
+  });
+
   late Directory cache;
   late HttpServer server;
   late Uri feed;

@@ -3,24 +3,25 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:baocode/diagnostics/diagnostics_bundle.dart';
-import 'package:baocode/diagnostics/diagnostics_upload.dart';
-import 'package:baocode/ide/ide_button.dart';
-import 'package:baocode/ide/ide_input.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/settings/pages/settings_dropdown.dart';
-import 'package:baocode/settings/pages/updates_page.dart';
-import 'package:baocode/settings/user_settings.dart';
-import 'package:baocode/update/update_controller.dart';
-import 'package:baocode/update/update_service.dart';
-import 'package:baocode/update/update_settings.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/diagnostics/diagnostics_bundle.dart';
+import 'package:pi_desktop/diagnostics/diagnostics_upload.dart';
+import 'package:pi_desktop/ide/ide_button.dart';
+import 'package:pi_desktop/ide/ide_input.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/settings/pages/settings_dropdown.dart';
+import 'package:pi_desktop/settings/pages/updates_page.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
+import 'package:pi_desktop/update/update_controller.dart';
+import 'package:pi_desktop/update/update_service.dart';
+import 'package:pi_desktop/update/update_settings.dart';
+import 'package:pi_desktop/update/version.dart';
 
 import 'update_fakes.dart';
 
 /// Lists [logs]; answers an upload with [result], keeping what it was given.
 class _FakeDiagnostics extends DiagnosticsUploader {
-  _FakeDiagnostics(this.logList) : super(folder: '/logs');
+  _FakeDiagnostics(this.logList)
+    : super(folder: '/logs', url: Uri.parse('https://example.test/upload'));
 
   final List<DiagnosticsLog> logList;
   DiagnosticsResult result = const DiagnosticsUploaded('D7F3K2QX');

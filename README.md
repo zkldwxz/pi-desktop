@@ -1,97 +1,37 @@
-# BaoCode
-<a href="https://trendshift.io/repositories/289180?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-289180" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/289180/daily?language=Dart" alt="baocode-dev%2Fbaocode | Trendshift" width="250" height="55"/></a>
+# pi-desktop
 
-**English** · [简体中文](README_CN.md) · [日本語](README_JA.md) · [Français](README_FR.md) · [Español](README_ES.md)
+[简体中文](README_CN.md) · [日本語](README_JA.md) · [Français](README_FR.md) · [Español](README_ES.md)
 
-An awesome, easy-to-use desktop UI for [Claude Code](https://github.com/anthropics/claude-code), with a millisecond-fast IDE built in.
+pi-desktop is a Flutter desktop workspace using the [Pi coding agent](https://github.com/earendil-works/pi). It is an independent fork of [BaoCode](https://github.com/baocode-dev/baocode), retaining its GPL license and upstream notices.
 
-[Website](https://baocode.dev) · [Download](https://baocode.dev/download) · [Changelog](https://baocode.dev/changelog)
+The fork uses Pi's JSONL RPC and native provider protocols for supported standard APIs, avoiding an extra protocol translation layer. It preserves context within a session and tracks cache-read and cache-write usage per request when reported by the provider. Stable prompts and session context may improve cache reuse, but no higher hit rate has been measured: results depend on the provider, model, prompt contents, and cache TTL. Speed and cost are not guaranteed.
 
-![What users say about BaoCode](docs/readme/reviews.png)
+Configure your own HTTPS provider in Settings → Models; newapi/sub2api-compatible channel setup remains under test. Keys use the application's own keychain service. Pi configuration and sessions are stored under `<app-data>/pi-agent/`.
 
-![BaoCode's main window: agents grouped by project, two conversations side by side, and the model picker](site/shots/main.png)
+## Updates and platforms
 
-## Why
+The bundled Pi runtime starts from the locked 1.5.0 release. Its independent updater checks the official Pi release endpoint after 30 seconds and then every six hours, installing into user data for new sessions. Desktop updates have their own release channel and Ed25519 signature verification; the fork's update settings are configured for its release, which becomes usable after publication. See [auto-update](docs/auto-update.md) and [release](docs/release.md).
 
-We use Claude Code every day. The terminal is a fine place to run it, but a poor place to read it: long diffs scroll out of view, earlier steps are hard to find again, and reviewing what changed means switching to another app. BaoCode is the window we wanted around it.
+The planned release is **0.1.1+2**, with macOS and Windows packages built through Actions; packaging and installation still need validation. No Linux packages are being built for this release. The repository is [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop).
 
-BaoCode has no agent of its own, by design. Claude Code is the agent, and its ecosystem is unmatched: its tools, skills, plugins, MCP servers, subagents and hooks. BaoCode gives it the interface it deserves and makes everything around it work out of the box. It runs the Claude Code you already have, with your settings and your `CLAUDE.md`.
+Local projects are supported. Direct SSH Pi sessions use a remote-installed Pi and Node with batch/key authentication. A real SSH stub turn has been verified; broader remote workflows remain to be validated. A remote IDE server or remote language server is not automatically installed or guaranteed. A real Dart language-server smoke check covered diagnostics, hover, completion and rename.
 
-## Features
+## Compare cache behavior
 
-- **An interface made for reading.** Reads, searches and commands fold into single lines. Keep or Undo each change Claude made, file by file; checkpoints live in BaoCode's own data folder, never in your repository's `.git`.
-- **Goals.** Type `/goal` and what you want done, and Claude keeps working until it is met, with the goal and its progress above the input.
-- **A rich-text input.** Code copied from the editor arrives as a reference to its file and lines; pasted images and dropped files sit where you put them in the sentence.
-- **Fast IDE.** An editor, a terminal and Source Control with a commit graph, built in. Claude Code drafts your commit messages. VS Code, IntelliJ, Sublime and Atom keymaps, and language servers.
-- **Your VS Code themes.** The editor, the conversation and the sidebar all follow them.
-- **Skills, MCP servers and more.** Plugins, MCP servers, skills, subagents, rules, commands and hooks in one place, for you or for a single project.
-- **Any model.** Add an upstream that speaks Anthropic's API, OpenAI's Chat Completions or OpenAI's Responses; a local proxy translates between it and Claude Code. Keys stay in the system keychain.
-- **Remote projects over SSH.** The window stays on your machine; files, Git, search, terminals, language servers and Claude Code run on the remote host (Linux, x64 or arm64).
-- **Notifications.** A system notification, a sound and a badge when an agent needs you or finishes. Close the window and the agents keep running in the menu bar or tray.
-- **Updates itself** in the background, or manually, or not at all.
+To compare with upstream reproducibly, use the same provider endpoint, model and parameters, credentials/account, prompt and tool definitions, workspace, and conversation sequence. Record versions and timestamps, cache TTL and provider settings. Start with cold caches, then repeat the same turns in the same session within the TTL; repeat independent runs and record each request's input, cache-read and cache-write tokens as reported by the provider. Compare totals and distributions with the provider's definitions, and disclose missing metrics and changes in prompts or timing. Do not infer a universal hit rate, latency or cost advantage from one run.
 
-## Speed
+## Develop
 
-VS Code and Cursor are built on Electron: each window is a web page, and every copy carries its own Chromium and Node.js. BaoCode is a native app that draws its own interface straight to the GPU.
-
-| | BaoCode | VS Code | Cursor |
-| --- | --- | --- | --- |
-| Launch | ≈ 0.18 s | ≈ 2–3 s | ≈ 2–3 s |
-| Memory, one window idle | ≈ 120 MB | ≈ 970 MB | ≈ 1.9 GB |
-| Processes, one window | 2 | 8 | 13 |
-| Download size, Windows | ≈ 16 MB | ≈ 244 MB | ≈ 214 MB |
-
-## Requirements
-
-- macOS 12 or later (Apple silicon or Intel, one download each), Windows 10 or later (x64), or Linux: Ubuntu 22.04 or later and other Debian-based distributions (x64 or arm64, a .deb each).
-- [Claude Code](https://github.com/anthropics/claude-code), installed.
-
-## Building from source
-
-BaoCode is a Flutter app (Dart SDK `^3.13.4`).
+Requirements: Flutter **3.47.5**, Node.js **22.19+**, and the platform's Flutter desktop toolchain; macOS builds require full Xcode.
 
 ```sh
 flutter pub get
-flutter run -d macos        # or: flutter run -d windows
+npm ci --prefix runtime/pi --ignore-scripts
+flutter run -d macos  # or windows
 ```
 
-To build what is released, into `build/installers/`:
+`pi.path` and `pi.nodePath` in Settings → General override the CLI and Node executable. Development overrides include `PI_DESKTOP_RUNTIME_DIR`, `PI_DESKTOP_PI_CLI`, and `PI_DESKTOP_NODE`. Run focused tests for your changes; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-```sh
-dart run tool/build_macos.dart            # BaoCode-<version>-{arm64,x64}.dmg and BaoCode-<version>-mac-{arm64,x64}.zip
-dart run tool/build_windows.dart          # BaoCode-<version>-setup.exe (needs Inno Setup)
-flutter build linux --release && sh tool/package_linux_deb.sh   # BaoCode-<version>-linux-{amd64,arm64}.deb and .tar.gz, on Ubuntu
-dart run tool/build_remote_server.dart    # the SSH remote server, for Linux x64 and arm64
-```
+The application has its own identity and data directory (`~/Library/Application Support/pi-desktop` on macOS and `%APPDATA%/pi-desktop` on Windows). `PI_DESKTOP_DATA_DIR` overrides the data location. Historical documentation may still describe upstream behavior.
 
-The full test suite is slow; run the tests for what you changed, for example `flutter test test/update`.
-
-Releases are built and published by CI when a `v*` tag is pushed; versions, signing and where releases go are in [docs/release.md](docs/release.md). More in [docs/](docs): [auto-update](docs/auto-update.md), [SSH remote](docs/ssh-remote.md), [Windows](docs/windows.md) (some are in Chinese).
-
-## Repository
-
-| Path | What it is |
-| --- | --- |
-| [lib/](lib) | The app |
-| [packages/bao_editor](packages/bao_editor) | Monaco, ported to Flutter: the editor, its highlighting, VS Code's themes and keybindings |
-| [packages/bao_xterm](packages/bao_xterm) | A Dart port of xterm.js |
-| [packages/bao_pty](packages/bao_pty) | Pseudo terminals for Dart: forkpty on macOS and Linux, ConPTY on Windows |
-| [packages/bao_remote](packages/bao_remote) | The remote host served over SSH |
-| [macos/](macos), [windows/](windows), [linux/](linux) | The native runners |
-| [tool/](tool) | Build, packaging and release scripts |
-| [site/](site) | The website, [baocode.dev](https://baocode.dev) |
-| [docs/](docs) | Design notes |
-
-## Feedback
-
-Issues and pull requests are welcome. Discuss a change in an issue before you write it; large pull requests, and pull requests for changes not discussed first, are not accepted. See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## License
-
-BaoCode is licensed under the [GNU General Public License v3.0](LICENSE)
-(GPL-3.0-only). The editor and terminal packages in [packages/](packages)
-(bao_editor, bao_xterm, bao_pty) are MIT. Third-party components keep their
-own licenses, found next to them in the source tree.
-
-BaoCode is an independent project, not affiliated with or endorsed by
-Anthropic.
+[GPL-3.0-only](LICENSE) applies to the application; third-party components retain their own licenses and notices.

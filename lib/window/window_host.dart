@@ -175,7 +175,7 @@ class ChannelWindowHost extends WindowHost {
   ChannelWindowHost({PlatformDispatcher? dispatcher})
     : _dispatcher = dispatcher ?? PlatformDispatcher.instance;
 
-  static const channel = MethodChannel('baocode/windows');
+  static const channel = MethodChannel('pi-desktop/windows');
 
   final PlatformDispatcher _dispatcher;
 

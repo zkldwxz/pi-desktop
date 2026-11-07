@@ -1,6 +1,6 @@
-import 'package:baocode/chat/side_panel/file_link.dart';
-import 'package:baocode/chat/widgets/markdown_view.dart';
-import 'package:baocode/kernel/claude_code/claude_code_transport.dart';
+import 'package:pi_desktop/chat/side_panel/file_link.dart';
+import 'package:pi_desktop/chat/widgets/markdown_view.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_transport.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as p;

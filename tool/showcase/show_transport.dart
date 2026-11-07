@@ -12,11 +12,11 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_transport.dart';
-import 'package:baocode/kernel/claude_code/mock_claude_code_transport.dart';
-import 'package:baocode/remote/remote_claude.dart';
+import 'package:pi_desktop/kernel/agent_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_transport.dart';
+import 'package:pi_desktop/kernel/claude_code/mock_claude_code_transport.dart';
+import 'package:pi_desktop/remote/remote_claude.dart';
 
 /// The showcase's time: how much slower than the wall's it runs, while a
 /// video is recorded frame by frame.

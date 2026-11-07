@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/theme/code_font.dart';
-import 'package:baocode/theme/ui_zoom.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/theme/code_font.dart';
+import 'package:pi_desktop/theme/ui_zoom.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 void main() {
   testWidgets('lays out in the space divided by its scale, and paints, hits '
@@ -62,9 +62,7 @@ void main() {
   });
 
   testWidgets('at 1 it adds no layer', (tester) async {
-    await tester.pumpWidget(
-      const UiZoom(scale: 1, child: SizedBox.expand()),
-    );
+    await tester.pumpWidget(const UiZoom(scale: 1, child: SizedBox.expand()));
     expect(
       tester.renderObject<RenderUiZoom>(find.byType(UiZoom)).debugLayer,
       isNull,
@@ -80,7 +78,7 @@ void main() {
 
     Future<Rect> rowAt(int percent) async {
       CodeFont.uiScale.value = percent;
-      await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+      await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
       await tester.pump();
       final row = find.text('Sticky user message on scroll');
       final box = tester.renderObject<RenderBox>(row);

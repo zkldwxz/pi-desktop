@@ -33,7 +33,7 @@ class StashCapture {
 /// app, and the text in pictures. Nothing where there is no channel (the web, under test).
 class StashHost {
   StashHost({MethodChannel? channel})
-    : _channel = channel ?? const MethodChannel('baocode/stash') {
+    : _channel = channel ?? const MethodChannel('pi-desktop/stash') {
     _channel.setMethodCallHandler((call) async {
       if (call.method == 'pressed') {
         onPressed?.call(StashCapture.fromJson(call.arguments));

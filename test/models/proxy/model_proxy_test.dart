@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/proxy/model_proxy.dart';
+import 'package:pi_desktop/models/model_provider.dart';
+import 'package:pi_desktop/models/proxy/model_proxy.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// An upstream on this machine: answers each request with [reply], and

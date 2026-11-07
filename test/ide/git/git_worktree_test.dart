@@ -1,7 +1,7 @@
 // A repository's worktrees as `git worktree list --porcelain` tells them,
 // and which of them has a path (where the agent works).
 
-import 'package:baocode/ide/git/git_model.dart';
+import 'package:pi_desktop/ide/git/git_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

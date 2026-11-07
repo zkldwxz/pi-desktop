@@ -1,17 +1,17 @@
 import 'dart:typed_data';
 
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/forge/forge_accounts.dart';
-import 'package:baocode/forge/forge_api.dart';
-import 'package:baocode/forge/forge_ref.dart';
-import 'package:baocode/models/secret_store.dart';
-import 'package:baocode/stash/stash_disk.dart';
-import 'package:baocode/stash/stash_forge.dart';
-import 'package:baocode/stash/stash_note.dart';
-import 'package:baocode/stash/stash_settings.dart';
-import 'package:baocode/stash/stash_store.dart';
-import 'package:baocode/stash/stash_threads.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/forge/forge_accounts.dart';
+import 'package:pi_desktop/forge/forge_api.dart';
+import 'package:pi_desktop/forge/forge_ref.dart';
+import 'package:pi_desktop/models/secret_store.dart';
+import 'package:pi_desktop/stash/stash_disk.dart';
+import 'package:pi_desktop/stash/stash_forge.dart';
+import 'package:pi_desktop/stash/stash_note.dart';
+import 'package:pi_desktop/stash/stash_settings.dart';
+import 'package:pi_desktop/stash/stash_store.dart';
+import 'package:pi_desktop/stash/stash_threads.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../forge/forge_test.dart' show FakeForgeHttp;

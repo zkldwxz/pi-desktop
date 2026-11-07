@@ -4,31 +4,31 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/widgets/markdown_view.dart';
-import 'package:baocode/chat/widgets/hover_scroll_text.dart';
-import 'package:baocode/chat/widgets/inline_rename_field.dart';
-import 'package:baocode/ide/ide_modern_ui.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/sidebar/sidebar.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/workspace/islands.dart';
-import 'package:baocode/workspace/back_to_chat_button.dart';
-import 'package:baocode/workspace/chat_drag.dart';
-import 'package:baocode/workspace/chat_grid.dart';
-import 'package:baocode/workspace/chat_grid_view.dart';
-import 'package:baocode/workspace/editor_launcher.dart';
-import 'package:baocode/chat/side_panel/side_panel_view.dart';
-import 'package:baocode/workspace/open_in_editor_button.dart';
-import 'package:baocode/workspace/pane_tabs.dart';
-import 'package:baocode/workspace/title_bar_double_click.dart';
-import 'package:baocode/workspace/workspace.dart';
-import 'package:baocode/workspace/chat_terminal.dart';
-import 'package:baocode/workspace/pin_window_button.dart';
-import 'package:baocode/workspace/window_header/window_header.dart';
-import 'package:baocode/l10n/app_localizations_en.dart';
+import 'package:pi_desktop/chat/chat_screen.dart';
+import 'package:pi_desktop/chat/composer/composer.dart';
+import 'package:pi_desktop/chat/widgets/markdown_view.dart';
+import 'package:pi_desktop/chat/widgets/hover_scroll_text.dart';
+import 'package:pi_desktop/chat/widgets/inline_rename_field.dart';
+import 'package:pi_desktop/ide/ide_modern_ui.dart';
+import 'package:pi_desktop/ide/ide_workbench.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/sidebar/sidebar.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
+import 'package:pi_desktop/workspace/islands.dart';
+import 'package:pi_desktop/workspace/back_to_chat_button.dart';
+import 'package:pi_desktop/workspace/chat_drag.dart';
+import 'package:pi_desktop/workspace/chat_grid.dart';
+import 'package:pi_desktop/workspace/chat_grid_view.dart';
+import 'package:pi_desktop/workspace/editor_launcher.dart';
+import 'package:pi_desktop/chat/side_panel/side_panel_view.dart';
+import 'package:pi_desktop/workspace/open_in_editor_button.dart';
+import 'package:pi_desktop/workspace/pane_tabs.dart';
+import 'package:pi_desktop/workspace/title_bar_double_click.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
+import 'package:pi_desktop/workspace/chat_terminal.dart';
+import 'package:pi_desktop/workspace/pin_window_button.dart';
+import 'package:pi_desktop/workspace/window_header/window_header.dart';
+import 'package:pi_desktop/l10n/app_localizations_en.dart';
 
 const first = 'Optimize virtual list scrolling';
 const second = 'Rate limit per API key';
@@ -41,7 +41,7 @@ Future<Workspace> pumpApp(WidgetTester tester, {double width = 1400}) async {
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.reset);
   final workspace = Workspace.mock();
-  await tester.pumpWidget(BaoCodeApp(workspace: workspace));
+  await tester.pumpWidget(PiDesktopApp(workspace: workspace));
   await tester.pump();
   return workspace;
 }
@@ -487,7 +487,7 @@ void main() {
 
   testWidgets('on macOS a top pane\'s title bar drags the pane, not the '
       'window; alone, the window', (tester) async {
-    const channel = MethodChannel('baocode/window');
+    const channel = MethodChannel('pi-desktop/window');
     var windowDrags = 0;
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, (
       call,
@@ -1381,7 +1381,7 @@ void main() {
     var room = <String, double>{'width': 400, 'height': 0};
     final grown = <Object?>[];
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('baocode/window'),
+      const MethodChannel('pi-desktop/window'),
       (call) async {
         switch (call.method) {
           case 'windowRoom':
@@ -1434,7 +1434,7 @@ void main() {
       'the window grows past the narrow width', (tester) async {
     final grown = <Object?>[];
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('baocode/window'),
+      const MethodChannel('pi-desktop/window'),
       (call) async {
         switch (call.method) {
           case 'windowRoom':

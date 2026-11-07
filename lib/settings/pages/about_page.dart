@@ -12,13 +12,11 @@ import '../../workspace/editor_launcher.dart' show openExternal;
 import '../../workspace/window_header/about_dialog.dart' show aboutIconAsset;
 import 'settings_widgets.dart';
 
-/// Settings → About: what BaoCode is, which build this is, and where it
-/// is made in the open: its repository (a star there helps others find
-/// it), its site, its changelog, and where to tell of a problem.
+/// Settings → About: what pi-desktop is, its build, repository, releases,
+/// and where to report a problem.
 class AboutSettingsPage extends StatelessWidget {
   const AboutSettingsPage({super.key});
 
-  static final website = Uri.parse('https://baocode.dev');
   static final issues = StarPrompt.repository.replace(
     path: '${StarPrompt.repository.path}/issues',
   );
@@ -28,11 +26,8 @@ class AboutSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final zh = Localizations.localeOf(context).languageCode == 'zh';
-    final changelog = website.replace(
-      path: zh ? '/zh/changelog' : '/changelog',
-    );
     final repository = StarPrompt.repository;
+    final changelog = repository.replace(path: '${repository.path}/releases');
     return SettingsPage(
       title: l10n.settingsSectionAbout,
       lead: Padding(
@@ -58,7 +53,7 @@ class AboutSettingsPage extends StatelessWidget {
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       Text(
-                        'BaoCode',
+                        'pi-desktop',
                         style: TextStyle(
                           color: AppColors.textPrimary,
                           fontSize: 17,
@@ -109,15 +104,6 @@ class AboutSettingsPage extends StatelessWidget {
                 label: l10n.starPromptStar,
                 icon: Codicons.star,
                 onPressed: () => _open(repository),
-              ),
-            ),
-            SettingsRow(
-              label: l10n.aboutWebsite,
-              description: website.host,
-              trailing: IdeButton(
-                label: l10n.aboutOpen,
-                secondary: true,
-                onPressed: () => _open(website),
               ),
             ),
             SettingsRow(

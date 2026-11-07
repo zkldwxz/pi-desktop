@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:baocode/models/codex/codex_import.dart';
-import 'package:baocode/models/codex/codex_service.dart';
+import 'package:pi_desktop/models/codex/codex_import.dart';
+import 'package:pi_desktop/models/codex/codex_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 String jwt(Map<String, Object?> claims) =>

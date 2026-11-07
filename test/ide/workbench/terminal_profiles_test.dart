@@ -2,14 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/lsp_ui/problems_panel.dart';
-import 'package:baocode/ide/ide_layout.dart';
-import 'package:baocode/ide/ide_menu.dart';
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
-import 'package:baocode/settings/user_settings.dart';
-import 'package:baocode/theme/codicons.dart';
+import 'package:pi_desktop/ide/lsp_ui/problems_panel.dart';
+import 'package:pi_desktop/ide/ide_layout.dart';
+import 'package:pi_desktop/ide/ide_menu.dart';
+import 'package:pi_desktop/ide/ide_quick_input.dart';
+import 'package:pi_desktop/ide/ide_workbench.dart';
+import 'package:pi_desktop/keybindings/keybinding_service.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
+import 'package:pi_desktop/theme/codicons.dart';
 import 'package:path/path.dart' as p;
 
 import '../terminal/fake_pty.dart';

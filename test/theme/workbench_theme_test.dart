@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart' hide ColorScheme;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/workspace/preference_store.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
+import 'package:pi_desktop/theme/workbench_theme.dart';
+import 'package:pi_desktop/workspace/preference_store.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

@@ -140,7 +140,7 @@ class SshConnectException implements Exception {
 /// The server builds the app carries, one per platform.
 abstract interface class RemoteServerBinaries {
   /// Names the build: where it goes on the host
-  /// (`~/.baocode-server/<version>/`), so that each build is put there once.
+  /// (`~/.pi-desktop-server/<version>/`), so that each build is put there once.
   String get version;
 
   /// The build for [platform] (`linux-x64`, `darwin-arm64`, …; see
@@ -565,7 +565,7 @@ class SshLauncher {
   static const cancelledMessage = 'Signing in was cancelled.';
 
   /// Where the server's builds go on the host, from its home folder.
-  static const serverRoot = '.baocode-server';
+  static const serverRoot = '.pi-desktop-server';
 
   String get _folder => '$serverRoot/${binaries.version}';
 

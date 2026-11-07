@@ -133,6 +133,8 @@ class ModelProviders extends ChangeNotifier {
   /// its models, its settings') to run on: only for the CLI. BaoCode's own
   /// core runs on the upstreams here alone, and the channel build on its
   /// account's (lib/channel/): never on this machine's.
+  // pi-desktop fixes ClaudeCore to builtin at startup and only registers Pi.
+  // Keep the legacy adapter's model semantics for its retained component tests.
   bool get builtinAvailable =>
       !ChannelSetup.channelBuild && ClaudeCore.current() == ClaudeCore.cli;
 

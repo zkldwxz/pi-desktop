@@ -2,7 +2,7 @@ import 'package:bao_editor/monaco/flutter/wheel_glide.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/base/smooth_scroll.dart';
+import 'package:pi_desktop/base/smooth_scroll.dart';
 
 const _frame = Duration(microseconds: 16667);
 

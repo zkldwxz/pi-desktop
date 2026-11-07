@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:baocode/icons/brand_logos.dart';
-import 'package:baocode/models/model_brand.dart';
-import 'package:baocode/models/model_provider.dart';
+import 'package:pi_desktop/icons/brand_logos.dart';
+import 'package:pi_desktop/models/model_brand.dart';
+import 'package:pi_desktop/models/model_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

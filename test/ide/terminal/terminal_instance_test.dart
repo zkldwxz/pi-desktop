@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/terminal/pty.dart';
-import 'package:baocode/ide/terminal/terminal_instance.dart';
-import 'package:baocode/ide/terminal/terminal_keyboard.dart';
-import 'package:baocode/theme/code_font.dart';
+import 'package:pi_desktop/ide/terminal/pty.dart';
+import 'package:pi_desktop/ide/terminal/terminal_instance.dart';
+import 'package:pi_desktop/ide/terminal/terminal_keyboard.dart';
+import 'package:pi_desktop/theme/code_font.dart';
 
 import 'fake_pty.dart';
 import 'fake_terminal.dart';

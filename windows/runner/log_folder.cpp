@@ -91,7 +91,7 @@ void SetFolder(const std::wstring& folder) {
 std::unique_ptr<flutter::MethodChannel<flutter::EncodableValue>> Listen(
     flutter::BinaryMessenger* messenger) {
   auto channel = std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-      messenger, "baocode/logs", &flutter::StandardMethodCodec::GetInstance());
+      messenger, "pi-desktop/logs", &flutter::StandardMethodCodec::GetInstance());
   channel->SetMethodCallHandler(
       [](const flutter::MethodCall<flutter::EncodableValue>& call,
          std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>>

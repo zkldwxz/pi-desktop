@@ -1,9 +1,9 @@
 import 'package:bao_editor/monaco/flutter/keybinding_entry.dart'
     show KeybindingPlatform;
-import 'package:baocode/keybindings/key_chord.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/settings/pages/stash_hotkey_field.dart';
-import 'package:baocode/stash/stash_settings.dart';
+import 'package:pi_desktop/keybindings/key_chord.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/settings/pages/stash_hotkey_field.dart';
+import 'package:pi_desktop/stash/stash_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -90,9 +90,7 @@ void main() {
     );
   });
 
-  testWidgets('without one, the card offers the suggested one', (
-    tester,
-  ) async {
+  testWidgets('without one, the card offers the suggested one', (tester) async {
     await tester.pumpWidget(
       const Directionality(
         textDirection: TextDirection.ltr,

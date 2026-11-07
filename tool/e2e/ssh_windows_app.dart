@@ -10,26 +10,26 @@ import 'dart:ui' as ui;
 
 import 'package:bao_editor/monaco/flutter/editor_surface.dart';
 import 'package:bao_remote/client.dart' show SshAuth, SshServer;
-import 'package:baocode/browser/browser_bridge.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/side_panel/side_panel_controller.dart';
-import 'package:baocode/chat/side_panel/side_panel_view.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/ide/lsp/language_features.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart' show LspPosition;
-import 'package:baocode/ide/terminal/terminal_instance.dart';
-import 'package:baocode/ide/terminal/terminal_panel.dart';
-import 'package:baocode/kernel/agent_kernel.dart' show KernelChoiceKind;
-import 'package:baocode/kernel/claude_code/claude_sdk_tools.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/main.dart' as app;
-import 'package:baocode/remote/port_forwards.dart';
-import 'package:baocode/remote/remote_host_settings.dart';
-import 'package:baocode/remote/remote_location.dart';
-import 'package:baocode/remote/ssh_host.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/browser/browser_bridge.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/chat/composer/composer.dart';
+import 'package:pi_desktop/chat/side_panel/side_panel_controller.dart';
+import 'package:pi_desktop/chat/side_panel/side_panel_view.dart';
+import 'package:pi_desktop/ide/ide_workbench.dart';
+import 'package:pi_desktop/ide/lsp/language_features.dart';
+import 'package:pi_desktop/ide/lsp/lsp_protocol.dart' show LspPosition;
+import 'package:pi_desktop/ide/terminal/terminal_instance.dart';
+import 'package:pi_desktop/ide/terminal/terminal_panel.dart';
+import 'package:pi_desktop/kernel/agent_kernel.dart' show KernelChoiceKind;
+import 'package:pi_desktop/kernel/claude_code/claude_sdk_tools.dart';
+import 'package:pi_desktop/kernel/kernel_types.dart';
+import 'package:pi_desktop/main.dart' as app;
+import 'package:pi_desktop/remote/port_forwards.dart';
+import 'package:pi_desktop/remote/remote_host_settings.dart';
+import 'package:pi_desktop/remote/remote_location.dart';
+import 'package:pi_desktop/remote/ssh_host.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -81,9 +81,9 @@ Future<void> main() async {
   final location = RemoteLocation.of(host, root);
   var failed = false;
   try {
-    await _until(() => _find<app.BaoCodeApp>() != null, 'the app');
+    await _until(() => _find<app.PiDesktopApp>() != null, 'the app');
     final workspace =
-        (_find<app.BaoCodeApp>()!.widget as app.BaoCodeApp).workspace!;
+        (_find<app.PiDesktopApp>()!.widget as app.PiDesktopApp).workspace!;
     if (phase == 'windows') {
       // Added as the user adds one in the app: a saved server, its key.
       workspace.saveSshServer(

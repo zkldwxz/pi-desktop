@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/ide/ide_color_theme_picker.dart';
-import 'package:baocode/ide/ide_hover.dart';
-import 'package:baocode/ide/ide_menu.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/keybindings/default_keybindings.dart';
+import 'package:pi_desktop/chat/chat_screen.dart';
+import 'package:pi_desktop/ide/ide_color_theme_picker.dart';
+import 'package:pi_desktop/ide/ide_hover.dart';
+import 'package:pi_desktop/ide/ide_menu.dart';
+import 'package:pi_desktop/ide/ide_workbench.dart';
+import 'package:pi_desktop/keybindings/default_keybindings.dart';
 import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:bao_editor/monaco/vs/platform/theme/common/theme.dart' as vs;
-import 'package:baocode/keybindings/keybinding_service.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/settings/pages/appearance_page.dart';
-import 'package:baocode/settings/pages/settings_dropdown.dart';
-import 'package:baocode/settings/settings_dialog.dart';
-import 'package:baocode/sidebar/sidebar.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/keybindings/keybinding_service.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/settings/pages/appearance_page.dart';
+import 'package:pi_desktop/settings/pages/settings_dropdown.dart';
+import 'package:pi_desktop/settings/settings_dialog.dart';
+import 'package:pi_desktop/sidebar/sidebar.dart';
+import 'package:pi_desktop/theme/codicons.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 final _mac = TargetPlatformVariant.only(TargetPlatform.macOS);
 
@@ -35,7 +35,7 @@ Future<Workspace> _pumpApp(WidgetTester tester, {double height = 900}) async {
   KeybindingService.instance = KeybindingService();
   addTearDown(() => KeybindingService.instance = KeybindingService());
   final workspace = Workspace.mock();
-  await tester.pumpWidget(BaoCodeApp(workspace: workspace));
+  await tester.pumpWidget(PiDesktopApp(workspace: workspace));
   await tester.pump();
   return workspace;
 }
@@ -142,7 +142,7 @@ void main() {
 
     // What the app menu's Preferences… sends (MainFlutterWindow.swift).
     await tester.binding.defaultBinaryMessenger.handlePlatformMessage(
-      'baocode/window',
+      'pi-desktop/window',
       const StandardMethodCodec().encodeMethodCall(
         const MethodCall('menuCommand', openSettingsCommandId),
       ),

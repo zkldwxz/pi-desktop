@@ -5,8 +5,8 @@ import 'package:bao_remote/files.dart' show IdeFileExistsException;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
-import 'package:baocode/customize/customization_store.dart';
-import 'package:baocode/customize/customizations.dart';
+import 'package:pi_desktop/customize/customization_store.dart';
+import 'package:pi_desktop/customize/customizations.dart';
 
 void main() {
   late Directory temp;
@@ -31,6 +31,59 @@ void main() {
   });
 
   tearDown(() => temp.deleteSync(recursive: true));
+
+  test(
+    'Pi resources use the isolated config, project .pi, prompts and mcp.json',
+    () async {
+      final ownConfig = p.join(temp.path, 'pi-agent');
+      final pi = CustomizationStore(configDir: ownConfig, pi: true);
+      write(
+        p.join(project, '.claude', 'skills', 'old', 'SKILL.md'),
+        '---\nname: old\n---\n',
+      );
+      write(
+        p.join(project, '.pi', 'skills', 'new', 'SKILL.md'),
+        '---\nname: new\n---\n',
+      );
+      write(p.join(ownConfig, 'prompts', 'review.md'), 'Review the code.\n');
+      write(
+        p.join(ownConfig, 'mcp.json'),
+        jsonEncode({
+          'mcpServers': {
+            'own': {'command': 'own-mcp'},
+          },
+        }),
+      );
+      expect(
+        (await pi.list(
+          CustomizationKind.skills,
+          project: project,
+        )).map((item) => item.name),
+        ['new'],
+      );
+      expect(
+        await pi.commandFile('review'),
+        p.join(ownConfig, 'prompts', 'review.md'),
+      );
+      expect(
+        (await pi.list(CustomizationKind.mcps, project: project)).single.name,
+        'own',
+      );
+      expect(
+        await pi.configFile(CustomizationKind.mcps, CustomizationScope.user),
+        p.join(ownConfig, 'mcp.json'),
+      );
+      expect(
+        await pi.create(
+          CustomizationKind.commands,
+          CustomizationScope.project,
+          'ship',
+          project: project,
+        ),
+        p.join(project, '.pi', 'prompts', 'ship.md'),
+      );
+    },
+  );
 
   test('reads front matter, block scalars and quotes included', () {
     const text =

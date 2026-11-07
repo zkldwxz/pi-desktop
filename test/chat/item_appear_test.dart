@@ -5,16 +5,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_feed.dart';
-import 'package:baocode/chat/chat_history_view.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer_draft.dart';
-import 'package:baocode/chat/widgets/activity_row.dart';
-import 'package:baocode/chat/widgets/rolling_text.dart';
-import 'package:baocode/chat/widgets/thinking_section.dart';
-import 'package:baocode/chat/widgets/turn_footer.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi_desktop/chat/chat_feed.dart';
+import 'package:pi_desktop/chat/chat_history_view.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/chat/composer/composer_draft.dart';
+import 'package:pi_desktop/chat/widgets/activity_row.dart';
+import 'package:pi_desktop/chat/widgets/rolling_text.dart';
+import 'package:pi_desktop/chat/widgets/thinking_section.dart';
+import 'package:pi_desktop/chat/widgets/turn_footer.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
 
 /// A turn under way: its items, then the status row while it streams.
 class _LiveFeed extends ChangeNotifier implements ChatFeed {

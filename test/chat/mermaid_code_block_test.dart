@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:baocode/chat/widgets/code_citation.dart';
-import 'package:baocode/chat/widgets/content_image.dart';
-import 'package:baocode/chat/widgets/finite_selection_edges.dart';
-import 'package:baocode/chat/widgets/markdown_view.dart';
-import 'package:baocode/chat/widgets/mermaid_code_block.dart';
-import 'package:baocode/chat/widgets/mermaid_theme.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/theme/workbench_theme.dart';
+import 'package:pi_desktop/chat/widgets/code_citation.dart';
+import 'package:pi_desktop/chat/widgets/content_image.dart';
+import 'package:pi_desktop/chat/widgets/finite_selection_edges.dart';
+import 'package:pi_desktop/chat/widgets/markdown_view.dart';
+import 'package:pi_desktop/chat/widgets/mermaid_code_block.dart';
+import 'package:pi_desktop/chat/widgets/mermaid_theme.dart';
+import 'package:pi_desktop/theme/codicons.dart';
+import 'package:pi_desktop/theme/workbench_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

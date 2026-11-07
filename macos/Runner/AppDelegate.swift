@@ -85,7 +85,7 @@ class AppDelegate: FlutterAppDelegate {
   /// Files and folders the system asks the app to open: the `code`
   /// command's (`open -b`), Finder's Open With, those dropped on the Dock
   /// icon (see CFBundleDocumentTypes in Info.plist); and the Finder
-  /// extension's `baocode://` URLs (see OpenRequests.request). At launch
+  /// extension's `pi-desktop://` URLs (see OpenRequests.request). At launch
   /// they come before Flutter is ready for them, and wait (see
   /// OpenRequests).
   override func application(_ application: NSApplication, open urls: [URL]) {
@@ -159,7 +159,7 @@ final class OpenRequests {
   /// Answers Flutter over [messenger]'s `baocode/open` (see
   /// MainFlutterWindow.swift).
   func attach(to messenger: FlutterBinaryMessenger) {
-    let channel = FlutterMethodChannel(name: "baocode/open", binaryMessenger: messenger)
+    let channel = FlutterMethodChannel(name: "pi-desktop/open", binaryMessenger: messenger)
     self.channel = channel
     channel.setMethodCallHandler { [weak self] call, result in
       guard let self else {
@@ -230,7 +230,7 @@ final class OpenRequests {
     return url.host?.lowercased() == "file"
   }
 
-  /// What a `baocode://` URL asks. The Finder extension's (see
+  /// What a `pi-desktop://` URL asks. The Finder extension's (see
   /// FinderExtension/FinderSync.swift), as the request Explorer's menu
   /// makes on Windows (see open_requests.cpp and code_args.dart): `agent`,
   /// Open with BaoCode, a new agent with the paths (its marker, then them);
@@ -244,17 +244,20 @@ final class OpenRequests {
   /// the IDE at a line, the link after the same marker (FileLink in
   /// code_args.dart). Nil for any other URL, or one without absolute paths.
   static func request(from url: URL) -> [String]? {
-    guard url.scheme == "baocode",
-      let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+    guard url.scheme?.lowercased() == "pi-desktop",
+      var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
     else { return nil }
+    // Dart's existing link parsers still use the internal baocode scheme.
+    components.scheme = "baocode"
+    guard let internalLink = components.string else { return nil }
     if components.host?.lowercased() == "file" {
-      return [importMarker, url.absoluteString]
+      return [importMarker, internalLink]
     }
     if components.host == "provider" {
-      return components.path == "/import" ? [importMarker, url.absoluteString] : nil
+      return components.path == "/import" ? [importMarker, internalLink] : nil
     }
     if components.host == "activate" {
-      return [importMarker, url.absoluteString]
+      return [importMarker, internalLink]
     }
     let paths = (components.queryItems ?? [])
       .filter { $0.name == "path" }

@@ -1,6 +1,6 @@
-import 'package:baocode/kernel/claude_code/claude_haiku.dart'
+import 'package:pi_desktop/kernel/claude_code/claude_haiku.dart'
     show ClaudeHaikuCancelled;
-import 'package:baocode/stash/stash_ai.dart';
+import 'package:pi_desktop/stash/stash_ai.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

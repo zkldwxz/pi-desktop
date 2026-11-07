@@ -63,10 +63,13 @@ constexpr char kCodeRequestFlag[] = "--baocode-cli";
 // openAgent).
 constexpr char kAgentRequestFlag[] = "--baocode-agent";
 
-// The flag a baocode: link starts the app with (the URL scheme the installer
+// The flag a pi-desktop: link starts the app with (the URL scheme the installer
 // registers, see tool/baocode.iss), the link next: a site's one-click import
 // of an upstream, which Flutter reads (lib/models/upstream_import.dart).
 constexpr char kLinkRequestFlag[] = "--baocode-link";
+
+// Translate the external pi-desktop scheme to the scheme Dart understands.
+void NormalizeLinkRequest(std::vector<std::string>& arguments);
 
 // Whether |paths| are a request rather than paths: kCodeRequestFlag,
 // kAgentRequestFlag or kLinkRequestFlag first.
@@ -75,8 +78,8 @@ bool IsRequest(const std::vector<std::string>& paths);
 // The paths in the command line the app was started with, made absolute
 // from the folder it was started in, in UTF-8; its options (from `-`) left
 // out. Started by code.cmd, the request it makes instead, as it came; by
-// Open with BaoCode, its flag, then the paths; by a baocode: link, its flag,
-// then the link (see IsRequest).
+// Open with BaoCode, its flag, then the paths; by a pi-desktop: link, its
+// flag, then the normalized link (see IsRequest).
 std::vector<std::string> OpenPathsFromCommandLine();
 
 // Marks |window| as the one that takes the paths a second copy of the app

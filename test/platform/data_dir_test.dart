@@ -4,11 +4,11 @@ library;
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/platform/data_dir.dart';
+import 'package:pi_desktop/platform/data_dir.dart';
 import 'package:path/path.dart' as p;
 
-/// Where the data folder is found: `BAOCODE_DATA_DIR`, else the pointer in
-/// `~/.baocode`, else the platform's place. Every home is a temporary one.
+/// Where the data folder is found: `PI_DESKTOP_DATA_DIR`, else the pointer in
+/// `~/.pi-desktop`, else the platform's place. Every home is a temporary one.
 void main() {
   late Directory home;
   late Map<String, String> environment;
@@ -26,7 +26,7 @@ void main() {
   });
 
   File pointer() =>
-      File(p.join(home.path, '.baocode', 'config-dir.json'))
+      File(p.join(home.path, '.pi-desktop', 'config-dir.json'))
         ..parent.createSync(recursive: true);
 
   Directory folder(String name) =>
@@ -47,8 +47,19 @@ void main() {
     );
     expect(
       resolution.pointerFile,
-      p.join(home.path, '.baocode', 'config-dir.json'),
+      p.join(home.path, '.pi-desktop', 'config-dir.json'),
     );
+  });
+
+  test('BaoCode environment and pointer do not select its data', () {
+    final old = folder('old-data');
+    final oldPointer = File(p.join(home.path, '.baocode', 'config-dir.json'))
+      ..parent.createSync(recursive: true)
+      ..writeAsStringSync('{"dataDir": "${old.path}"}');
+    environment['BAOCODE_DATA_DIR'] = old.path;
+    expect(oldPointer.existsSync(), isTrue);
+    expect(resolve().source, DataDirectorySource.defaultLocation);
+    expect(p.basename(resolve().path), 'pi-desktop');
   });
 
   test('the pointer, then the variable, win', () {
@@ -60,7 +71,7 @@ void main() {
       (pointed.path, DataDirectorySource.pointer),
     );
 
-    environment['BAOCODE_DATA_DIR'] = variable.path;
+    environment['PI_DESKTOP_DATA_DIR'] = variable.path;
     expect(
       (resolve().path, resolve().source),
       (variable.path, DataDirectorySource.environment),
@@ -72,7 +83,7 @@ void main() {
     folder('Data/baocode');
     pointer().writeAsStringSync('{"dataDir": "~/Data/baocode"}');
     expect(resolve().path, p.join(home.path, 'Data', 'baocode'));
-    environment['BAOCODE_DATA_DIR'] = '~';
+    environment['PI_DESKTOP_DATA_DIR'] = '~';
     expect(resolve().path, home.path);
     expect(expandDataDirectory(r'~\x', '/h'), p.join('/h', 'x'));
     expect(expandDataDirectory('/a/~', '/h'), '/a/~');
@@ -114,12 +125,12 @@ void main() {
     expect(Directory(gone).existsSync(), isFalse, reason: 'not made');
 
     final file = File(p.join(home.path, 'file'))..writeAsStringSync('');
-    environment['BAOCODE_DATA_DIR'] = file.path;
+    environment['PI_DESKTOP_DATA_DIR'] = file.path;
     expect(resolve().problem, DataDirectoryProblem.missing);
 
     final readOnly = folder('ReadOnly');
     Process.runSync('chmod', ['555', readOnly.path]);
-    environment['BAOCODE_DATA_DIR'] = readOnly.path;
+    environment['PI_DESKTOP_DATA_DIR'] = readOnly.path;
     resolution = resolve();
     expect(resolution.problem, DataDirectoryProblem.notWritable);
     expect(resolution.source, DataDirectorySource.environment);

@@ -1,8 +1,8 @@
-import 'package:baocode/base/shown_when_ready.dart';
-import 'package:baocode/chat/side_panel/file_open.dart';
-import 'package:baocode/chat/side_panel/file_preview.dart';
-import 'package:baocode/ide/file_service.dart';
-import 'package:baocode/ide/ide_code_diff.dart';
+import 'package:pi_desktop/base/shown_when_ready.dart';
+import 'package:pi_desktop/chat/side_panel/file_open.dart';
+import 'package:pi_desktop/chat/side_panel/file_preview.dart';
+import 'package:pi_desktop/ide/file_service.dart';
+import 'package:pi_desktop/ide/ide_code_diff.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

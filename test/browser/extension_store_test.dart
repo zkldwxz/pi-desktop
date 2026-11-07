@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/browser/extension_store.dart';
+import 'package:pi_desktop/browser/extension_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -44,15 +44,13 @@ void main() {
   test("the store's page is the site's, kept for when it does not answer, "
       'and by the id before it ever did', () async {
     expect(await fetch(), ExtensionStore.fallback);
-    expect(
-      '${ExtensionStore.fallback}',
-      'https://chromewebstore.google.com/detail/'
-          'jfjagocghaaheooicmdnhcholmgdkngk',
-    );
+    expect(ExtensionStore.fallback.scheme, 'file');
+    expect(ExtensionStore.fallback.path, contains('browser_extension'));
+    expect(ExtensionStore.manifest?.hasAuthority ?? false, isFalse);
 
     const listed =
         'https://chromewebstore.google.com/detail/baocode/'
-        'jfjagocghaaheooicmdnhcholmgdkngk';
+        'lhdkmdjhjipndmialanjbblnmfhkehpc';
     answer = {'version': '0.1.0', 'store': listed};
     expect('${await fetch()}', listed);
     expect('${ExtensionStore.page}', listed);
@@ -65,6 +63,11 @@ void main() {
     answer = {'store': 'https://example.com/extension'};
     expect('${await fetch()}', listed);
     answer = {'store': null};
+    expect('${await fetch()}', listed);
+    // The original extension can coexist and is never selected as this fork's.
+    answer = {
+      'store': 'https://chromewebstore.google.com/detail/jfjagocghaaheooicmdnhcholmgdkngk',
+    };
     expect('${await fetch()}', listed);
   });
 }

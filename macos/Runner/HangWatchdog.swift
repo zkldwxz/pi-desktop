@@ -76,7 +76,7 @@ final class HangWatchdog {
   /// Starts watching, once, and answers Flutter over [messenger]'s
   /// `baocode/logs`. From the main thread.
   func start(messenger: FlutterBinaryMessenger) {
-    let channel = FlutterMethodChannel(name: "baocode/logs", binaryMessenger: messenger)
+    let channel = FlutterMethodChannel(name: "pi-desktop/logs", binaryMessenger: messenger)
     self.channel = channel
     channel.setMethodCallHandler { [weak self] call, result in
       switch call.method {

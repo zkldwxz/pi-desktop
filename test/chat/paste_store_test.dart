@@ -2,14 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/composer/composer_embeds.dart';
-import 'package:baocode/chat/composer/composer_files.dart';
-import 'package:baocode/chat/composer/paste_store.dart';
-import 'package:baocode/chat/widgets/text_preview.dart';
-import 'package:baocode/chat/widgets/user_message_bubble.dart';
-import 'package:baocode/kernel/claude_code/claude_code_transport.dart';
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi_desktop/chat/composer/composer_embeds.dart';
+import 'package:pi_desktop/chat/composer/composer_files.dart';
+import 'package:pi_desktop/chat/composer/paste_store.dart';
+import 'package:pi_desktop/chat/widgets/text_preview.dart';
+import 'package:pi_desktop/chat/widgets/user_message_bubble.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_transport.dart';
+import 'package:pi_desktop/platform/data_dir.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
 
 /// A paste of [lines] lines.
 String _log(int lines) =>

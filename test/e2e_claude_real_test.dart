@@ -8,15 +8,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_storage_io.dart';
-import 'package:baocode/kernel/claude_code/process_transport.dart';
-import 'package:baocode/kernel/kernel_event.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/kernel/transcript.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/kernel/agent_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_storage_io.dart';
+import 'package:pi_desktop/kernel/claude_code/process_transport.dart';
+import 'package:pi_desktop/kernel/kernel_event.dart';
+import 'package:pi_desktop/kernel/kernel_types.dart';
+import 'package:pi_desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi_desktop/kernel/transcript.dart';
 
 import 'kernel_test.dart' show shown;
 

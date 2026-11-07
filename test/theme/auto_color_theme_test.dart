@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:baocode/ide/ide_color_theme_picker.dart';
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/settings/jsonc_file.dart';
-import 'package:baocode/settings/user_settings.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/workspace/preference_store.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/ide/ide_color_theme_picker.dart';
+import 'package:pi_desktop/ide/ide_quick_input.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/platform/data_dir.dart';
+import 'package:pi_desktop/settings/jsonc_file.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
+import 'package:pi_desktop/theme/workbench_theme.dart';
+import 'package:pi_desktop/workspace/preference_store.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -83,7 +83,7 @@ void main() {
       brightness: Brightness.light,
     );
     await tester.runAsync(themes.initialize);
-    await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+    await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
     await tester.pumpAndSettle();
     expect(themes.colorTheme.settingsId, 'Bao Light');
     // The platform's event and the wait for it in real async, not to be

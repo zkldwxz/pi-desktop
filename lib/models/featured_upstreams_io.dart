@@ -7,15 +7,26 @@ import 'package:path/path.dart' as p;
 import '../platform/data_dir.dart';
 import 'featured_upstreams.dart';
 
-/// See [FeaturedUpstream.loader]: the list at [FeaturedUpstream.feed],
+/// See [FeaturedUpstream.loader]: the list at the configured feed,
 /// through the app's proxy, as every [HttpClient], kept in the cache with
-/// its logos, which are got again when the list changes. Where baocode.dev
+/// its logos, which are got again when the list changes. Where the feed
 /// does not answer, the list kept last time; none before the first.
 Future<List<FeaturedUpstream>> fetchFeaturedUpstreams({
   Uri? feed,
   String? cacheDir,
+  Map<String, String>? environment,
+  String? buildUrl,
 }) async {
-  feed ??= FeaturedUpstream.feed;
+  final configured =
+      (environment ?? Platform.environment)[FeaturedUpstream.feedVariable] ??
+      buildUrl ??
+      FeaturedUpstream.feedDefine;
+  feed ??= Uri.tryParse(configured.trim());
+  if (feed == null ||
+      !(feed.isScheme('https') || feed.isScheme('http')) ||
+      feed.host.isEmpty) {
+    return const [];
+  }
   final dir = Directory(
     cacheDir ?? p.join(DataDirectory.current.cacheDir, 'featured'),
   );

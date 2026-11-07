@@ -2,9 +2,9 @@
 // or the files selected), and the Stash tab: each stash's files, its
 // changes shown, Apply, Pop, Drop.
 
-import 'package:baocode/ide/git/git_model.dart';
-import 'package:baocode/ide/git/git_service.dart';
-import 'package:baocode/ide/git/ide_git_commit_panel.dart';
+import 'package:pi_desktop/ide/git/git_model.dart';
+import 'package:pi_desktop/ide/git/git_service.dart';
+import 'package:pi_desktop/ide/git/ide_git_commit_panel.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';

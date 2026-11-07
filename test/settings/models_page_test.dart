@@ -1,31 +1,31 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:baocode/icons/brand_logos.dart';
-import 'package:baocode/icons/project_icon.dart';
-import 'package:baocode/ide/ide_hover.dart';
-import 'package:baocode/ide/ide_button.dart';
-import 'package:baocode/ide/ide_back_button.dart';
-import 'package:baocode/ide/ide_spinning.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/claude_code/claude_haiku.dart';
-import 'package:baocode/models/codex/codex_service.dart';
-import 'package:baocode/models/codex/codex_usage.dart';
-import 'package:baocode/models/magpie.dart';
-import 'package:baocode/models/magpie_follow.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/models/secret_store.dart';
-import 'package:baocode/models/upstream.dart';
-import 'package:baocode/settings/pages/model_dialogs.dart';
-import 'package:baocode/settings/pages/models_page.dart';
-import 'package:baocode/settings/pages/settings_widgets.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/icons/brand_logos.dart';
+import 'package:pi_desktop/icons/project_icon.dart';
+import 'package:pi_desktop/ide/ide_hover.dart';
+import 'package:pi_desktop/ide/ide_button.dart';
+import 'package:pi_desktop/ide/ide_back_button.dart';
+import 'package:pi_desktop/ide/ide_spinning.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_haiku.dart';
+import 'package:pi_desktop/models/codex/codex_service.dart';
+import 'package:pi_desktop/models/codex/codex_usage.dart';
+import 'package:pi_desktop/models/magpie.dart';
+import 'package:pi_desktop/models/magpie_follow.dart';
+import 'package:pi_desktop/models/model_provider.dart';
+import 'package:pi_desktop/models/model_providers.dart';
+import 'package:pi_desktop/models/secret_store.dart';
+import 'package:pi_desktop/models/upstream.dart';
+import 'package:pi_desktop/settings/pages/model_dialogs.dart';
+import 'package:pi_desktop/settings/pages/models_page.dart';
+import 'package:pi_desktop/settings/pages/settings_widgets.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/widgets/pixel_loader.dart';
+import 'package:pi_desktop/chat/widgets/pixel_loader.dart';
 
 /// Accounts signed in to by hand: [finish] ends the sign-in under way.
 class _FakeCodex extends CodexService {
@@ -1301,7 +1301,7 @@ void main() {
     }) async {
       final messenger = tester.binding.defaultBinaryMessenger;
       messenger.setMockMethodCallHandler(
-        const MethodChannel('baocode/window'),
+        const MethodChannel('pi-desktop/window'),
         (call) async {
           if (call.method != 'pickOpenFiles') return null;
           expect(input, isFalse);
@@ -1311,7 +1311,7 @@ void main() {
       );
       addTearDown(
         () => messenger.setMockMethodCallHandler(
-          const MethodChannel('baocode/window'),
+          const MethodChannel('pi-desktop/window'),
           null,
         ),
       );

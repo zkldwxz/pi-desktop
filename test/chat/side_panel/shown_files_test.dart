@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:baocode/chat/side_panel/file_open.dart';
-import 'package:baocode/chat/side_panel/shown_files.dart';
-import 'package:baocode/chat/side_panel/shown_files_io.dart' show pruneShown;
-import 'package:baocode/chat/side_panel/side_panel_controller.dart';
-import 'package:baocode/chat/widgets/text_preview.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/platform/data_dir.dart';
+import 'package:pi_desktop/chat/side_panel/file_open.dart';
+import 'package:pi_desktop/chat/side_panel/shown_files.dart';
+import 'package:pi_desktop/chat/side_panel/shown_files_io.dart' show pruneShown;
+import 'package:pi_desktop/chat/side_panel/side_panel_controller.dart';
+import 'package:pi_desktop/chat/widgets/text_preview.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/platform/data_dir.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;

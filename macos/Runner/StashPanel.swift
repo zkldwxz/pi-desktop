@@ -75,7 +75,7 @@ final class StashPanel: NSPanel, FlutterHostWindow {
     let messenger = flutter.engine.binaryMessenger
     let suffix = ".\(flutter.viewIdentifier)"
     let drops = FileDropView(channel: FlutterMethodChannel(
-      name: "baocode/drop" + suffix, binaryMessenger: messenger))
+      name: "pi-desktop/drop" + suffix, binaryMessenger: messenger))
     drops.frame = flutter.view.bounds
     drops.autoresizingMask = [.width, .height]
     flutter.view.addSubview(drops)
@@ -86,7 +86,7 @@ final class StashPanel: NSPanel, FlutterHostWindow {
     setFrameAutosaveName(Self.frameName)
     Self.current = self
 
-    let channel = FlutterMethodChannel(name: "baocode/window" + suffix, binaryMessenger: messenger)
+    let channel = FlutterMethodChannel(name: "pi-desktop/window" + suffix, binaryMessenger: messenger)
     self.channel = channel
     channel.setMethodCallHandler { [weak self] call, result in
       guard let self else {
@@ -392,7 +392,7 @@ final class StashChannel {
   private let channel: FlutterMethodChannel
 
   init(messenger: FlutterBinaryMessenger) {
-    channel = FlutterMethodChannel(name: "baocode/stash", binaryMessenger: messenger)
+    channel = FlutterMethodChannel(name: "pi-desktop/stash", binaryMessenger: messenger)
     channel.setMethodCallHandler { [weak self] call, result in
       self?.handle(call, result: result) ?? result(nil)
     }

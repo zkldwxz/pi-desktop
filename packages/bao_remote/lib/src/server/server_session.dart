@@ -86,7 +86,8 @@ class ServerSession {
   /// Hex, as the app makes them: nothing that would name another path.
   static bool isValidId(String id) => RegExp(r'^[0-9a-f]{8,64}$').hasMatch(id);
 
-  static String defaultRunDirectory(String home) => '$home/.baocode-server/run';
+  static String defaultRunDirectory(String home) =>
+      '$home/.pi-desktop-server/run';
 
   /// Where the session's socket may be, in order: in [runDirectory], then
   /// in a folder of /tmp, for a path too long for a socket (which takes
@@ -94,7 +95,7 @@ class ServerSession {
   /// system with no sockets, or no modes to keep it the user's alone).
   List<String> get socketPaths => [
     if ('$runDirectory/$id'.length < 100) '$runDirectory/$id',
-    '${Directory.systemTemp.path}/baocode-server-${_uid()}/$id',
+    '${Directory.systemTemp.path}/pi-desktop-server-${_uid()}/$id',
   ];
 
   /// The socket the daemon listens on, once it does.

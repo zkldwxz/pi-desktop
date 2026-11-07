@@ -3,7 +3,7 @@
 // are none, Skip, Abort once confirmed; a conflict resolved with one side's
 // version from its menu.
 
-import 'package:baocode/ide/git/git_model.dart';
+import 'package:pi_desktop/ide/git/git_model.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

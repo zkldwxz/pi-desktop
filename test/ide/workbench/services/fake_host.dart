@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart';
-import 'package:baocode/ide/lsp_ui/lsp_convert.dart';
-import 'package:baocode/ide/workbench/contributions.dart';
-import 'package:baocode/ide/workbench/views.dart';
+import 'package:pi_desktop/ide/ide_quick_input.dart';
+import 'package:pi_desktop/ide/ide_workspace.dart';
+import 'package:pi_desktop/ide/lsp/lsp_protocol.dart';
+import 'package:pi_desktop/ide/lsp_ui/lsp_convert.dart';
+import 'package:pi_desktop/ide/workbench/contributions.dart';
+import 'package:pi_desktop/ide/workbench/views.dart';
 
 /// What a service asks of the window, recorded.
 class FakeWorkbenchHost implements WorkbenchHost {

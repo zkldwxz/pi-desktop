@@ -8,15 +8,15 @@ library;
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/file_service.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/ide/lsp/language_features.dart';
-import 'package:baocode/ide/lsp/lsp_manager.dart';
-import 'package:baocode/ide/lsp/lsp_process.dart';
-import 'package:baocode/ide/lsp/lsp_process_io.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart';
-import 'package:baocode/ide/lsp/lsp_server_definition.dart';
-import 'package:baocode/platform/child_process_registry.dart';
+import 'package:pi_desktop/ide/file_service.dart';
+import 'package:pi_desktop/ide/ide_workspace.dart';
+import 'package:pi_desktop/ide/lsp/language_features.dart';
+import 'package:pi_desktop/ide/lsp/lsp_manager.dart';
+import 'package:pi_desktop/ide/lsp/lsp_process.dart';
+import 'package:pi_desktop/ide/lsp/lsp_process_io.dart';
+import 'package:pi_desktop/ide/lsp/lsp_protocol.dart';
+import 'package:pi_desktop/ide/lsp/lsp_server_definition.dart';
+import 'package:pi_desktop/platform/child_process_registry.dart';
 import 'package:path/path.dart' as p;
 
 import '../../../fixtures/lsp/fake_lsp.dart';

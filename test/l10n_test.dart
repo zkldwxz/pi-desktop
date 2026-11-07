@@ -5,30 +5,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:baocode/chat/composer/kernel_option_text.dart';
-import 'package:baocode/chat/widgets/activity_row.dart';
+import 'package:pi_desktop/chat/composer/kernel_option_text.dart';
+import 'package:pi_desktop/chat/widgets/activity_row.dart';
 import 'package:bao_editor/monaco/flutter/editor_keybindings.dart';
-import 'package:baocode/ide/ide_commands.dart';
-import 'package:baocode/ide/ide_quick_open.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/keybindings/default_keybindings.dart';
+import 'package:pi_desktop/ide/ide_commands.dart';
+import 'package:pi_desktop/ide/ide_quick_open.dart';
+import 'package:pi_desktop/kernel/agent_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi_desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi_desktop/keybindings/default_keybindings.dart';
 import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
-import 'package:baocode/keybindings/keybindings_editing.dart';
-import 'package:baocode/l10n/app_localizations_zh.dart';
-import 'package:baocode/l10n/command_titles.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/platform/data_dir.dart' show DataDirectoryProblem;
-import 'package:baocode/settings/app_locale.dart';
-import 'package:baocode/settings/data_dir_service.dart';
-import 'package:baocode/settings/jsonc.dart';
-import 'package:baocode/settings/jsonc_file.dart';
-import 'package:baocode/settings/pages/keybindings_page.dart';
-import 'package:baocode/settings/pages/language_page.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/keybindings/keybinding_service.dart';
+import 'package:pi_desktop/keybindings/keybindings_editing.dart';
+import 'package:pi_desktop/l10n/app_localizations_zh.dart';
+import 'package:pi_desktop/l10n/command_titles.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/platform/data_dir.dart' show DataDirectoryProblem;
+import 'package:pi_desktop/settings/app_locale.dart';
+import 'package:pi_desktop/settings/data_dir_service.dart';
+import 'package:pi_desktop/settings/jsonc.dart';
+import 'package:pi_desktop/settings/jsonc_file.dart';
+import 'package:pi_desktop/settings/pages/keybindings_page.dart';
+import 'package:pi_desktop/settings/pages/language_page.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 /// A [LocaleStorage] that records what it was asked to keep.
 class _RecordingStorage implements LocaleStorage {
@@ -252,7 +252,7 @@ void main() {
     ) async {
       final locale = AppLocale(storage: MemoryLocaleStorage('en'));
       await tester.pumpWidget(
-        BaoCodeApp(workspace: Workspace.mock(), appLocale: locale),
+        PiDesktopApp(workspace: Workspace.mock(), appLocale: locale),
       );
       await tester.pump();
       expect(find.text('New Chat'), findsWidgets);

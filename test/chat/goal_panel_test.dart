@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/panels/goal_panel.dart';
-import 'package:baocode/kernel/kernel_types.dart';
+import 'package:pi_desktop/chat/panels/goal_panel.dart';
+import 'package:pi_desktop/kernel/kernel_types.dart';
 
 void main() {
   Future<void> pump(

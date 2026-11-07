@@ -12,7 +12,7 @@ import '../window/code_args.dart';
 /// it was started with among them — until [listen] takes them (see
 /// AppDelegate.swift and windows/runner/open_requests.cpp).
 abstract final class OpenRequests {
-  static const _channel = MethodChannel('baocode/open');
+  static const _channel = MethodChannel('pi-desktop/open');
 
   /// Starts delivering paths the system asks the app to open (the `code`
   /// command, Finder's Open With, a recent item of the macOS File menu):

@@ -1,7 +1,6 @@
 // Builds the macOS distribution, one for Apple silicon (arm64) and one for
 // Intel (x64): each a .dmg that ships the app and a .zip the app updates
-// itself from (lib/update/; signed into the release manifest by
-// tool/release_manifest.dart). Flutter builds the app once, universal; each
+// itself from (lib/update/). Flutter builds the app once, universal; each
 // is that app thinned to one architecture (ditto --arch), about half its
 // size. Run from anywhere in the repository:
 //
@@ -15,7 +14,7 @@
 //                                                build/remote/ (CI builds
 //                                                it once, for both apps)
 //   dart run tool/build_macos.dart --channel      the channel build
-//                                                (BAOCODE_CHANNEL; lib/channel/),
+//                                                (PI_DESKTOP_CHANNEL; lib/channel/),
 //                                                its files named -channel
 //   dart run tool/build_macos.dart --remote-release [VERSION]
 //                                                take the remote server
@@ -24,12 +23,11 @@
 //                                                fetch_remote_server.dart)
 //                                                instead of building one
 //
-// They land in build/installers/: BaoCode-<version>-<arch>.dmg and
-// BaoCode-<version>-mac-<arch>.zip, arch arm64 or x64 (the channel
-// build's ending in -channel: BaoCode-<version>-<arch>-channel.dmg…); beside them,
-// remote/<VERSION>/, the remote server's gzipped builds, which the app
-// downloads instead of carrying them (tool/build_remote_server.dart), to
-// upload with the release.
+// They land in build/installers/: pi-desktop-<version>-<arch>.dmg and
+// pi-desktop-<version>-mac-<arch>.zip, arch arm64 or x64 (the channel
+// build's ending in -channel: pi-desktop-<version>-<arch>-channel.dmg…); beside them,
+// Local remote server builds are carried in the app. With --remote-release,
+// the app instead downloads the published builds from their manifest.
 //
 // The Dart code's symbols are saved as it is built, to build/symbols/
 // App.macos.symbols (universal: the App framework's executable before it is
@@ -40,17 +38,17 @@
 // Signed with a Developer ID and notarised when the environment says how
 // (docs/release.md has how to get each):
 //
-//   BAOCODE_MACOS_SIGN_IDENTITY  the certificate's SHA-1 (40 hex digits, as
+//   PI_DESKTOP_MACOS_SIGN_IDENTITY  the certificate's SHA-1 (40 hex digits, as
 //                                `security find-identity -v -p codesigning`
 //                                lists it) or its name, "Developer ID
 //                                Application: <name> (<team>)"; in a
 //                                keychain searched
-//   BAOCODE_NOTARY_KEY           an App Store Connect API key (.p8), its path
-//   BAOCODE_NOTARY_KEY_ID        that key's ID
-//   BAOCODE_NOTARY_ISSUER        its issuer ID
+//   PI_DESKTOP_NOTARY_KEY           an App Store Connect API key (.p8), its path
+//   PI_DESKTOP_NOTARY_KEY_ID        that key's ID
+//   PI_DESKTOP_NOTARY_ISSUER        its issuer ID
 //
-// Without an identity the app is signed ad hoc, again: the remote server's
-// files put in it after flutter signed it have to be sealed too, or the
+// Without an identity the app is signed ad hoc, again: files added after
+// Flutter signed it have to be sealed too, or the
 // signature is broken and the app refuses the update (lib/update/
 // installer_io.dart checks it). Ad hoc, it opens on this machine; Gatekeeper
 // refuses it on anyone else's ("BaoCode is damaged and can't be opened").
@@ -61,7 +59,7 @@ import 'dart:io';
 /// Where the .app flutter leaves behind goes, and where the disk image is
 /// written. Under build/, which the repository already ignores and flutter
 /// clean already removes.
-const _bundleRelative = 'build/macos/Build/Products/Release/BaoCode.app';
+const _bundleRelative = 'build/macos/Build/Products/Release/pi-desktop.app';
 const _installersRelative = 'build/installers';
 const _symbolsRelative = 'build/symbols';
 
@@ -70,9 +68,6 @@ const _appExecutable = 'Contents/Frameworks/App.framework/Versions/A/App';
 
 /// Where each architecture's app is made of the universal one.
 const _thinRelative = 'build/macos/thin';
-
-/// The disk image window's background (tool/dmg_background.swift).
-const _dmgBackgroundRelative = 'macos/packaging/dmg-background.tiff';
 
 /// The architectures shipped: ditto's and lipo's name for each, and the one
 /// in file names and in the manifest's platforms (`macos-arm64`).
@@ -85,13 +80,13 @@ const _remoteRelative = 'build/remote';
 const _remoteReleaseRelative = 'build/remote-release';
 
 /// The browser's native messaging host, beside the app's executable.
-const _browserHost = 'baocode-browser-host';
+const _browserHost = 'pi-desktop-browser-host';
 
 /// What has to be in the .app for it to start. As on Windows, a build that
 /// failed late still leaves an .app behind that looks complete — these are
 /// what tell the difference.
 const _required = [
-  'Contents/MacOS/BaoCode',
+  'Contents/MacOS/pi-desktop',
   'Contents/Info.plist',
   'Contents/Frameworks/FlutterMacOS.framework',
   'Contents/Frameworks/App.framework',
@@ -109,7 +104,6 @@ const _required = [
   // arm64; tool/build_remote_server.dart): which build, and where it is
   // downloaded from.
   'Contents/Resources/remote/VERSION',
-  'Contents/Resources/remote/servers.json',
 ];
 
 Future<void> main(List<String> arguments) async {
@@ -148,12 +142,21 @@ Future<void> main(List<String> arguments) async {
   final version = _readVersion(File('${root.path}/pubspec.yaml'));
 
   if (!skipBuild) {
+    await _prepareRustTargets(root);
     _step('Building the Release app${channel ? ' (the channel build)' : ''}');
     await _run('flutter', [
       'build',
       'macos',
       '--release',
-      if (channel) '--dart-define=BAOCODE_CHANNEL=true',
+      if (channel) '--dart-define=PI_DESKTOP_CHANNEL=true',
+      for (final name in [
+        'PI_DESKTOP_UPDATE_URL',
+        'PI_DESKTOP_UPDATE_PUBLIC_KEY',
+        'PI_DESKTOP_UPDATE_ALLOWED_ORIGINS',
+        'PI_DESKTOP_UPDATE_ALLOW_LOCALHOST',
+      ])
+        if (Platform.environment.containsKey(name))
+          '--dart-define=$name=${Platform.environment[name]}',
       // Its symbols kept, to be saved before it is stripped below.
       '--extra-gen-snapshot-options=--no-strip',
     ], root.path);
@@ -190,12 +193,12 @@ Future<void> main(List<String> arguments) async {
     ], root.path);
   }
 
-  // Into the .app before it is signed: its files are resources, sealed
-  // with the rest. Not the builds themselves, which the app downloads.
-  _step('Putting the remote server\'s download list in the app');
+  // Put server resources into the app before signing.
+  _step('Putting the remote server in the app');
   final remoteVersion = _bundleRemote(
     remote,
     Directory('${bundle.path}/Contents/Resources/remote'),
+    published: remoteRelease != null,
   );
 
   _step('Checking the app');
@@ -203,6 +206,10 @@ Future<void> main(List<String> arguments) async {
   await _checkUniversal(bundle);
   // An app built before pubspec.yaml's version changed (--skip-build) would
   // be shipped as the new version, and offered as an update to itself.
+  final bundleId = await _plist(bundle, 'CFBundleIdentifier');
+  if (bundleId != 'dev.pi.desktop') {
+    _fail('Expected bundle identifier dev.pi.desktop, found $bundleId.');
+  }
   final built = await _plist(bundle, 'CFBundleShortVersionString');
   final build = await _plist(bundle, 'CFBundleVersion');
   if (built != version.marketing || build != version.build) {
@@ -217,33 +224,42 @@ Future<void> main(List<String> arguments) async {
   // breaks the signature of every binary in it.
   final signing = _Signing.fromEnvironment(root) ?? _Signing(root, '-', null);
   if (signing.adHoc) {
-    _step('Signing ad hoc: \$BAOCODE_MACOS_SIGN_IDENTITY is not set');
+    _step('Signing ad hoc: \$PI_DESKTOP_MACOS_SIGN_IDENTITY is not set');
     stdout.writeln(
       '  It opens on this machine only: Gatekeeper refuses it anywhere\n'
       '  else.',
     );
   } else if (signing.notary == null) {
-    _step('Not notarising: \$BAOCODE_NOTARY_KEY is not set');
+    _step('Not notarising: \$PI_DESKTOP_NOTARY_KEY is not set');
     stdout.writeln(
       '  Signed but not notarised, the app is still refused by\n'
       '  Gatekeeper on other machines.',
     );
   }
 
-  final createDmg = await _findCreateDmg();
   installers.createSync(recursive: true);
-  // Each image notarised, stapled and zipped while the next is made, and
-  // the notarisations side by side: Apple takes minutes over each. The
-  // images themselves one after the other: create-dmg lays out a window in
-  // Finder for each.
+  // Each image is notarised, stapled and zipped while the next is made.
   final finishing = <Future<List<File>>>[];
   for (final MapEntry(key: lipoArch, value: arch) in _architectures.entries) {
     _step('Making the $arch app');
-    final app = Directory('${root.path}/$_thinRelative/$arch/BaoCode.app');
+    final app = Directory('${root.path}/$_thinRelative/$arch/pi-desktop.app');
     if (app.parent.existsSync()) app.parent.deleteSync(recursive: true);
     app.parent.createSync(recursive: true);
     await _run('ditto', ['--arch', lipoArch, bundle.path, app.path], root.path);
     await _checkArchitecture(app, lipoArch);
+    _step('Bundling the Pi runtime for $arch');
+    final runtime = Directory('${app.path}/Contents/Resources/pi-runtime');
+    if (runtime.existsSync()) runtime.deleteSync(recursive: true);
+    await _run(Platform.resolvedExecutable, [
+      'run',
+      'tool/bundle_pi_runtime.dart',
+      '--target',
+      runtime.path,
+      '--platform',
+      'macos',
+      '--arch',
+      arch,
+    ], root.path);
     _step(
       'Signing the $arch app${signing.adHoc ? '' : ' as ${signing.identity}'}',
     );
@@ -251,41 +267,30 @@ Future<void> main(List<String> arguments) async {
 
     _step('Making the $arch disk image');
     final dmg = File(
-      '${installers.path}/BaoCode-${version.marketing}-$arch$edition.dmg',
+      '${installers.path}/pi-desktop-${version.marketing}-$arch$edition.dmg',
     );
-    // A window with the app, an arrow and an Applications shortcut to drag
-    // it onto, on the background tool/dmg_background.swift draws (the
-    // icons where it expects them). create-dmg lays the window out with
-    // Finder, which asks this terminal for permission to the first time.
-    if (dmg.existsSync()) dmg.deleteSync();
-    await _run(createDmg, [
-      '--volname',
-      'BaoCode ${version.marketing}',
-      '--background',
-      '${root.path}/$_dmgBackgroundRelative',
-      '--window-size',
-      '660',
-      '400',
-      '--icon-size',
-      '128',
-      '--icon',
-      'BaoCode.app',
-      '165',
-      '145',
-      '--hide-extension',
-      'BaoCode.app',
-      '--app-drop-link',
-      '495',
-      '145',
-      // LZMA: a quarter smaller than the default UDZO's zlib; opens on
-      // macOS 10.15 and later (the app needs 12).
-      '--format',
-      'ULMO',
-      '--no-internet-enable',
-      dmg.path,
-      // The folder the app alone is in: all of it goes in the image.
-      app.parent.path,
-    ], root.path);
+    // hdiutil needs no Finder automation or third-party packaging tool.
+    final staging = await Directory.systemTemp.createTemp('pi-desktop-dmg-');
+    try {
+      await _run('ditto', [
+        app.path,
+        '${staging.path}/pi-desktop.app',
+      ], root.path);
+      await Link('${staging.path}/Applications').create('/Applications');
+      if (dmg.existsSync()) dmg.deleteSync();
+      await _run('hdiutil', [
+        'create',
+        '-volname',
+        'pi-desktop ${version.marketing}',
+        '-srcfolder',
+        staging.path,
+        '-format',
+        'ULMO',
+        dmg.path,
+      ], root.path);
+    } finally {
+      await staging.delete(recursive: true);
+    }
     if (!signing.adHoc) await signing.sign(dmg.path);
     finishing.add(
       _finish(signing, installers, version.marketing, edition, arch, app, dmg),
@@ -313,34 +318,7 @@ Future<void> main(List<String> arguments) async {
     final mb = (file.lengthSync() / (1024 * 1024)).toStringAsFixed(1);
     stdout.writeln('  ${file.path}  ($mb MB)');
   }
-  final base = '${installers.path}/BaoCode-${version.marketing}';
-  stdout.writeln();
-  if (servers.isEmpty) {
-    stdout
-      ..writeln('The app downloads the remote server published:')
-      ..writeln('  https://dl.baocode.dev/releases/remote/$remoteVersion/');
-  } else {
-    stdout
-      ..writeln('Upload the remote server\'s builds, which the app downloads')
-      ..writeln('(or publish them with a server-* tag and package with')
-      ..writeln('--remote-release):')
-      ..writeln(
-        '  ${downloads.path}/*  ->  '
-        'https://dl.baocode.dev/releases/remote/$remoteVersion/',
-      );
-  }
-  stdout
-    ..writeln()
-    ..writeln('To publish it as an update, sign the zips into the manifest:')
-    ..writeln('  dart run tool/release_manifest.dart \\')
-    ..writeln(
-      '    --macos-arm64$edition $base-mac-arm64$edition.zip '
-      '--dmg-arm64$edition $base-arm64$edition.dmg \\',
-    )
-    ..writeln(
-      '    --macos-x64$edition $base-mac-x64$edition.zip '
-      '--dmg-x64$edition $base-x64$edition.dmg',
-    );
+  stdout.writeln('Release artifacts are in ${installers.path}.');
 }
 
 /// Notarises [dmg] (and so the [arch] app in it) where [signing] says to,
@@ -371,7 +349,7 @@ Future<List<File>> _finish(
   // permissions and extended attributes, which a framework's signature
   // depends on).
   final zip = File(
-    '${installers.path}/BaoCode-$marketing-mac-$arch$edition.zip',
+    '${installers.path}/pi-desktop-$marketing-mac-$arch$edition.zip',
   );
   if (zip.existsSync()) zip.deleteSync();
   await _run('ditto', [
@@ -393,16 +371,16 @@ class _Signing {
   /// Null when no identity is given (the app is then signed ad hoc).
   static _Signing? fromEnvironment(Directory root) {
     final environment = Platform.environment;
-    final identity = environment['BAOCODE_MACOS_SIGN_IDENTITY'] ?? '';
+    final identity = environment['PI_DESKTOP_MACOS_SIGN_IDENTITY'] ?? '';
     if (identity.isEmpty) return null;
-    final key = environment['BAOCODE_NOTARY_KEY'] ?? '';
-    final keyId = environment['BAOCODE_NOTARY_KEY_ID'] ?? '';
-    final issuer = environment['BAOCODE_NOTARY_ISSUER'] ?? '';
+    final key = environment['PI_DESKTOP_NOTARY_KEY'] ?? '';
+    final keyId = environment['PI_DESKTOP_NOTARY_KEY_ID'] ?? '';
+    final issuer = environment['PI_DESKTOP_NOTARY_ISSUER'] ?? '';
     if (key.isEmpty) return _Signing(root, identity, null);
     if (keyId.isEmpty || issuer.isEmpty) {
       _fail(
-        '\$BAOCODE_NOTARY_KEY is set: \$BAOCODE_NOTARY_KEY_ID and '
-        '\$BAOCODE_NOTARY_ISSUER have to be too.',
+        '\$PI_DESKTOP_NOTARY_KEY is set: \$PI_DESKTOP_NOTARY_KEY_ID and '
+        '\$PI_DESKTOP_NOTARY_ISSUER have to be too.',
       );
     }
     if (!File(key).existsSync()) _fail('No API key at $key.');
@@ -439,6 +417,31 @@ class _Signing {
     for (final entry in frameworks.listSync()) {
       if (entry.path.endsWith('.framework') || entry.path.endsWith('.dylib')) {
         await sign(entry.path);
+      }
+    }
+    // Node and native npm modules must be signed before the enclosing app.
+    final runtime = Directory('${app.path}/Contents/Resources/pi-runtime');
+    await for (final entity in runtime.list(
+      recursive: true,
+      followLinks: false,
+    )) {
+      if (entity is! File) continue;
+      final file = await entity.open();
+      final header = await file.read(4);
+      await file.close();
+      if (header.length != 4) continue;
+      final magic = header
+          .map((byte) => byte.toRadixString(16).padLeft(2, '0'))
+          .join();
+      if (const {
+        'cffaedfe',
+        'feedfacf',
+        'cafebabe',
+        'cafebabf',
+        'bebafeca',
+        'bfbafeca',
+      }.contains(magic)) {
+        await sign(entity.path);
       }
     }
     await sign('${app.path}/Contents/MacOS/$_browserHost');
@@ -536,23 +539,67 @@ class _Signing {
   }
 }
 
-/// Puts [remote]'s VERSION and servers.json (tool/build_remote_server.dart)
-/// in [target], and nothing else: the builds an older run put there go.
-/// Answers the VERSION.
-String _bundleRemote(Directory remote, Directory target) {
-  if (!File('${remote.path}/servers.json').existsSync()) {
+/// Prepare both targets when the native hook has no prebuilt library for one.
+Future<void> _prepareRustTargets(Directory root) async {
+  final rust = Directory('${root.path}/packages/bao_iroh/rust');
+  for (final triple in ['aarch64-apple-darwin', 'x86_64-apple-darwin']) {
+    final prebuilt = File(
+      '${root.path}/packages/bao_iroh/build/prebuilt/$triple/libbao_iroh.dylib',
+    );
+    if (!prebuilt.existsSync()) {
+      _step('Preparing Rust target $triple');
+      await _run('rustup', ['target', 'add', triple], rust.path);
+    }
+  }
+}
+
+/// Include local builds directly; only published releases use download URLs.
+String _bundleRemote(
+  Directory remote,
+  Directory target, {
+  required bool published,
+}) {
+  final versionFile = File('${remote.path}/VERSION');
+  if (!versionFile.existsSync()) {
     _fail(
-      'No remote server built in ${remote.path}.\n'
-      'Build it first, without --skip-build '
-      '(or: dart run tool/build_remote_server.dart).',
+      'No remote server in ${remote.path}; build it first or use --remote-release.',
+    );
+  }
+  final version = versionFile.readAsStringSync().trim();
+  if (version.isEmpty || version.contains(RegExp(r'[^A-Za-z0-9._+-]'))) {
+    _fail('Invalid remote server version in ${versionFile.path}.');
+  }
+  final manifest = File('${remote.path}/servers.json');
+  final builds = remote.existsSync()
+      ? remote
+            .listSync()
+            .whereType<File>()
+            .where(
+              (file) =>
+                  RegExp(r'^baocode-server-(linux|darwin|windows)-(arm64|x64)$')
+                      .hasMatch(file.uri.pathSegments.last),
+            )
+            .toList()
+      : <File>[];
+  if (published && !manifest.existsSync()) {
+    _fail('No published remote server manifest in ${remote.path}.');
+  }
+  if (!published && builds.isEmpty) {
+    _fail(
+      'No local remote server binaries in ${remote.path}. Build them first.',
     );
   }
   if (target.existsSync()) target.deleteSync(recursive: true);
   target.createSync(recursive: true);
-  for (final name in ['VERSION', 'servers.json']) {
-    File('${remote.path}/$name').copySync('${target.path}/$name');
+  versionFile.copySync('${target.path}/VERSION');
+  if (published) {
+    manifest.copySync('${target.path}/servers.json');
+  } else {
+    for (final file in builds) {
+      file.copySync('${target.path}/${file.uri.pathSegments.last}');
+    }
   }
-  return File('${remote.path}/VERSION').readAsStringSync().trim();
+  return version;
 }
 
 /// The version pubspec.yaml carries, as `1.0.0+1`: the whole of it, the part
@@ -576,7 +623,7 @@ String _bundleRemote(Directory remote, Directory target) {
 /// The executables in [app]: its own, the browser's host, the Finder
 /// extension's, and each framework's.
 List<String> _executables(Directory app) => [
-  '${app.path}/Contents/MacOS/BaoCode',
+  '${app.path}/Contents/MacOS/pi-desktop',
   '${app.path}/Contents/MacOS/$_browserHost',
   '${app.path}/Contents/PlugIns/FinderExtension.appex/Contents/MacOS/'
       'FinderExtension',
@@ -688,18 +735,6 @@ Future<void> _run(
   if (result.exitCode != 0) {
     _fail('$executable exited with code ${result.exitCode}.');
   }
-}
-
-/// create-dmg (`brew install create-dmg`), which makes the disk image;
-/// stops when there is none.
-Future<String> _findCreateDmg() async {
-  final result = await Process.run('/usr/bin/which', ['create-dmg']);
-  final path = '${result.stdout}'.trim();
-  if (result.exitCode == 0 && path.isNotEmpty) return path;
-  _fail(
-    'create-dmg makes the disk image, and is not installed:\n'
-    '  brew install create-dmg',
-  );
 }
 
 void _step(String message) => stdout.writeln('\n==> $message');

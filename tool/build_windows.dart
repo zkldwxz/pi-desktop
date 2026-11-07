@@ -20,7 +20,7 @@
 //                                                  put in tool/engine's
 //                                                  flutter_windows.dll (x64)
 //   dart run tool/build_windows.dart --channel      the channel build
-//                                                  (BAOCODE_CHANNEL;
+//                                                  (PI_DESKTOP_CHANNEL;
 //                                                  lib/channel/), its
 //                                                  installer named
 //                                                  -setup-channel.exe
@@ -48,10 +48,9 @@
 // `llvm-symbolizer --obj=` that file turns into functions and lines. Only
 // saved: the app's own stack traces stay as they were, named.
 //
-// The installer lands in build/installers/; beside it, remote\<VERSION>\,
-// the remote server's gzipped builds, which the app downloads instead of
-// carrying them (tool/build_remote_server.dart), to upload with the
-// release.
+// The installer lands in build/installers/. By default it carries the remote
+// servers built on this machine, so it does not depend on a release host.
+// --remote-built and --remote-release instead use their supplied manifest.
 import 'dart:ffi' show Abi;
 import 'dart:io';
 
@@ -65,16 +64,16 @@ const _installersRelative = r'build\installers';
 const _symbolsRelative = r'build\symbols';
 
 /// What has to be in the bundle for the app to start. A Release build that
-/// fails at the link step (a running baocode.exe holding the output file) still
-/// leaves a baocode.exe behind — but data\ is written by the install step that
+/// fails at the link step (a running pi-desktop.exe holding the output file) still
+/// leaves a pi-desktop.exe behind — but data\ is written by the install step that
 /// failure skipped, and the executable cannot start without it.
 const _required = [
-  'baocode.exe',
+  'pi-desktop.exe',
   'flutter_windows.dll',
   // The browsers' native messaging host and its manifest, which the
   // installer's keys point the browsers to (windows/BrowserBridge).
-  'baocode-browser-host.exe',
-  'dev.baocode.browser.json',
+  'pi-desktop-browser-host.exe',
+  'dev.pi.desktop.browser.json',
   // What writes down a fast fail (windows/wer), which the app registers.
   'baocode_wer.dll',
   // The VC++ runtime, carried rather than taken from System32, which may
@@ -151,6 +150,15 @@ Future<void> main(List<String> arguments) async {
   if (!_openSshBuilds.containsKey(arch)) {
     _fail('--arch is x64 or arm64, not $arch.');
   }
+  final hostArch = Abi.current() == Abi.windowsArm64 ? 'arm64' : 'x64';
+  if (!skipBuild && arch != hostArch) {
+    _fail(
+      'Flutter builds for the Dart SDK architecture ($hostArch), not $arch.',
+    );
+  }
+  if (remoteBuilt && remoteRelease != null) {
+    _fail('--remote-built and --remote-release cannot be combined.');
+  }
   final patchedEngine = arguments.contains('--patched-engine');
   // No patched engine built for arm64.
   if (patchedEngine && arch != 'x64') {
@@ -174,7 +182,15 @@ Future<void> main(List<String> arguments) async {
       'build',
       'windows',
       '--release',
-      if (channel) '--dart-define=BAOCODE_CHANNEL=true',
+      if (channel) '--dart-define=PI_DESKTOP_CHANNEL=true',
+      for (final name in [
+        'PI_DESKTOP_UPDATE_URL',
+        'PI_DESKTOP_UPDATE_PUBLIC_KEY',
+        'PI_DESKTOP_UPDATE_ALLOWED_ORIGINS',
+        'PI_DESKTOP_UPDATE_ALLOW_LOCALHOST',
+      ])
+        if (Platform.environment.containsKey(name))
+          '--dart-define=$name=${Platform.environment[name]}',
       // Not --split-debug-info, which would also leave the app's stack
       // traces (errors.log) unnamed, as offsets.
       '--extra-gen-snapshot-options=--save-debugging-info='
@@ -198,11 +214,8 @@ Future<void> main(List<String> arguments) async {
     _step('Keeping Flutter\'s own engine');
   }
 
-  // The server remote projects run on their host (Linux and macOS, x64 and
-  // arm64; macOS ones only when built on a Mac):
-  // which build, and where it is downloaded from, beside the executable
-  // (the installer takes the bundle whole); not the builds themselves,
-  // which the app downloads.
+  // Build the servers available on this host, or take an explicitly supplied
+  // build or published release. The installer carries local binaries directly.
   final remote = Directory(
     '${root.path}\\build\\${remoteRelease == null ? 'remote' : 'remote-release'}',
   );
@@ -230,13 +243,37 @@ Future<void> main(List<String> arguments) async {
     ], root.path);
   }
   final bundleRemote = Directory('${bundle.path}\\remote');
-  // The builds an older run put there go.
+  // Never retain servers from an older build. Local builds carry their actual
+  // binaries; their generated manifest points at a release host that may not
+  // exist. Explicitly supplied releases retain their download manifest.
   if (bundleRemote.existsSync()) bundleRemote.deleteSync(recursive: true);
   bundleRemote.createSync(recursive: true);
-  for (final name in ['VERSION', 'servers.json']) {
-    File('${remote.path}\\$name').copySync('${bundleRemote.path}\\$name');
+  File('${remote.path}\\VERSION').copySync('${bundleRemote.path}\\VERSION');
+  if (remoteRelease != null) {
+    File('${remote.path}\\servers.json')
+        .copySync('${bundleRemote.path}\\servers.json');
+  } else {
+    var count = 0;
+    for (final platform in [
+      'linux-x64',
+      'linux-arm64',
+      'darwin-x64',
+      'darwin-arm64',
+      'windows-x64',
+      'windows-arm64',
+    ]) {
+      final name = 'baocode-server-$platform';
+      final file = File('${remote.path}\\$name');
+      if (file.existsSync()) {
+        file.copySync('${bundleRemote.path}\\$name');
+        count++;
+      }
+    }
+    if (count == 0) {
+      _fail('No remote server binaries in ${remote.path}.');
+    }
   }
-  _checkBundle(bundle, [r'remote\VERSION', r'remote\servers.json']);
+  _checkBundle(bundle, [r'remote\VERSION']);
   final remoteVersion = File('${remote.path}\\VERSION')
       .readAsStringSync()
       .trim();
@@ -245,9 +282,34 @@ Future<void> main(List<String> arguments) async {
   await _putOpenSsh(root, bundle, arch);
   _checkBundle(bundle, [for (final name in _openSshFiles) 'openssh\\$name']);
 
+  _step('Bundling the Pi runtime for $arch');
+  final runtime = Directory('${bundle.path}\\data\\pi-runtime');
+  if (runtime.existsSync()) runtime.deleteSync(recursive: true);
+  await _run(Platform.resolvedExecutable, [
+    'run',
+    'tool/bundle_pi_runtime.dart',
+    '--target',
+    runtime.path,
+    '--platform',
+    'windows',
+    '--arch',
+    arch,
+  ], root.path);
+  _checkBundle(bundle, [
+    r'data\pi-runtime\node.exe',
+    r'data\pi-runtime\package.json',
+    r'data\pi-runtime\node_modules\@earendil-works\pi-coding-agent\package.json',
+    r'data\pi-runtime\browser-extension\manifest.json',
+  ]);
+
   _step('Compiling the installer');
   final iscc = _findIscc();
   installers.createSync(recursive: true);
+  final installer = File(
+    '${installers.path}\\pi-desktop-${version.marketing}-setup'
+    '${arch == 'x64' ? '' : '-$arch'}${channel ? '-channel' : ''}.exe',
+  );
+  if (installer.existsSync()) installer.deleteSync();
   await _run(iscc, [
     '/DBundleDir=${bundle.path}',
     '/DAppVersion=${version.full}',
@@ -273,31 +335,13 @@ Future<void> main(List<String> arguments) async {
   ];
 
   _step('Done');
-  final installer = File(
-    '${installers.path}\\BaoCode-${version.marketing}-setup'
-    '${arch == 'x64' ? '' : '-$arch'}${channel ? '-channel' : ''}.exe',
-  );
+  if (!installer.existsSync()) {
+    _fail('Inno Setup did not produce ${installer.path}.');
+  }
   for (final file in [installer, ...servers]) {
     if (!file.existsSync()) continue;
     final mb = (file.lengthSync() / (1024 * 1024)).toStringAsFixed(1);
     stdout.writeln('  ${file.path}  ($mb MB)');
-  }
-  if (servers.isEmpty) {
-    stdout
-      ..writeln()
-      ..writeln('The app downloads the remote server published:')
-      ..writeln('  https://dl.baocode.dev/releases/remote/$remoteVersion/');
-  } else {
-    stdout
-      ..writeln()
-      ..writeln('Upload the remote server\'s builds, which the app downloads')
-      ..writeln('(their folder is named by the build: the macOS one\'s, if it')
-      ..writeln('differs, goes beside it; or publish them with a server-* tag')
-      ..writeln('and package with --remote-release):')
-      ..writeln(
-        '  ${downloads.path}\\*  ->  '
-        'https://dl.baocode.dev/releases/remote/$remoteVersion/',
-      );
   }
   stdout.writeln();
   stdout.writeln(
@@ -347,7 +391,7 @@ void _checkBundle(Directory directory, List<String> required) {
     '\n'
     'A Release build that failed at the link step leaves exactly this: the\n'
     'install step that writes data\\ never ran. If the build reported\n'
-    'LNK1104, a running baocode.exe is holding the output file — close it and\n'
+    'LNK1104, a running pi-desktop.exe is holding the output file — close it and\n'
     'build again.',
   );
 }
@@ -445,6 +489,8 @@ String _findIscc() {
     for (final variable in ['ProgramFiles(x86)', 'ProgramFiles'])
       if (Platform.environment[variable] case final root?)
         '$root\\Inno Setup 6\\ISCC.exe',
+    for (final directory in (Platform.environment['PATH'] ?? '').split(';'))
+      if (directory.isNotEmpty) '${directory.replaceAll('"', '')}\\ISCC.exe',
   ];
   for (final candidate in candidates) {
     if (File(candidate).existsSync()) return candidate;

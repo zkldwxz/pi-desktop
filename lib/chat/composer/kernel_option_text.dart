@@ -12,6 +12,14 @@ KernelOption localizedKernelOption(
   KernelOption option,
 ) {
   final text = switch ((kernel, kind, option.id)) {
+    ('pi', KernelChoiceKind.permission, 'ask') => (
+      l10n.composerApprovalDefault,
+      l10n.composerApprovalDefaultDetail,
+    ),
+    ('pi', KernelChoiceKind.permission, 'full') => (
+      l10n.composerApprovalFullAccess,
+      l10n.composerApprovalFullAccessDetail,
+    ),
     ('claude-code', KernelChoiceKind.permission, 'default') => (
       l10n.composerApprovalDefault,
       l10n.composerApprovalDefaultDetail,

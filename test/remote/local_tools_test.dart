@@ -4,13 +4,13 @@ library;
 import 'dart:io';
 import 'dart:ui' show Locale;
 
-import 'package:baocode/kernel/claude_code/claude_sdk_tools.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/l10n/app_localizations.dart';
-import 'package:baocode/remote/local_tools.dart';
-import 'package:baocode/remote/port_forwards.dart';
-import 'package:baocode/remote/remote_host_settings.dart';
-import 'package:baocode/remote/ssh_host.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_sdk_tools.dart';
+import 'package:pi_desktop/kernel/kernel_types.dart';
+import 'package:pi_desktop/l10n/app_localizations.dart';
+import 'package:pi_desktop/remote/local_tools.dart';
+import 'package:pi_desktop/remote/port_forwards.dart';
+import 'package:pi_desktop/remote/remote_host_settings.dart';
+import 'package:pi_desktop/remote/ssh_host.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

@@ -1,16 +1,16 @@
 import 'dart:io';
 
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/chat_width.dart';
-import 'package:baocode/chat/widgets/chat_minimap.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/ide/ide_color_theme_picker.dart';
-import 'package:baocode/ide/ide_step_slider.dart';
-import 'package:baocode/settings/pages/appearance_page.dart';
-import 'package:baocode/settings/pages/settings_widgets.dart';
-import 'package:baocode/settings/user_settings.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi_desktop/chat/chat_screen.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/chat/chat_width.dart';
+import 'package:pi_desktop/chat/widgets/chat_minimap.dart';
+import 'package:pi_desktop/chat/composer/composer.dart';
+import 'package:pi_desktop/ide/ide_color_theme_picker.dart';
+import 'package:pi_desktop/ide/ide_step_slider.dart';
+import 'package:pi_desktop/settings/pages/appearance_page.dart';
+import 'package:pi_desktop/settings/pages/settings_widgets.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

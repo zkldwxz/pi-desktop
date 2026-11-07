@@ -39,7 +39,7 @@ flutter::EncodableList FileEntries(const std::vector<std::wstring>& paths);
 class DropTarget : public IDropTarget {
  public:
   DropTarget(flutter::BinaryMessenger* messenger, HWND view,
-             const std::string& name = "baocode/drop");
+             const std::string& name = "pi-desktop/drop");
 
   DropTarget(const DropTarget&) = delete;
   DropTarget& operator=(const DropTarget&) = delete;

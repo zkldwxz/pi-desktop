@@ -1,4 +1,4 @@
-// The showcase app: BaoCodeApp, whole, on a made-up developer's machine
+// The showcase app: PiDesktopApp, whole, on a made-up developer's machine
 // (a home folder of its own with well-known open-source projects, their
 // past Claude Code sessions, a Git identity and a shell), its agents
 // playing scripts (show_transport.dart, scripts.dart), driven through its
@@ -22,26 +22,26 @@ import 'dart:ui' show ViewFocusState;
 
 import 'package:bao_editor/monaco/flutter/language_assets.dart';
 import 'package:bao_remote/local.dart' show ClaudeEnvironment;
-import 'package:baocode/customize/customization_store.dart';
-import 'package:baocode/icons/emoji_sheet.dart';
-import 'package:baocode/ide/lsp/packs/language_packs.dart';
-import 'package:baocode/ide/terminal/terminal_instance.dart';
-import 'package:baocode/keybindings/keybindings_sync.dart';
-import 'package:baocode/keybindings/keymap.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/kernel_registry.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/main.dart' show BaoCodeApp, followSettingsFiles;
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/platform/memory_budget.dart';
-import 'package:baocode/remote/project_host.dart';
-import 'package:baocode/search/claude_conversation_search.dart';
-import 'package:baocode/settings/app_locale.dart';
-import 'package:baocode/settings/app_settings.dart';
-import 'package:baocode/settings/user_settings.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/workspace/preference_store.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/customize/customization_store.dart';
+import 'package:pi_desktop/icons/emoji_sheet.dart';
+import 'package:pi_desktop/ide/lsp/packs/language_packs.dart';
+import 'package:pi_desktop/ide/terminal/terminal_instance.dart';
+import 'package:pi_desktop/keybindings/keybindings_sync.dart';
+import 'package:pi_desktop/keybindings/keymap.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi_desktop/kernel/kernel_registry.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/main.dart' show PiDesktopApp, followSettingsFiles;
+import 'package:pi_desktop/platform/data_dir.dart';
+import 'package:pi_desktop/platform/memory_budget.dart';
+import 'package:pi_desktop/remote/project_host.dart';
+import 'package:pi_desktop/search/claude_conversation_search.dart';
+import 'package:pi_desktop/settings/app_locale.dart';
+import 'package:pi_desktop/settings/app_settings.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
+import 'package:pi_desktop/theme/workbench_theme.dart';
+import 'package:pi_desktop/workspace/preference_store.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -159,7 +159,7 @@ Future<void> _run() async {
       ShowFrame(
         window: window,
         shotKey: shotKey,
-        child: BaoCodeApp(
+        child: PiDesktopApp(
           key: UniqueKey(),
           workspace: workspace,
           appLocale: locale,

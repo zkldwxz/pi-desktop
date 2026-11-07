@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_button.dart';
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/settings/data_dir_service.dart';
-import 'package:baocode/settings/pages/data_dir_page.dart';
+import 'package:pi_desktop/ide/ide_button.dart';
+import 'package:pi_desktop/platform/data_dir.dart';
+import 'package:pi_desktop/settings/data_dir_service.dart';
+import 'package:pi_desktop/settings/pages/data_dir_page.dart';
 
 /// Moves as the page asks for them: nothing is copied, no file touched.
 class _FakeService extends DataDirectoryService {
@@ -123,7 +123,7 @@ void main() {
       '(the close button hides the window to it)', (tester) async {
     final calls = <MethodCall>[];
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('baocode/attention'),
+      const MethodChannel('pi-desktop/attention'),
       (call) async {
         calls.add(call);
         return null;

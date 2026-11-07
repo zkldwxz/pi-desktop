@@ -170,6 +170,67 @@ class _ChannelSetupWelcomeState extends State<ChannelSetupWelcome>
     _open();
   }
 
+  Future<void> _manual() async {
+    final address = TextEditingController();
+    var type = ChannelAccountType.newApi;
+    final zh = _language == 'zh';
+    final result = await showDialog<(String, ChannelAccountType)>(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Text(zh ? '配置账户服务' : 'Configure account service'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                zh ? '输入你自己的 new-api 或 sub2api 服务地址。' : 'Enter the address of your own new-api or sub2api service.',
+              ),
+              TextField(
+                controller: address,
+                decoration: const InputDecoration(
+                  labelText: 'HTTPS URL',
+                  hintText: 'https://example.com',
+                ),
+              ),
+              DropdownButton<ChannelAccountType>(
+                value: type,
+                items: [
+                  for (final value in ChannelAccountType.values)
+                    DropdownMenuItem(value: value, child: Text(value.id)),
+                ],
+                onChanged: (value) {
+                  if (value != null) setDialogState(() => type = value);
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(zh ? '取消' : 'Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, (address.text, type)),
+              child: Text(zh ? '继续' : 'Continue'),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (result != null && mounted) {
+      final ok = await _gate.configureManual(result.$1, result.$2);
+      if (!ok && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              zh ? '请输入有效的 HTTPS 地址。' : 'Enter a valid HTTPS address.',
+            ),
+          ),
+        );
+      }
+    }
+  }
+
   void _paste() {
     final result = _setup?.acceptLink(_link.text);
     setState(() => _linkResult = result);
@@ -398,6 +459,11 @@ class _ChannelSetupWelcomeState extends State<ChannelSetupWelcome>
         animation: _step(.7, 1),
         child: Row(
           children: [
+            _Link(
+              _language == 'zh' ? '使用自己的账户服务' : 'Use your own account service',
+              onTap: _manual,
+            ),
+            const SizedBox(width: 12),
             if (trouble != null && (!done || stuck))
               _Link(
                 l10n.channelSetupTrouble,
@@ -790,7 +856,7 @@ class _MiniWindow extends StatelessWidget {
                   const SizedBox(width: 3),
                   Flexible(
                     child: Text(
-                      'baocode.dev',
+                      'pi-desktop',
                       maxLines: 1,
                       overflow: TextOverflow.clip,
                       softWrap: false,

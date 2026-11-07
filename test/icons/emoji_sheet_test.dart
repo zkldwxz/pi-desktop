@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:baocode/icons/emoji_sheet.dart';
-import 'package:baocode/icons/icon_library.dart';
-import 'package:baocode/icons/icon_storage.dart';
-import 'package:baocode/icons/project_icon.dart';
-import 'package:baocode/icons/project_icon_view.dart';
+import 'package:pi_desktop/icons/emoji_sheet.dart';
+import 'package:pi_desktop/icons/icon_library.dart';
+import 'package:pi_desktop/icons/icon_storage.dart';
+import 'package:pi_desktop/icons/project_icon.dart';
+import 'package:pi_desktop/icons/project_icon_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';

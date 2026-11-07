@@ -49,7 +49,7 @@ class UpstreamImport {
   }
 
   /// The app's URL scheme (Info.plist, tool/baocode.iss).
-  static const scheme = 'baocode';
+  static const scheme = 'pi-desktop';
 
   static const maxNameLength = 64;
   static const maxKeyLength = 512;

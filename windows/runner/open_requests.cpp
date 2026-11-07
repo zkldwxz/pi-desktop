@@ -17,7 +17,7 @@ namespace {
 constexpr wchar_t kWindowClassName[] = L"FLUTTER_RUNNER_WIN32_WINDOW";
 
 // The property MarkOpenRequestWindow puts on the window.
-constexpr wchar_t kOpenRequestProperty[] = L"BaoCode.OpenRequests";
+constexpr wchar_t kOpenRequestProperty[] = L"dev.pi.desktop.OpenRequests";
 
 // How long a second copy of the app waits for the first's window while that
 // is still starting, and how often it looks.
@@ -91,6 +91,21 @@ void AddRequest(flutter::EncodableList& list,
 
 }  // namespace
 
+void NormalizeLinkRequest(std::vector<std::string>& arguments) {
+  constexpr char scheme[] = "pi-desktop:";
+  constexpr size_t length = sizeof(scheme) - 1;
+  if (arguments.size() < 2 || arguments[0] != kLinkRequestFlag ||
+      arguments[1].size() < length) {
+    return;
+  }
+  for (size_t i = 0; i < length; ++i) {
+    char c = arguments[1][i];
+    if (c >= 'A' && c <= 'Z') c += 'a' - 'A';
+    if (c != scheme[i]) return;
+  }
+  arguments[1].replace(0, length, "baocode:");
+}
+
 bool IsRequest(const std::vector<std::string>& paths) {
   return !paths.empty() && (paths.front() == kCodeRequestFlag ||
                             paths.front() == kAgentRequestFlag ||
@@ -101,7 +116,7 @@ OpenRequests::OpenRequests(flutter::BinaryMessenger* messenger,
                            std::vector<std::string> pending)
     : pending_(std::move(pending)),
       channel_(std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-          messenger, "baocode/open",
+          messenger, "pi-desktop/open",
           &flutter::StandardMethodCodec::GetInstance())) {
   channel_->SetMethodCallHandler(
       [this](const flutter::MethodCall<flutter::EncodableValue>& call,
@@ -180,13 +195,14 @@ std::vector<std::string> OpenPathsFromCommandLine() {
     ::LocalFree(arguments);
     return paths;
   }
-  // From a baocode: link, its flag first, then the link as it came (not a
-  // path to make absolute).
+  // From a pi-desktop: link, its flag first; normalize its scheme for Dart
+  // rather than treating the link as a path.
   if (count > 2 && Utf8FromUtf16(arguments[1]) == kLinkRequestFlag) {
     std::string link = Utf8FromUtf16(arguments[2]);
     if (!link.empty()) {
       paths.push_back(kLinkRequestFlag);
       paths.push_back(std::move(link));
+      NormalizeLinkRequest(paths);
     }
     ::LocalFree(arguments);
     return paths;

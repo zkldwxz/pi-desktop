@@ -5,11 +5,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/terminal/pty.dart';
-import 'package:baocode/ide/terminal/pty_io.dart';
-import 'package:baocode/ide/terminal/terminal_shell.dart';
-import 'package:baocode/kernel/claude_code/claude_environment.dart';
-import 'package:baocode/platform/child_process_registry.dart';
+import 'package:pi_desktop/ide/terminal/pty.dart';
+import 'package:pi_desktop/ide/terminal/pty_io.dart';
+import 'package:pi_desktop/ide/terminal/terminal_shell.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_environment.dart';
+import 'package:pi_desktop/platform/child_process_registry.dart';
 import 'package:path/path.dart' as p;
 
 /// The app's side of its terminals' processes: the record of them, stopping

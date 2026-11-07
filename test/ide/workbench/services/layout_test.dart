@@ -1,15 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_columns.dart';
-import 'package:baocode/ide/ide_layout.dart';
-import 'package:baocode/ide/lsp_ui/problems_panel.dart';
-import 'package:baocode/ide/services/layout.dart';
-import 'package:baocode/ide/workbench/actions.dart';
-import 'package:baocode/ide/workbench/context_keys.dart';
-import 'package:baocode/ide/workbench/contributions.dart';
-import 'package:baocode/ide/workbench/contributions/layout.dart';
-import 'package:baocode/ide/workbench/services.dart';
-import 'package:baocode/ide/workbench/views.dart';
+import 'package:pi_desktop/ide/ide_columns.dart';
+import 'package:pi_desktop/ide/ide_layout.dart';
+import 'package:pi_desktop/ide/lsp_ui/problems_panel.dart';
+import 'package:pi_desktop/ide/services/layout.dart';
+import 'package:pi_desktop/ide/workbench/actions.dart';
+import 'package:pi_desktop/ide/workbench/context_keys.dart';
+import 'package:pi_desktop/ide/workbench/contributions.dart';
+import 'package:pi_desktop/ide/workbench/contributions/layout.dart';
+import 'package:pi_desktop/ide/workbench/services.dart';
+import 'package:pi_desktop/ide/workbench/views.dart';
 
 import 'fake_host.dart';
 

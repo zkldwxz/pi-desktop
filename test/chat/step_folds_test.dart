@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/step_folds.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/chat/step_folds.dart';
 
 const _thought = ThinkingItem(text: 'Hm.', tokens: 3, seconds: 4);
 const _read = ToolCallItem(kind: ToolKind.read, target: 'a.dart');

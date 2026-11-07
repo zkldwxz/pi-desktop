@@ -3,6 +3,7 @@
 #include <flutter_windows.h>
 #include <windows.h>
 #include <ole2.h>
+#include <shobjidl.h>
 
 #include <algorithm>
 #include <string>
@@ -30,7 +31,7 @@ constexpr unsigned int kMinClientHeight = 540;
 // runs: a second one started (the `code` command, Explorer's Open with)
 // finds it taken, and hands its paths to the first (see OpenRequests).
 // Local\ is the user's session, so another user's copy is another's.
-constexpr wchar_t kSingleInstanceMutex[] = L"Local\\BaoCode.SingleInstance";
+constexpr wchar_t kSingleInstanceMutex[] = L"Local\\dev.pi.desktop.SingleInstance";
 
 // Places |size| in the centre of the monitor under |origin|, capped to that
 // monitor's work area. |size| and |placed| are in logical pixels: Create
@@ -70,6 +71,9 @@ void PlaceOnMonitor(const Win32Window::Point& origin,
 
 int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
                       _In_ wchar_t *command_line, _In_ int show_command) {
+  // Identify the process to the Windows shell before creating any windows.
+  ::SetCurrentProcessExplicitAppUserModelID(L"dev.pi.desktop");
+
   // The paths it was started with, from the folder it was started in: for
   // this copy to open, or for the one already running.
   std::vector<std::string> open_paths = OpenPathsFromCommandLine();
@@ -127,6 +131,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   std::vector<std::string> command_line_arguments =
       GetCommandLineArguments();
 
+  NormalizeLinkRequest(command_line_arguments);
   project.set_dart_entrypoint_arguments(std::move(command_line_arguments));
 
   FlutterWindow window(project, std::move(open_paths));
@@ -134,7 +139,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   Win32Window::Size size(kDefaultWidth, kDefaultHeight);
   Win32Window::Point placed = origin;
   PlaceOnMonitor(origin, &size, &placed);
-  if (!window.Create(L"BaoCode", placed, size)) {
+  if (!window.Create(L"pi-desktop", placed, size)) {
     return EXIT_FAILURE;
   }
   window.SetMinimumSize(Win32Window::Size(kMinClientWidth, kMinClientHeight));

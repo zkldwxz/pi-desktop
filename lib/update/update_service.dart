@@ -44,6 +44,11 @@ abstract interface class UpdateBackend {
   Future<void> cleanUp(AppVersion current);
 }
 
+/// A backend may restrict manifest download URLs to its network policy.
+abstract interface class UpdatePolicyProvider {
+  UpdateUrlPolicy? get urlPolicy;
+}
+
 /// A download that failed its checks.
 class UpdateVerificationException implements Exception {
   const UpdateVerificationException(this.message);
@@ -76,7 +81,9 @@ abstract interface class PreparedUpdate {
 class ManualUpdateRequired implements Exception {
   const ManualUpdateRequired(this.reason);
 
-  static final downloadPage = Uri.parse('https://baocode.dev/download');
+  static final downloadPage = Uri.parse(
+    const String.fromEnvironment('PI_DESKTOP_DOWNLOAD_URL'),
+  );
 
   final String reason;
 
@@ -201,13 +208,14 @@ class UpdateService extends ChangeNotifier {
     required this.backend,
     required this.installer,
     Uri? manifestUrl,
+    this.urlPolicy,
     UpdateMode Function()? mode,
     this.settingsChanges,
     UpdateStore? store,
     DateTime Function()? now,
     this.firstCheckDelay = const Duration(seconds: 10),
     this.checkInterval = const Duration(minutes: 5),
-  }) : manifestUrl = manifestUrl ?? Uri.parse(defaultManifestUrl),
+  }) : manifestUrl = manifestUrl ?? Uri(),
        _mode = mode ?? (() => UpdateMode.defaultMode),
        store = store ?? MemoryUpdateStore(),
        _now = now ?? DateTime.now;
@@ -220,6 +228,7 @@ class UpdateService extends ChangeNotifier {
   final String? platform;
 
   final Uri manifestUrl;
+  final UpdateUrlPolicy? urlPolicy;
   final UpdateBackend backend;
   final UpdateInstaller installer;
   final UpdateStore store;
@@ -235,7 +244,7 @@ class UpdateService extends ChangeNotifier {
 
   UpdateMode get mode => _mode();
 
-  bool get supported => platform != null;
+  bool get supported => platform != null && manifestUrl.host.isNotEmpty;
 
   UpdateStatus _status = UpdateStatus.idle;
   UpdateStatus get status => _status;
@@ -395,7 +404,12 @@ class UpdateService extends ChangeNotifier {
       final text = await backend.fetchManifest(manifestUrl);
       final manifest = UpdateManifest.parse(
         text,
-        policy: UpdateUrlPolicy.forManifest(manifestUrl),
+        policy:
+            urlPolicy ??
+            (backend is UpdatePolicyProvider
+                ? (backend as UpdatePolicyProvider).urlPolicy
+                : null) ??
+            UpdateUrlPolicy.forManifest(manifestUrl),
       );
       store.lastChecked = _now();
       _installed = manifest.version.marketing == current.marketing

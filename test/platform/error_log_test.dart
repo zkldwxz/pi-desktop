@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/platform/error_log.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/platform/error_log.dart';
+import 'package:pi_desktop/update/version.dart';
 
 /// Fails to build, as the composer's old editor did on a suggested prompt
 /// with a Windows path in it.

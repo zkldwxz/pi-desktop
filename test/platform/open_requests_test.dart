@@ -1,9 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/platform/open_requests.dart';
-import 'package:baocode/window/code_args.dart';
+import 'package:pi_desktop/platform/open_requests.dart';
+import 'package:pi_desktop/window/code_args.dart';
 
-const _open = MethodChannel('baocode/open');
+const _open = MethodChannel('pi-desktop/open');
 
 /// What the system asks the app to open comes to the one listener: first
 /// what the window kept, then each as the window sends it.
@@ -118,7 +118,7 @@ void main() {
 
   test("a site's import goes as a request of its own, the link as it "
       'came', () async {
-    const link = 'baocode://provider/import?v=1&url=https%3A%2F%2Fapi.x.com';
+    const link = 'pi-desktop://provider/import?v=1&url=https%3A%2F%2Fapi.x.com';
     pending = [r'C:\a.txt', CodeArgs.importRequestMarker, link];
     final opened = <List<String>>[];
     OpenRequests.listen(opened.add);

@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:baocode/browser/browser_bridge.dart';
-import 'package:baocode/browser/browser_tools.dart' show BrowserHistory;
-import 'package:baocode/settings/pages/browser_page.dart';
-import 'package:baocode/settings/user_settings.dart';
+import 'package:pi_desktop/browser/browser_bridge.dart';
+import 'package:pi_desktop/browser/browser_tools.dart' show BrowserHistory;
+import 'package:pi_desktop/settings/pages/browser_page.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;

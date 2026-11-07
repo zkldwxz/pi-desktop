@@ -1,4 +1,4 @@
-import 'package:baocode/kernel/extension_switches.dart';
+import 'package:pi_desktop/kernel/extension_switches.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Settings → Customize's switches, as settings.json keeps them and as

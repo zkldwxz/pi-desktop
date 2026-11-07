@@ -1,5 +1,5 @@
-import 'package:baocode/stash/stash_actions.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/stash/stash_actions.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

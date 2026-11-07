@@ -24,7 +24,7 @@ final class Attention: NSObject, UNUserNotificationCenterDelegate, NSSoundDelega
   private var authorizationAsked = false
 
   init(messenger: FlutterBinaryMessenger, window: NSWindow) {
-    channel = FlutterMethodChannel(name: "baocode/attention", binaryMessenger: messenger)
+    channel = FlutterMethodChannel(name: "pi-desktop/attention", binaryMessenger: messenger)
     self.window = window
     super.init()
     channel.setMethodCallHandler { [weak self] call, result in

@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_image_preview.dart';
+import 'package:pi_desktop/ide/ide_image_preview.dart';
 
 void main() {
   testWidgets('the image preview shows the zoom it was left with, and tells '
@@ -14,11 +14,12 @@ void main() {
         '<rect width="10" height="10"/></svg>',
       ),
     );
-    final zoomed = (Matrix4.identity()
-          ..scaleByDouble(3, 3, 1, 1)
-          ..translateByDouble(-5, -7, 0, 1))
-        .storage
-        .toList();
+    final zoomed =
+        (Matrix4.identity()
+              ..scaleByDouble(3, 3, 1, 1)
+              ..translateByDouble(-5, -7, 0, 1))
+            .storage
+            .toList();
     List<double>? left;
     await tester.pumpWidget(
       MaterialApp(

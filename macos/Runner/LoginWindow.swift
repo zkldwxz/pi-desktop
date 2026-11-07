@@ -14,7 +14,7 @@ final class LoginWindowChannel: NSObject, NSWindowDelegate, WKUIDelegate, WKNavi
   private var webView: WKWebView?
 
   init(messenger: FlutterBinaryMessenger) {
-    channel = FlutterMethodChannel(name: "baocode/login_window", binaryMessenger: messenger)
+    channel = FlutterMethodChannel(name: "pi-desktop/login_window", binaryMessenger: messenger)
     super.init()
     channel.setMethodCallHandler { [weak self] call, result in
       self?.handle(call, result: result)

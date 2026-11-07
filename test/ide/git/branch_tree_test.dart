@@ -4,9 +4,9 @@
 // selects its tip; its menu has the branch popup's actions, each the Git
 // command it runs.
 
-import 'package:baocode/ide/git/git_branch_tree.dart';
-import 'package:baocode/ide/git/git_model.dart';
-import 'package:baocode/ide/git/git_service.dart';
+import 'package:pi_desktop/ide/git/git_branch_tree.dart';
+import 'package:pi_desktop/ide/git/git_model.dart';
+import 'package:pi_desktop/ide/git/git_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
@@ -49,11 +49,7 @@ void main() {
       'tags folded', () {
     expect(
       outline(
-        ideGitBranchRows(
-          refs,
-          current: 'main',
-          favorites: {'refs/heads/zeta'},
-        ),
+        ideGitBranchRows(refs, current: 'main', favorites: {'refs/heads/zeta'}),
       ),
       'HEAD\n'
       '  main\n'
@@ -133,9 +129,12 @@ void main() {
     );
 
     Future<void> open(WidgetTester tester) async {
-      await pumpWorkbench(tester, const {
-        'lib/a.dart': 'a',
-      }, git: git.repository(), size: const Size(1800, 900));
+      await pumpWorkbench(
+        tester,
+        const {'lib/a.dart': 'a'},
+        git: git.repository(),
+        size: const Size(1800, 900),
+      );
       await tester.pumpAndSettle();
       await chord(tester, LogicalKeyboardKey.keyG, control: true, shift: true);
       await tester.pumpAndSettle();

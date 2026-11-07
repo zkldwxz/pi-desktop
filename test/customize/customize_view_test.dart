@@ -7,23 +7,23 @@ import 'package:bao_markdown/bao_markdown.dart' show MarkdownEditor;
 import 'package:bao_editor/monaco/flutter/editor_surface.dart';
 import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
 
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/chat/side_panel/side_panel_view.dart';
-import 'package:baocode/customize/customization_store.dart';
-import 'package:baocode/customize/customizations.dart';
-import 'package:baocode/customize/customize_view.dart';
-import 'package:baocode/customize/mcp_probe.dart';
-import 'package:baocode/settings/pages/customize_page.dart';
-import 'package:baocode/ide/ide_code_editor.dart';
-import 'package:baocode/ide/ide_input.dart';
-import 'package:baocode/ide/ide_switch.dart';
-import 'package:baocode/kernel/extension_switches.dart';
-import 'package:baocode/ide/markdown/markdown_preview.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/sidebar/sidebar.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/chat/chat_screen.dart';
+import 'package:pi_desktop/chat/side_panel/side_panel_view.dart';
+import 'package:pi_desktop/customize/customization_store.dart';
+import 'package:pi_desktop/customize/customizations.dart';
+import 'package:pi_desktop/customize/customize_view.dart';
+import 'package:pi_desktop/customize/mcp_probe.dart';
+import 'package:pi_desktop/settings/pages/customize_page.dart';
+import 'package:pi_desktop/ide/ide_code_editor.dart';
+import 'package:pi_desktop/ide/ide_input.dart';
+import 'package:pi_desktop/ide/ide_switch.dart';
+import 'package:pi_desktop/kernel/extension_switches.dart';
+import 'package:pi_desktop/ide/markdown/markdown_preview.dart';
+import 'package:pi_desktop/keybindings/keybinding_service.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/sidebar/sidebar.dart';
+import 'package:pi_desktop/theme/codicons.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 /// Skills kept in memory, by file.
 class _MemoryStore implements CustomizationStore {
@@ -126,7 +126,7 @@ Future<Workspace> _pumpApp(
   addTearDown(() => KeybindingService.instance = KeybindingService());
   final workspace = Workspace.mock();
   await tester.pumpWidget(
-    BaoCodeApp(workspace: workspace, customizations: store),
+    PiDesktopApp(workspace: workspace, customizations: store),
   );
   await tester.pump();
   return workspace;

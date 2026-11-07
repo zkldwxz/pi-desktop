@@ -3,11 +3,40 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:baocode/diagnostics/diagnostics_upload.dart';
+import 'package:pi_desktop/diagnostics/diagnostics_upload.dart';
 
 class _RealHttp extends HttpOverrides {}
 
 void main() {
+  test('platform diagnostics requires an explicit pi-desktop URL', () {
+    expect(DiagnosticsUploader.platform(environment: {}, buildUrl: ''), isNull);
+    expect(
+      DiagnosticsUploader.platform(
+        environment: {'BAOCODE_DIAGNOSTICS_URL': 'https://old.test'},
+        buildUrl: '',
+      ),
+      isNull,
+    );
+    expect(
+      DiagnosticsUploader.platform(environment: {}, buildUrl: 'bad'),
+      isNull,
+    );
+    expect(
+      DiagnosticsUploader.platform(
+        environment: {},
+        buildUrl: 'https://example.test/diagnostics',
+      )?.url.host,
+      'example.test',
+    );
+    expect(
+      DiagnosticsUploader.platform(
+        environment: {'PI_DESKTOP_DIAGNOSTICS_URL': 'http://localhost:8080/'},
+        buildUrl: '',
+      )?.url.host,
+      'localhost',
+    );
+  });
+
   group('answer', () {
     test('201 with the id: uploaded', () {
       final result = DiagnosticsUploader.answer(

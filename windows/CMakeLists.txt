@@ -1,10 +1,10 @@
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
-project(baocode LANGUAGES CXX)
+project(pi-desktop LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
-set(BINARY_NAME "baocode")
+set(BINARY_NAME "pi-desktop")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.
@@ -88,9 +88,9 @@ install(TARGETS ${BINARY_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}"
   COMPONENT Runtime)
 
 # The browsers' native messaging host and its manifest, beside the app.
-install(TARGETS baocode-browser-host RUNTIME
+install(TARGETS pi-desktop-browser-host RUNTIME
   DESTINATION "${CMAKE_INSTALL_PREFIX}" COMPONENT Runtime)
-install(FILES "BrowserBridge/dev.baocode.browser.json"
+install(FILES "BrowserBridge/dev.pi.desktop.browser.json"
   DESTINATION "${CMAKE_INSTALL_PREFIX}" COMPONENT Runtime)
 
 # The module that writes down a fast fail, beside the app that registers it.

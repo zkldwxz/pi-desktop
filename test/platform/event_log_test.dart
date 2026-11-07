@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/diagnostics/app_event_watch.dart';
-import 'package:baocode/diagnostics/diagnostics_bundle.dart';
-import 'package:baocode/platform/error_log.dart';
-import 'package:baocode/platform/event_log.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/diagnostics/app_event_watch.dart';
+import 'package:pi_desktop/diagnostics/diagnostics_bundle.dart';
+import 'package:pi_desktop/platform/error_log.dart';
+import 'package:pi_desktop/platform/event_log.dart';
+import 'package:pi_desktop/update/version.dart';
 
 void main() {
   late Directory folder;

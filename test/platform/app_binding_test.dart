@@ -1,4 +1,4 @@
-import 'package:baocode/platform/app_binding.dart';
+import 'package:pi_desktop/platform/app_binding.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 

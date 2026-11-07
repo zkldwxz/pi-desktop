@@ -9,7 +9,7 @@ import 'featured_upstreams_stub.dart'
 /// An upstream Settings → Models shows a card of, free of charge, for
 /// adding the one-click import (see docs/upstream-import.md): listed in
 /// site/featured/upstreams.json, by a pull request after its issue, and
-/// read from baocode.dev ([feed]): shown as soon as the site is deployed,
+/// read from a configured feed: shown as soon as the site is deployed,
 /// with no release of the app.
 @immutable
 class FeaturedUpstream {
@@ -80,8 +80,9 @@ class FeaturedUpstream {
       description['en'] ??
       description.values.firstOrNull;
 
-  /// The list, its logos beside it.
-  static final feed = Uri.parse('https://baocode.dev/featured/upstreams.json');
+  /// The configured list URL; its logos are beside it.
+  static const feedVariable = 'PI_DESKTOP_FEATURED_UPSTREAMS_URL';
+  static const feedDefine = String.fromEnvironment(feedVariable);
 
   /// A logo's name: a file beside the list, never a path.
   static bool isLogoName(String name) =>
@@ -107,7 +108,7 @@ class FeaturedUpstream {
     ];
   }
 
-  /// How [load] gets the list: [feed], or what it got last time where it
+  /// How [load] gets the configured list, or what it got last time where it
   /// does not answer. Tests set their own.
   @visibleForTesting
   static Future<List<FeaturedUpstream>> Function() loader =
@@ -128,7 +129,7 @@ class FeaturedUpstream {
   );
 
   /// [known], from the list kept last time, while there are none: at the
-  /// app's start, with no asking baocode.dev.
+  /// app's start, without a network request.
   static Future<void> readKept() async {
     if (known.value.isNotEmpty) return;
     try {

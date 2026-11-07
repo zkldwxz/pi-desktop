@@ -1,0 +1,16 @@
+{
+  "name": "pi-desktop-runtime",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "description": "Bundled Pi coding agent with official stable release updates for pi-desktop",
+  "engines": { "node": ">=22.19.0" },
+  "scripts": {
+    "start": "pi --mode rpc",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "1.5.0",
+    "npm": "11.21.2"
+  }
+}

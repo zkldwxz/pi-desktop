@@ -2,10 +2,10 @@ import 'dart:ui' show AppExitResponse;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/workspace/quit_confirmation.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/workspace/quit_confirmation.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 /// The app with an agent at work (with nothing at work, a quit is not
 /// asked about: see `AppWindows.confirmQuit`).
@@ -14,7 +14,7 @@ Future<Workspace> _pumpApp(WidgetTester tester) async {
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.reset);
   final workspace = Workspace.mock();
-  await tester.pumpWidget(BaoCodeApp(workspace: workspace));
+  await tester.pumpWidget(PiDesktopApp(workspace: workspace));
   await tester.pump();
   workspace.selected.session.send(const ComposerMessage(text: 'Go on'));
   await tester.pump();

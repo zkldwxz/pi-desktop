@@ -1,4 +1,4 @@
-import 'package:baocode/settings/pages/general_page.dart';
+import 'package:pi_desktop/settings/pages/general_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

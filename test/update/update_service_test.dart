@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/update/update_manifest.dart';
-import 'package:baocode/update/update_service.dart';
-import 'package:baocode/update/update_settings.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/update/update_manifest.dart';
+import 'package:pi_desktop/update/update_service.dart';
+import 'package:pi_desktop/update/update_settings.dart';
+import 'package:pi_desktop/update/version.dart';
 
 import 'update_fakes.dart';
 
@@ -21,6 +21,19 @@ void main() {
   });
 
   group('UpdateService', () {
+    test('does not fetch without a configured manifest', () async {
+      final backend = FakeBackend(manifestOf('1.2.0'));
+      final service = UpdateService(
+        current: AppVersion.parse('1.0.0'),
+        platform: 'macos-arm64',
+        backend: backend,
+        installer: FakeInstaller(),
+      );
+      expect(await service.check(manual: true), isA<UpdatesUnsupported>());
+      expect(backend.fetches, 0);
+      service.dispose();
+    });
+
     test('finds a newer version for its platform', () async {
       final backend = FakeBackend(manifestOf('1.2.0+12'));
       final store = MemoryUpdateStore();
@@ -70,7 +83,7 @@ void main() {
     test("a wrong entry for this platform is a failed check", () async {
       final backend = FakeBackend(
         manifestOf('1.2.0').replaceFirst(
-          'https://baocode.dev/releases/1.2.0/windows-x64.bin',
+          'https://updates.example/releases/1.2.0/windows-x64.bin',
           'https://evil.example/windows-x64.bin',
         ),
       );

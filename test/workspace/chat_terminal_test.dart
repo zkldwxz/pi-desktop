@@ -6,26 +6,26 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/ide/ide_hover.dart';
-import 'package:baocode/ide/terminal/terminal_instance.dart';
-import 'package:baocode/ide/terminal/terminal_widget.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/workspace/chat_grid.dart';
-import 'package:baocode/workspace/chat_grid_view.dart';
-import 'package:baocode/workspace/chat_quota_bar.dart';
-import 'package:baocode/workspace/chat_terminal.dart';
-import 'package:baocode/workspace/islands.dart';
-import 'package:baocode/workspace/window_header/window_header.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/chat/chat_screen.dart';
+import 'package:pi_desktop/ide/ide_hover.dart';
+import 'package:pi_desktop/ide/terminal/terminal_instance.dart';
+import 'package:pi_desktop/ide/terminal/terminal_widget.dart';
+import 'package:pi_desktop/keybindings/keybinding_service.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/workspace/chat_grid.dart';
+import 'package:pi_desktop/workspace/chat_grid_view.dart';
+import 'package:pi_desktop/workspace/chat_quota_bar.dart';
+import 'package:pi_desktop/workspace/chat_terminal.dart';
+import 'package:pi_desktop/workspace/islands.dart';
+import 'package:pi_desktop/workspace/window_header/window_header.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 import '../chat_split_test.dart' show dragTitle;
 import '../ide/terminal/fake_pty.dart';
 import '../ide/terminal/fake_terminal.dart';
 import 'chat_window_keys_test.dart' show press;
 
-const _window = MethodChannel('baocode/window');
+const _window = MethodChannel('pi-desktop/window');
 
 Future<Workspace> _pumpApp(
   WidgetTester tester, {
@@ -46,7 +46,7 @@ Future<Workspace> _pumpApp(
   );
   final workspace = Workspace.mock();
   await tester.pumpWidget(
-    BaoCodeApp(workspace: workspace, terminalBackend: terminalBackend),
+    PiDesktopApp(workspace: workspace, terminalBackend: terminalBackend),
   );
   await tester.pump();
   return workspace;

@@ -4,16 +4,16 @@
 
 import 'dart:async';
 
-import 'package:baocode/debug/common/debug_types.dart';
-import 'package:baocode/debug/service/debug_host.dart';
-import 'package:baocode/debug/service/debugger.dart';
-import 'package:baocode/debug/session/debug_adapter.dart';
-import 'package:baocode/debug/session/debug_session.dart';
-import 'package:baocode/debug/common/debug_storage.dart';
-import 'package:baocode/debug/common/debug_model.dart';
-import 'package:baocode/debug/service/debug_configuration_manager.dart';
-import 'package:baocode/debug/service/debug_service.dart';
-import 'package:baocode/base/uri.dart' show VsUri;
+import 'package:pi_desktop/debug/common/debug_types.dart';
+import 'package:pi_desktop/debug/service/debug_host.dart';
+import 'package:pi_desktop/debug/service/debugger.dart';
+import 'package:pi_desktop/debug/session/debug_adapter.dart';
+import 'package:pi_desktop/debug/session/debug_session.dart';
+import 'package:pi_desktop/debug/common/debug_storage.dart';
+import 'package:pi_desktop/debug/common/debug_model.dart';
+import 'package:pi_desktop/debug/service/debug_configuration_manager.dart';
+import 'package:pi_desktop/debug/service/debug_service.dart';
+import 'package:pi_desktop/base/uri.dart' show VsUri;
 
 const fakeProgramPath = '/work/app/main.js';
 
@@ -40,7 +40,11 @@ class FakeDebugAdapter extends EmitterDebugAdapterTransport {
              'supportsExceptionInfoRequest': true,
              'supportsDataBreakpoints': true,
              'exceptionBreakpointFilters': [
-               {'filter': 'uncaught', 'label': 'Uncaught Exceptions', 'default': true},
+               {
+                 'filter': 'uncaught',
+                 'label': 'Uncaught Exceptions',
+                 'default': true,
+               },
                {
                  'filter': 'all',
                  'label': 'Caught Exceptions',
@@ -69,7 +73,9 @@ class FakeDebugAdapter extends EmitterDebugAdapterTransport {
   final Map<String, List<int>> breakpointLines = {};
   String count = '3';
 
-  List<String> get commands => [for (final r in requests) r['command']! as String];
+  List<String> get commands => [
+    for (final r in requests) r['command']! as String,
+  ];
 
   @override
   Future<void> start() async => started = true;
@@ -89,11 +95,18 @@ class FakeDebugAdapter extends EmitterDebugAdapterTransport {
     fireExit(code);
   }
 
-  void _emit(Json message) => scheduleMicrotask(() => acceptMessage({'seq': _seq++, ...message}));
+  void _emit(Json message) =>
+      scheduleMicrotask(() => acceptMessage({'seq': _seq++, ...message}));
 
-  void event(String event, [Json? body]) => _emit({'type': 'event', 'event': event, 'body': ?body});
+  void event(String event, [Json? body]) =>
+      _emit({'type': 'event', 'event': event, 'body': ?body});
 
-  void _respond(Json request, {Json? body, bool success = true, String? message}) => _emit({
+  void _respond(
+    Json request, {
+    Json? body,
+    bool success = true,
+    String? message,
+  }) => _emit({
     'type': 'response',
     'request_seq': request['seq'],
     'command': request['command'],
@@ -106,7 +119,11 @@ class FakeDebugAdapter extends EmitterDebugAdapterTransport {
   void reverseRequest(String command, Json args) =>
       _emit({'type': 'request', 'command': command, 'arguments': args});
 
-  void stopAt(int line, {String reason = 'breakpoint', List<int>? hitBreakpointIds}) {
+  void stopAt(
+    int line, {
+    String reason = 'breakpoint',
+    List<int>? hitBreakpointIds,
+  }) {
     programLine = line;
     event('stopped', {
       'reason': reason,
@@ -132,44 +149,65 @@ class FakeDebugAdapter extends EmitterDebugAdapterTransport {
       case 'launch' || 'attach':
         launchArgs = args;
         _respond(message);
-        event('output', {'category': 'console', 'output': 'Debugger attached.\n'});
-        event('output', {'category': 'stdout', 'output': 'hello from the program\n'});
+        event('output', {
+          'category': 'console',
+          'output': 'Debugger attached.\n',
+        });
+        event('output', {
+          'category': 'stdout',
+          'output': 'hello from the program\n',
+        });
       case 'setBreakpoints':
         final path = args.obj('source')?.str('path') ?? '';
         final bps = args.objects('breakpoints');
         breakpointLines[path] = [for (final bp in bps) bp.integer('line')!];
-        _respond(message, body: {
-          'breakpoints': [
-            for (final bp in bps)
-              {
-                'id': _bpId++,
-                'verified': !(bp.integer('line')! > 100),
-                'line': bp.integer('line'),
-                if (bp.integer('line')! > 100) 'message': 'No code at this line',
-              },
-          ],
-        });
+        _respond(
+          message,
+          body: {
+            'breakpoints': [
+              for (final bp in bps)
+                {
+                  'id': _bpId++,
+                  'verified': !(bp.integer('line')! > 100),
+                  'line': bp.integer('line'),
+                  if (bp.integer('line')! > 100)
+                    'message': 'No code at this line',
+                },
+            ],
+          },
+        );
       case 'setFunctionBreakpoints':
-        _respond(message, body: {
-          'breakpoints': [
-            for (final _ in args.objects('breakpoints')) {'id': _bpId++, 'verified': true},
-          ],
-        });
+        _respond(
+          message,
+          body: {
+            'breakpoints': [
+              for (final _ in args.objects('breakpoints'))
+                {'id': _bpId++, 'verified': true},
+            ],
+          },
+        );
       case 'setExceptionBreakpoints':
         _respond(message);
       case 'dataBreakpointInfo':
-        _respond(message, body: {
-          'dataId': 'data:${args['name']}',
-          'description': args['name'],
-          'accessTypes': ['write', 'read'],
-          'canPersist': false,
-        });
+        _respond(
+          message,
+          body: {
+            'dataId': 'data:${args['name']}',
+            'description': args['name'],
+            'accessTypes': ['write', 'read'],
+            'canPersist': false,
+          },
+        );
       case 'setDataBreakpoints':
-        _respond(message, body: {
-          'breakpoints': [
-            for (final _ in args.objects('breakpoints')) {'id': _bpId++, 'verified': true},
-          ],
-        });
+        _respond(
+          message,
+          body: {
+            'breakpoints': [
+              for (final _ in args.objects('breakpoints'))
+                {'id': _bpId++, 'verified': true},
+            ],
+          },
+        );
       case 'configurationDone':
         _respond(message);
         if (stopOnEntry) {
@@ -181,12 +219,15 @@ class FakeDebugAdapter extends EmitterDebugAdapterTransport {
           }
         }
       case 'threads':
-        _respond(message, body: {
-          'threads': [
-            {'id': 1, 'name': 'main'},
-            {'id': 2, 'name': 'worker'},
-          ],
-        });
+        _respond(
+          message,
+          body: {
+            'threads': [
+              {'id': 1, 'name': 'main'},
+              {'id': 2, 'name': 'worker'},
+            ],
+          },
+        );
       case 'stackTrace':
         final threadId = args.integer('threadId');
         final frames = threadId == 1
@@ -209,7 +250,11 @@ class FakeDebugAdapter extends EmitterDebugAdapterTransport {
                 {
                   'id': 1002,
                   'name': 'node:internal/run',
-                  'source': {'name': 'run', 'sourceReference': 7, 'presentationHint': 'deemphasize'},
+                  'source': {
+                    'name': 'run',
+                    'sourceReference': 7,
+                    'presentationHint': 'deemphasize',
+                  },
                   'line': 1,
                   'column': 1,
                   'presentationHint': 'subtle',
@@ -219,29 +264,44 @@ class FakeDebugAdapter extends EmitterDebugAdapterTransport {
                 {
                   'id': 2000,
                   'name': 'workerLoop',
-                  'source': {'name': 'worker.js', 'path': '/work/app/worker.js'},
+                  'source': {
+                    'name': 'worker.js',
+                    'path': '/work/app/worker.js',
+                  },
                   'line': 9,
                   'column': 1,
                 },
               ];
         final start = args.integer('startFrame') ?? 0;
         final levels = args.integer('levels') ?? frames.length;
-        _respond(message, body: {
-          'stackFrames': frames.skip(start).take(levels).toList(),
-          'totalFrames': frames.length,
-        });
+        _respond(
+          message,
+          body: {
+            'stackFrames': frames.skip(start).take(levels).toList(),
+            'totalFrames': frames.length,
+          },
+        );
       case 'scopes':
-        _respond(message, body: {
-          'scopes': [
-            {'name': 'Local', 'variablesReference': 100, 'expensive': false},
-            {'name': 'Global', 'variablesReference': 200, 'expensive': true},
-          ],
-        });
+        _respond(
+          message,
+          body: {
+            'scopes': [
+              {'name': 'Local', 'variablesReference': 100, 'expensive': false},
+              {'name': 'Global', 'variablesReference': 200, 'expensive': true},
+            ],
+          },
+        );
       case 'variables':
         final ref = args.integer('variablesReference');
         final variables = switch (ref) {
           100 => [
-            {'name': 'count', 'value': count, 'type': 'number', 'variablesReference': 0, 'evaluateName': 'count'},
+            {
+              'name': 'count',
+              'value': count,
+              'type': 'number',
+              'variablesReference': 0,
+              'evaluateName': 'count',
+            },
             {
               'name': 'user',
               'value': '{name: "Ada", age: 36}',
@@ -249,18 +309,43 @@ class FakeDebugAdapter extends EmitterDebugAdapterTransport {
               'variablesReference': 101,
               'evaluateName': 'user',
             },
-            {'name': 'items', 'value': 'Array(3)', 'variablesReference': 102, 'indexedVariables': 3},
+            {
+              'name': 'items',
+              'value': 'Array(3)',
+              'variablesReference': 102,
+              'indexedVariables': 3,
+            },
           ],
           101 => [
-            {'name': 'name', 'value': '"Ada"', 'type': 'string', 'variablesReference': 0, 'evaluateName': 'user.name'},
-            {'name': 'age', 'value': '36', 'type': 'number', 'variablesReference': 0, 'evaluateName': 'user.age'},
+            {
+              'name': 'name',
+              'value': '"Ada"',
+              'type': 'string',
+              'variablesReference': 0,
+              'evaluateName': 'user.name',
+            },
+            {
+              'name': 'age',
+              'value': '36',
+              'type': 'number',
+              'variablesReference': 0,
+              'evaluateName': 'user.age',
+            },
           ],
           102 => [
             for (var i = args.integer('start') ?? 0; i < 3; i++)
-              {'name': '$i', 'value': '${(i + 1) * 10}', 'variablesReference': 0},
+              {
+                'name': '$i',
+                'value': '${(i + 1) * 10}',
+                'variablesReference': 0,
+              },
           ],
           200 => [
-            {'name': 'process', 'value': 'process {…}', 'variablesReference': 0},
+            {
+              'name': 'process',
+              'value': 'process {…}',
+              'variablesReference': 0,
+            },
           ],
           _ => <Json>[],
         };
@@ -269,33 +354,72 @@ class FakeDebugAdapter extends EmitterDebugAdapterTransport {
         final expression = args.str('expression');
         switch (expression) {
           case 'count':
-            _respond(message, body: {'result': count, 'type': 'number', 'variablesReference': 0});
+            _respond(
+              message,
+              body: {
+                'result': count,
+                'type': 'number',
+                'variablesReference': 0,
+              },
+            );
           case 'count * 2':
-            _respond(message, body: {'result': '${int.parse(count) * 2}', 'variablesReference': 0});
+            _respond(
+              message,
+              body: {
+                'result': '${int.parse(count) * 2}',
+                'variablesReference': 0,
+              },
+            );
           case 'user':
-            _respond(message, body: {'result': '{name: "Ada", age: 36}', 'variablesReference': 101});
+            _respond(
+              message,
+              body: {
+                'result': '{name: "Ada", age: 36}',
+                'variablesReference': 101,
+              },
+            );
           default:
-            _respond(message, success: false, message: '$expression is not defined');
+            _respond(
+              message,
+              success: false,
+              message: '$expression is not defined',
+            );
         }
       case 'setVariable':
         if (args['name'] == 'count') count = args.str('value') ?? count;
-        _respond(message, body: {'value': args['value'], 'variablesReference': 0});
+        _respond(
+          message,
+          body: {'value': args['value'], 'variablesReference': 0},
+        );
       case 'completions':
-        _respond(message, body: {
-          'targets': [
-            {'label': 'count', 'type': 'variable'},
-            {'label': 'console', 'type': 'module'},
-          ],
-        });
+        _respond(
+          message,
+          body: {
+            'targets': [
+              {'label': 'count', 'type': 'variable'},
+              {'label': 'console', 'type': 'module'},
+            ],
+          },
+        );
       case 'loadedSources':
-        _respond(message, body: {
-          'sources': [
-            {'name': 'main.js', 'path': fakeProgramPath},
-            {'name': 'worker.js', 'path': '/work/app/worker.js'},
-          ],
-        });
+        _respond(
+          message,
+          body: {
+            'sources': [
+              {'name': 'main.js', 'path': fakeProgramPath},
+              {'name': 'worker.js', 'path': '/work/app/worker.js'},
+            ],
+          },
+        );
       case 'exceptionInfo':
-        _respond(message, body: {'exceptionId': 'Error', 'description': 'boom', 'breakMode': 'always'});
+        _respond(
+          message,
+          body: {
+            'exceptionId': 'Error',
+            'description': 'boom',
+            'breakMode': 'always',
+          },
+        );
       case 'next' || 'stepIn' || 'stepOut':
         _respond(message);
         stopAt(programLine + 1, reason: 'step');
@@ -315,7 +439,11 @@ class FakeDebugAdapter extends EmitterDebugAdapterTransport {
       case 'restart':
         _respond(message);
       default:
-        _respond(message, success: false, message: 'unknown request ${message['command']}');
+        _respond(
+          message,
+          success: false,
+          message: 'unknown request ${message['command']}',
+        );
     }
   }
 }
@@ -338,7 +466,10 @@ class FakeAdapterFactory implements DebugAdapterFactory {
   }
 
   @override
-  Future<Json> substituteVariables(DebugWorkspaceFolder? folder, Json config) async => config;
+  Future<Json> substituteVariables(
+    DebugWorkspaceFolder? folder,
+    Json config,
+  ) async => config;
 
   @override
   Future<int?> runInTerminal(Json args, String sessionId) async {
@@ -351,7 +482,14 @@ class FakeAdapterFactory implements DebugAdapterFactory {
 class FakeDebugHost extends DebugServiceHost {
   FakeDebugHost({List<DebugWorkspaceFolder>? folders})
     : folders =
-          folders ?? [DebugWorkspaceFolder(uri: VsUri.file('/work/app'), name: 'app', index: 0)];
+          folders ??
+          [
+            DebugWorkspaceFolder(
+              uri: VsUri.file('/work/app'),
+              name: 'app',
+              index: 0,
+            ),
+          ];
 
   final List<DebugWorkspaceFolder> folders;
   final List<String> errors = [];
@@ -370,7 +508,10 @@ class FakeDebugHost extends DebugServiceHost {
   List<DebugWorkspaceFolder> get workspaceFolders => folders;
 
   @override
-  Map<String, String> get environment => const {'HOME': '/Users/me', 'PORT': '9229'};
+  Map<String, String> get environment => const {
+    'HOME': '/Users/me',
+    'PORT': '9229',
+  };
 
   @override
   String? get userHome => '/Users/me';
@@ -379,7 +520,8 @@ class FakeDebugHost extends DebugServiceHost {
   DebugActiveEditor? get activeEditor => editor;
 
   @override
-  Object? configurationValue(String section, {VsUri? folder}) => settingValues[section];
+  Object? configurationValue(String section, {VsUri? folder}) =>
+      settingValues[section];
 
   @override
   void showError(String message) => errors.add(message);
@@ -397,21 +539,34 @@ class FakeDebugHost extends DebugServiceHost {
   }) async => opened.add((uri, selection));
 
   @override
-  Future<TaskRunResult> runTask(DebugWorkspaceFolder? root, Object? task, {bool checkErrors = true}) async {
+  Future<TaskRunResult> runTask(
+    DebugWorkspaceFolder? root,
+    Object? task, {
+    bool checkErrors = true,
+  }) async {
     if (task == null) return TaskRunResult.success;
     tasks.add(task);
     return taskResult;
   }
 
   @override
-  Future<Object?> executeCommand(String id, [List<Object?> args = const []]) async => commands[id]?.call(args);
+  Future<Object?> executeCommand(
+    String id, [
+    List<Object?> args = const [],
+  ]) async => commands[id]?.call(args);
 
   @override
-  Future<String?> showInputBox({String? prompt, String? value, bool password = false}) async =>
-      inputAnswers.isEmpty ? null : inputAnswers.removeAt(0);
+  Future<String?> showInputBox({
+    String? prompt,
+    String? value,
+    bool password = false,
+  }) async => inputAnswers.isEmpty ? null : inputAnswers.removeAt(0);
 
   @override
-  Future<T?> pick<T>(List<DebugPickItem<T>> items, {String? placeholder}) async {
+  Future<T?> pick<T>(
+    List<DebugPickItem<T>> items, {
+    String? placeholder,
+  }) async {
     if (pickAnswers.isEmpty) return null;
     final answer = pickAnswers.removeAt(0);
     if (answer is int) return items[answer].value;
@@ -426,7 +581,14 @@ class FakeDebugHost extends DebugServiceHost {
 }
 
 /// A service with the `fake` debug type registered.
-Future<({DebugService service, FakeDebugHost host, FakeAdapterFactory factory, MemoryLaunchFileStore files})>
+Future<
+  ({
+    DebugService service,
+    FakeDebugHost host,
+    FakeAdapterFactory factory,
+    MemoryLaunchFileStore files,
+  })
+>
 createFakeDebugService({
   FakeDebugHost? host,
   FakeAdapterFactory? factory,
@@ -435,7 +597,11 @@ createFakeDebugService({
   host ??= FakeDebugHost();
   factory ??= FakeAdapterFactory();
   final files = MemoryLaunchFileStore(launchFiles);
-  final service = DebugService(host: host, storage: MemoryDebugStorageBackend(), fileStore: files);
+  final service = DebugService(
+    host: host,
+    storage: MemoryDebugStorageBackend(),
+    fileStore: files,
+  );
   service.registry.setExtensions([
     const DebuggerExtension(
       id: 'test.fake-debug',
@@ -446,7 +612,12 @@ createFakeDebugService({
           'languages': ['javascript'],
           'variables': {'PickProcess': 'fake.pickProcess'},
           'initialConfigurations': [
-            {'type': 'fake', 'request': 'launch', 'name': 'Launch Program', 'program': r'${file}'},
+            {
+              'type': 'fake',
+              'request': 'launch',
+              'name': 'Launch Program',
+              'program': r'${file}',
+            },
           ],
         },
       ],
@@ -461,10 +632,15 @@ createFakeDebugService({
 }
 
 /// Waits until [condition] holds (real timers run).
-Future<void> until(bool Function() condition, {Duration timeout = const Duration(seconds: 5)}) async {
+Future<void> until(
+  bool Function() condition, {
+  Duration timeout = const Duration(seconds: 5),
+}) async {
   final deadline = DateTime.now().add(timeout);
   while (!condition()) {
-    if (DateTime.now().isAfter(deadline)) throw TimeoutException('condition not met');
+    if (DateTime.now().isAfter(deadline)) {
+      throw TimeoutException('condition not met');
+    }
     await Future<void>.delayed(const Duration(milliseconds: 5));
   }
 }

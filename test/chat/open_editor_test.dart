@@ -1,8 +1,8 @@
 import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/open_editor.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/chat/open_editor.dart';
+import 'package:pi_desktop/kernel/agent_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_kernel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

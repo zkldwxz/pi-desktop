@@ -2,14 +2,15 @@ import 'package:bao_markdown/bao_markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/composer/composer_controller.dart';
-import 'package:baocode/chat/composer/composer_embeds.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/chat/composer/composer.dart';
+import 'package:pi_desktop/chat/composer/composer_controller.dart';
+import 'package:pi_desktop/chat/composer/composer_embeds.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
 
 ComposerController _controller(WidgetTester tester, int index) =>
-    tester.widget<MarkdownEditor>(find.byType(MarkdownEditor).at(index))
+    tester
+            .widget<MarkdownEditor>(find.byType(MarkdownEditor).at(index))
             .controller
         as ComposerController;
 

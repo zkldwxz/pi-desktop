@@ -2,11 +2,11 @@
 // a message edited making a reword, a squash with nothing below refused,
 // and the model's clean-up plan put in the list.
 
-import 'package:baocode/ide/git/commit_message.dart';
-import 'package:baocode/ide/git/git_model.dart';
-import 'package:baocode/ide/git/ide_git_rebase_dialog.dart';
-import 'package:baocode/ide/ide_notifications.dart';
-import 'package:baocode/l10n/app_localizations.dart';
+import 'package:pi_desktop/ide/git/commit_message.dart';
+import 'package:pi_desktop/ide/git/git_model.dart';
+import 'package:pi_desktop/ide/git/ide_git_rebase_dialog.dart';
+import 'package:pi_desktop/ide/ide_notifications.dart';
+import 'package:pi_desktop/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -1,11 +1,11 @@
-import 'package:baocode/ide/ide_notifications.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/settings/app_settings.dart';
-import 'package:baocode/settings/user_settings.dart';
-import 'package:baocode/tips/builtin_tips.dart';
-import 'package:baocode/tips/feature_tip.dart';
-import 'package:baocode/tips/feature_tips_controller.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/ide/ide_notifications.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/settings/app_settings.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
+import 'package:pi_desktop/tips/builtin_tips.dart';
+import 'package:pi_desktop/tips/feature_tip.dart';
+import 'package:pi_desktop/tips/feature_tips_controller.dart';
+import 'package:pi_desktop/update/version.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 

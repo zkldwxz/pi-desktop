@@ -4,38 +4,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/workspace/islands.dart';
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/chat/side_panel/side_panel_view.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/panels/context_usage_panel.dart';
-import 'package:baocode/ide/ide_command_center.dart';
-import 'package:baocode/ide/ide_hover.dart';
-import 'package:baocode/ide/ide_layout.dart';
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/ide/lsp_ui/problems_panel.dart';
-import 'package:baocode/ide/terminal/terminal_instance.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/settings/settings_dialog.dart';
-import 'package:baocode/sidebar/sidebar.dart';
-import 'package:baocode/theme/code_font.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/workspace/back_to_chat_button.dart';
-import 'package:baocode/workspace/editor_launcher.dart';
-import 'package:baocode/workspace/open_in_editor_button.dart';
-import 'package:baocode/workspace/pin_window_button.dart';
-import 'package:baocode/workspace/window_header/about_dialog.dart';
-import 'package:baocode/workspace/window_header/header_menu_bar.dart';
-import 'package:baocode/workspace/window_header/window_header.dart';
-import 'package:baocode/workspace/workspace.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/workspace/islands.dart';
+import 'package:pi_desktop/chat/chat_screen.dart';
+import 'package:pi_desktop/chat/side_panel/side_panel_view.dart';
+import 'package:pi_desktop/chat/composer/composer.dart';
+import 'package:pi_desktop/chat/panels/context_usage_panel.dart';
+import 'package:pi_desktop/ide/ide_command_center.dart';
+import 'package:pi_desktop/ide/ide_hover.dart';
+import 'package:pi_desktop/ide/ide_layout.dart';
+import 'package:pi_desktop/ide/ide_quick_input.dart';
+import 'package:pi_desktop/ide/ide_workbench.dart';
+import 'package:pi_desktop/ide/lsp_ui/problems_panel.dart';
+import 'package:pi_desktop/ide/terminal/terminal_instance.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/settings/settings_dialog.dart';
+import 'package:pi_desktop/sidebar/sidebar.dart';
+import 'package:pi_desktop/theme/code_font.dart';
+import 'package:pi_desktop/theme/codicons.dart';
+import 'package:pi_desktop/theme/app_theme.dart';
+import 'package:pi_desktop/workspace/back_to_chat_button.dart';
+import 'package:pi_desktop/workspace/editor_launcher.dart';
+import 'package:pi_desktop/workspace/open_in_editor_button.dart';
+import 'package:pi_desktop/workspace/pin_window_button.dart';
+import 'package:pi_desktop/workspace/window_header/about_dialog.dart';
+import 'package:pi_desktop/workspace/window_header/header_menu_bar.dart';
+import 'package:pi_desktop/workspace/window_header/window_header.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
+import 'package:pi_desktop/update/version.dart';
 
 import 'ide/terminal/fake_pty.dart';
 import 'ide/terminal/fake_terminal.dart';
 
-const _window = MethodChannel('baocode/window');
+const _window = MethodChannel('pi-desktop/window');
 
 /// The app with the header Windows draws, and what it tells the window.
 Future<(Workspace, List<MethodCall>)> pumpWindowsApp(
@@ -60,7 +60,7 @@ Future<(Workspace, List<MethodCall>)> pumpWindowsApp(
   );
   final workspace = Workspace.mock();
   await tester.pumpWidget(
-    BaoCodeApp(workspace: workspace, terminalBackend: terminalBackend),
+    PiDesktopApp(workspace: workspace, terminalBackend: terminalBackend),
   );
   await tester.pump();
   return (workspace, calls);
@@ -749,7 +749,7 @@ void main() {
     tester.view.physicalSize = const Size(1400, 900);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
-    await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+    await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
     await tester.pump();
     Rect rectOf(Type type) => tester.getRect(
       find.descendant(of: find.byType(ChatScreen), matching: find.byType(type)),

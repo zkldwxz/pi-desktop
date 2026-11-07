@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/settings/data_dir_service.dart';
+import 'package:pi_desktop/platform/data_dir.dart';
+import 'package:pi_desktop/settings/data_dir_service.dart';
 import 'package:path/path.dart' as p;
 
 /// Moving the data folder copies only the app's own entries, points the

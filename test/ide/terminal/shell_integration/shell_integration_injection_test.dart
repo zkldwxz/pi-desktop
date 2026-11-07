@@ -16,9 +16,9 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/terminal/pty.dart';
-import 'package:baocode/ide/terminal/shell_integration/shell_integration_injection.dart';
-import 'package:baocode/ide/terminal/terminal_shell.dart';
+import 'package:pi_desktop/ide/terminal/pty.dart';
+import 'package:pi_desktop/ide/terminal/shell_integration/shell_integration_injection.dart';
+import 'package:pi_desktop/ide/terminal/terminal_shell.dart';
 
 const _root = '/app/shell-integration';
 const _zdotdir = '/tmp/baocode-shell-integration-x/zsh';

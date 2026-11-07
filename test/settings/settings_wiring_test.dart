@@ -3,29 +3,29 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_notifications.dart';
-import 'package:baocode/kernel/commit_attribution.dart';
-import 'package:baocode/keybindings/import_dialog.dart';
+import 'package:pi_desktop/ide/ide_notifications.dart';
+import 'package:pi_desktop/kernel/commit_attribution.dart';
+import 'package:pi_desktop/keybindings/import_dialog.dart';
 import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
-import 'package:baocode/keybindings/keybindings_sync.dart';
-import 'package:baocode/keybindings/default_keybindings.dart';
-import 'package:baocode/keybindings/keymap.dart';
-import 'package:baocode/keybindings/vscode_import.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/settings/app_locale.dart';
-import 'package:baocode/settings/app_settings.dart';
-import 'package:baocode/settings/pages/general_page.dart';
-import 'package:baocode/settings/pages/settings_dropdown.dart';
-import 'package:baocode/settings/pages/keybindings_page.dart';
-import 'package:baocode/settings/user_settings.dart';
-import 'package:baocode/tips/builtin_tips.dart';
-import 'package:baocode/tips/feature_tips_view.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/workspace/main_window.dart';
-import 'package:baocode/workspace/window_controls.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/keybindings/keybinding_service.dart';
+import 'package:pi_desktop/keybindings/keybindings_sync.dart';
+import 'package:pi_desktop/keybindings/default_keybindings.dart';
+import 'package:pi_desktop/keybindings/keymap.dart';
+import 'package:pi_desktop/keybindings/vscode_import.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/platform/data_dir.dart';
+import 'package:pi_desktop/settings/app_locale.dart';
+import 'package:pi_desktop/settings/app_settings.dart';
+import 'package:pi_desktop/settings/pages/general_page.dart';
+import 'package:pi_desktop/settings/pages/settings_dropdown.dart';
+import 'package:pi_desktop/settings/pages/keybindings_page.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
+import 'package:pi_desktop/tips/builtin_tips.dart';
+import 'package:pi_desktop/tips/feature_tips_view.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/workspace/main_window.dart';
+import 'package:pi_desktop/workspace/window_controls.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:path/path.dart' as p;
 
 import '../keybindings/fake_home.dart';
@@ -90,7 +90,10 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
     await tester.pumpWidget(
-      BaoCodeApp(workspace: workspace ?? Workspace.mock(), settings: settings),
+      PiDesktopApp(
+        workspace: workspace ?? Workspace.mock(),
+        settings: settings,
+      ),
     );
     await tester.pump();
   }

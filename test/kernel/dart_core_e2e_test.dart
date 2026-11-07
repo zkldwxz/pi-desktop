@@ -6,20 +6,21 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bao_agent/testing.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/claude_code/claude_environment.dart';
-import 'package:baocode/kernel/claude_code/claude_storage_io.dart';
-import 'package:baocode/kernel/kernel_event.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/kernel/kernel_registry.dart';
-import 'package:baocode/kernel/transcript.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/network/network_proxy_io.dart';
-import 'package:baocode/network/proxy_settings.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/kernel/agent_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_environment.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_storage_io.dart';
+import 'package:pi_desktop/kernel/kernel_event.dart';
+import 'package:pi_desktop/kernel/kernel_types.dart';
+import 'package:pi_desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi_desktop/remote/remote_claude.dart';
+import 'package:pi_desktop/kernel/transcript.dart';
+import 'package:pi_desktop/models/model_provider.dart';
+import 'package:pi_desktop/models/model_providers.dart';
+import 'package:pi_desktop/network/network_proxy_io.dart';
+import 'package:pi_desktop/network/proxy_settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -118,9 +119,16 @@ void main() {
   ({ClaudeCodeKernel kernel, Transcript transcript, List<String> asked}) open(
     KernelContext context,
   ) {
-    // As the app makes it: the core picked in settings, on this machine.
-    final kernel =
-        KernelRegistry.claudeCode.create(context) as ClaudeCodeKernel;
+    // Exercise the retained upstream adapter explicitly; it is not a desktop
+    // runtime offered by KernelRegistry in this fork.
+    final kernel = ClaudeCodeKernel(
+      MockKernels.claudeCode,
+      context,
+      start: startClaude,
+      readHistoryPage: readClaudeHistoryPage,
+      readGoal: readClaudeGoal,
+      forkSession: forkClaudeSession,
+    );
     final transcript = Transcript();
     final asked = <String>[];
     kernel.events.listen((event) {

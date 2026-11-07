@@ -86,12 +86,12 @@ class CodeArgs {
   /// The suffix of the file the macOS script writes a request to, which
   /// the system hands the app as one to open (see shell_command_io.dart):
   /// the working directory on the first line, the arguments on the rest.
-  static const requestFileSuffix = '.baocode-cli';
+  static const requestFileSuffix = '.pi-desktop-cli';
 
   /// The flag the Windows script (code.cmd) starts the app with, the
   /// console's folder and the arguments next; the runner hands them over
   /// as a request ([requestMarker]; see open_requests.cpp).
-  static const windowsRequestFlag = '--baocode-cli';
+  static const windowsRequestFlag = '--pi-desktop-cli';
 
   /// The marker of Open with BaoCode (Explorer's context menu, which the
   /// Windows installer or the settings add; Finder's, the macOS app's
@@ -101,19 +101,19 @@ class CodeArgs {
 
   /// The flag that menu starts the app with, the path next; the runner
   /// hands it over as a request ([agentRequestMarker]).
-  static const windowsAgentFlag = '--baocode-agent';
+  static const windowsAgentFlag = '--pi-desktop-agent';
 
-  /// The marker of a `baocode://` link, the link next: a site's one-click
-  /// import of an upstream (`baocode://provider/import?…`, see
+  /// The marker of a `pi-desktop://` link, the link next: a site's one-click
+  /// import of an upstream (`pi-desktop://provider/import?…`, see
   /// UpstreamImport), asked about in the main window, which comes in front
-  /// for it; the channel build's setup (`baocode://activate?…`); a file to
-  /// open in the IDE (`baocode://file/…`, see [FileLink]).
+  /// for it; the channel build's setup (`pi-desktop://activate?…`); a file to
+  /// open in the IDE (`pi-desktop://file/…`, see [FileLink]).
   static const importRequestMarker = '\u0000import';
 
-  /// The flag Windows starts the app with for a `baocode://` link (the URL
+  /// The flag Windows starts the app with for a `pi-desktop://` link (the URL
   /// scheme the installer registers), the link next; the runner hands it
   /// over as a request ([importRequestMarker]).
-  static const windowsLinkFlag = '--baocode-link';
+  static const windowsLinkFlag = '--pi-desktop-link';
 
   /// Whether [argument] starts a request ([requestMarker],
   /// [agentRequestMarker], [importRequestMarker]) among what the system
@@ -247,24 +247,24 @@ class CodeTarget {
 /// A link to a file, as VS Code's `vscode://file/…`, for pages, reports
 /// and tools outside the app to open one in the IDE (#383):
 ///
-///   `baocode://file/{absolute path}[:line[:col]][?windowId=_blank]`
+///   `pi-desktop://file/{absolute path}[:line[:col]][?windowId=_blank]`
 ///
-/// `baocode://file/Users/me/app/src/main.ts:12:5` on macOS,
-/// `baocode://file/C:/Users/me/app/src/main.ts:12` on Windows (a UNC path
-/// after two slashes: `baocode://file//server/share/a.ts`). Percent-encoded
+/// `pi-desktop://file/Users/me/app/src/main.ts:12:5` on macOS,
+/// `pi-desktop://file/C:/Users/me/app/src/main.ts:12` on Windows (a UNC path
+/// after two slashes: `pi-desktop://file//server/share/a.ts`). Percent-encoded
 /// as URLs are. The IDE opens it as `code -g` does (see
 /// AppWindows.handleCode): a file in the window whose folder has it, else
 /// the last used, at the line and column; a folder in its window;
 /// `windowId=_blank`, in a new window.
 ///
-/// It comes as other `baocode://` links do ([CodeArgs.importRequestMarker]),
+/// It comes as other `pi-desktop://` links do ([CodeArgs.importRequestMarker]),
 /// and goes to the IDE, never the chat.
 abstract final class FileLink {
   /// [link] as the `code` command would ask it; null if it is not a file
   /// link, or names no absolute path.
   static CodeArgs? parse(String link) {
     final uri = Uri.tryParse(link.trim());
-    if (uri == null || uri.scheme != 'baocode' || uri.host != 'file') {
+    if (uri == null || uri.scheme != 'pi-desktop' || uri.host != 'file') {
       return null;
     }
     final String path;

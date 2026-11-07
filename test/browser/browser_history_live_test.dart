@@ -9,9 +9,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/browser/browser_bridge.dart';
-import 'package:baocode/browser/browser_tools.dart';
-import 'package:baocode/kernel/claude_code/claude_sdk_tools.dart';
+import 'package:pi_desktop/browser/browser_bridge.dart';
+import 'package:pi_desktop/browser/browser_tools.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_sdk_tools.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

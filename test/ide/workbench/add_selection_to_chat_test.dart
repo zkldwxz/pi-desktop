@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:baocode/chat/composer/composer_files.dart';
+import 'package:pi_desktop/chat/composer/composer_files.dart';
 
 import 'fake_files.dart';
 

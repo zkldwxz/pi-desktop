@@ -3,11 +3,11 @@ library;
 
 import 'dart:io';
 
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/remote/open_remote.dart';
-import 'package:baocode/remote/ssh_host.dart';
-import 'package:baocode/theme/codicons.dart';
+import 'package:pi_desktop/ide/ide_quick_input.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/remote/open_remote.dart';
+import 'package:pi_desktop/remote/ssh_host.dart';
+import 'package:pi_desktop/theme/codicons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -51,7 +51,9 @@ void main() {
     // Typed, the host's home (this machine's) is gone to: the temp folder
     // stands in for it, the folders in it listed.
     final atHome = picks.last;
-    final goTo = atHome.itemsFor!(home.path).whereType<IdeQuickPickItem>().first;
+    final goTo = atHome.itemsFor!(home.path)
+        .whereType<IdeQuickPickItem>()
+        .first;
     await tester.runAsync(() async {
       goTo.onAccept!();
       await until(() => picks.length > 2);
@@ -62,7 +64,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        home: Scaffold(body: IdeQuickInput.pick(pick: pick, onClose: () {})),
+        home: Scaffold(
+          body: IdeQuickInput.pick(pick: pick, onClose: () {}),
+        ),
       ),
     );
     await tester.pump();
@@ -73,9 +77,9 @@ void main() {
     // and the pick lists it.
     Directory(p.join(home.path, 'api')).createSync();
     await tester.tap(find.byTooltip('Read the folders again'));
-    await tester.runAsync(() => Future<void>.delayed(
-      const Duration(milliseconds: 100),
-    ));
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 100)),
+    );
     await tester.pump();
     expect(find.text('api'), findsOneWidget);
     expect(find.text('app'), findsOneWidget);

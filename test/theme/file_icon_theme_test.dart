@@ -5,8 +5,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/theme/file_icon_theme.dart';
-import 'package:baocode/theme/material_file_icons.dart';
+import 'package:pi_desktop/theme/file_icon_theme.dart';
+import 'package:pi_desktop/theme/material_file_icons.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -1,34 +1,34 @@
 import 'dart:async';
 
-import 'package:baocode/base/give_way_row.dart';
-import 'package:baocode/stash/stash_note_editor.dart';
-import 'package:baocode/stash/stash_ai.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/chat/composer/composer_files.dart';
-import 'package:baocode/chat/chat_models.dart' show oneLineExcerpt;
-import 'package:baocode/chat/chat_session.dart' show ComposerMessage;
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/stash/stash_actions.dart';
-import 'package:baocode/stash/stash_controller.dart';
-import 'package:baocode/stash/stash_disk.dart';
-import 'package:baocode/stash/stash_host.dart';
-import 'package:baocode/stash/stash_note.dart';
-import 'package:baocode/stash/stash_panel_view.dart';
-import 'package:baocode/stash/stash_settings.dart';
-import 'package:baocode/stash/stash_store.dart';
-import 'package:baocode/window/app_windows.dart';
-import 'package:baocode/ide/ide_list.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
-import 'package:baocode/platform/app_platform.dart';
-import 'package:baocode/theme/material_file_icons.dart';
+import 'package:pi_desktop/base/give_way_row.dart';
+import 'package:pi_desktop/stash/stash_note_editor.dart';
+import 'package:pi_desktop/stash/stash_ai.dart';
+import 'package:pi_desktop/theme/codicons.dart';
+import 'package:pi_desktop/models/model_providers.dart';
+import 'package:pi_desktop/chat/composer/composer_files.dart';
+import 'package:pi_desktop/chat/chat_models.dart' show oneLineExcerpt;
+import 'package:pi_desktop/chat/chat_session.dart' show ComposerMessage;
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/stash/stash_actions.dart';
+import 'package:pi_desktop/stash/stash_controller.dart';
+import 'package:pi_desktop/stash/stash_disk.dart';
+import 'package:pi_desktop/stash/stash_host.dart';
+import 'package:pi_desktop/stash/stash_note.dart';
+import 'package:pi_desktop/stash/stash_panel_view.dart';
+import 'package:pi_desktop/stash/stash_settings.dart';
+import 'package:pi_desktop/stash/stash_store.dart';
+import 'package:pi_desktop/window/app_windows.dart';
+import 'package:pi_desktop/ide/ide_list.dart';
+import 'package:pi_desktop/keybindings/keybinding_service.dart';
+import 'package:pi_desktop/platform/app_platform.dart';
+import 'package:pi_desktop/theme/material_file_icons.dart';
 import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/icons/brand_logos.dart' show BaoCodeLogo;
-import 'package:baocode/workspace/pin_window_button.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/icons/brand_logos.dart' show BaoCodeLogo;
+import 'package:pi_desktop/workspace/pin_window_button.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 import '../window/fake_window_host.dart';
 
@@ -305,7 +305,7 @@ void main() {
     tester,
   ) async {
     await setUpFlow(tester);
-    const window = MethodChannel('baocode/window.7');
+    const window = MethodChannel('pi-desktop/window.7');
     final onTop = <Object?>[];
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(window, (
       call,

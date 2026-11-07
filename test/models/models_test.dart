@@ -2,19 +2,19 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/kernel/claude_code/claude_code_transport.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/claude_code/claude_environment.dart';
-import 'package:baocode/icons/project_icon.dart';
-import 'package:baocode/models/codex/codex_api.dart';
-import 'package:baocode/models/launch_environment.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/models/model_runtime.dart';
-import 'package:baocode/models/secret_store.dart';
-import 'package:baocode/models/secret_store_io.dart';
-import 'package:baocode/models/upstream.dart';
-import 'package:baocode/settings/pages/models_page.dart'
+import 'package:pi_desktop/kernel/claude_code/claude_code_transport.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_environment.dart';
+import 'package:pi_desktop/icons/project_icon.dart';
+import 'package:pi_desktop/models/codex/codex_api.dart';
+import 'package:pi_desktop/models/launch_environment.dart';
+import 'package:pi_desktop/models/model_provider.dart';
+import 'package:pi_desktop/models/model_providers.dart';
+import 'package:pi_desktop/models/model_runtime.dart';
+import 'package:pi_desktop/models/secret_store.dart';
+import 'package:pi_desktop/models/secret_store_io.dart';
+import 'package:pi_desktop/models/upstream.dart';
+import 'package:pi_desktop/settings/pages/models_page.dart'
     show formatEnvironment, formatHeaders, parseEnvironment, parseHeaders;
 import 'package:flutter_test/flutter_test.dart';
 
@@ -601,8 +601,8 @@ void main() {
       expect(providers.auxiliaryModel, isNull);
     });
 
-    test('BaoCode\'s own core has no Claude Code of the machine\'s: its '
-        'models and Haiku, picked on the CLI, stand for none', () async {
+    test('the retained upstream adapter offers CLI models only while its '
+        'legacy CLI setting is in effect', () async {
       final providers = ModelProviders.memory(providers: [_gateway]);
       await providers.setDefaultModel('opus');
       await providers.setAuxiliaryModel(builtinProviderId);
@@ -1444,7 +1444,7 @@ void main() {
       expect(calls.single.$1, ['-i']);
       expect(
         calls.single.$2,
-        'add-generic-password -U -s BaoCode -a "provider.gw" -X 736b2dc3a9\n',
+        'add-generic-password -U -s pi-desktop -a "provider.gw" -X 736b2dc3a9\n',
       );
       expect(calls.single.$1.join(' '), isNot(contains('sk-')));
 
@@ -1453,7 +1453,7 @@ void main() {
       expect(calls.last.$1, [
         'find-generic-password',
         '-s',
-        'BaoCode',
+        'pi-desktop',
         '-a',
         'provider.gw',
         '-w',

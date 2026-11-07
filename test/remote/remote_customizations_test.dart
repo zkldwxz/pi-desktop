@@ -5,10 +5,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bao_remote/files.dart' show IdeFileExistsException;
-import 'package:baocode/customize/customization_store.dart';
-import 'package:baocode/customize/customizations.dart';
-import 'package:baocode/remote/remote_customization_disk.dart';
-import 'package:baocode/remote/ssh_host.dart';
+import 'package:pi_desktop/customize/customization_store.dart';
+import 'package:pi_desktop/customize/customizations.dart';
+import 'package:pi_desktop/remote/remote_customization_disk.dart';
+import 'package:pi_desktop/remote/ssh_host.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
@@ -61,20 +61,19 @@ void main() {
     write(p.join(project, '.claude', 'skills', 'ship', 'SKILL.md'), 'Ships');
     // A skill linked in from elsewhere, as installers do.
     write(p.join(home, 'shared', 'lint', 'SKILL.md'), 'Lints');
-    Link(
-      p.join(config, 'skills', 'lint'),
-    ).createSync(p.join(home, 'shared', 'lint'));
+    Link(p.join(config, 'skills', 'lint'))
+        .createSync(p.join(home, 'shared', 'lint'));
 
-    final skills = await store.list(
-      CustomizationKind.skills,
-      project: project,
+    final skills = await store.list(CustomizationKind.skills, project: project);
+    expect(
+      [for (final skill in skills) (skill.scope, skill.name)],
+      [
+        (CustomizationScope.user, 'lint'),
+        (CustomizationScope.user, 'pdf'),
+        (CustomizationScope.synced, 'web'),
+        (CustomizationScope.project, 'ship'),
+      ],
     );
-    expect([for (final skill in skills) (skill.scope, skill.name)], [
-      (CustomizationScope.user, 'lint'),
-      (CustomizationScope.user, 'pdf'),
-      (CustomizationScope.synced, 'web'),
-      (CustomizationScope.project, 'ship'),
-    ]);
     expect(skills[1].description, 'Reads PDF files');
   });
 
@@ -126,14 +125,11 @@ void main() {
         },
       }),
     );
-    final servers = await store.list(
-      CustomizationKind.mcps,
-      project: project,
+    final servers = await store.list(CustomizationKind.mcps, project: project);
+    expect(
+      [for (final server in servers) (server.scope, server.name)],
+      [(CustomizationScope.user, 'docs'), (CustomizationScope.local, 'db')],
     );
-    expect([for (final server in servers) (server.scope, server.name)], [
-      (CustomizationScope.user, 'docs'),
-      (CustomizationScope.local, 'db'),
-    ]);
     expect(store.isLocal, isFalse);
   });
 }

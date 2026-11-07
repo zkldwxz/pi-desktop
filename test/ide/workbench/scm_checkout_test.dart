@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/git/git_service.dart';
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/ide/ide_status_bar.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
+import 'package:pi_desktop/ide/git/git_service.dart';
+import 'package:pi_desktop/ide/ide_quick_input.dart';
+import 'package:pi_desktop/ide/ide_status_bar.dart';
+import 'package:pi_desktop/ide/ide_workbench.dart';
+import 'package:pi_desktop/keybindings/keybinding_service.dart';
 
 import '../git/fake_git.dart';
 import 'fake_files.dart';

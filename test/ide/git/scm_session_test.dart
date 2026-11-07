@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/git/ide_scm_view.dart';
-import 'package:baocode/settings/user_settings.dart';
+import 'package:pi_desktop/ide/git/ide_scm_view.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
 import 'package:path/path.dart' as p;
 
 /// The choices made in Source Control's dialogs, kept in settings.json as

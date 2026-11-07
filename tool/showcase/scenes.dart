@@ -4,24 +4,24 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/composer/composer_files.dart';
-import 'package:baocode/icons/project_icon.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/theme/workbench_theme.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/chat/chat_models.dart';
+import 'package:pi_desktop/chat/composer/composer_files.dart';
+import 'package:pi_desktop/icons/project_icon.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/theme/workbench_theme.dart';
 import 'package:flutter/services.dart';
 
 import 'dart:ui' as ui;
 
-import 'package:baocode/ide/git/ide_git_log_view.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/ide/terminal/terminal_instance.dart';
-import 'package:baocode/ide/terminal/terminal_view.dart';
-import 'package:baocode/settings/user_settings.dart';
-import 'package:baocode/workspace/chat_grid.dart';
-import 'package:baocode/workspace/window_controls.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/ide/git/ide_git_log_view.dart';
+import 'package:pi_desktop/ide/ide_workbench.dart';
+import 'package:pi_desktop/ide/terminal/terminal_instance.dart';
+import 'package:pi_desktop/ide/terminal/terminal_view.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
+import 'package:pi_desktop/workspace/chat_grid.dart';
+import 'package:pi_desktop/workspace/window_controls.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';

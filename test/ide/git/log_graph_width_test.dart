@@ -1,7 +1,7 @@
 // The Git log's graph is as wide as its lanes: a history of many branches
 // side by side has them all, the message beside them, not under them.
 
-import 'package:baocode/ide/git/git_graph_painter.dart';
+import 'package:pi_desktop/ide/git/git_graph_painter.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';

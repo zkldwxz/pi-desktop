@@ -17,12 +17,12 @@ library;
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/remote/open_remote.dart';
-import 'package:baocode/remote/remote_location.dart';
-import 'package:baocode/remote/remote_status.dart';
-import 'package:baocode/remote/ssh_host.dart';
+import 'package:pi_desktop/ide/ide_quick_input.dart';
+import 'package:pi_desktop/l10n/l10n.dart';
+import 'package:pi_desktop/remote/open_remote.dart';
+import 'package:pi_desktop/remote/remote_location.dart';
+import 'package:pi_desktop/remote/remote_status.dart';
+import 'package:pi_desktop/remote/ssh_host.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';

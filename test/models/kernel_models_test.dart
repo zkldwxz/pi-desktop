@@ -1,18 +1,18 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_transport.dart';
-import 'package:baocode/kernel/claude_code/claude_code_translator.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/kernel_event.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/kernel/transcript.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/settings/user_settings.dart';
+import 'package:pi_desktop/kernel/agent_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_transport.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_code_translator.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi_desktop/kernel/kernel_event.dart';
+import 'package:pi_desktop/kernel/kernel_types.dart';
+import 'package:pi_desktop/kernel/transcript.dart';
+import 'package:pi_desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi_desktop/models/model_provider.dart';
+import 'package:pi_desktop/models/model_providers.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../kernel_test.dart' show FakeCli;
@@ -929,19 +929,22 @@ void main() {
     kernel.dispose();
   });
 
-  test('a provider gone since, Claude Code\'s own left out of the picker, '
-      'falls back to the first upstream\'s model, as the picker shows', () async {
-    await providers.setBuiltinHidden(true);
-    final (:kernel, :launches, clis: _, :environments) = start(providers, {
-      'model': '@removed/x',
-    });
-    kernel.prepare();
-    await pumpEventQueue();
-    expect(kernel.model.selected, '@gw/gpt-5');
-    expect(launches.single.model, startsWith('gpt-5'));
-    expect(environments.single.$1, 'gw');
-    kernel.dispose();
-  });
+  test(
+    'a provider gone since, Claude Code\'s own left out of the picker, '
+    'falls back to the first upstream\'s model, as the picker shows',
+    () async {
+      await providers.setBuiltinHidden(true);
+      final (:kernel, :launches, clis: _, :environments) = start(providers, {
+        'model': '@removed/x',
+      });
+      kernel.prepare();
+      await pumpEventQueue();
+      expect(kernel.model.selected, '@gw/gpt-5');
+      expect(launches.single.model, startsWith('gpt-5'));
+      expect(environments.single.$1, 'gw');
+      kernel.dispose();
+    },
+  );
 
   test('the model in use removed mid-conversation: the CLI started on it '
       'is let go, and the next message resumes on the model the picker '

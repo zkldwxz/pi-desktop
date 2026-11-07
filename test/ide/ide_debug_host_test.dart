@@ -4,10 +4,10 @@
 
 import 'dart:io';
 
-import 'package:baocode/ide/ide_debug_host.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart';
-import 'package:baocode/settings/user_settings.dart';
+import 'package:pi_desktop/ide/ide_debug_host.dart';
+import 'package:pi_desktop/ide/ide_workspace.dart';
+import 'package:pi_desktop/ide/lsp/lsp_protocol.dart';
+import 'package:pi_desktop/settings/user_settings.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

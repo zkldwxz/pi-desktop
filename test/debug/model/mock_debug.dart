@@ -8,21 +8,23 @@
 
 import 'dart:async';
 
-import 'package:baocode/base/cancellation.dart' show CancellationToken;
-import 'package:baocode/debug/base/event.dart';
-import 'package:baocode/debug/common/debug_model.dart';
-import 'package:baocode/debug/common/debug_storage.dart';
-import 'package:baocode/debug/common/debug_types.dart';
-import 'package:baocode/debug/service/debug_service.dart';
-import 'package:baocode/debug/session/debug_adapter.dart';
-import 'package:baocode/debug/session/debug_session.dart';
-import 'package:baocode/debug/session/raw_debug_session.dart';
+import 'package:pi_desktop/base/cancellation.dart' show CancellationToken;
+import 'package:pi_desktop/debug/base/event.dart';
+import 'package:pi_desktop/debug/common/debug_model.dart';
+import 'package:pi_desktop/debug/common/debug_storage.dart';
+import 'package:pi_desktop/debug/common/debug_types.dart';
+import 'package:pi_desktop/debug/service/debug_service.dart';
+import 'package:pi_desktop/debug/session/debug_adapter.dart';
+import 'package:pi_desktop/debug/session/debug_session.dart';
+import 'package:pi_desktop/debug/session/raw_debug_session.dart';
 
 import '../support/fake_debug_adapter.dart' show FakeDebugHost;
 
 /// `createMockDebugModel`: a model over memory storage, no file dirty.
-DebugModel createMockDebugModel() =>
-    DebugModel(DebugStorage(MemoryDebugStorageBackend()), isDirty: (_) => false);
+DebugModel createMockDebugModel() => DebugModel(
+  DebugStorage(MemoryDebugStorageBackend()),
+  isDirty: (_) => false,
+);
 
 /// A service for sessions to ask settings, the host and the view model of.
 DebugService createMockDebugService() =>
@@ -36,7 +38,10 @@ DebugSession createTestSession(
   DebugSessionOptions? options,
 }) => DebugSession(
   generateUuid(),
-  (resolved: {'name': name, 'type': 'node', 'request': 'launch'}, unresolved: null),
+  (
+    resolved: {'name': name, 'type': 'node', 'request': 'launch'},
+    unresolved: null,
+  ),
   null,
   model,
   options,
@@ -65,13 +70,20 @@ final class _NullDebugger implements RawDebugger {
   Future<int?> runInTerminal(Json args, String sessionId) async => null;
 
   @override
-  Future<bool> startDebugging(Json config, String parentSessionId) async => false;
+  Future<bool> startDebugging(Json config, String parentSessionId) async =>
+      false;
 }
 
 /// `MockRawSession`: one frame for any `stackTrace`, nothing for
 /// `evaluate`, the rest not implemented.
 class MockRawSession extends RawDebugSession {
-  MockRawSession() : super(DebugAdapter(_SilentTransport()), const _NullDebugger(), 'mock', 'mock');
+  MockRawSession()
+    : super(
+        DebugAdapter(_SilentTransport()),
+        const _NullDebugger(),
+        'mock',
+        'mock',
+      );
 
   /// How often `stackTrace` was asked (the upstream test's sinon spy).
   int stackTraceCallCount = 0;
@@ -97,10 +109,12 @@ class MockRawSession extends RawDebugSession {
   Future<Json?> evaluate(Json args) => Future.value(null);
 
   @override
-  Future<Json?> scopes(Json args, CancellationToken? token) => throw UnimplementedError('not implemented');
+  Future<Json?> scopes(Json args, CancellationToken? token) =>
+      throw UnimplementedError('not implemented');
 
   @override
-  Future<Json?> variables(Json args, CancellationToken? token) => throw UnimplementedError('not implemented');
+  Future<Json?> variables(Json args, CancellationToken? token) =>
+      throw UnimplementedError('not implemented');
 
   @override
   Future<Json?> threads() => throw UnimplementedError('not implemented');
@@ -139,14 +153,25 @@ class MockDebugAdapter extends EmitterDebugAdapterTransport {
     'body': body,
   });
 
-  void sendEventBody(String event, Json body) =>
-      acceptMessage({'seq': ++_seq, 'type': 'event', 'event': event, 'body': body});
+  void sendEventBody(String event, Json body) => acceptMessage({
+    'seq': ++_seq,
+    'type': 'event',
+    'event': event,
+    'body': body,
+  });
 
   void _evaluate(Json request, Json args) {
     final expression = args.str('expression') ?? '';
-    if (expression.startsWith('before.')) sendEventBody('output', {'output': expression});
-    sendResponseBody(request, {'result': '=$expression', 'variablesReference': 0});
-    if (expression.startsWith('after.')) sendEventBody('output', {'output': expression});
+    if (expression.startsWith('before.')) {
+      sendEventBody('output', {'output': expression});
+    }
+    sendResponseBody(request, {
+      'result': '=$expression',
+      'variablesReference': 0,
+    });
+    if (expression.startsWith('after.')) {
+      sendEventBody('output', {'output': expression});
+    }
   }
 }
 

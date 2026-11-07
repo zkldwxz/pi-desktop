@@ -2,13 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/window/app_windows.dart';
-import 'package:baocode/window/code_args.dart';
-import 'package:baocode/window/window_frame.dart';
-import 'package:baocode/window/window_host.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/ide/ide_quick_input.dart';
+import 'package:pi_desktop/ide/ide_workspace.dart';
+import 'package:pi_desktop/window/app_windows.dart';
+import 'package:pi_desktop/window/code_args.dart';
+import 'package:pi_desktop/window/window_frame.dart';
+import 'package:pi_desktop/window/window_host.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
 /// A view of its own beside the test's, as the engine adds one per window
 /// (flutter/test/widgets/multi_view_testing.dart).

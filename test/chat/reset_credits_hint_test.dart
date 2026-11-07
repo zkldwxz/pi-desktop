@@ -1,9 +1,9 @@
-import 'package:baocode/chat/panels/reset_credits_hint.dart';
-import 'package:baocode/l10n/app_localizations.dart';
-import 'package:baocode/models/codex/codex_service.dart';
-import 'package:baocode/models/codex/codex_usage.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
+import 'package:pi_desktop/chat/panels/reset_credits_hint.dart';
+import 'package:pi_desktop/l10n/app_localizations.dart';
+import 'package:pi_desktop/models/codex/codex_service.dart';
+import 'package:pi_desktop/models/codex/codex_usage.dart';
+import 'package:pi_desktop/models/model_provider.dart';
+import 'package:pi_desktop/models/model_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

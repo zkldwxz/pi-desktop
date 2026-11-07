@@ -6,16 +6,16 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/remote/open_remote.dart';
-import 'package:baocode/workspace/new_chat_folder_bar.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_desktop/chat/chat_session.dart';
+import 'package:pi_desktop/ide/ide_quick_input.dart';
+import 'package:pi_desktop/kernel/agent_kernel.dart';
+import 'package:pi_desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi_desktop/main.dart';
+import 'package:pi_desktop/remote/open_remote.dart';
+import 'package:pi_desktop/workspace/new_chat_folder_bar.dart';
+import 'package:pi_desktop/workspace/workspace.dart';
 
-const _window = MethodChannel('baocode/window');
+const _window = MethodChannel('pi-desktop/window');
 const _desktop = '/Users/me/Desktop';
 
 final _mac = TargetPlatformVariant.only(TargetPlatform.macOS);
@@ -43,7 +43,7 @@ Future<Workspace> _pumpNew(WidgetTester tester) async {
     NewChatFolderBar.pickDirectory = pick;
   });
   final workspace = Workspace.mock();
-  await tester.pumpWidget(BaoCodeApp(workspace: workspace));
+  await tester.pumpWidget(PiDesktopApp(workspace: workspace));
   workspace.create();
   await tester.pump();
   return workspace;

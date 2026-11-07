@@ -10,13 +10,10 @@
 //
 // The build number only ever goes up: the app is offered an update when
 // the manifest's version is newer than its own, build numbers counted
-// (docs/auto-update.md). It drafts the release's notes too
-// (tool/draft_release_notes.dart). Rewrite them, make the site's changelog
-// (tool/build_changelog.dart), then commit, and push the tag it prints: CI
-// builds and publishes the release (.github/workflows/release.yml).
+// (docs/auto-update.md). It drafts release notes; review them before tagging.
 import 'dart:io';
 
-import 'package:baocode/update/version.dart';
+import 'package:pi_desktop/update/version.dart';
 
 import 'draft_release_notes.dart';
 
@@ -77,7 +74,7 @@ Future<void> main(List<String> arguments) async {
     ..writeln('Then commit, and publish with:')
     ..writeln()
     ..writeln(
-      '  git tag v${next.marketing} && git push origin v${next.marketing}',
+      '  git tag pi-v${next.marketing} && git push origin pi-v${next.marketing}',
     );
 }
 

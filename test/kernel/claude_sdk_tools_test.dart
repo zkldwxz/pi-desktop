@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:baocode/kernel/claude_code/claude_sdk_tools.dart';
+import 'package:pi_desktop/kernel/claude_code/claude_sdk_tools.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

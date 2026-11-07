@@ -6,9 +6,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/settings/data_dir_service.dart';
-import 'package:baocode/settings/data_dir_startup.dart';
+import 'package:pi_desktop/platform/data_dir.dart';
+import 'package:pi_desktop/settings/data_dir_service.dart';
+import 'package:pi_desktop/settings/data_dir_startup.dart';
 import 'package:path/path.dart' as p;
 
 /// A data folder that cannot be used is reported before the app shows,

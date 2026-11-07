@@ -290,7 +290,7 @@ Attention::Attention(flutter::BinaryMessenger* messenger, HWND window,
     : window_(window),
       windows_(windows),
       channel_(std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-          messenger, "baocode/attention",
+          messenger, "pi-desktop/attention",
           &flutter::StandardMethodCodec::GetInstance())),
       taskbar_created_(::RegisterWindowMessageW(L"TaskbarCreated")),
       taskbar_button_created_(
@@ -525,7 +525,7 @@ void Attention::ShowIcon() {
   data.uCallbackMessage = kTrayMessage;
   data.hIcon = icon;
   const std::wstring tooltip =
-      tray_ && !tray_->tooltip.empty() ? tray_->tooltip : L"BaoCode";
+      tray_ && !tray_->tooltip.empty() ? tray_->tooltip : L"pi-desktop";
   wcsncpy_s(data.szTip, tooltip.c_str(), _TRUNCATE);
   if (icon_added_) {
     ::Shell_NotifyIconW(NIM_MODIFY, &data);

@@ -2,32 +2,36 @@ import 'dart:convert';
 import 'dart:ffi' show Abi;
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-
 import '../update/version.dart';
 import 'telemetry_service.dart';
 
-/// Where to send the reports instead, to try a server: also turns them on
-/// in a debug build.
-const telemetryUrlVariable = 'BAOCODE_TELEMETRY_URL';
+/// The explicitly configured endpoint for usage reports.
+const telemetryUrlVariable = 'PI_DESKTOP_TELEMETRY_URL';
+const _telemetryUrlDefine = String.fromEnvironment(telemetryUrlVariable);
 
 /// What the app reports with where it runs; null where it reports nothing:
-/// a debug build (unless [telemetryUrlVariable] is set).
-PlatformTelemetry? platformTelemetry() {
-  final environment = Platform.environment;
-  final override = environment[telemetryUrlVariable]?.trim() ?? '';
-  if (!kReleaseMode && override.isEmpty) return null;
-  final url = Uri.tryParse(
-    override.isEmpty ? TelemetryService.defaultUrl : override,
-  );
-  if (url == null) return null;
+/// when [telemetryUrlVariable] has no valid URL.
+PlatformTelemetry? platformTelemetry({
+  Map<String, String>? environment,
+  String? buildUrl,
+}) {
+  final value =
+      (environment ?? Platform.environment)[telemetryUrlVariable] ??
+      buildUrl ??
+      _telemetryUrlDefine;
+  final url = Uri.tryParse(value.trim());
+  if (url == null ||
+      !(url.isScheme('https') || url.isScheme('http')) ||
+      url.host.isEmpty) {
+    return null;
+  }
   final os = Platform.operatingSystem;
   final arch = abiArch(Abi.current());
   return PlatformTelemetry(
     url: url,
     os: os,
     arch: arch,
-    sender: IoTelemetrySender(userAgent: 'BaoCode/$currentAppVersion ($os)'),
+    sender: IoTelemetrySender(userAgent: 'pi-desktop/$currentAppVersion ($os)'),
   );
 }
 
@@ -52,7 +56,7 @@ class PlatformTelemetry {
 /// A JSON POST over HTTPS.
 class IoTelemetrySender implements TelemetrySender {
   IoTelemetrySender({
-    this.userAgent = 'BaoCode',
+    this.userAgent = 'pi-desktop',
     this.timeout = const Duration(seconds: 15),
     HttpClient Function()? client,
   }) : _client = client ?? HttpClient.new;

@@ -43,7 +43,7 @@ Future<void> main(List<String> arguments) async {
   final at = arguments.indexOf('--data');
   final dataDir = at >= 0 && at + 1 < arguments.length
       ? arguments[at + 1]
-      : '$home/.baocode-server/data';
+      : '$home/.pi-desktop-server/data';
   Directory(dataDir).createSync(recursive: true);
   // A key Claude Code is given stays in memory where there is a place for
   // it, not on disk. A session's daemon outlives the login, whose
