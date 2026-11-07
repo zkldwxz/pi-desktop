@@ -909,6 +909,32 @@
     <li>Updates itself in the background, and asks before restarting</li>
     </ul>
   </section>
+
+  <section class="release" id="v0.1.2">
+    <h2 class="plain"><a href="#v0.1.2">0.1.2</a></h2>
+    <h1>pi-desktop 0.1.2</h1>
+    <ul>
+    <li>Desktop workspace powered by the Pi coding agent, with an independent application identity, data directory, browser integration and signed update channel.</li>
+    <li>Pi uses native provider protocols for supported standard APIs and records cache-read and cache-write usage when the provider reports it. No higher cache hit rate, speed or cost advantage has been measured.</li>
+    <li>The bundled Pi runtime starts at 1.5.0 and can install official stable updates independently for new local sessions.</li>
+    <li>Direct SSH Pi sessions use Pi and Node on the remote host with batch/key authentication. A real SSH stub turn has been verified; broader remote workflows remain under validation.</li>
+    <li>Includes macOS Apple Silicon and Intel ZIP/DMG packages and a Windows x64 installer. Linux desktop packages are excluded.</li>
+    <li>Corrects the macOS packaging architecture check and verifies that the bundled Pi CLI starts on each build platform.</li>
+    <li>macOS packages use ad-hoc signing and are not notarized. The Windows installer is unsigned; operating systems may show security prompts.</li>
+    </ul>
+  </section>
+
+  <section class="release" id="v0.1.1">
+    <h2 class="plain"><a href="#v0.1.1">0.1.1</a></h2>
+    <h1>pi-desktop 0.1.1</h1>
+    <ul>
+    <li>Desktop workspace using the Pi coding agent, with an independent application identity and data directory.</li>
+    <li>Pi uses native provider protocols for supported standard APIs and reports provider cache-read and cache-write usage per request when available. Cache results depend on the provider and workload; no higher hit rate has been measured.</li>
+    <li>The bundled Pi runtime starts at 1.5.0 and can update independently from the official Pi release endpoint for new local sessions. Desktop updates use a separate signed release channel.</li>
+    <li>Direct SSH Pi sessions use Pi and Node installed on the remote host with batch/key authentication. A real SSH stub turn has been verified; broader remote workflows remain under validation.</li>
+    <li>macOS and Windows packages are planned for this release; package and installation validation is pending. No Linux packages are being built.</li>
+    </ul>
+  </section>
 </main>
 
 <script src="/site.js"></script>

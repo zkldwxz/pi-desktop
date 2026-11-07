@@ -4,11 +4,11 @@
 
 ## 当前状态与边界
 
-当前源码版本为 `0.1.1+2`，对应标签 `pi-v0.1.1`。独立发布目标为已创建的 [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop)；更新变量和签名密钥已配置，首次发布后更新源才能使用。`.github/workflows/release.yml` 为 macOS 和 Windows 构建资源，使用 `tool/release_manifest.dart` 生成并签名桌面更新清单。桌面更新仍需进行端到端验证；本次不构建 Linux 安装包，Linux 自动更新关闭。GitHub 下载的重定向来源必须显式配置。Pi 官方运行时更新独立于桌面更新，见 [auto-update.md](auto-update.md#pi-运行时更新)。
+当前源码版本为 `0.1.2+3`，对应标签 `pi-v0.1.2`。独立发布目标为已创建的 [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop)；更新变量和签名密钥已配置，首次发布后更新源才能使用。`.github/workflows/release.yml` 为 macOS 和 Windows 构建资源，使用 `tool/release_manifest.dart` 生成并签名桌面更新清单。桌面更新仍需进行端到端验证；本次不构建 Linux 安装包，Linux 自动更新关闭。GitHub 下载的重定向来源必须显式配置。Pi 官方运行时更新独立于桌面更新，见 [auto-update.md](auto-update.md#pi-运行时更新)。
 
 ## 版本和标签
 
-版本沿用 `pubspec.yaml` 和 `lib/update/version.dart` 的 `主.次.修订+build` 约定，两处保持一致；每次发布递增 build，更新只接受更高版本。桌面版标签使用 marketing 版本，例如 `pi-v1.2.0` 对应 `1.2.0+12`。发布前检查标签与源码版本一致，并准备独立的发布说明。`release-notes/0.1.1.en.md` 和 `release-notes/0.1.1.zh.md` 为本版本发布说明；发布工作流使用英文说明作为 GitHub Release 正文。
+版本沿用 `pubspec.yaml` 和 `lib/update/version.dart` 的 `主.次.修订+build` 约定，两处保持一致；每次发布递增 build，更新只接受更高版本。桌面版标签使用 marketing 版本，例如 `pi-v1.2.0` 对应 `1.2.0+12`。发布前检查标签与源码版本一致，并准备独立的发布说明。`release-notes/0.1.2.en.md` 和 `release-notes/0.1.2.zh.md` 为本版本发布说明；发布工作流使用英文说明作为 GitHub Release 正文。
 
 `pi-v*` 标签推送触发发布，工作流验证标签与 `pubspec.yaml` 的 marketing 版本一致，并运行版本一致性测试检查更新器版本。`workflow_dispatch` 手动运行只构建并上传 Actions 产物，不注入生产更新配置。标签运行要求工作流变量 `PI_DESKTOP_UPDATE_URL` 为 HTTPS 清单地址，以及非空的 `PI_DESKTOP_UPDATE_PUBLIC_KEY`；通过 `PI_DESKTOP_UPDATE_ALLOWED_ORIGINS` 配置资源及重定向所需的额外精确 HTTPS origin，以逗号分隔。各平台构建将三者作为 Dart define 注入。签名步骤使用 secret `PI_DESKTOP_UPDATE_SIGNING_KEY` 中的 base64 私钥 seed。发布目标通过工作流变量 `PI_DESKTOP_RELEASE_REPOSITORY` 指定为 `owner/repo`；发布使用 secret `PI_DESKTOP_RELEASE_TOKEN`，未设置时使用 `github.token`。跨仓库发布需要有目标仓库 contents 写权限的 token，且目标仓库须预先有指向同一提交的同名标签。
 

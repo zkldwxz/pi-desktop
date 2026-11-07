@@ -30,7 +30,7 @@ Future<void> main(List<String> arguments) async {
 /// Writes the draft notes for [version] in [root], where there are none,
 /// and says what it did.
 void draftReleaseNotes(Directory root, String version) {
-  final since = _lastTag(root, before: 'v$version');
+  final since = _lastTag(root, before: 'pi-v$version');
   final commits = _git(root, [
     'log',
     '--no-merges',
@@ -57,7 +57,7 @@ void draftReleaseNotes(Directory root, String version) {
   }
   stdout
     ..writeln()
-    ..writeln('Rewrite them for the people who use BaoCode (the Chinese in')
+    ..writeln('Rewrite them for the people who use pi-desktop (the Chinese in')
     ..writeln('Chinese), then make the site\'s changelog from them:')
     ..writeln()
     ..writeln('  dart run tool/build_changelog.dart');
@@ -113,7 +113,7 @@ String draftText(
   return '${blocks.isEmpty ? '- ' : blocks.join('\n\n')}\n';
 }
 
-/// The newest `v*` tag reachable from HEAD other than [before] (the
+/// The newest `pi-v*` tag reachable from HEAD other than [before] (the
 /// release being drafted, when it was tagged already); null when none.
 String? _lastTag(Directory root, {required String before}) {
   final tags = _git(root, [
@@ -121,7 +121,7 @@ String? _lastTag(Directory root, {required String before}) {
     '--merged',
     'HEAD',
     '--sort=-v:refname',
-  ]).split('\n').where((tag) => RegExp(r'^v\d+\.\d+\.\d+$').hasMatch(tag));
+  ]).split('\n').where((tag) => RegExp(r'^pi-v\d+\.\d+\.\d+$').hasMatch(tag));
   return tags.where((tag) => tag != before).firstOrNull;
 }
 

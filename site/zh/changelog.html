@@ -881,6 +881,32 @@
     <li>在后台自动更新，重启前会先询问</li>
     </ul>
   </section>
+
+  <section class="release" id="v0.1.2">
+    <h2 class="plain"><a href="#v0.1.2">0.1.2</a></h2>
+    <h1>pi-desktop 0.1.2</h1>
+    <ul>
+    <li>使用 Pi coding agent 内核，具备独立的应用标识、数据目录、浏览器集成和签名更新渠道。</li>
+    <li>支持标准 API 的 Pi 原生供应商协议，并在供应商返回数据时记录缓存读取、缓存写入用量。尚无实测数据证明比上游的缓存命中率更高、速度更快或成本更低。</li>
+    <li>随包 Pi 初始版本为 1.5.0，可独立安装官方稳定更新，供后续启动的本地会话使用。</li>
+    <li>直接 SSH Pi 会话使用远程主机已有的 Pi 和 Node，通过批处理/密钥认证；真实 SSH stub 对话已验证，更多远程工作流仍待验证。</li>
+    <li>提供 macOS Apple Silicon、Intel 的 ZIP/DMG 包，以及 Windows x64 安装器。本次不构建 Linux 桌面安装包。</li>
+    <li>修正 macOS 打包架构检查，并在各构建平台验证随包 Pi CLI 能正常启动。</li>
+    <li>macOS 包采用 ad-hoc 签名且未经公证；Windows 安装器未签名，系统可能显示安全提示。</li>
+    </ul>
+  </section>
+
+  <section class="release" id="v0.1.1">
+    <h2 class="plain"><a href="#v0.1.1">0.1.1</a></h2>
+    <h1>pi-desktop 0.1.1</h1>
+    <ul>
+    <li>使用 Pi coding agent 的桌面工作区，具有独立应用标识与数据目录。</li>
+    <li>Pi 对受支持的标准 API 使用原生供应商协议，并在供应商提供数据时按请求记录缓存读取与写入。缓存效果取决于供应商与工作负载，目前没有实测更高命中率。</li>
+    <li>随包 Pi 运行时初始为 1.5.0，可从 Pi 官方发布端点独立更新，供新启动的本地会话使用；桌面应用使用独立签名更新渠道。</li>
+    <li>直接 SSH Pi 会话使用远程主机已安装的 Pi 和 Node，通过批处理/密钥认证；真实 SSH stub 对话已验证，更多远程工作流仍待验证。</li>
+    <li>本次计划发布 macOS 和 Windows 安装包，打包及安装验证仍待完成；不构建 Linux 安装包。</li>
+    </ul>
+  </section>
 </main>
 
 <script src="/site.js"></script>

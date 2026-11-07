@@ -12,7 +12,7 @@ pi-desktop 是使用 [Pi coding agent](https://github.com/earendil-works/pi) 的
 
 随包 Pi 运行时初始锁定 **1.5.0**；独立更新器在启动后 30 秒首次检查官方 Pi 发布端点，之后每六小时检查，安装到用户数据目录并供新会话使用。桌面应用使用独立发布渠道和 Ed25519 签名验证；分支更新配置已设置，首次发布后才能使用。详见[自动更新](docs/auto-update.md)和[发布说明](docs/release.md)。
 
-计划发布版本为 **0.1.1+2**，通过 Actions 构建 macOS 和 Windows 安装包；打包及安装仍待验证。本次不构建 Linux 安装包。仓库为 [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop)。
+计划发布版本为 **0.1.2+3**，通过 Actions 构建 macOS 和 Windows 安装包；打包及安装仍待验证。本次不构建 Linux 安装包。仓库为 [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop)。
 
 支持本地项目。直接 SSH Pi 会话使用远程已安装的 Pi 和 Node，通过批处理/密钥认证；真实 SSH stub 对话已验证，更多远程工作流仍待验证。远程 IDE 服务或语言服务器不会自动保证安装。真实 Dart 语言服务器的诊断、悬停、补全与重命名已通过冒烟检查。
 

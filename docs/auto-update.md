@@ -4,7 +4,7 @@
 
 ## 当前状态
 
-`lib/update/pi_desktop_update_config.dart` 要求同时配置清单 URL 和公钥，否则更新不可用，没有生产地址或公钥默认值。独立仓库 [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop) 已创建，更新地址、密钥及发布配置已设置；首次发布后更新源才能使用，真实安装验证仍待完成。`lib/update/installer_io.dart` 为 macOS 和 Windows 创建更新器；Linux 自动更新仍关闭。当前桌面版本为 `0.1.1+2`，对应标签 `pi-v0.1.1`。桌面更新与下文的 Pi 运行时更新相互独立。
+`lib/update/pi_desktop_update_config.dart` 要求同时配置清单 URL 和公钥，否则更新不可用，没有生产地址或公钥默认值。独立仓库 [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop) 已创建，更新地址、密钥及发布配置已设置；首次发布后更新源才能使用，真实安装验证仍待完成。`lib/update/installer_io.dart` 为 macOS 和 Windows 创建更新器；Linux 自动更新仍关闭。当前桌面版本为 `0.1.2+3`，对应标签 `pi-v0.1.2`。桌面更新与下文的 Pi 运行时更新相互独立。
 
 应用的更新方式仍由 `update.mode` 控制：`default` 自动检查和下载，`manual` 手动检查，`none` 关闭。更新先下载并校验，用户确认退出后才启动安装。macOS 安装器检查应用 bundle ID；当前应用有有效代码签名时还要求新版签名有效且 Team 一致。
 

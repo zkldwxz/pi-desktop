@@ -12,7 +12,7 @@ Configure your own HTTPS provider in Settings → Models; newapi/sub2api-compati
 
 The bundled Pi runtime starts from the locked 1.5.0 release. Its independent updater checks the official Pi release endpoint after 30 seconds and then every six hours, installing into user data for new sessions. Desktop updates have their own release channel and Ed25519 signature verification; the fork's update settings are configured for its release, which becomes usable after publication. See [auto-update](docs/auto-update.md) and [release](docs/release.md).
 
-The planned release is **0.1.1+2**, with macOS and Windows packages built through Actions; packaging and installation still need validation. No Linux packages are being built for this release. The repository is [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop).
+The planned release is **0.1.2+3**, with macOS and Windows packages built through Actions; packaging and installation still need validation. No Linux packages are being built for this release. The repository is [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop).
 
 Local projects are supported. Direct SSH Pi sessions use a remote-installed Pi and Node with batch/key authentication. A real SSH stub turn has been verified; broader remote workflows remain to be validated. A remote IDE server or remote language server is not automatically installed or guaranteed. A real Dart language-server smoke check covered diagnostics, hover, completion and rename.
 
