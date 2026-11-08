@@ -129,19 +129,23 @@ void main() {
     expect(saved.password, isNull);
   });
 
-  testWidgets('the core: automatic at first, as picked, said what it '
-      'does', (tester) async {
-    final result = await open(
-      tester,
-      host: 'prod',
-      server: const SshServer(hostName: 'prod.example', core: SshCore.cli),
-    );
-    expect(find.textContaining('installed there if it has none'), findsOne);
-    await tester.tap(find.text('Built-in'));
-    await tester.pump();
-    expect(find.textContaining('upstreams of Settings'), findsOne);
-    await tester.tap(find.text('Save'));
-    await tester.pumpAndSettle();
-    expect((await result)!.server.core, SshCore.builtin);
-  });
+  testWidgets(
+    'legacy core settings are preserved without offering a Claude CLI selector',
+    (tester) async {
+      final result = await open(
+        tester,
+        host: 'prod',
+        server: const SshServer(hostName: 'prod.example', core: SshCore.cli),
+      );
+      expect(find.text('Claude Code CLI'), findsNothing);
+      expect(find.text('Built-in'), findsNothing);
+      expect(
+        find.textContaining('installed there if it has none'),
+        findsNothing,
+      );
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+      expect((await result)!.server.core, SshCore.cli);
+    },
+  );
 }

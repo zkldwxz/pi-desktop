@@ -910,6 +910,19 @@
     </ul>
   </section>
 
+  <section class="release" id="v0.1.3">
+    <h2 class="plain"><a href="#v0.1.3">0.1.3</a></h2>
+    <h1>pi-desktop 0.1.3</h1>
+    <ul>
+    <li>Fix conversations silently retaining Pi's built-in Anthropic model after a custom upstream was configured. Model choices now come only from enabled upstreams in Settings → Models. An empty setup asks for a model instead of starting a built-in default.</li>
+    <li>Apply provider address, key and model changes to the next turn, including queued messages, while retaining the conversation. Removed or disabled selections fall back to an enabled configured model.</li>
+    <li>Test the exact upstream/model shown in Settings, including models currently disabled in the picker.</li>
+    <li>Remove unsupported Claude CLI options, tier-based role mappings, prompt suggestions, attribution controls and legacy customization entry points. Update provider, network and usage descriptions for PI.</li>
+    <li>Add regression coverage for empty startup, stale saved selections, changes during startup and queued turns, and real Pi requests reaching newly configured endpoints.</li>
+    </ul>
+    <p>Existing upstream settings, credentials and conversations are preserved. macOS packages remain ad-hoc signed and unnotarized; the Windows installer is unsigned.</p>
+  </section>
+
   <section class="release" id="v0.1.2">
     <h2 class="plain"><a href="#v0.1.2">0.1.2</a></h2>
     <h1>pi-desktop 0.1.2</h1>

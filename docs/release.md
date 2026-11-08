@@ -4,7 +4,7 @@
 
 ## 当前状态与边界
 
-当前源码版本为 `0.1.2+3`，对应的 [pi-v0.1.2 Release](https://github.com/zkldwxz/pi-desktop/releases/tag/pi-v0.1.2) 已发布。macOS arm64、macOS x64、Windows x64 三个 Actions 构建均成功；`.github/workflows/release.yml` 使用 `tool/release_manifest.dart` 生成并签名独立桌面更新清单。生产 GitHub 清单和 Windows 安装包已通过应用自身更新器的真实下载、重定向策略、大小、SHA-256 和 Ed25519 验证。Apple Silicon 应用已验证深度代码签名、随包运行时和隔离目录启动。视觉 GUI、Windows 交互安装和旧版本自动替换安装仍待验证；本次不构建 Linux 桌面安装包，Linux 自动更新关闭。GitHub 下载的重定向来源必须显式配置。Pi 官方运行时更新独立于桌面更新，见 [auto-update.md](auto-update.md#pi-运行时更新)。
+当前源码版本为 `0.1.3+4`，将通过 `pi-v0.1.3` 标签发布本次上游配置和界面修复。前一版本 [pi-v0.1.2 Release](https://github.com/zkldwxz/pi-desktop/releases/tag/pi-v0.1.2) 已发布。macOS arm64、macOS x64、Windows x64 三个 Actions 构建均成功；`.github/workflows/release.yml` 使用 `tool/release_manifest.dart` 生成并签名独立桌面更新清单。生产 GitHub 清单和 Windows 安装包已通过应用自身更新器的真实下载、重定向策略、大小、SHA-256 和 Ed25519 验证。Apple Silicon 应用已验证深度代码签名、随包运行时和隔离目录启动。视觉 GUI、Windows 交互安装和旧版本自动替换安装仍待验证；本次不构建 Linux 桌面安装包，Linux 自动更新关闭。GitHub 下载的重定向来源必须显式配置。Pi 官方运行时更新独立于桌面更新，见 [auto-update.md](auto-update.md#pi-运行时更新)。
 
 ## 版本和标签
 

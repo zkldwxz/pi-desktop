@@ -411,7 +411,6 @@ Future<void> main(List<String> arguments) async {
       diagnostics: DiagnosticsUploader.platform(),
       workspace: workspace,
       link: link,
-      customizations: customizations,
     );
     _startTelemetry(files, link);
   }
@@ -454,10 +453,7 @@ Future<void> main(List<String> arguments) async {
     },
     // The default profile and the user's profiles are settings.json's.
     terminalBackend: TerminalBackend(settings: files?.settings),
-    // What Claude Code keeps: its sessions to search, its skills, agents,
-    // commands, rules, servers, hooks and plugins to customize.
     conversations: PiConversationSearch(),
-    customizations: customizations,
   );
   // With windows, each is a view of its own (see [PiDesktopApp.build]).
   if (windows.started) {

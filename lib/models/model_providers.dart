@@ -160,6 +160,21 @@ class ModelProviders extends ChangeNotifier {
     _ => null,
   };
 
+  /// An enabled conversation model configured in this application. A saved
+  /// selection from another runtime, a removed model, or a disabled upstream
+  /// must not fall through to Pi's built-in provider catalogue.
+  String? configuredModel([String? preferred]) {
+    final available = {
+      for (final provider in enabled)
+        for (final model in provider.enabledModels)
+          modelRef(provider.id, model.id),
+    };
+    for (final candidate in [preferred, defaultModel, firstModel]) {
+      if (available.contains(candidate)) return candidate;
+    }
+    return null;
+  }
+
   /// The auxiliary model, as kept: what the app's own small jobs ask
   /// (agents' titles, commit messages). A [modelRef], or
   /// [builtinProviderId] for Claude Code's own Haiku; null for automatic.

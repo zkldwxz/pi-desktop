@@ -6233,7 +6233,7 @@ abstract class AppLocalizations {
   /// No description provided for @generalSettingsQueuedMessagesDescription.
   ///
   /// In en, this message translates to:
-  /// **'When a message sent while the agent is still working is taken up. Applies to messages sent after a change; Claude Code only for now.'**
+  /// **'PI processes queued messages after the current turn settles. Applies to messages sent after a change.'**
   String get generalSettingsQueuedMessagesDescription;
 
   /// Queued messages choice: each waits for the turn running to end, then they run one after another.
@@ -8682,7 +8682,7 @@ abstract class AppLocalizations {
   /// No description provided for @workspaceDesktopOnlyDetail.
   ///
   /// In en, this message translates to:
-  /// **'Claude Code runs as a local process, which a browser cannot start.'**
+  /// **'PI runs as a local process, which a browser cannot start.'**
   String get workspaceDesktopOnlyDetail;
 
   /// No description provided for @workspaceOpenProjectFolder.
@@ -8694,7 +8694,7 @@ abstract class AppLocalizations {
   /// No description provided for @workspaceOpenProjectFolderDetail.
   ///
   /// In en, this message translates to:
-  /// **'Its Claude Code sessions show in the sidebar; new agents run in it.'**
+  /// **'Its PI sessions show in the sidebar; new agents run in it.'**
   String get workspaceOpenProjectFolderDetail;
 
   /// No description provided for @settingsFileError.
@@ -10524,13 +10524,13 @@ abstract class AppLocalizations {
   /// No description provided for @modelsBuiltinName.
   ///
   /// In en, this message translates to:
-  /// **'Claude Code (this machine\'s setup)'**
+  /// **'Pi native providers'**
   String get modelsBuiltinName;
 
   /// No description provided for @modelsBuiltinDefault.
   ///
   /// In en, this message translates to:
-  /// **'Claude Code default'**
+  /// **'Pi default'**
   String get modelsBuiltinDefault;
 
   /// No description provided for @modelsBuiltinBadge.
@@ -10710,7 +10710,7 @@ abstract class AppLocalizations {
   /// No description provided for @modelsMagpieGatewayDescription.
   ///
   /// In en, this message translates to:
-  /// **'Models, accounts and routing are set up in magpie, and this list follows it. New routing groups, image models and the models magpie gives Claude Code are turned on as they come; tick any other below.'**
+  /// **'Models and routing are managed in magpie. Select the models to show here.'**
   String get modelsMagpieGatewayDescription;
 
   /// No description provided for @modelsMagpieRunning.
@@ -11166,7 +11166,7 @@ abstract class AppLocalizations {
   /// No description provided for @modelsProtocolDescription.
   ///
   /// In en, this message translates to:
-  /// **'OpenAI\'s APIs go through the local proxy, which translates Claude Code\'s requests and the answers.'**
+  /// **'Choose the API format supported by this provider. Pi uses its native provider integration; special routing gateways may use a local gateway.'**
   String get modelsProtocolDescription;
 
   /// No description provided for @modelsBaseUrl.
@@ -11178,7 +11178,7 @@ abstract class AppLocalizations {
   /// No description provided for @modelsBaseUrlAnthropicHint.
   ///
   /// In en, this message translates to:
-  /// **'Without /v1, as ANTHROPIC_BASE_URL: Claude Code adds /v1/messages.'**
+  /// **'Base URL for the Anthropic-compatible API.'**
   String get modelsBaseUrlAnthropicHint;
 
   /// No description provided for @modelsBaseUrlOpenAIHint.
@@ -11226,7 +11226,7 @@ abstract class AppLocalizations {
   /// No description provided for @modelsEndpointUrlAnthropicDescription.
   ///
   /// In en, this message translates to:
-  /// **'Every conversation is POSTed to it, Claude Code through the local proxy. Empty, the one in grey (from the Base URL) is used. A model of another endpoint type still goes by the Base URL.'**
+  /// **'A custom full endpoint URL, forwarded by a compatible routing gateway.'**
   String get modelsEndpointUrlAnthropicDescription;
 
   /// No description provided for @modelsApiKey.
@@ -11604,7 +11604,7 @@ abstract class AppLocalizations {
   /// No description provided for @modelsEnvDescription.
   ///
   /// In en, this message translates to:
-  /// **'One KEY=VALUE a line, given to Claude Code after the settings above.'**
+  /// **'One KEY=VALUE per line, passed to the Pi process.'**
   String get modelsEnvDescription;
 
   /// No description provided for @modelsHeaders.
@@ -11616,7 +11616,7 @@ abstract class AppLocalizations {
   /// No description provided for @modelsHeadersDescription.
   ///
   /// In en, this message translates to:
-  /// **'One Name: Value a line, sent on every request to this upstream. Values may use the CLAUDE_SESSION_ID variable (this conversation\'s session) and ANTHROPIC_MODEL (the model asked for), each between double braces; over the direct Anthropic protocol those two go as written, so only fixed values work there. Auth headers (Authorization, x-api-key) are ignored here: the key is set above.'**
+  /// **'One Name: Value per line. Static headers are sent to this provider; configure authentication using the key field, not Authorization or x-api-key headers.'**
   String get modelsHeadersDescription;
 
   /// No description provided for @modelsDuplicateProvider.
@@ -11658,7 +11658,7 @@ abstract class AppLocalizations {
   /// No description provided for @modelsDeleteDetail.
   ///
   /// In en, this message translates to:
-  /// **'Sessions on its models go back to Claude Code\'s own when they next start.'**
+  /// **'Sessions using this provider may need another model selected before continuing.'**
   String get modelsDeleteDetail;
 
   /// No description provided for @modelsFetchTitle.
@@ -11958,7 +11958,7 @@ abstract class AppLocalizations {
   /// No description provided for @modelsSwitchDetail.
   ///
   /// In en, this message translates to:
-  /// **'Claude Code restarts on the other upstream and resumes this conversation (--resume). Its history is sent to the new model as it is; some upstreams take it slower the first time. A reply still running stops when you send the next message.'**
+  /// **'The selected model will be used for this conversation.'**
   String get modelsSwitchDetail;
 
   /// No description provided for @modelsSwitchConfirm.
@@ -11988,7 +11988,7 @@ abstract class AppLocalizations {
   /// No description provided for @modelsAuxiliaryBuiltin.
   ///
   /// In en, this message translates to:
-  /// **'Claude Code Haiku (this machine\'s setup)'**
+  /// **'Automatic'**
   String get modelsAuxiliaryBuiltin;
 
   /// No description provided for @settingsSectionUpdates.
@@ -13638,7 +13638,7 @@ abstract class AppLocalizations {
   /// No description provided for @networkSettingsDescription.
   ///
   /// In en, this message translates to:
-  /// **'How pi-desktop and the Claude Code it starts reach the internet.'**
+  /// **'Network proxy settings and connection tests for pi-desktop.'**
   String get networkSettingsDescription;
 
   /// No description provided for @networkProxy.
@@ -13650,7 +13650,7 @@ abstract class AppLocalizations {
   /// No description provided for @networkProxyDescription.
   ///
   /// In en, this message translates to:
-  /// **'The proxy for pi-desktop and Claude Code (http.proxyMode). System Proxy follows the system\'s settings, such as Clash\'s system proxy. New sessions take a change; restart a running one for it.'**
+  /// **'Proxy used by pi-desktop network requests (http.proxyMode). System Proxy follows the system settings.'**
   String get networkProxyDescription;
 
   /// The proxy dropdown, as read out.
@@ -21472,7 +21472,7 @@ abstract class AppLocalizations {
   /// No description provided for @ustatRecordDescription.
   ///
   /// In en, this message translates to:
-  /// **'Claude Code\'s own calls are read from what it prints; sessions on a custom upstream go through pi-desktop\'s local proxy, which keeps each call. Applies to agents started from now on.'**
+  /// **'Record tokens, cache reads and writes, time and cost for PI model requests. Native requests use PI usage output; requests through the compatibility gateway are recorded by that gateway.'**
   String get ustatRecordDescription;
 
   /// No description provided for @ustatRecordOffDescription.
@@ -21802,7 +21802,7 @@ abstract class AppLocalizations {
   /// No description provided for @ustatShowAuxiliaryDescription.
   ///
   /// In en, this message translates to:
-  /// **'Count Claude Code\'s requests beside the conversation (suggesting the next prompt, naming the conversation, summing up a web page) in the charts and totals. They are kept either way.'**
+  /// **'Include PI auxiliary requests, such as conversation titles and commit messages, in charts and totals. They are recorded either way.'**
   String get ustatShowAuxiliaryDescription;
 
   /// No description provided for @ustatTrace.
@@ -21814,7 +21814,7 @@ abstract class AppLocalizations {
   /// No description provided for @ustatTraceDescription.
   ///
   /// In en, this message translates to:
-  /// **'Also keep every request to a custom upstream whole: as Claude Code sent it, as it went to the upstream, the upstream\'s raw answer and what went back; of Claude Code\'s own models, only their answers. Keys are masked. Takes a lot of space: turn it off when done.'**
+  /// **'Save available request and response traces for supported routing gateways. Traces can take considerable space; turn this off when finished.'**
   String get ustatTraceDescription;
 
   /// No description provided for @ustatTraceTitle.
@@ -21868,7 +21868,7 @@ abstract class AppLocalizations {
   /// No description provided for @ustatTraceAnswerOnly.
   ///
   /// In en, this message translates to:
-  /// **'As Claude Code printed it; the request to Anthropic is not seen'**
+  /// **'Model response only; the original request was not captured in this record'**
   String get ustatTraceAnswerOnly;
 
   /// No description provided for @ustatTraceTry.
@@ -22114,7 +22114,7 @@ abstract class AppLocalizations {
   /// No description provided for @ustatQuotaDetail.
   ///
   /// In en, this message translates to:
-  /// **'How much of the plan\'s limits Claude Code\'s own models took in this time, from the limits as they stood after each call.'**
+  /// **'Recorded subscription quota information for the selected period, when available.'**
   String get ustatQuotaDetail;
 
   /// No description provided for @ustatQuotaFiveHour.
@@ -22174,7 +22174,7 @@ abstract class AppLocalizations {
   /// No description provided for @ustatPriceClaudeDefault.
   ///
   /// In en, this message translates to:
-  /// **'Claude Code\'s own models without a price of yours are priced at Anthropic\'s API prices: the grey figures.'**
+  /// **'Default prices are shown in grey where available.'**
   String get ustatPriceClaudeDefault;
 
   /// No description provided for @ustatPriceRuleTiers.

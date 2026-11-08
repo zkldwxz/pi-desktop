@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import '../../chat/chat_models.dart';
-import '../../models/model_provider.dart';
 import '../../models/model_providers.dart';
 import '../../platform/data_dir.dart';
 import '../../usage/usage_record.dart' show UsageClass;
@@ -40,21 +39,27 @@ Future<PiJobAnswer> askPi({
   List<ImageAttachment> images = const [],
   List<String> tools = const [],
   int maxTurns = 12,
+  ModelProviders? providers,
 }) async {
-  final providers = ModelProviders.current;
-  final setup = await piProviderSetup(providers);
-  final ref = model ?? providers.defaultModel ?? providers.firstModel;
+  final configured = providers ?? ModelProviders.current;
+  final ref = configured.configuredModel(model);
+  if (ref == null) {
+    throw StateError('Enable a model in Settings → Models to start Pi.');
+  }
+  final setup = await piProviderSetup(configured);
   final custom = setup.bindings
       .where((binding) => binding.ref == ref)
       .firstOrNull;
-  final native = custom == null ? parseModelRef(ref) : null;
+  if (custom == null) {
+    throw StateError('The selected upstream model is no longer available.');
+  }
   final transport = await startPi(
     PiLaunch(
       cwd: cwd ?? DataDirectory.current.path,
       sessionId: newPiSessionId(),
       persist: false,
-      provider: custom?.provider ?? native?.provider,
-      model: custom?.model ?? native?.model,
+      provider: custom.provider,
+      model: custom.model,
       thinking: 'off',
       ownPrompt: true,
       instructions: system,
@@ -95,11 +100,10 @@ Future<PiJobAnswer> askPi({
     } else if (type == 'message_end' && event['message'] is Map) {
       final message = event['message'] as Map;
       if (message['role'] == 'assistant') {
-        final usageRef = ref ?? '@${message['provider']}/${message['model']}';
         recordPiUsage(
           message.cast<String, Object?>(),
-          providers: providers,
-          modelRef: usageRef,
+          providers: configured,
+          modelRef: ref,
           started: started,
           duration: watch.elapsed,
           firstToken: first,

@@ -45,14 +45,13 @@ class PiKernel
     _sessionId = _context.resume?.id ?? newPiSessionId();
     _sessionPath = _context.resume?.path;
     _resumeHistory = _context.resume != null;
-    _selectedModel =
-        _context.settings[KernelChoiceKind.model.name] ??
-        _providers.defaultModel ??
-        _providers.firstModel;
-    model = LocalChoice(
-      const [],
-      onChanged: (id) => unawaited(_selectModel(id)),
+    _selectedModel = _providers.configuredModel(
+      _context.settings[KernelChoiceKind.model.name],
     );
+    model = LocalChoice(
+      _configuredOptions(),
+      onChanged: (id) => unawaited(_selectModel(id)),
+    )..reported = _selectedModel;
     permission = LocalChoice(const [
       KernelOption(
         'ask',
@@ -109,6 +108,7 @@ class PiKernel
   ];
   int _request = 0;
   int _generation = 0;
+  int _providerRevision = 0;
   bool _disposed = false;
   bool _draining = false;
   bool _cancelled = false;
@@ -220,11 +220,18 @@ class PiKernel
     });
     _starting = starting;
     _launches.add(starting);
-    return starting;
+    return starting.then((_) {
+      if (!_disposed &&
+          _transport == null &&
+          _health.status != KernelHealthStatus.failed) {
+        return _ensure();
+      }
+    });
   }
 
   Future<void> _launch() async {
     final generation = _generation;
+    final revision = _providerRevision;
     PiHostBridge? bridge;
     PiTransport? launched;
     var adopted = false;
@@ -236,13 +243,19 @@ class PiKernel
       if (cwd == null || cwd.isEmpty) {
         throw StateError('Open a project folder to start Pi.');
       }
+      _selectedModel = _providers.configuredModel(_selectedModel);
+      model.reported = _selectedModel;
+      if (_selectedModel == null) {
+        throw StateError('Enable a model in Settings → Models to start Pi.');
+      }
       final setup = await _configureProviders(_providers);
       if (_disposed || generation != _generation) return;
+      if (revision != _providerRevision) return;
       _bindings = setup.bindings;
       final selected = _binding(_selectedModel);
-      final native = _selectedModel != null && selected == null
-          ? parseModelRef(_selectedModel)
-          : null;
+      if (selected == null) {
+        throw StateError('The selected upstream model is no longer available.');
+      }
       if (_hostTools) {
         bridge = await startPiHostTools(
           cwd: cwd,
@@ -252,15 +265,19 @@ class PiKernel
           editWatch: () => editWatch,
         );
       }
-      if (_disposed || generation != _generation) return;
+      if (_disposed ||
+          generation != _generation ||
+          revision != _providerRevision) {
+        return;
+      }
       final workspace = _context.workspace?.call();
       final transport = launched = await _start(
         PiLaunch(
           cwd: cwd,
           sessionId: _sessionId,
           sessionPath: _sessionPath,
-          provider: selected?.provider ?? native?.provider,
-          model: selected?.model ?? native?.model,
+          provider: selected.provider,
+          model: selected.model,
           thinking: _thinking,
           permission: workspace?.approvesAll == true
               ? 'full'
@@ -273,7 +290,11 @@ class PiKernel
           environment: {...setup.environment, ...?bridge?.environment},
         ),
       );
-      if (_disposed || generation != _generation) return;
+      if (_disposed ||
+          generation != _generation ||
+          revision != _providerRevision) {
+        return;
+      }
       adopted = true;
       _bridge = bridge;
       _transport = transport;
@@ -283,6 +304,19 @@ class PiKernel
       );
       final state = await _rpc('get_state');
       _applyState(state);
+      // A restored session can remember a provider from before desktop setup.
+      // Apply the current explicit desktop selection before accepting a prompt.
+      final activeModel = state['model'];
+      if (activeModel is! Map ||
+          activeModel['provider'] != selected.provider ||
+          activeModel['id'] != selected.model) {
+        _applyModel(
+          await _rpc('set_model', {
+            'provider': selected.provider,
+            'modelId': selected.model,
+          }),
+        );
+      }
       final available = await _rpc('get_available_models');
       _applyModels(available['models']);
       await _loadThinkingLevels();
@@ -319,6 +353,11 @@ class PiKernel
         _loading = false;
       }
       if (!_disposed && generation == _generation) {
+        if (revision != _providerRevision) {
+          _disconnect();
+          _setHealth(KernelHealth.idle);
+          return;
+        }
         _staleProviders = false;
         _setHealth(KernelHealth.ready);
       }
@@ -336,6 +375,18 @@ class PiKernel
       }
     }
   }
+
+  List<KernelOption> _configuredOptions() => [
+    for (final provider in _providers.enabled)
+      for (final info in provider.enabledModels)
+        KernelOption(
+          modelRef(provider.id, info.id),
+          info.displayName,
+          Icons.auto_awesome_rounded,
+          info.id,
+          group: KernelOptionGroup(provider.id, provider.name),
+        ),
+  ];
 
   PiModelBinding? _binding(String? ref) =>
       _bindings.where((binding) => binding.ref == ref).firstOrNull;
@@ -363,16 +414,19 @@ class PiKernel
       final String provider,
       final String id,
     )) {
-      _selectedModel = _refFor(provider, id);
-      model.reported = _selectedModel;
-      _modelRecords[_selectedModel!] = value;
+      final ref = _refFor(provider, id);
+      if (_binding(ref) == null || _providers.configuredModel(ref) != ref) {
+        return;
+      }
+      _selectedModel = ref;
+      model.reported = ref;
+      _modelRecords[ref] = value;
       _contextWindow = (value['contextWindow'] as num?)?.toInt() ?? 0;
     }
     emitInfoChanged();
   }
 
   void _applyModels(Object? raw) {
-    final options = <KernelOption>[];
     if (raw is List) {
       for (final entry in raw) {
         if (entry is! Map) continue;
@@ -382,23 +436,11 @@ class PiKernel
           final String id,
         )) {
           final ref = _refFor(provider, id);
-          _modelRecords[ref] = value;
-          options.add(
-            KernelOption(
-              ref,
-              value['name'] as String? ?? id,
-              Icons.auto_awesome_rounded,
-              id,
-              group: KernelOptionGroup(
-                provider,
-                _providers.resolve(ref)?.$1.name ?? provider,
-              ),
-            ),
-          );
+          if (_binding(ref) != null) _modelRecords[ref] = value;
         }
       }
     }
-    model.options = options;
+    model.options = _configuredOptions();
     model.reported = _selectedModel;
     emitInfoChanged();
   }
@@ -534,8 +576,14 @@ class PiKernel
     );
     emit(ActivityReported(nextSeq, null));
     if (!_disposed) {
-      if (_transport != null) unawaited(_refresh().catchError((Object _) {}));
-      if (_staleProviders && _queue.isEmpty) _disconnect();
+      if (_staleProviders) {
+        _disconnect();
+        _selectedModel = _providers.configuredModel(_selectedModel);
+        model.reported = _selectedModel;
+        _setHealth(KernelHealth.idle);
+      } else if (_transport != null) {
+        unawaited(_refresh().catchError((Object _) {}));
+      }
       if (!_draining) unawaited(_drain());
     }
   }
@@ -820,20 +868,24 @@ class PiKernel
     final previous = _selectedModel;
     model.reported = previous;
     try {
+      if (_providers.configuredModel(id) != id) {
+        throw StateError('Enable this model in Settings → Models first.');
+      }
+      if (_transport == null) _selectedModel = id;
       await _ensure();
       final custom = _binding(id);
-      final parsed = parseModelRef(id);
-      if (custom == null && parsed == null) {
-        throw StateError('Unknown Pi model: $id');
+      if (custom == null) {
+        throw StateError('The selected upstream model is no longer available.');
       }
       final result = await _rpc('set_model', {
-        'provider': custom?.provider ?? parsed!.provider,
-        'modelId': custom?.model ?? parsed!.model,
+        'provider': custom.provider,
+        'modelId': custom.model,
       });
       _applyModel(result);
       await _loadThinkingLevels();
     } on Object catch (error) {
-      model.reported = previous;
+      _selectedModel = _providers.configuredModel(previous);
+      model.reported = _selectedModel;
       _translator.notice('$error');
     }
     emitInfoChanged();
@@ -877,13 +929,30 @@ class PiKernel
   }
 
   void _providersChanged() {
+    _providerRevision++;
     _staleProviders = true;
-    if (_turn == null) _disconnect();
+    model.options = _configuredOptions();
+    if (_turn == null) {
+      _disconnect();
+      _selectedModel = _providers.configuredModel(_selectedModel);
+      model.reported = _selectedModel;
+      _modelRecords.clear();
+      _contextWindow = 0;
+      _setHealth(KernelHealth.idle);
+    } else {
+      emitInfoChanged();
+    }
   }
 
   void _failed(Object error) {
     if (_disposed) return;
-    _setHealth(KernelHealth(KernelHealthStatus.failed, message: '$error'));
+    _setHealth(
+      KernelHealth(
+        KernelHealthStatus.failed,
+        message: '$error',
+        noModel: _providers.configuredModel() == null,
+      ),
+    );
     _disconnect();
     if (_turn != null) {
       _translator.notice('$error');

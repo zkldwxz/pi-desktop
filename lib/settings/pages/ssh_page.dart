@@ -182,7 +182,10 @@ class _SshSettingsPageState extends State<SshSettingsPage> {
                     ),
                 ],
               ),
-            if ([...{...servers, ..._config}] case final hosts when hosts.isNotEmpty)
+            if ([
+                  ...{...servers, ..._config},
+                ]
+                case final hosts when hosts.isNotEmpty)
               _localAccess(l10n, workspace, hosts),
           ],
         );
@@ -234,7 +237,7 @@ class _SshSettingsPageState extends State<SshSettingsPage> {
   }
 
   /// What [host] is, as saved: its address (where it is called otherwise),
-  /// how it signs in, the jump it goes through and its core.
+  /// how it signs in and the jump it goes through.
   static List<String> _details(
     AppLocalizations l10n,
     Workspace workspace,
@@ -255,11 +258,6 @@ class _SshSettingsPageState extends State<SshSettingsPage> {
       },
       if (server.jump case final jump?)
         l10n.sshSettingsVia(workspace.hostLabel(jump)),
-      l10n.sshSettingsCore(switch (server.core) {
-        SshCore.auto => l10n.sshServerCoreAuto,
-        SshCore.builtin => l10n.generalSettingsClaudeCoreBuiltin,
-        SshCore.cli => l10n.generalSettingsClaudeCoreCli,
-      }),
     ];
   }
 }

@@ -4,7 +4,6 @@
 import 'dart:convert';
 
 import '../../chat/chat_models.dart' show ImageAttachment;
-import '../../models/model_providers.dart';
 import '../pi/pi_jobs.dart';
 import '../../models/launch_environment.dart';
 import '../../usage/usage_capture.dart';
@@ -44,18 +43,11 @@ Future<String> askClaudeHaiku(
   ClaudeHaikuTools? tools,
   String? session,
 }) async {
-  final providers = ModelProviders.current;
-  final custom = providers.resolve(model);
-  final selected = custom == null || exact
-      ? model
-      : custom.$1.roles.haiku == null
-      ? model
-      : '@${custom.$1.id}/${custom.$1.roles.haiku}';
   try {
     return (await askPi(
       system: system,
       prompt: prompt,
-      model: selected,
+      model: model,
       cwd: tools?.directory ?? location,
       cancel: cancel,
       images: [for (final named in images) named.image],

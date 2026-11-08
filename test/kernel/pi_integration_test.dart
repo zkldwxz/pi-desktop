@@ -14,6 +14,8 @@ import 'package:pi_desktop/models/model_provider.dart';
 import 'package:pi_desktop/models/model_providers.dart';
 import 'package:pi_desktop/platform/data_dir.dart';
 import 'package:pi_desktop/usage/usage_ledger.dart';
+import 'package:pi_desktop/settings/pages/models_page.dart'
+    show testModelThroughPi;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
@@ -254,6 +256,167 @@ void main() {
       await root.delete(recursive: true);
     }
   }, timeout: const Timeout(Duration(minutes: 1)));
+
+  test('an empty saved conversation follows added and edited upstreams through real Pi', () async {
+    final oldData = DataDirectory.current;
+    final oldProviders = ModelProviders.current;
+    final oldLedger = UsageLedger.current;
+    final root = await Directory.systemTemp.createTemp('pi-upstream-edit-');
+    DataDirectory.current = DataDirectory(p.join(root.path, 'data'));
+    UsageLedger.current = UsageLedger(MemoryUsageStorage());
+    final providers = ModelProviders.memory();
+    ModelProviders.current = providers;
+    final received = <({String endpoint, String model, String? key})>[];
+    final failures = <Object>[];
+    Future<HttpServer> endpoint(String name) async {
+      final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+      server.listen((request) async {
+        try {
+          final body =
+              jsonDecode(await utf8.decoder.bind(request).join()) as Map;
+          expect(request.uri.path, '/v1/chat/completions');
+          received.add((
+            endpoint: name,
+            model: body['model'] as String,
+            key: request.headers.value('authorization'),
+          ));
+          request.response.headers.set('content-type', 'text/event-stream');
+          for (final choice in [
+            {
+              'index': 0,
+              'delta': {'content': 'Answer from $name'},
+              'finish_reason': null,
+            },
+            {'index': 0, 'delta': <String, Object?>{}, 'finish_reason': 'stop'},
+          ]) {
+            request.response.write(
+              'data: ${jsonEncode({
+                'id': name,
+                'object': 'chat.completion.chunk',
+                'created': 1,
+                'model': body['model'],
+                'choices': [choice],
+              })}\n\n',
+            );
+          }
+          request.response.write('data: [DONE]\n\n');
+        } catch (error) {
+          failures.add(error);
+        }
+        await request.response.close();
+      });
+      return server;
+    }
+
+    final first = await endpoint('first');
+    final second = await endpoint('second');
+    final kernel = PiKernel(
+      KernelRegistry.pi,
+      KernelContext(
+        cwd: root.path,
+        settings: const {'model': '@anthropic/claude-opus-4-8'},
+      ),
+      providers: providers,
+      hostTools: false,
+    );
+    final events = <KernelEvent>[];
+    final listener = kernel.events.listen(events.add);
+    Future<void> turn(String id) async {
+      final ended = kernel.events
+          .where((event) => event is TurnEnded && event.turnId == id)
+          .first;
+      kernel.send(KernelTurn(id: id, text: 'Reply briefly.'));
+      await ended.timeout(const Duration(seconds: 25));
+      expect(
+        kernel.health.status,
+        KernelHealthStatus.ready,
+        reason: events
+            .whereType<ItemUpserted>()
+            .map((event) => event.item)
+            .whereType<NoticeItem>()
+            .map((notice) => notice.text)
+            .join('\n'),
+      );
+    }
+
+    try {
+      kernel.prepare();
+      await pumpEventQueue();
+      expect(kernel.health.noModel, true);
+      expect(kernel.model.selected, isNull);
+      await providers.save(
+        ModelProvider(
+          id: 'mine',
+          name: 'Mine',
+          protocol: ProviderProtocol.openaiChat,
+          baseUrl: 'http://127.0.0.1:${first.port}/v1',
+          models: const [
+            ProviderModel(id: 'model-a', efforts: ['none']),
+          ],
+        ),
+      );
+      await providers.setKey('mine', 'fixture-first');
+      await turn('one');
+      final session = kernel.sessionId;
+      expect(kernel.model.selected, '@mine/model-a');
+      expect(received.single, (
+        endpoint: 'first',
+        model: 'model-a',
+        key: 'Bearer fixture-first',
+      ));
+
+      await providers.save(
+        providers
+            .provider('mine')!
+            .copyWith(
+              baseUrl: 'http://127.0.0.1:${second.port}/v1',
+              models: const [
+                ProviderModel(id: 'model-b', efforts: ['none']),
+              ],
+            ),
+      );
+      await providers.setKey('mine', 'fixture-second');
+      await turn('two');
+      expect(kernel.sessionId, session);
+      expect(kernel.model.selected, '@mine/model-b');
+      expect(received, [
+        (endpoint: 'first', model: 'model-a', key: 'Bearer fixture-first'),
+        (endpoint: 'second', model: 'model-b', key: 'Bearer fixture-second'),
+      ]);
+      expect(failures, isEmpty);
+
+      // Settings' test button must test its supplied snapshot, including a
+      // disabled model, rather than the conversation's current default.
+      final answer = await testModelThroughPi(
+        providers
+            .provider('mine')!
+            .copyWith(baseUrl: 'http://127.0.0.1:${first.port}/v1'),
+        const ProviderModel(
+          id: 'disabled-test',
+          enabled: false,
+          efforts: ['none'],
+        ),
+      );
+      expect(answer.text, 'Answer from first');
+      expect(received.last, (
+        endpoint: 'first',
+        model: 'disabled-test',
+        key: 'Bearer fixture-second',
+      ));
+    } finally {
+      kernel.dispose();
+      await kernel.stopped;
+      await listener.cancel();
+      providers.dispose();
+      await first.close(force: true);
+      await second.close(force: true);
+      UsageLedger.current.flush();
+      UsageLedger.current = oldLedger;
+      ModelProviders.current = oldProviders;
+      DataDirectory.current = oldData;
+      await root.delete(recursive: true);
+    }
+  }, timeout: const Timeout(Duration(minutes: 2)));
 }
 
 class _Edits implements EditWatch {

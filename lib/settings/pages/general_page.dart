@@ -11,10 +11,8 @@ import '../../kernel/pi/pi_transport.dart';
 import '../../kernel/pi/pi_runtime_updates.dart';
 import '../../kernel/claude_code/claude_path_setting.dart';
 import '../../kernel/commit_attribution.dart';
-import '../../kernel/prompt_suggestions.dart';
 import '../../chat/composer/composer_polish.dart' show ComposerPolishSetting;
 import '../../chat/widgets/turn_footer.dart' show LiveTurnStatsSetting;
-import '../../kernel/queued_messages.dart';
 import '../../l10n/l10n.dart';
 import '../../platform/app_platform.dart';
 import '../../platform/context_menu.dart';
@@ -31,14 +29,9 @@ import 'settings_widgets.dart';
 
 /// Settings → General: what the app shows at launch
 /// (`workbench.mainWindow`), where the IDE opens and how its windows open,
-/// come back and close (`window.*`), who the commits and pull requests
-/// agents write credit (`chat.commitAttribution` in settings.json), when a
-/// message sent while the agent works is taken up (`chat.queuedMessages`),
-/// whether the next prompt is suggested after each turn
-/// (`chat.promptSuggestions`), whether the composer has its Polish button
-/// (`chat.composer.polish`), whether the turn under way shows its time,
-/// speed and tokens (`chat.liveTurnStats`), the Claude Code to run
-/// (`claudeCode.path`),
+/// come back and close (`window.*`), when a message sent while the agent
+/// works is taken up (`chat.queuedMessages`), whether the composer has its
+/// Polish button, and whether the turn under way shows time, speed and tokens.
 /// the `code` shell command, and Open with BaoCode in Finder's or
 /// Explorer's context menu. A choice is written at once; the default is not
 /// written.
@@ -69,18 +62,6 @@ class GeneralSettingsPage extends StatelessWidget {
     };
   }
 
-  static String _attributionDetail(
-    BuildContext context,
-    CommitAttribution value,
-  ) {
-    final l10n = context.l10n;
-    return switch (value) {
-      CommitAttribution.baocode => CommitAttribution.baoCodeCommit,
-      CommitAttribution.agent => l10n.generalSettingsAttributionAgentDetail,
-      CommitAttribution.none => l10n.generalSettingsAttributionNoneDetail,
-    };
-  }
-
   static String mainWindowName(BuildContext context, MainWindow value) {
     final l10n = context.l10n;
     return switch (value) {
@@ -89,11 +70,6 @@ class GeneralSettingsPage extends StatelessWidget {
       MainWindow.last => l10n.generalSettingsMainWindowLast,
     };
   }
-
-  void _select(CommitAttribution value) => _write(
-    CommitAttribution.settingKey,
-    value == CommitAttribution.fallback ? null : value.name,
-  );
 
   void _selectMainWindow(MainWindow value) => _write(
     MainWindow.settingKey,
@@ -271,11 +247,6 @@ class GeneralSettingsPage extends StatelessWidget {
     return ListenableBuilder(
       listenable: settings ?? Listenable.merge(const []),
       builder: (context, _) {
-        final current = CommitAttribution.parse(
-          settings?[CommitAttribution.settingKey],
-        );
-        final name = attributionName(context, current);
-        final detail = _attributionDetail(context, current);
         final mainWindow = MainWindow.parse(settings?[MainWindow.settingKey]);
         final mainWindowShown = mainWindowName(context, mainWindow);
         return SettingsPage(
@@ -313,55 +284,6 @@ class GeneralSettingsPage extends StatelessWidget {
                           onSelected: () => _selectMainWindow(value),
                         ),
                     ],
-                  ),
-                ),
-                SettingsRow(
-                  label: l10n.generalSettingsCommitAttribution,
-                  description: l10n.generalSettingsCommitAttributionDescription,
-                  below: [
-                    SelectableText(
-                      detail,
-                      style: current == CommitAttribution.baocode
-                          ? SettingsText.path
-                          : SettingsText.description,
-                    ),
-                  ],
-                  trailing: SettingsDropdown(
-                    current: name,
-                    semanticLabel: l10n.generalSettingsCommitAttributionLabel(
-                      name,
-                    ),
-                    entries: () => [
-                      for (final value in CommitAttribution.values)
-                        IdeMenuAction(
-                          attributionName(context, value),
-                          checked: value == current,
-                          onSelected: () => _select(value),
-                        ),
-                    ],
-                  ),
-                ),
-                _choiceRow(
-                  context,
-                  key: QueuedMessages.settingKey,
-                  label: l10n.generalSettingsQueuedMessages,
-                  description: l10n.generalSettingsQueuedMessagesDescription,
-                  values: {
-                    QueuedMessages.afterTurn.name:
-                        l10n.generalSettingsQueuedAfterTurn,
-                    QueuedMessages.duringTurn.name:
-                        l10n.generalSettingsQueuedDuringTurn,
-                  },
-                ),
-                SettingsSwitchRow(
-                  label: l10n.generalSettingsPromptSuggestions,
-                  description: l10n.generalSettingsPromptSuggestionsDescription,
-                  value: PromptSuggestions.enabled(
-                    settings?[PromptSuggestions.settingKey],
-                  ),
-                  onChanged: (on) => _write(
-                    PromptSuggestions.settingKey,
-                    on ? null : PromptSuggestions.off,
                   ),
                 ),
                 SettingsSwitchRow(
@@ -724,86 +646,6 @@ class _ContextMenuSettingState extends State<_ContextMenuSetting> {
               onPressed: () => unawaited(openSystemSettings()),
             ),
         ],
-      ),
-    );
-  }
-}
-
-/// The Claude Code to run: the path set (none for the newest found), and
-/// under it the one that runs now, read again as the path changes.
-class _ClaudePathSetting extends StatefulWidget {
-  const _ClaudePathSetting({
-    required this.path,
-    required this.status,
-    required this.onChanged,
-  });
-
-  final String? path;
-  final Future<LocalClaudeStatus?> Function() status;
-  final ValueChanged<String> onChanged;
-
-  @override
-  State<_ClaudePathSetting> createState() => _ClaudePathSettingState();
-}
-
-class _ClaudePathSettingState extends State<_ClaudePathSetting> {
-  late Future<LocalClaudeStatus?> _status = widget.status();
-
-  @override
-  void didUpdateWidget(_ClaudePathSetting old) {
-    super.didUpdateWidget(old);
-    if (old.path != widget.path) _status = widget.status();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return SettingsRow(
-      label: l10n.claudePathSetting,
-      description: l10n.claudePathSettingDescription,
-      below: [
-        FutureBuilder(
-          future: _status,
-          builder: (context, snapshot) {
-            final (text, failed) = switch (snapshot.data) {
-              _ when snapshot.connectionState != ConnectionState.done => (
-                l10n.claudePathChecking,
-                false,
-              ),
-              LocalClaudeFound(:final version?, downloaded: true) => (
-                l10n.claudePathInUseDownloaded(version),
-                false,
-              ),
-              LocalClaudeFound(:final path, :final version?) => (
-                l10n.claudePathInUse(path, version),
-                false,
-              ),
-              LocalClaudeFound(:final path) => (
-                l10n.claudePathInUseUnknown(path),
-                false,
-              ),
-              LocalClaudeMissing() => (l10n.claudePathMissing, false),
-              LocalClaudeFailed(:final message) => (message, true),
-              null => ('', false),
-            };
-            if (text.isEmpty) return const SizedBox.shrink();
-            return SelectableText(
-              text,
-              style: failed
-                  ? SettingsText.path.copyWith(
-                      color: themeColors['errorForeground'],
-                    )
-                  : SettingsText.path,
-            );
-          },
-        ),
-      ],
-      trailing: SettingsTextField(
-        value: widget.path ?? '',
-        hint: l10n.claudePathSettingHint,
-        semanticLabel: 'Claude Code ${l10n.claudePathSetting}',
-        width: 260,
-        onSubmitted: widget.onChanged,
       ),
     );
   }

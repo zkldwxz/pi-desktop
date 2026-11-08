@@ -3683,7 +3683,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get generalSettingsQueuedMessagesDescription =>
-      'When a message sent while the agent is still working is taken up. Applies to messages sent after a change; Claude Code only for now.';
+      'PI processes queued messages after the current turn settles. Applies to messages sent after a change.';
 
   @override
   String get generalSettingsQueuedAfterTurn => 'After the Current Task';
@@ -5357,14 +5357,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get workspaceDesktopOnlyDetail =>
-      'Claude Code runs as a local process, which a browser cannot start.';
+      'PI runs as a local process, which a browser cannot start.';
 
   @override
   String get workspaceOpenProjectFolder => 'Open a project folder';
 
   @override
   String get workspaceOpenProjectFolderDetail =>
-      'Its Claude Code sessions show in the sidebar; new agents run in it.';
+      'Its PI sessions show in the sidebar; new agents run in it.';
 
   @override
   String settingsFileError(String file, String error) {
@@ -6486,10 +6486,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get modelsBuiltinName => 'Claude Code (this machine\'s setup)';
+  String get modelsBuiltinName => 'Pi native providers';
 
   @override
-  String get modelsBuiltinDefault => 'Claude Code default';
+  String get modelsBuiltinDefault => 'Pi default';
 
   @override
   String get modelsBuiltinBadge => 'Built-in';
@@ -6594,7 +6594,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modelsMagpieGatewayDescription =>
-      'Models, accounts and routing are set up in magpie, and this list follows it. New routing groups, image models and the models magpie gives Claude Code are turned on as they come; tick any other below.';
+      'Models and routing are managed in magpie. Select the models to show here.';
 
   @override
   String get modelsMagpieRunning => 'Running';
@@ -6898,14 +6898,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modelsProtocolDescription =>
-      'OpenAI\'s APIs go through the local proxy, which translates Claude Code\'s requests and the answers.';
+      'Choose the API format supported by this provider. Pi uses its native provider integration; special routing gateways may use a local gateway.';
 
   @override
   String get modelsBaseUrl => 'Base URL';
 
   @override
   String get modelsBaseUrlAnthropicHint =>
-      'Without /v1, as ANTHROPIC_BASE_URL: Claude Code adds /v1/messages.';
+      'Base URL for the Anthropic-compatible API.';
 
   @override
   String get modelsBaseUrlOpenAIHint =>
@@ -6934,7 +6934,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modelsEndpointUrlAnthropicDescription =>
-      'Every conversation is POSTed to it, Claude Code through the local proxy. Empty, the one in grey (from the Base URL) is used. A model of another endpoint type still goes by the Base URL.';
+      'A custom full endpoint URL, forwarded by a compatible routing gateway.';
 
   @override
   String get modelsApiKey => 'API Key';
@@ -7160,14 +7160,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modelsEnvDescription =>
-      'One KEY=VALUE a line, given to Claude Code after the settings above.';
+      'One KEY=VALUE per line, passed to the Pi process.';
 
   @override
   String get modelsHeaders => 'Custom Headers';
 
   @override
   String get modelsHeadersDescription =>
-      'One Name: Value a line, sent on every request to this upstream. Values may use the CLAUDE_SESSION_ID variable (this conversation\'s session) and ANTHROPIC_MODEL (the model asked for), each between double braces; over the direct Anthropic protocol those two go as written, so only fixed values work there. Auth headers (Authorization, x-api-key) are ignored here: the key is set above.';
+      'One Name: Value per line. Static headers are sent to this provider; configure authentication using the key field, not Authorization or x-api-key headers.';
 
   @override
   String get modelsDuplicateProvider => 'Duplicate Upstream';
@@ -7195,7 +7195,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modelsDeleteDetail =>
-      'Sessions on its models go back to Claude Code\'s own when they next start.';
+      'Sessions using this provider may need another model selected before continuing.';
 
   @override
   String modelsFetchTitle(String name) {
@@ -7364,7 +7364,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modelsSwitchDetail =>
-      'Claude Code restarts on the other upstream and resumes this conversation (--resume). Its history is sent to the new model as it is; some upstreams take it slower the first time. A reply still running stops when you send the next message.';
+      'The selected model will be used for this conversation.';
 
   @override
   String get modelsSwitchConfirm => 'Switch';
@@ -7380,8 +7380,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get modelsAuxiliaryAuto => 'Automatic';
 
   @override
-  String get modelsAuxiliaryBuiltin =>
-      'Claude Code Haiku (this machine\'s setup)';
+  String get modelsAuxiliaryBuiltin => 'Automatic';
 
   @override
   String get settingsSectionUpdates => 'Updates';
@@ -8439,14 +8438,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get networkSettingsDescription =>
-      'How pi-desktop and the Claude Code it starts reach the internet.';
+      'Network proxy settings and connection tests for pi-desktop.';
 
   @override
   String get networkProxy => 'Proxy';
 
   @override
   String get networkProxyDescription =>
-      'The proxy for pi-desktop and Claude Code (http.proxyMode). System Proxy follows the system\'s settings, such as Clash\'s system proxy. New sessions take a change; restart a running one for it.';
+      'Proxy used by pi-desktop network requests (http.proxyMode). System Proxy follows the system settings.';
 
   @override
   String networkProxyLabel(String name) {
@@ -13136,7 +13135,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ustatRecordDescription =>
-      'Claude Code\'s own calls are read from what it prints; sessions on a custom upstream go through pi-desktop\'s local proxy, which keeps each call. Applies to agents started from now on.';
+      'Record tokens, cache reads and writes, time and cost for PI model requests. Native requests use PI usage output; requests through the compatibility gateway are recorded by that gateway.';
 
   @override
   String get ustatRecordOffDescription =>
@@ -13383,14 +13382,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ustatShowAuxiliaryDescription =>
-      'Count Claude Code\'s requests beside the conversation (suggesting the next prompt, naming the conversation, summing up a web page) in the charts and totals. They are kept either way.';
+      'Include PI auxiliary requests, such as conversation titles and commit messages, in charts and totals. They are recorded either way.';
 
   @override
   String get ustatTrace => 'Debug capture';
 
   @override
   String get ustatTraceDescription =>
-      'Also keep every request to a custom upstream whole: as Claude Code sent it, as it went to the upstream, the upstream\'s raw answer and what went back; of Claude Code\'s own models, only their answers. Keys are masked. Takes a lot of space: turn it off when done.';
+      'Save available request and response traces for supported routing gateways. Traces can take considerable space; turn this off when finished.';
 
   @override
   String get ustatTraceTitle => 'Raw exchange';
@@ -13421,7 +13420,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ustatTraceAnswerOnly =>
-      'As Claude Code printed it; the request to Anthropic is not seen';
+      'Model response only; the original request was not captured in this record';
 
   @override
   String ustatTraceTry(int n) {
@@ -13574,7 +13573,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ustatQuotaDetail =>
-      'How much of the plan\'s limits Claude Code\'s own models took in this time, from the limits as they stood after each call.';
+      'Recorded subscription quota information for the selected period, when available.';
 
   @override
   String get ustatQuotaFiveHour => '5-hour limit';
@@ -13625,7 +13624,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ustatPriceClaudeDefault =>
-      'Claude Code\'s own models without a price of yours are priced at Anthropic\'s API prices: the grey figures.';
+      'Default prices are shown in grey where available.';
 
   @override
   String ustatPriceRuleTiers(int count) {

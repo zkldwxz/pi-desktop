@@ -14,12 +14,12 @@ import '../../icons/brand_logos.dart';
 import '../../icons/project_icon.dart';
 import '../../icons/project_icon_picker.dart';
 import '../../kernel/claude_code/claude_haiku.dart';
+import '../../kernel/pi/pi_jobs.dart';
 import '../../l10n/l10n.dart';
 import '../../models/codex/codex_api.dart' show codexClientVersion;
 import '../../models/codex/codex_quota_format.dart';
 import '../../models/codex/codex_service.dart';
 import '../../models/codex/codex_usage.dart';
-import '../../models/auxiliary_model_menu.dart';
 import '../../models/featured_upstreams.dart';
 import '../../models/magpie.dart';
 import '../../models/magpie_follow.dart';
@@ -56,18 +56,39 @@ const modelTestPrompt =
     'Output the numbers 1 through 120 separated by a single space. '
     'No commas, no newlines, no explanation.';
 
-/// Tests [model] through Claude Code, as a session reaches it: the
-/// provider's environment, the proxy, the upstream.
-Future<ClaudeTimedAnswer> testModelThroughClaudeCode(
+/// Tests the selected model using a snapshot of its upstream.
+Future<ClaudeTimedAnswer> testModelThroughPi(
   ModelProvider provider,
   ProviderModel model, {
   Future<void>? cancel,
-}) => timeClaudeAnswer(
-  'Do exactly as asked.',
-  modelTestPrompt,
-  model: modelRef(provider.id, model.id),
-  cancel: cancel,
-);
+}) async {
+  final snapshot = ModelProviders.memory(
+    providers: [
+      provider.copyWith(enabled: true, models: [model.copyWith(enabled: true)]),
+    ],
+  );
+  try {
+    final key = await ModelProviders.current.key(provider.id);
+    if (key != null) await snapshot.setKey(provider.id, key);
+    final answer = await askPi(
+      system: 'Do exactly as asked.',
+      prompt: modelTestPrompt,
+      model: modelRef(provider.id, model.id),
+      providers: snapshot,
+      cancel: cancel,
+    );
+    return ClaudeTimedAnswer(
+      answer.text,
+      firstText: answer.firstText,
+      lastText: answer.lastText,
+      outputTokens: answer.outputTokens,
+    );
+  } on PiJobCancelled {
+    throw const ClaudeHaikuCancelled();
+  } finally {
+    snapshot.dispose();
+  }
+}
 
 /// Settings → Models: Claude Code as set up on this machine, and the
 /// upstreams added ([ModelProviders]), the model new sessions start with;
@@ -77,7 +98,7 @@ class ModelsSettingsPage extends StatefulWidget {
     super.key,
     required this.providers,
     this.listModels = listUpstreamModels,
-    this.testModel = testModelThroughClaudeCode,
+    this.testModel = testModelThroughPi,
     this.codex,
     this.workspace,
     this.featured,
@@ -253,19 +274,14 @@ class _ModelsSettingsPageState extends State<ModelsSettingsPage> {
     if (_providers.resolve(value) case (final provider, final model)) {
       return '${provider.name} · ${provider.labelOf(model)}';
     }
-    if (value == 'default') return l10n.modelsBuiltinDefault;
+    if (value == 'default') return l10n.modelsDefaultLast;
     return value;
   }
 
   String _auxiliaryName(BuildContext context, String? value) {
     final l10n = context.l10n;
     if (value == null) return l10n.modelsAuxiliaryAuto;
-    if (value == builtinProviderId) {
-      // Not there on BaoCode's own core: automatic in its place.
-      return _providers.builtinAvailable
-          ? l10n.modelsAuxiliaryBuiltin
-          : l10n.modelsAuxiliaryAuto;
-    }
+    if (value == builtinProviderId) return l10n.modelsAuxiliaryAuto;
     return _defaultName(context, value);
   }
 
@@ -281,12 +297,27 @@ class _ModelsSettingsPageState extends State<ModelsSettingsPage> {
       trailing: SettingsDropdown(
         current: shown,
         semanticLabel: l10n.modelsChoiceLabel(l10n.modelsAuxiliary, shown),
-        entries: () => auxiliaryModelEntries(
-          l10n,
-          _providers,
-          current: current,
-          onPick: set,
-        ),
+        entries: () => [
+          IdeMenuAction(
+            l10n.modelsAuxiliaryAuto,
+            checked: current == null || current == builtinProviderId,
+            onSelected: () => set(null),
+          ),
+          const IdeMenuSeparator(),
+          for (final provider in _providers.enabled)
+            IdeMenuAction(
+              provider.name,
+              checked: parseModelRef(current)?.provider == provider.id,
+              submenu: [
+                for (final model in provider.enabledModels)
+                  IdeMenuAction(
+                    provider.labelOf(model),
+                    checked: current == modelRef(provider.id, model.id),
+                    onSelected: () => set(modelRef(provider.id, model.id)),
+                  ),
+              ],
+            ),
+        ],
       ),
     );
   }
@@ -381,13 +412,6 @@ class _ModelsSettingsPageState extends State<ModelsSettingsPage> {
                         unawaited(_providers.setDefaultModel(null)),
                   ),
                   const IdeMenuSeparator(),
-                  if (_providers.builtinOffered)
-                    IdeMenuAction(
-                      l10n.modelsBuiltinDefault,
-                      checked: current == 'default',
-                      onSelected: () =>
-                          unawaited(_providers.setDefaultModel('default')),
-                    ),
                   for (final provider in _providers.enabled)
                     IdeMenuAction(
                       provider.name,
@@ -415,24 +439,6 @@ class _ModelsSettingsPageState extends State<ModelsSettingsPage> {
         SettingsGroup(
           title: l10n.modelsProviders,
           children: [
-            // Claude Code as set up on this machine: the CLI's alone, not
-            // BaoCode's own core's.
-            if (_providers.builtinAvailable)
-              _ProviderRow(
-                icon: const ProviderIcon(builtinProviderId, size: 16),
-                name: l10n.modelsBuiltinName,
-                badge: l10n.modelsBuiltinBadge,
-                detail: l10n.modelsBuiltinDescription,
-                status: _providers.builtinHidden ? _Status.off : _Status.ready,
-                enabled: !_providers.builtinHidden,
-                switchLabel: l10n.modelsEnableProvider(l10n.modelsBuiltinName),
-                onEnabled: (value) =>
-                    unawaited(_providers.setBuiltinHidden(!value)),
-              ),
-            // The one that follows magpie beside Claude Code's, as it too
-            // is set up elsewhere; then the newest at a site BaoCode lists
-            // (one imported later takes the place of one before); the rest
-            // in their order.
             for (final provider in [
               ?magpie,
               ?pinned,
@@ -660,7 +666,7 @@ class ProviderSettingsPage extends StatefulWidget {
     required this.listModels,
     required this.onBack,
     this.onOpen,
-    this.testModel = testModelThroughClaudeCode,
+    this.testModel = testModelThroughPi,
     this.codex,
     this.workspace,
     this.magpie,
@@ -694,7 +700,6 @@ class _ProviderSettingsPageState extends State<ProviderSettingsPage> {
 
   /// All the upstream's models listed, not only those checked.
   bool _showAll = false;
-  bool _rolesOpen = true;
   bool _advancedOpen = false;
 
   /// The custom URLs shown: open from the first when one is set.
@@ -1104,14 +1109,6 @@ class _ProviderSettingsPageState extends State<ProviderSettingsPage> {
         ],
         const SizedBox(height: 16),
         _models(context),
-        const SizedBox(height: 16),
-        SettingsFolding(
-          title: l10n.modelsRoles,
-          description: l10n.modelsRolesDescription,
-          open: _rolesOpen,
-          onToggle: () => setState(() => _rolesOpen = !_rolesOpen),
-          children: _roles(context),
-        ),
         const SizedBox(height: 16),
         SettingsFolding(
           title: l10n.modelsAdvanced,
@@ -1750,136 +1747,12 @@ class _ProviderSettingsPageState extends State<ProviderSettingsPage> {
     );
   }
 
-  List<Widget> _roles(BuildContext context) {
-    final l10n = context.l10n;
-    final provider = _provider;
-    // The other upstreams whose models a role may pick (all but the main
-    // model): through the proxy, any that can be reached (not Claude
-    // Code's own, whose key is not the app's).
-    final others = [
-      for (final other in _providers.enabled)
-        if (other.id != provider.id && other.connected) other,
-    ];
-    Widget role(
-      String role,
-      String label,
-      String description, {
-      String? warning,
-    }) {
-      final elsewhere = ProviderRoles.crossUpstream.contains(role);
-      final current = provider.roles[role];
-      final picked = parseModelRef(current);
-      final pickedProvider = picked == null
-          ? null
-          : _providers.provider(picked.provider);
-      final pickedModel = picked == null
-          ? null
-          : pickedProvider?.model(picked.model);
-      final missing = picked != null && pickedModel == null;
-      final shown = switch (current) {
-        _ when pickedModel != null =>
-          '${pickedProvider!.name} · ${pickedProvider.labelOf(pickedModel)}',
-        _ when picked != null => picked.model,
-        final id? => switch (provider.model(id)) {
-          final model? => provider.labelOf(model),
-          null => id,
-        },
-        null => l10n.modelsRoleUnset,
-      };
-      Widget caution(String text) => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 2, right: 4),
-            child: Icon(Codicons.warning, size: 13, color: AppColors.caution),
-          ),
-          Expanded(
-            child: Text(
-              text,
-              style: SettingsText.description.copyWith(
-                color: AppColors.caution,
-              ),
-            ),
-          ),
-        ],
-      );
-      IdeMenuAction pick(String label, String value) => IdeMenuAction(
-        label,
-        checked: current == value,
-        onSelected: () => unawaited(
-          _save(
-            _providerNow.copyWith(
-              roles: _providerNow.roles.copyWith(role, value),
-            ),
-          ),
-        ),
-      );
-      return SettingsRow(
-        label: label,
-        description: description,
-        below: [
-          if (warning != null && current == null) caution(warning),
-          if (missing) caution(l10n.modelsRoleMissing),
-        ],
-        trailing: SettingsDropdown(
-          current: shown,
-          semanticLabel: l10n.modelsChoiceLabel(label, shown),
-          entries: () => [
-            IdeMenuAction(
-              l10n.modelsRoleUnset,
-              checked: current == null,
-              onSelected: () => unawaited(
-                _save(
-                  _providerNow.copyWith(
-                    roles: _providerNow.roles.copyWith(role, null),
-                  ),
-                ),
-              ),
-            ),
-            const IdeMenuSeparator(),
-            for (final model in provider.enabledModels)
-              pick(provider.labelOf(model), model.id),
-            if (elsewhere && others.isNotEmpty) ...[
-              const IdeMenuSeparator(),
-              for (final other in others)
-                IdeMenuAction(
-                  other.name,
-                  checked: picked?.provider == other.id,
-                  submenu: [
-                    for (final model in other.enabledModels)
-                      pick(other.labelOf(model), modelRef(other.id, model.id)),
-                  ],
-                ),
-            ],
-          ],
-        ),
-      );
-    }
-
-    return [
-      role('main', l10n.modelsRoleMain, l10n.modelsRoleMainDescription),
-      role('opus', l10n.modelsRoleOpus, l10n.modelsRoleOpusDescription),
-      role('sonnet', l10n.modelsRoleSonnet, l10n.modelsRoleSonnetDescription),
-      role(
-        'haiku',
-        l10n.modelsRoleHaiku,
-        l10n.modelsRoleHaikuDescription,
-        warning: l10n.modelsRoleHaikuWarning,
-      ),
-      role(
-        'subagent',
-        l10n.modelsRoleSubagent,
-        l10n.modelsRoleSubagentDescription,
-      ),
-    ];
-  }
-
   String _authName(BuildContext context, ProviderAuth value) {
     final l10n = context.l10n;
     return switch (value) {
       ProviderAuth.auto => l10n.modelsAuthAuto,
-      ProviderAuth.bearer => 'Bearer (ANTHROPIC_AUTH_TOKEN)',
-      ProviderAuth.apiKey => 'x-api-key (ANTHROPIC_API_KEY)',
+      ProviderAuth.bearer => 'Authorization: Bearer',
+      ProviderAuth.apiKey => 'x-api-key',
     };
   }
 
@@ -1906,30 +1779,6 @@ class _ProviderSettingsPageState extends State<ProviderSettingsPage> {
                 ),
             ],
           ),
-        ),
-      SettingsSwitchRow(
-        label: l10n.modelsNonessential,
-        description: l10n.modelsNonessentialDescription,
-        value: provider.disableNonessentialTraffic,
-        onChanged: (value) => unawaited(
-          _save(_providerNow.copyWith(disableNonessentialTraffic: value)),
-        ),
-      ),
-      if (protocols.contains(ProviderProtocol.openaiChat))
-        SettingsSwitchRow(
-          label: l10n.modelsPreserveThinking,
-          description: l10n.modelsPreserveThinkingDescription,
-          value: provider.preserveThinking,
-          onChanged: (value) =>
-              unawaited(_save(_providerNow.copyWith(preserveThinking: value))),
-        ),
-      if (protocols.any((protocol) => protocol.proxied))
-        SettingsSwitchRow(
-          label: l10n.modelsPromptCacheKey,
-          description: l10n.modelsPromptCacheKeyDescription,
-          value: provider.promptCacheKey,
-          onChanged: (value) =>
-              unawaited(_save(_providerNow.copyWith(promptCacheKey: value))),
         ),
       if (provider.protocol == ProviderProtocol.codex)
         SettingsRow(
@@ -1964,7 +1813,7 @@ class _ProviderSettingsPageState extends State<ProviderSettingsPage> {
           _Field(
             value: formatEnvironment(provider.env),
             label: l10n.modelsEnv,
-            placeholder: 'API_TIMEOUT_MS=600000',
+            placeholder: 'HTTPS_PROXY=http://localhost:8080',
             lines: 6,
             onCommit: (text) => unawaited(
               _save(_providerNow.copyWith(env: parseEnvironment(text))),
@@ -2029,14 +1878,8 @@ Map<String, String> parseEnvironment(String text) => {
         key: line.substring(line.indexOf('=') + 1).trim(),
 };
 
-/// The Custom Headers field's example: a client's user agent and its
-/// session headers, the session a variable. Not translated: header names
-/// and values are what they are, and `{{…}}` would be an ARB placeholder.
-const _headersPlaceholder =
-    'user-agent: opencode/1.17.12 ai-sdk/provider-utils/4.0.23 '
-    'runtime/bun/1.3.14\n'
-    'x-session-affinity: {{CLAUDE_SESSION_ID}}\n'
-    'x-session-id: {{CLAUDE_SESSION_ID}}';
+/// Static request header examples.
+const _headersPlaceholder = 'x-team: engineering\nx-client: pi-desktop';
 
 /// [headers] as the Custom Headers field shows it: `Name: Value` a line.
 String formatHeaders(Map<String, String> headers) =>

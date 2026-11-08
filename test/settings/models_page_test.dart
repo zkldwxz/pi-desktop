@@ -19,7 +19,6 @@ import 'package:pi_desktop/models/secret_store.dart';
 import 'package:pi_desktop/models/upstream.dart';
 import 'package:pi_desktop/settings/pages/model_dialogs.dart';
 import 'package:pi_desktop/settings/pages/models_page.dart';
-import 'package:pi_desktop/settings/pages/settings_widgets.dart';
 import 'package:pi_desktop/workspace/workspace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -174,7 +173,7 @@ void main() {
   Future<void> pump(
     WidgetTester tester, {
     CodexService? codex,
-    ModelTester testModel = testModelThroughClaudeCode,
+    ModelTester testModel = testModelThroughPi,
     Workspace? workspace,
     MagpieFollow? magpie,
   }) async {
@@ -208,22 +207,6 @@ void main() {
     await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.pump();
   }
-
-  testWidgets('the built-in provider is listed, hidden but not removed', (
-    tester,
-  ) async {
-    await pump(tester);
-    expect(find.text('Models'), findsWidgets);
-    expect(find.text("Claude Code (this machine's setup)"), findsOneWidget);
-    expect(find.text('Built-in'), findsOneWidget);
-    await tester.tap(find.byType(SettingsSwitch));
-    await tester.pump();
-    expect(providers.builtinHidden, isTrue);
-    await tester.tap(find.text("Claude Code (this machine's setup)"));
-    await tester.pump();
-    // No page of its own to open, nor delete.
-    expect(find.text('Connection'), findsNothing);
-  });
 
   testWidgets('on BaoCode\'s own core there is no built-in provider: '
       'neither listed nor offered as the default', (tester) async {
@@ -286,7 +269,7 @@ void main() {
   });
 
   testWidgets('an upstream is added, set up, its models fetched and its '
-      'roles picked', (tester) async {
+      'models selected', (tester) async {
     await pump(tester);
     await tester.tap(find.text('Add Upstream').last);
     await tester.pumpAndSettle();
@@ -352,26 +335,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('o3'), findsNothing);
 
-    // Haiku unset: warned.
-    expect(
-      find.textContaining('Unset, background work runs on the model picked'),
-      findsOneWidget,
-    );
-    final haiku = find.ancestor(
-      of: find.text('Haiku Tier'),
-      matching: find.byType(Row),
-    );
-    await tester.tap(
-      find.descendant(of: haiku.first, matching: find.text('Unset')),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('gpt-5-mini').last);
-    await tester.pumpAndSettle();
-    expect(providers.provider(id)!.roles.haiku, 'gpt-5-mini');
-    expect(
-      find.textContaining('Unset, background work runs on the model picked'),
-      findsNothing,
-    );
+    expect(find.text('Model Roles'), findsNothing);
+    expect(find.text('Haiku Tier'), findsNothing);
   });
 
   testWidgets('an upstream shows its maker\'s logo until another icon is '
@@ -390,7 +355,7 @@ void main() {
       (widget) => widget is BrandLogo && widget.name == name,
     );
     expect(logo('deepseek'), findsOneWidget);
-    expect(logo('anthropic'), findsOneWidget);
+    expect(logo('anthropic'), findsNothing);
 
     await tester.tap(find.text('DS'));
     await tester.pump();
@@ -519,6 +484,7 @@ void main() {
         models: [
           ProviderModel(id: 'up'),
           ProviderModel(id: 'down'),
+          ProviderModel(id: 'disabled', enabled: false),
         ],
       ),
     );
@@ -591,6 +557,18 @@ void main() {
       findsOneWidget,
     );
 
+    // A disabled model remains testable when all models are shown.
+    await tester.tap(find.text('Show All (3)'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Test All'));
+    await tester.pump();
+    expect(asked.last, 'gw/up');
+    expect(asked, contains('gw/disabled'));
+    for (final model in ['disabled', 'down', 'up']) {
+      replies[model]!.complete(answer);
+    }
+    await tester.pumpAndSettle();
+
     // A test under way stops as the page closes.
     await tester.tap(find.text('Test All'));
     await tester.pump();
@@ -598,150 +576,6 @@ void main() {
     await tester.pumpWidget(const SizedBox());
     await tester.pump();
     expect(cancelled, isTrue);
-  });
-
-  testWidgets('subagents may run on another upstream\'s model, and are '
-      'warned once it is gone', (tester) async {
-    await providers.save(
-      const ModelProvider(
-        id: 'an',
-        name: 'Claude',
-        baseUrl: 'https://api.anthropic.com',
-        models: [ProviderModel(id: 'claude-opus-4-5')],
-      ),
-    );
-    await providers.save(
-      const ModelProvider(
-        id: 'ds',
-        name: 'DeepSeek',
-        protocol: ProviderProtocol.openaiChat,
-        baseUrl: 'https://api.deepseek.com',
-        models: [ProviderModel(id: 'deepseek-chat')],
-      ),
-    );
-    await pump(tester);
-    await tester.tap(find.text('Claude').last);
-    await tester.pumpAndSettle();
-
-    Finder subagents() => find
-        .ancestor(of: find.text('Subagents'), matching: find.byType(Row))
-        .first;
-    await tester.ensureVisible(subagents());
-    await tester.pumpAndSettle();
-    await tester.tap(
-      find.descendant(of: subagents(), matching: find.text('Unset')),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('DeepSeek').last);
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('deepseek-chat').last);
-    await tester.pumpAndSettle();
-    expect(providers.provider('an')!.roles.subagent, '@ds/deepseek-chat');
-    expect(providers.provider('an')!.throughProxy, isTrue);
-    expect(find.text('DeepSeek · deepseek-chat'), findsOneWidget);
-    expect(find.textContaining('no longer one of'), findsNothing);
-
-    // The model gone from its upstream: warned, kept as it was picked.
-    await providers.save(providers.provider('ds')!.copyWith(models: const []));
-    await tester.pumpAndSettle();
-    expect(find.textContaining('no longer one of'), findsOneWidget);
-    expect(providers.provider('an')!.roles.subagent, '@ds/deepseek-chat');
-  });
-
-  testWidgets('every role but the main model may pick another upstream\'s '
-      'model, unset once that model is removed there', (tester) async {
-    await providers.save(
-      const ModelProvider(
-        id: 'an',
-        name: 'Claude',
-        baseUrl: 'https://api.anthropic.com',
-        models: [ProviderModel(id: 'claude-opus-4-5')],
-      ),
-    );
-    await providers.save(
-      const ModelProvider(
-        id: 'ds',
-        name: 'DeepSeek',
-        protocol: ProviderProtocol.openaiChat,
-        baseUrl: 'https://api.deepseek.com',
-        models: [
-          ProviderModel(id: 'deepseek-chat'),
-          ProviderModel(id: 'deepseek-reasoner'),
-        ],
-      ),
-    );
-    await pump(tester);
-    await tester.tap(find.text('Claude').last);
-    await tester.pumpAndSettle();
-
-    Finder row(String label) =>
-        find.ancestor(of: find.text(label), matching: find.byType(Row)).first;
-    Future<void> pick(String role, String upstream, String model) async {
-      await tester.ensureVisible(row(role));
-      await tester.pumpAndSettle();
-      await tester.tap(
-        find.descendant(of: row(role), matching: find.text('Unset')),
-      );
-      await tester.pumpAndSettle();
-      await tester.tap(find.text(upstream).last);
-      await tester.pumpAndSettle();
-      await tester.tap(find.text(model).last);
-      await tester.pumpAndSettle();
-    }
-
-    await pick('Opus Tier', 'DeepSeek', 'deepseek-reasoner');
-    await pick('Sonnet Tier', 'DeepSeek', 'deepseek-chat');
-    await pick('Haiku Tier', 'DeepSeek', 'deepseek-chat');
-    var roles = providers.provider('an')!.roles;
-    expect(
-      (roles.opus, roles.sonnet, roles.haiku),
-      ('@ds/deepseek-reasoner', '@ds/deepseek-chat', '@ds/deepseek-chat'),
-    );
-    expect(providers.provider('an')!.throughProxy, isTrue);
-    expect(find.text('DeepSeek · deepseek-reasoner'), findsOneWidget);
-    expect(find.text('DeepSeek · deepseek-chat'), findsNWidgets(2));
-    // The Haiku warning is for one unset.
-    expect(
-      find.textContaining('Unset, background work runs on the model picked'),
-      findsNothing,
-    );
-
-    // The main model stands in on this upstream: its own models only.
-    await tester.ensureVisible(row('Main Model'));
-    await tester.pumpAndSettle();
-    await tester.tap(
-      find.descendant(of: row('Main Model'), matching: find.text('Unset')),
-    );
-    await tester.pumpAndSettle();
-    expect(find.text('claude-opus-4-5'), findsWidgets);
-    expect(find.text('DeepSeek'), findsNothing);
-    await tester.tapAt(Offset.zero);
-    await tester.pumpAndSettle();
-
-    // A model removed on its upstream's page: the roles on it unset.
-    await tester.tap(find.byType(IdeBackButton));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('DeepSeek').last);
-    await tester.pumpAndSettle();
-    await tester.tap(
-      find
-          .byWidgetPredicate(
-            (widget) =>
-                widget is IdeActionButton && widget.tooltip == 'More Actions',
-          )
-          .first,
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Remove').last);
-    await tester.pumpAndSettle();
-    expect(providers.provider('ds')!.models.map((m) => m.id), [
-      'deepseek-reasoner',
-    ]);
-    roles = providers.provider('an')!.roles;
-    expect(
-      (roles.opus, roles.sonnet, roles.haiku),
-      ('@ds/deepseek-reasoner', null, null),
-    );
   });
 
   testWidgets('a model is spoken to at an endpoint of its own, or its '
@@ -800,7 +634,7 @@ void main() {
     await tester.tap(find.text('Advanced'));
     await tester.pumpAndSettle();
     expect(find.text('Authentication'), findsOneWidget);
-    expect(find.text('Send Reasoning Back'), findsOneWidget);
+    expect(find.text('Send Reasoning Back'), findsNothing);
 
     await edit(
       'Anthropic-compatible',
@@ -872,6 +706,11 @@ void main() {
     await tester.tap(find.text('Advanced'));
     await tester.pumpAndSettle();
     expect(find.text('Custom Headers'), findsOneWidget);
+    expect(find.text('Model Roles'), findsNothing);
+    expect(find.text('Haiku Tier'), findsNothing);
+    expect(find.text('Send Reasoning Back'), findsNothing);
+    expect(find.textContaining('CLAUDE_SESSION_ID'), findsNothing);
+    expect(find.textContaining('API_TIMEOUT_MS'), findsNothing);
     await tester.ensureVisible(find.bySemanticsLabel('Custom Headers'));
     await tester.pumpAndSettle();
     await type(

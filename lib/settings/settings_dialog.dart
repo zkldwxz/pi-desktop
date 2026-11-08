@@ -59,7 +59,6 @@ enum SettingsCategory {
     SettingsSection.notifications,
     SettingsSection.stash,
     SettingsSection.accounts,
-    SettingsSection.customize,
     SettingsSection.language,
     SettingsSection.keyboard,
     SettingsSection.updates,

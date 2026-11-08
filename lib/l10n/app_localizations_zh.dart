@@ -3532,7 +3532,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get generalSettingsQueuedMessagesDescription =>
-      'Agent 还在工作时发出的消息何时被处理。更改对之后发送的消息生效；目前仅支持 Claude Code。';
+      'PI 在完成当前回合后处理排队消息。更改对之后发送的消息生效。';
 
   @override
   String get generalSettingsQueuedAfterTurn => '当前任务完成后依次执行';
@@ -5011,14 +5011,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get workspaceDesktopOnly => '智能体在桌面应用中运行';
 
   @override
-  String get workspaceDesktopOnlyDetail => 'Claude Code 以本地进程运行，浏览器无法启动它。';
+  String get workspaceDesktopOnlyDetail => 'PI 以本地进程运行，浏览器无法启动它。';
 
   @override
   String get workspaceOpenProjectFolder => '打开项目文件夹';
 
   @override
-  String get workspaceOpenProjectFolderDetail =>
-      '其中的 Claude Code 会话显示在侧边栏中；新智能体也在其中运行。';
+  String get workspaceOpenProjectFolderDetail => '其中的 PI 会话显示在侧边栏中；新智能体也在其中运行。';
 
   @override
   String settingsFileError(String file, String error) {
@@ -6086,10 +6085,10 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get modelsBuiltinName => 'Claude Code（跟随本机配置）';
+  String get modelsBuiltinName => 'Pi 原生提供商';
 
   @override
-  String get modelsBuiltinDefault => 'Claude Code 默认';
+  String get modelsBuiltinDefault => 'Pi 默认';
 
   @override
   String get modelsBuiltinBadge => '内置';
@@ -6190,8 +6189,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get modelsMagpieGateway => 'magpie 网关';
 
   @override
-  String get modelsMagpieGatewayDescription =>
-      '模型、账号和路由都在 magpie 里管理，这里的列表跟着它自动更新。新出现的路由组、图片模型，以及 magpie 给 Claude Code 选的模型会自动启用，其他的在下面勾选。';
+  String get modelsMagpieGatewayDescription => '模型和路由在 magpie 中管理；在此选择要显示的模型。';
 
   @override
   String get modelsMagpieRunning => '运行中';
@@ -6472,14 +6470,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get modelsProtocolDescription =>
-      'OpenAI 接口经本地代理转换 Claude Code 的请求和响应。';
+      '选择此提供商支持的 API 格式。Pi 使用原生提供商集成，特殊路由网关可能使用本地网关。';
 
   @override
   String get modelsBaseUrl => 'Base URL';
 
   @override
-  String get modelsBaseUrlAnthropicHint =>
-      '不带 /v1，同 ANTHROPIC_BASE_URL：Claude Code 会自己加 /v1/messages。';
+  String get modelsBaseUrlAnthropicHint => 'Anthropic 兼容 API 的基础地址。';
 
   @override
   String get modelsBaseUrlOpenAIHint => '按上游文档填写；路径里没有版本号（…/v1）时自动加 /v1。';
@@ -6506,8 +6503,7 @@ class AppLocalizationsZh extends AppLocalizations {
       '每次对话 POST 到这个完整地址。留空用灰字所示、由 Base URL 拼出的地址。单独设了其他端点类型的模型仍按 Base URL。';
 
   @override
-  String get modelsEndpointUrlAnthropicDescription =>
-      '每次对话 POST 到这个完整地址，Claude Code 改经本地代理转发。留空用灰字所示、由 Base URL 拼出的地址。单独设了其他端点类型的模型仍按 Base URL。';
+  String get modelsEndpointUrlAnthropicDescription => '自定义完整端点地址，由兼容的路由网关转发。';
 
   @override
   String get modelsApiKey => 'API Key';
@@ -6724,14 +6720,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get modelsEnv => '额外环境变量';
 
   @override
-  String get modelsEnvDescription => '每行一个 KEY=VALUE，在以上设置之后传给 Claude Code。';
+  String get modelsEnvDescription => '每行一个 KEY=VALUE，传给 Pi 子进程。';
 
   @override
   String get modelsHeaders => '自定义请求头';
 
   @override
   String get modelsHeadersDescription =>
-      '每行一个 Name: Value，对此上游的每次请求都会带上。值里可用双花括号变量 CLAUDE_SESSION_ID（本次对话的会话）与 ANTHROPIC_MODEL（所请求的模型）；走直连 Anthropic 协议时这两个变量原样发出，可用的只有固定值。鉴权头（Authorization、x-api-key）在此忽略：Key 在下方设置。';
+      '每行一个 Name: Value，作为静态请求头发送给此提供商。请在 Key 字段设置认证，不要在此填写 Authorization 或 x-api-key。';
 
   @override
   String get modelsDuplicateProvider => '复制上游';
@@ -6756,7 +6752,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get modelsDeleteDetail => '使用其模型的会话下次启动时改用 Claude Code 自带的模型。';
+  String get modelsDeleteDetail => '使用此提供商的会话可能需要重新选择模型才能继续。';
 
   @override
   String modelsFetchTitle(String name) {
@@ -6922,8 +6918,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get modelsSwitchDetail =>
-      'Claude Code 会在新上游上重启，并用 --resume 接续当前对话。历史记录会原样发给新模型，部分上游首次处理会较慢。如果还有回复在进行，发送下一条消息时会先停止它。';
+  String get modelsSwitchDetail => '此对话将使用所选模型。';
 
   @override
   String get modelsSwitchConfirm => '切换';
@@ -6939,7 +6934,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get modelsAuxiliaryAuto => '自动';
 
   @override
-  String get modelsAuxiliaryBuiltin => 'Claude Code Haiku（本机配置）';
+  String get modelsAuxiliaryBuiltin => '自动';
 
   @override
   String get settingsSectionUpdates => '更新';
@@ -7949,15 +7944,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get networkSettingsTitle => '网络';
 
   @override
-  String get networkSettingsDescription =>
-      'pi-desktop 及其启动的 Claude Code 如何访问网络。';
+  String get networkSettingsDescription => 'pi-desktop 的网络代理设置和连接测试。';
 
   @override
   String get networkProxy => '代理';
 
   @override
   String get networkProxyDescription =>
-      'pi-desktop 和 Claude Code 使用的代理（http.proxyMode）。跟随系统代理：使用系统设置里的代理，例如 Clash 开启的系统代理。更改对新会话生效，正在运行的会话需重新开始。';
+      'pi-desktop 网络请求使用的代理（http.proxyMode）。跟随系统代理时使用系统设置。';
 
   @override
   String networkProxyLabel(String name) {
@@ -12445,7 +12439,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get ustatRecordDescription =>
-      'Claude Code 自带模型的调用从它的输出读取；使用自定义上游的会话经过 pi-desktop 的本地代理记录。对之后启动的会话生效。';
+      '记录 PI 模型请求的 token、缓存读写、时间和费用。原生请求从 PI 用量输出读取；经兼容网关的请求由网关记录。';
 
   @override
   String get ustatRecordOffDescription =>
@@ -12653,14 +12647,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get ustatShowAuxiliaryDescription =>
-      '把 Claude Code 在对话之外发的请求（建议下一条提示、起标题、总结网页等）也算进图表和合计。不显示时照样记录。';
+      '将 PI 的辅助请求（对话标题、提交信息等）计入图表和合计。不显示时仍会记录。';
 
   @override
   String get ustatTrace => '调试抓包';
 
   @override
-  String get ustatTraceDescription =>
-      '同时完整保存每次发往自定义上游的请求：Claude Code 发来的原文、发给上游的请求、上游的原始返回、返回给 Claude Code 的内容；Claude Code 自带模型只能保存它的返回。密钥会打码。占用空间很大，用完请关闭。';
+  String get ustatTraceDescription => '保存支持的路由网关提供的请求和响应记录。记录可能占用大量空间，用完请关闭。';
 
   @override
   String get ustatTraceTitle => '原始报文';
@@ -12689,7 +12682,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get ustatTraceAnswerOnly => 'Claude Code 输出的原样内容；发给官方的请求看不到';
+  String get ustatTraceAnswerOnly => '仅包含模型返回内容；此记录没有保存请求原文';
 
   @override
   String ustatTraceTry(int n) {
@@ -12832,7 +12825,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ustatQuota => 'Claude 订阅额度';
 
   @override
-  String get ustatQuotaDetail => 'Claude Code 自带模型这段时间用掉了多少订阅额度，按每次调用后记下的额度计算。';
+  String get ustatQuotaDetail => '所选时段内记录的订阅额度信息（如有）。';
 
   @override
   String get ustatQuotaFiveHour => '5 小时额度';
@@ -12876,8 +12869,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get ustatPriceClaudeDefault =>
-      'Claude Code 自带模型没填价格时按 Anthropic API 价折算，即输入框里的灰色数字。';
+  String get ustatPriceClaudeDefault => '有默认价格时，以灰色显示。';
 
   @override
   String ustatPriceRuleTiers(int count) {

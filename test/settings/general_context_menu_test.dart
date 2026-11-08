@@ -55,6 +55,17 @@ void main() {
   final mac = TargetPlatformVariant.only(TargetPlatform.macOS);
   final windows = TargetPlatformVariant.only(TargetPlatform.windows);
 
+  testWidgets('general settings omit unsupported kernel options', (
+    tester,
+  ) async {
+    await _pump(tester, _Menu());
+    expect(find.text('Commit Attribution'), findsNothing);
+    expect(find.text('Prompt Suggestions'), findsNothing);
+    expect(find.text('Queued Messages'), findsNothing);
+    expect(find.text('Claude Code'), findsNothing);
+    expect(find.text('Pi CLI'), findsOneWidget);
+  }, variant: mac);
+
   testWidgets('macOS: Finder\'s, turned on with its items named, off, and '
       'System Settings\' extensions a button away', (tester) async {
     final menu = await _pump(tester, _Menu());

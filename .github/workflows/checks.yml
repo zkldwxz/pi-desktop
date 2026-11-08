@@ -117,5 +117,7 @@ jobs:
           test/kernel/pi_remote_test.dart test/kernel/pi_runtime_updates_test.dart
           test/update test/platform test/ide/lsp/core test/ide/lsp/install
           test/ide/lsp/packs test/ide/lsp/catalog
+          test/settings/models_page_test.dart test/settings/general_context_menu_test.dart
+          test/remote/ssh_server_form_test.dart
       - name: Real Dart language server
         run: flutter test --run-skipped -t lsp-smoke test/ide/lsp/smoke/dart_language_server_smoke_test.dart
