@@ -59,25 +59,14 @@ Future<String?> managedPiCli() async {
     ).readAsString()).trim();
     if (!RegExp(r'^\d+\.\d+\.\d+$').hasMatch(version)) return null;
     final runtime = await findPiRuntime();
-    final bundledJson = jsonDecode(
-      await File(
-        p.join(
-          runtime.path,
-          'node_modules',
-          '@earendil-works',
-          'pi-coding-agent',
-          'package.json',
-        ),
-      ).readAsString(),
-    ) as Map;
     final installedVersion = version.split('.').map(int.parse).toList();
-    final bundledVersion = '${bundledJson['version']}'
+    final baseVersion = (await _baseVersion(runtime))
         .split('.')
         .map(int.parse)
         .toList();
     for (var i = 0; i < 3; i++) {
-      if (installedVersion[i] < bundledVersion[i]) return null;
-      if (installedVersion[i] > bundledVersion[i]) break;
+      if (installedVersion[i] < baseVersion[i]) return null;
+      if (installedVersion[i] > baseVersion[i]) break;
     }
     final manifest = File(
       p.join(
@@ -99,5 +88,34 @@ Future<String?> managedPiCli() async {
     return await cli.exists() ? cli.path : null;
   } on Object {
     return null;
+  }
+}
+
+/// The Pi release the app is made for: the one beside the runtime files (a
+/// checkout's, an older bundle's), else what the runtime's package.json pins.
+Future<String> _baseVersion(Directory runtime) async {
+  try {
+    final json = jsonDecode(
+      await File(
+        p.join(
+          runtime.path,
+          'node_modules',
+          '@earendil-works',
+          'pi-coding-agent',
+          'package.json',
+        ),
+      ).readAsString(),
+    ) as Map;
+    return '${json['version']}';
+  } on Object {
+    final json = jsonDecode(
+      await File(p.join(runtime.path, 'package.json')).readAsString(),
+    ) as Map;
+    final pin =
+        '${(json['dependencies'] as Map)['@earendil-works/pi-coding-agent']}';
+    if (!RegExp(r'^\d+\.\d+\.\d+$').hasMatch(pin)) {
+      throw StateError('The runtime does not pin a stable Pi release');
+    }
+    return pin;
   }
 }

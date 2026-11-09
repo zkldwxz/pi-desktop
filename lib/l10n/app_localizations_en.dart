@@ -2848,6 +2848,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get composerCommands => 'Commands';
 
   @override
+  String get piSetupRetry => 'Try again';
+
+  @override
+  String piSetupFailed(String error) {
+    return 'Pi could not be set up: $error';
+  }
+
+  @override
+  String get piSetupInstalling =>
+      'Setting up Pi: installing it (the first time only)…';
+
+  @override
+  String get piSetupNodeUnsized => 'Setting up Pi: downloading Node.js…';
+
+  @override
+  String piSetupNode(int percent) {
+    return 'Setting up Pi: downloading Node.js… $percent%';
+  }
+
+  @override
   String get piCommandStats => 'Show this session\'s statistics';
 
   @override

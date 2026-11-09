@@ -53,6 +53,7 @@ import 'kernel/claude_code/claude_code_kernel.dart';
 import 'kernel/claude_code/claude_core_setting.dart';
 import 'kernel/pi/pi_storage.dart';
 import 'kernel/pi/pi_transport.dart';
+import 'kernel/pi/pi_runtime_install.dart';
 import 'kernel/pi/pi_runtime_updates.dart';
 import 'kernel/claude_code/process_transport.dart';
 import 'kernel/claude_code/turn_stats_stub.dart'
@@ -513,6 +514,9 @@ void followSettingsFiles(SettingsFiles files) {
         _ => null,
       };
   PiRuntimeUpdates.current.follow(files.settings);
+  // The first run installs Pi (the app carries none); its progress shows over
+  // the composer, and a conversation started meanwhile waits for it.
+  unawaited(PiRuntimeInstall.instance.ensure().catchError((Object _) {}));
   // Legacy helpers cannot select or download the original agent.
   ClaudeCore.current = () => ClaudeCore.builtin;
   // Settings → Models: the upstreams, kept in settings.json.

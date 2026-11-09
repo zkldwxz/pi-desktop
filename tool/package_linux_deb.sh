@@ -18,7 +18,7 @@ if [ ! -x "$bundle/pi-desktop" ]; then
   printf '%s\n' "No bundle at $bundle. Run: flutter build linux --release" >&2
   exit 1
 fi
-if [ ! -f "$bundle/data/pi-runtime/node" ]; then
+if [ ! -f "$bundle/data/pi-runtime/package.json" ]; then
   dart run "$root/tool/bundle_pi_runtime.dart" --target "$bundle/data/pi-runtime" --platform linux --arch "$arch"
 fi
 stage=$(mktemp -d)

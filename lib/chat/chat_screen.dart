@@ -15,7 +15,8 @@ import '../keybindings/chat_keybindings.dart';
 import '../l10n/l10n.dart';
 import '../models/model_welcome.dart';
 import '../remote/remote_location.dart';
-import '../remote/remote_status.dart' show ClaudeInstallBanner, SshHostBanner;
+import '../remote/remote_status.dart' show SshHostBanner;
+import 'widgets/pi_setup_banner.dart';
 import '../stash/stash_actions.dart';
 import '../stash/stash_store.dart';
 import '../theme/app_theme.dart';
@@ -1424,9 +1425,8 @@ class _ChatScreenState extends State<ChatScreen>
               // banner above when the agent failed on it.
               if (!HealthBanner.shows(_session.health))
                 SshHostBanner(location: _session.kernelContext.cwd),
-              // Claude Code being downloaded for this machine, or put on
-              // a remote project's host.
-              ClaudeInstallBanner(location: _session.kernelContext.cwd),
+              // Pi being set up for the first time on this machine.
+              const PiSetupBanner(),
               // Reset credits of the model's ChatGPT accounts about to
               // expire: a plan to use them.
               ResetCreditsHint(model: _session.models?.selected.id),

@@ -282,7 +282,7 @@ Future<void> main(List<String> arguments) async {
   await _putOpenSsh(root, bundle, arch);
   _checkBundle(bundle, [for (final name in _openSshFiles) 'openssh\\$name']);
 
-  _step('Bundling the Pi runtime for $arch');
+  _step('Bundling the Pi runtime files for $arch');
   final runtime = Directory('${bundle.path}\\data\\pi-runtime');
   if (runtime.existsSync()) runtime.deleteSync(recursive: true);
   await _run(Platform.resolvedExecutable, [
@@ -295,10 +295,12 @@ Future<void> main(List<String> arguments) async {
     '--arch',
     arch,
   ], root.path);
+  // Only the runtime's files: Pi and Node.js are installed on first run.
   _checkBundle(bundle, [
-    r'data\pi-runtime\node.exe',
     r'data\pi-runtime\package.json',
-    r'data\pi-runtime\node_modules\@earendil-works\pi-coding-agent\package.json',
+    r'data\pi-runtime\package-lock.json',
+    r'data\pi-runtime\runtime-manager.mjs',
+    r'data\pi-runtime\desktop-extension.mjs',
     r'data\pi-runtime\browser-extension\manifest.json',
   ]);
 

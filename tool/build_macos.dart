@@ -247,7 +247,7 @@ Future<void> main(List<String> arguments) async {
     app.parent.createSync(recursive: true);
     await _run('ditto', ['--arch', lipoArch, bundle.path, app.path], root.path);
     await _checkArchitecture(app, lipoArch);
-    _step('Bundling the Pi runtime for $arch');
+    _step('Bundling the Pi runtime files for $arch');
     final runtime = Directory('${app.path}/Contents/Resources/pi-runtime');
     if (runtime.existsSync()) runtime.deleteSync(recursive: true);
     await _run(Platform.resolvedExecutable, [

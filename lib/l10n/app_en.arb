@@ -1789,6 +1789,36 @@
   "@composerCommands": {
     "description": "Suggestion menu title."
   },
+  "piSetupRetry": "Try again",
+  "@piSetupRetry": {
+    "description": "The button of piSetupFailed: set Pi up again."
+  },
+  "piSetupFailed": "Pi could not be set up: {error}",
+  "@piSetupFailed": {
+    "description": "Over the composer: setting Pi up failed; {error} is why.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "piSetupInstalling": "Setting up Pi: installing it (the first time only)…",
+  "@piSetupInstalling": {
+    "description": "Over the composer on the first run, while Pi is installed with npm."
+  },
+  "piSetupNodeUnsized": "Setting up Pi: downloading Node.js…",
+  "@piSetupNodeUnsized": {
+    "description": "As piSetupNode, its size not known yet."
+  },
+  "piSetupNode": "Setting up Pi: downloading Node.js… {percent}%",
+  "@piSetupNode": {
+    "description": "Over the composer on the first run, while the Node.js Pi runs on is downloaded (the app carries none).",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "piCommandStats": "Show this session's statistics",
   "@piCommandStats": {
     "description": "The composer's /stats command's description (Pi's)."

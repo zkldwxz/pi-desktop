@@ -4946,6 +4946,36 @@ abstract class AppLocalizations {
   /// **'Commands'**
   String get composerCommands;
 
+  /// The button of piSetupFailed: set Pi up again.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get piSetupRetry;
+
+  /// Over the composer: setting Pi up failed; {error} is why.
+  ///
+  /// In en, this message translates to:
+  /// **'Pi could not be set up: {error}'**
+  String piSetupFailed(String error);
+
+  /// Over the composer on the first run, while Pi is installed with npm.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting up Pi: installing it (the first time only)…'**
+  String get piSetupInstalling;
+
+  /// As piSetupNode, its size not known yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting up Pi: downloading Node.js…'**
+  String get piSetupNodeUnsized;
+
+  /// Over the composer on the first run, while the Node.js Pi runs on is downloaded (the app carries none).
+  ///
+  /// In en, this message translates to:
+  /// **'Setting up Pi: downloading Node.js… {percent}%'**
+  String piSetupNode(int percent);
+
   /// The composer's /stats command's description (Pi's).
   ///
   /// In en, this message translates to:

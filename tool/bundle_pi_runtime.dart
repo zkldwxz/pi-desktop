@@ -1,6 +1,14 @@
-// Packages the desktop Pi runtime into an empty target directory.
+// Packages the desktop Pi runtime's files into an empty target directory: the
+// extension, its config, the runtime manager, package.json with its lock
+// (they pin the Pi release) and the browser extension. About 150 KB: the app
+// installs Pi itself on first run (lib/kernel/pi/pi_runtime_install.dart),
+// with the machine's Node.js or one it downloads.
+//
 // dart run tool/bundle_pi_runtime.dart --target DIR --platform macos|windows|linux --arch arm64|x64
-// PI_DESKTOP_NODE_BINARY can supply a Node binary for the requested target.
+//
+// With --full it also carries Node.js and the installed Pi (200 MB, for an
+// offline install). PI_DESKTOP_NODE_BINARY can supply a Node binary for the
+// requested target.
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -19,7 +27,12 @@ Future<void> main(List<String> args) async {
   }
 }
 
-Future<void> bundle(List<String> args) async {
+Future<void> bundle(List<String> arguments) async {
+  final full = arguments.contains('--full');
+  final args = [
+    for (final argument in arguments)
+      if (argument != '--full') argument,
+  ];
   final options = <String, String>{};
   for (var i = 0; i < args.length; i += 2) {
     if (i + 1 >= args.length ||
@@ -94,46 +107,50 @@ Future<void> bundle(List<String> args) async {
       Directory(p.join(stage.path, 'browser-extension')),
       excludeBuild: true,
     );
-    final npmPlatform = {
-      'macos': 'darwin',
-      'windows': 'win32',
-      'linux': 'linux',
-    }[platform]!;
-    await run('npm', [
-      'ci',
-      '--omit=dev',
-      '--ignore-scripts',
-      '--os=$npmPlatform',
-      '--cpu=$arch',
-    ], stage.path);
-    if (!File(
-      p.join(
-        stage.path,
-        'node_modules',
-        '@earendil-works',
-        'pi-coding-agent',
-        'package.json',
-      ),
-    ).existsSync()) {
-      throw StateError('npm did not install the Pi coding agent');
-    }
-    final node = Platform.environment['PI_DESKTOP_NODE_BINARY'];
-    final nodeFile = node != null && node.isNotEmpty
-        ? File(p.absolute(node))
-        : await downloadNode(temp, platform!, arch!);
-    await validateNode(nodeFile, platform!, arch!);
-    final outputNode = File(
-      p.join(stage.path, platform == 'windows' ? 'node.exe' : 'node'),
-    );
-    await nodeFile.copy(outputNode.path);
-    if (platform != 'windows' && !Platform.isWindows) {
-      await run('chmod', ['755', outputNode.path], root);
+    if (full) {
+      final npmPlatform = {
+        'macos': 'darwin',
+        'windows': 'win32',
+        'linux': 'linux',
+      }[platform]!;
+      await run('npm', [
+        'ci',
+        '--omit=dev',
+        '--ignore-scripts',
+        '--os=$npmPlatform',
+        '--cpu=$arch',
+      ], stage.path);
+      if (!File(
+        p.join(
+          stage.path,
+          'node_modules',
+          '@earendil-works',
+          'pi-coding-agent',
+          'package.json',
+        ),
+      ).existsSync()) {
+        throw StateError('npm did not install the Pi coding agent');
+      }
+      final node = Platform.environment['PI_DESKTOP_NODE_BINARY'];
+      final nodeFile = node != null && node.isNotEmpty
+          ? File(p.absolute(node))
+          : await downloadNode(temp, platform!, arch!);
+      await validateNode(nodeFile, platform!, arch!);
+      final outputNode = File(
+        p.join(stage.path, platform == 'windows' ? 'node.exe' : 'node'),
+      );
+      await nodeFile.copy(outputNode.path);
+      if (platform != 'windows' && !Platform.isWindows) {
+        await run('chmod', ['755', outputNode.path], root);
+      }
     }
     await target.parent.create(recursive: true);
     if (target.existsSync()) await target.delete();
     // The staging directory may be on another filesystem.
     await copyDirectory(stage, target);
-    stdout.writeln('Pi runtime bundled at ${target.path}');
+    stdout.writeln(
+      '${full ? 'Pi runtime' : 'Pi runtime files'} bundled at ${target.path}',
+    );
   } finally {
     await temp.delete(recursive: true);
   }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import '../../settings/user_settings.dart';
+import 'pi_runtime_install.dart';
 import 'pi_runtime_updates_stub.dart'
     if (dart.library.io) 'pi_runtime_updates_io.dart'
     as platform;
@@ -58,6 +59,8 @@ class PiRuntimeUpdates extends ChangeNotifier {
     error = null;
     notifyListeners();
     try {
+      // Pi itself first, on the first run: one installer at a time.
+      await PiRuntimeInstall.instance.ensure();
       info = await platform.piRuntimeCommand(install ? 'update' : 'check');
     } on Object catch (failure) {
       error = '$failure';

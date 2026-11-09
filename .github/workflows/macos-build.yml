@@ -87,7 +87,6 @@ jobs:
           arch=${{ matrix.arch }}
           [ "$arch" != x64 ] || arch=x86_64
           lipo "$app/Contents/MacOS/pi-desktop" -verify_arch "$arch"
-          lipo "$app/Contents/Resources/pi-runtime/node" -verify_arch "$arch"
           for item in "$app"/Contents/Frameworks/*.framework "$app"/Contents/Frameworks/*.dylib; do
             [ -e "$item" ] || continue
             codesign --force --sign - "$item"
@@ -109,8 +108,6 @@ jobs:
           codesign --force --sign - --entitlements macos/FinderExtension/FinderExtension.entitlements "$app/Contents/PlugIns/FinderExtension.appex"
           codesign --force --sign - --entitlements macos/Runner/Release.entitlements "$app"
           codesign --verify --deep --strict "$app"
-          "$app/Contents/Resources/pi-runtime/node" --version
-          "$app/Contents/Resources/pi-runtime/node" "$app/Contents/Resources/pi-runtime/node_modules/@earendil-works/pi-coding-agent/dist/bundle/cli.js" --version
           mkdir -p dist
           ditto -c -k --sequesterRsrc --keepParent "$app" "dist/pi-desktop-$VERSION-macos-${{ matrix.arch }}.zip"
           dmg_stage=$(mktemp -d "$RUNNER_TEMP/pi-desktop-dmg.XXXXXX")

@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:path/path.dart' as p;
 
 import 'pi_cli.dart' show PiCommandResult;
+import 'pi_runtime_install.dart';
 import 'pi_runtime_paths_io.dart';
 import 'pi_runtime_updates_io.dart' show managedPiCli;
 import 'pi_storage.dart';
@@ -16,19 +16,18 @@ bool get canRunPiCommands => true;
 /// arguments (the script, when Pi is run by Node).
 Future<({String executable, List<String> prefix})> piCliCommand() async {
   final runtime = await findPiRuntime();
-  final cli =
+  Future<String?> installed() async =>
       PiRuntimeSettings.cliPath() ??
       Platform.environment['PI_DESKTOP_PI_CLI'] ??
       await managedPiCli() ??
-      p.join(
-        runtime.path,
-        'node_modules',
-        '@earendil-works',
-        'pi-coding-agent',
-        'dist',
-        'bundle',
-        'cli.js',
-      );
+      await bundledPiCli(runtime);
+  var cli = await installed();
+  if (cli == null) {
+    // The first run: Pi is installed now (and its progress shown).
+    await PiRuntimeInstall.instance.ensure();
+    cli = await installed();
+    if (cli == null) throw StateError('Pi is not installed.');
+  }
   if (cli.endsWith('.js') || cli.endsWith('.mjs')) {
     return (executable: await piNodeExecutable(runtime), prefix: [cli]);
   }

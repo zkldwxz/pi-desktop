@@ -108,7 +108,7 @@ Name: "contextmenu"; \
 [Files]
 ; The whole bundle: pi-desktop.exe, the engine and plugin DLLs, data\ (the
 ; AOT app.so and flutter_assets) which sit beside the executable, and
-; data\pi-runtime (Node, the Pi agent and browser extension), remote\
+; data\pi-runtime (the runtime's files and browser extension; Pi and Node.js are installed on first run), remote\
 ; (VERSION and the packaged servers, or a release download manifest), and
 ; openssh\ (OpenSSH for Windows, for remote projects
 ; where the system's ssh is too old to ask for a password).

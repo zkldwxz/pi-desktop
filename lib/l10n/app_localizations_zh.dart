@@ -2747,6 +2747,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get composerCommands => '命令';
 
   @override
+  String get piSetupRetry => '重试';
+
+  @override
+  String piSetupFailed(String error) {
+    return 'Pi 准备失败：$error';
+  }
+
+  @override
+  String get piSetupInstalling => '正在准备 Pi：安装中（仅第一次）…';
+
+  @override
+  String get piSetupNodeUnsized => '正在准备 Pi：下载 Node.js…';
+
+  @override
+  String piSetupNode(int percent) {
+    return '正在准备 Pi：下载 Node.js… $percent%';
+  }
+
+  @override
   String get piCommandStats => '显示本次会话的统计信息';
 
   @override
