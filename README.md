@@ -16,7 +16,7 @@ The app does not bundle Pi or Node.js (which keeps the download small): on first
 
 GitHub checks passed static analysis, Pi runtime/integration tests, 304 focused desktop tests and a real Dart language-server smoke test. The repository is [zkldwxz/pi-desktop](https://github.com/zkldwxz/pi-desktop).
 
-Local projects are supported. Direct SSH Pi sessions use a remote-installed Pi and Node with batch/key authentication. A real SSH stub turn has been verified; broader remote workflows remain to be validated. A remote IDE server or remote language server is not automatically installed or guaranteed. A real Dart language-server smoke check covered diagnostics, hover, completion and rename.
+Local projects are supported. Direct SSH Pi sessions use a remote-installed Pi and Node with batch/key authentication. A real SSH stub turn has been verified; broader remote workflows remain to be validated. The remote IDE server is not in the app: the first time an SSH project is opened on a Linux x64 or arm64 host, the app downloads it from the project's GitHub release (`server-<version>`, listed in a small `servers.json` the app carries) and checks its SHA-256. Windows and macOS hosts are not covered yet; remote language servers are not guaranteed. A real Dart language-server smoke check covered diagnostics, hover, completion and rename.
 
 ## Compare cache behavior
 

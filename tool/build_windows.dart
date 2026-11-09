@@ -249,7 +249,7 @@ Future<void> main(List<String> arguments) async {
   if (bundleRemote.existsSync()) bundleRemote.deleteSync(recursive: true);
   bundleRemote.createSync(recursive: true);
   File('${remote.path}\\VERSION').copySync('${bundleRemote.path}\\VERSION');
-  if (remoteRelease != null) {
+  if (remoteRelease != null || remoteBuilt) {
     File('${remote.path}\\servers.json')
         .copySync('${bundleRemote.path}\\servers.json');
   } else {

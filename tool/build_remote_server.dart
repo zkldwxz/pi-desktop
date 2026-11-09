@@ -51,8 +51,9 @@ const _platforms = [
   'windows-arm64',
 ];
 
-/// Where the gzipped builds are downloaded from: `<base>/<VERSION>/<file>`.
-const _downloadsBase = 'https://github.com/zkldwxz/pi-desktop';
+/// Where the gzipped builds are downloaded from: the release `server-<VERSION>`
+/// (.github/workflows/macos-build.yml and release.yml publish it).
+const _downloadsBase = 'https://github.com/zkldwxz/pi-desktop/releases/download';
 
 Future<void> main(List<String> arguments) async {
   final root = File.fromUri(Platform.script).parent.parent.absolute;
@@ -166,7 +167,7 @@ Future<void> main(List<String> arguments) async {
         .encode(File('${out.path}/pi-desktop-server-$platform').readAsBytesSync());
     File('${out.path}/$file').writeAsBytesSync(bytes);
     files[platform] = {
-      'url': '$_downloadsBase/$name/$file',
+      'url': '$_downloadsBase/server-$name/$file',
       'size': bytes.length,
       'sha256': '${sha256.convert(bytes)}',
     };
