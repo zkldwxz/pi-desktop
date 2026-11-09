@@ -112,7 +112,7 @@ void main() {
     // Only true is Auto set; absent, false or another type is none picked.
     final cases = <(String, Map<String, Object?>, bool)>[
       ('unset', {}, true),
-      ('fixed theme', {'workbench.colorTheme': 'Bao Light'}, false),
+      ('fixed theme', {'workbench.colorTheme': 'Pi Light'}, false),
       ('Auto', {'window.autoDetectColorScheme': true}, false),
       ('Auto off', {'window.autoDetectColorScheme': false}, true),
       ('invalid Auto value', {'window.autoDetectColorScheme': 'true'}, true),
@@ -120,7 +120,7 @@ void main() {
         'Auto with a fixed fallback',
         {
           'window.autoDetectColorScheme': true,
-          'workbench.colorTheme': 'Bao Dark',
+          'workbench.colorTheme': 'Pi Dark',
         },
         false,
       ),
@@ -394,7 +394,7 @@ void main() {
         final note = notifications.notifications.single;
         expect(
           note.message,
-          'BaoCode was updated to 1.2.0. New: Title new, Title newer.',
+          'pi-desktop was updated to 1.2.0. New: Title new, Title newer.',
         );
         expect(note.primary.map((action) => action.label), [
           'Title new',

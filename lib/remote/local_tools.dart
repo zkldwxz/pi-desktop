@@ -88,7 +88,7 @@ abstract final class LocalTools {
           'computer ($thisSystem), not on $name. They have turned off '
           'agents on $name acting on their computer: asked to run '
           'something or copy files there, tell them they can turn it on '
-          'in BaoCode\'s Settings → SSH Servers.';
+          'in pi-desktop\'s Settings → SSH Servers.';
     }
     return 'You work on $name (${_hostSystem(host)}) over SSH: your files, '
         'commands and tools are all there. The user sits at their own '

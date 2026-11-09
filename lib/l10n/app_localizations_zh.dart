@@ -2747,6 +2747,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get composerCommands => '命令';
 
   @override
+  String get piCommandStats => '显示本次会话的统计信息';
+
+  @override
+  String get piCommandCompact => '压缩对话以腾出上下文';
+
+  @override
   String get composerMentions => '文件和对话';
 
   @override
@@ -3111,7 +3117,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get mcpProbeNote =>
-      '启动后用 MCP 的 initialize 握手检测，与 `claude mcp list` 的检测方式相同。';
+      '启动后用 MCP 的 initialize 握手检测，与 `pi mcp list` 的检测方式相同。';
 
   @override
   String queuedMessages(int count) {
@@ -3511,21 +3517,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get generalSettingsCommitAttribution => '提交署名';
 
   @override
-  String get generalSettingsCommitAttributionDescription =>
-      'Agent 在它写的提交和 Pull Request 中添加的署名。更改对之后启动的 Agent 生效；目前仅支持 Claude Code。';
-
-  @override
   String get generalSettingsClaudeCore => '内核';
 
   @override
-  String get generalSettingsClaudeCoreDescription =>
-      'Claude Code CLI：Anthropic 官方程序，沿用本机的登录和配置，用 Claude 订阅请选它。内置：pi-desktop 自带，只用 设置 → 模型 里添加的模型。默认：本机装有 Claude Code 时用 CLI，没有时用内置内核；选 CLI 而本机没有时会自动下载。改动对新开的会话生效。';
-
-  @override
   String get generalSettingsClaudeCoreBuiltin => '内置';
-
-  @override
-  String get generalSettingsClaudeCoreCli => 'Claude Code CLI';
 
   @override
   String get generalSettingsQueuedMessages => '工作中发送的消息';
@@ -3544,20 +3539,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get generalSettingsPromptSuggestions => '建议下一条提示';
 
   @override
-  String get generalSettingsPromptSuggestionsDescription =>
-      '每轮结束后在输入框里给出灰色的下一条消息建议，按 Tab 采用。每条建议都会带着整段对话额外请求一次模型，关掉可以节省 token。从下一条消息起生效；目前仅支持 Claude Code。';
-
-  @override
   String generalSettingsCommitAttributionLabel(String name) {
     return '提交署名: $name';
   }
 
   @override
   String get generalSettingsAttributionAgent => '跟随 Agent';
-
-  @override
-  String get generalSettingsAttributionAgentDetail =>
-      'Agent 自带的署名（如 Claude Code 的），或你在 ~/.claude/settings.json 中设置的 attribution。';
 
   @override
   String get generalSettingsAttributionNone => '不署名';
@@ -5643,10 +5630,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get claudePathSetting => '路径';
 
   @override
-  String get claudePathSettingDescription =>
-      '留空则自动用本机最新版本的 Claude Code，没有时自动下载。填入路径则固定用那一份，比如你自己编译的版本。（claudeCode.path）';
-
-  @override
   String get claudePathSettingHint => '自动';
 
   @override
@@ -5661,14 +5644,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String claudePathInUseUnknown(String path) {
     return '当前使用：$path';
   }
-
-  @override
-  String claudePathInUseDownloaded(String version) {
-    return '当前使用：pi-desktop 下载的 Claude Code $version';
-  }
-
-  @override
-  String get claudePathMissing => '尚未找到：选用 Claude Code CLI 后，开始第一个对话时会自动下载。';
 
   @override
   String get generalSettingsIdeWindows => 'Fast Ide 窗口';
@@ -5916,28 +5891,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get customizeKindSkills => '技能';
 
   @override
-  String get customizeKindSubagents => '子智能体';
-
-  @override
   String get customizeKindRules => '规则';
 
   @override
   String get customizeKindCommands => '命令';
 
   @override
-  String get customizeKindHooks => '钩子';
-
-  @override
   String get customizeScopeUser => '用户';
 
   @override
   String get customizeScopeProject => '项目';
-
-  @override
-  String get customizeScopeLocal => '本地';
-
-  @override
-  String get customizeScopePlugin => '已安装';
 
   @override
   String get customizeUserOnly => '仅用户';
@@ -5952,7 +5915,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get customizeNoMatches => '无匹配项';
 
   @override
-  String get customizeUnsupported => '自定义 Claude Code 需要桌面版应用。';
+  String get customizeUnsupported => '自定义 Pi 需要桌面版应用。';
 
   @override
   String get customizeSave => '保存';
@@ -5970,7 +5933,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get customizeEdit => '编辑';
 
   @override
-  String get customizeReadOnly => '只读：此文件由 Claude Code 自行维护。';
+  String get customizeReadOnly => '只读：此条目由 Pi 的设置文件记录，请用「移除」删除。';
 
   @override
   String get customizeEnabled => '已启用';
@@ -6007,7 +5970,8 @@ class AppLocalizationsZh extends AppLocalizations {
       '须以文字或数字开头，不能含空格和 / \\ : * ? \" < > |（最多 64 个）';
 
   @override
-  String get customizeNameUnofficial => '官方规范只用小写字母、数字和 -，上传 claude.ai 可能被拒';
+  String get customizeNameUnofficial =>
+      'Agent Skills 规范只用小写字母、数字和 -；Pi 也能加载其他名称，但别的工具可能不认';
 
   @override
   String get customizeNameTaken => '已存在同名项';
@@ -6032,37 +5996,67 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsSearch => '搜索设置';
 
   @override
-  String get customizeScopeSynced => '从 claude.ai 同步';
-
-  @override
-  String get customizeSyncedReadOnly => '只读：此技能从 claude.ai 同步，本地修改会在下次同步时被覆盖。';
-
-  @override
   String customizeEditFile(String file) {
     return '编辑 $file';
   }
 
   @override
-  String get customizeEmptyPlugins => '还没有安装插件。在 Claude Code 里用 /plugin 安装。';
+  String get customizeEmptyPlugins => '还没有安装插件。可在下方的插件商店里找 Pi 包。';
 
   @override
   String get customizeEmptyMcpsUser =>
-      '暂无。用这条命令添加：claude mcp add --scope user <名称> -- <命令>';
+      '暂无。对所有项目生效的服务器写在 mcp.json 里，或用 pi mcp add <名称> -- <命令> 添加。';
 
   @override
-  String get customizeEmptyMcpsLocal => '暂无。在项目目录里运行 claude mcp add 添加。';
+  String get customizeEmptyMcpsProject => '暂无。项目需要的服务器写在项目的 .pi/mcp.json 里。';
 
   @override
-  String get customizeEmptyMcpsProject => '暂无。和项目共享的服务器写在项目的 .mcp.json 里。';
-
-  @override
-  String customizeEmptyHooks(String file) {
-    return '暂无。钩子写在 $file 的 \"hooks\" 里。';
+  String pluginActionFailed(String error) {
+    return 'pi 未能完成：$error';
   }
 
   @override
-  String get customizeConnectorReadOnly =>
-      '只读：这是 claude.ai 连接器，请在 claude.ai 设置的「连接器」里管理。';
+  String pluginRemoveMessage(String source) {
+    return 'Pi 将不再加载 $source，并从设置中删除它。';
+  }
+
+  @override
+  String pluginRemoveTitle(String name) {
+    return '移除 $name？';
+  }
+
+  @override
+  String get pluginRemove => '移除';
+
+  @override
+  String get pluginInstalled => '已安装';
+
+  @override
+  String get pluginInstall => '安装';
+
+  @override
+  String get pluginStoreLocalOnly => '插件安装在本机；远程主机上的插件不在这里管理。';
+
+  @override
+  String pluginStoreFailed(String error) {
+    return '无法连接插件商店：$error';
+  }
+
+  @override
+  String get pluginStoreEmpty => '没有找到包。';
+
+  @override
+  String get pluginStoreSearchPlaceholder => '搜索 Pi 包…';
+
+  @override
+  String get pluginStoreHint =>
+      '来自 npm 的 Pi 包，与 Pi 包库（package gallery）一致。包会在本机运行代码，安装前请先看看它的源码。';
+
+  @override
+  String get pluginStoreTitle => '插件商店';
+
+  @override
+  String get customizeEmptyRules => '暂无。Pi 读取 AGENTS.md，点「新建」创建一个。';
 
   @override
   String get settingsSectionModels => '模型';
@@ -6629,10 +6623,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get modelsRoles => '角色映射';
 
   @override
-  String get modelsRolesDescription =>
-      'Claude Code 在各类工作中使用的模型；未设置时使用当前所选模型。除主模型外，都可以选其他上游的模型，请求会经 pi-desktop 的本地代理发过去。';
-
-  @override
   String get modelsRoleUnset => '未设置';
 
   @override
@@ -6645,32 +6635,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get modelsRoleOpus => 'Opus 档位';
 
   @override
-  String get modelsRoleOpusDescription =>
-      'ANTHROPIC_DEFAULT_OPUS_MODEL：「opus」对应的模型，例如计划模式。';
-
-  @override
   String get modelsRoleSonnet => 'Sonnet 档位';
 
   @override
-  String get modelsRoleSonnetDescription =>
-      'ANTHROPIC_DEFAULT_SONNET_MODEL：「sonnet」对应的模型。';
-
-  @override
   String get modelsRoleHaiku => 'Haiku 档位';
-
-  @override
-  String get modelsRoleHaikuDescription =>
-      'ANTHROPIC_DEFAULT_HAIKU_MODEL：Claude Code 的后台任务，以及会话标题生成。';
 
   @override
   String get modelsRoleHaikuWarning => '未设置时，后台任务会使用所选模型，可能更慢、更贵。建议选一个小而快的模型。';
 
   @override
   String get modelsRoleSubagent => '子 Agent';
-
-  @override
-  String get modelsRoleSubagentDescription =>
-      'CLAUDE_CODE_SUBAGENT_MODEL：所有子 Agent 使用的模型，包括内置的 Explore、Plan 和定义为 inherit 的，优先于子 Agent 定义或调用时指定的模型。';
 
   @override
   String get modelsRoleMissing => '这个模型已不在它的上游里，用到它的请求会失败。';
@@ -6690,10 +6664,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get modelsNonessential => '禁用非必要流量';
-
-  @override
-  String get modelsNonessentialDescription =>
-      'CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC：不发送遥测、错误报告和更新检查（Anthropic 以外的上游不会响应这些请求）。';
 
   @override
   String get modelsPreserveThinking => '回传推理内容';
@@ -8651,7 +8621,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsSectionCustomize => '自定义';
 
   @override
-  String get settingsCustomizeKeywords => '技能 子智能体 规则 命令 记忆 钩子 插件 mcp';
+  String get settingsCustomizeKeywords =>
+      '技能 规则 agents.md 命令 提示词 记忆 mcp 插件 包 扩展 pi';
 
   @override
   String get stashTitle => 'Stash';
@@ -9751,7 +9722,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get browserSettingsUnpackedDescription =>
-      '打开扩展目录后，在 chrome://extensions 启用「开发者模式」，点「加载已解压的扩展程序」并选中该目录。BaoCode 的扩展可以保留。';
+      '打开扩展目录后，在 chrome://extensions 启用「开发者模式」，点「加载已解压的扩展程序」并选中该目录。pi-desktop 的扩展可以保留。';
 
   @override
   String get browserSettingsUnpackedDownload => '打开扩展目录';
@@ -10049,13 +10020,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get sshServerCoreAuto => '自动';
 
   @override
-  String get sshServerCoreAutoHint => '服务器上装了 Claude Code CLI 就用它，没装就用内置内核。';
-
-  @override
   String get sshServerCoreBuiltinHint => 'pi-desktop 自带的内核，使用“设置 → 模型”里的上游。';
-
-  @override
-  String get sshServerCoreCliHint => '服务器上的 Claude Code CLI，没装会自动装上。';
 
   @override
   String get sshServerJump => '跳板机（可选）';
@@ -12419,8 +12384,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ustatConversationEmpty => '这个对话还没有调用记录';
 
   @override
-  String get ustatConversationEmptyDetail =>
-      '只统计使用自定义上游的对话：官方 Claude 不经过 pi-desktop 的代理。';
+  String get ustatConversationEmptyDetail => '只统计经过 pi-desktop 自有上游的对话。';
 
   @override
   String get ustatRecordOff => '未开启调用统计';
@@ -12570,7 +12534,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get resetCreditsHintLater => '知道了';
 
   @override
-  String get ustatPartMemory => 'CLAUDE.md 与规则';
+  String get ustatPartMemory => 'AGENTS.md 与规则';
 
   @override
   String get ustatPartSkills => '技能';

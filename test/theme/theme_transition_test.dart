@@ -146,8 +146,8 @@ void main() {
       Colors.transparent,
     );
     await tester.pump(kThemeAnimationDuration);
-    expect(shown, isNot(contains('Bao Light')));
-    expect(themes.colorTheme.settingsId, 'Bao Dark');
+    expect(shown, isNot(contains('Pi Light')));
+    expect(themes.colorTheme.settingsId, 'Pi Dark');
     expect(themes.colorThemeSetting, 'Kimbie Dark');
     expect(themes.autoDetectColorScheme, isTrue);
     expect(tester.binding.hasScheduledFrame, isFalse);

@@ -174,7 +174,7 @@ void main() {
       ),
     );
     expect(
-      ClaudeSdkTools.called('mcp__baocode__local_run')!.asksItself,
+      ClaudeSdkTools.called('mcp__pi_desktop__local_run')!.asksItself,
       isTrue,
     );
 

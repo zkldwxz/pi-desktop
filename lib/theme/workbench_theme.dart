@@ -16,7 +16,7 @@
 // Deviations: settings and storage are two preference entries the app keeps
 // (`ColorThemeStorage`), read once at startup; no customizations, transient
 // colors, theme watching, telemetry, or file or product icon themes.
-// Auto (`window.autoDetectColorScheme`) is Bao Light or Bao Dark by the
+// Auto (`window.autoDetectColorScheme`) is Pi Light or Pi Dark by the
 // system's appearance; no preferred light or dark theme settings.
 // Widgets read colors through [WorkbenchThemeService.colors] and are all
 // rebuilt when the theme changes ([WorkbenchThemeScope]), as a theme change
@@ -56,18 +56,20 @@ export 'package:bao_editor/monaco/vs/platform/theme/common/theme.dart'
         isHighContrast;
 
 /// `ThemeSettingDefaults`: the default theme of each color scheme. Ours are
-/// Bao Dark and Bao Light, not upstream's Dark 2026 and Light 2026.
+/// Pi Dark and Pi Light, not upstream's Dark 2026 and Light 2026.
 abstract final class ThemeSettingDefaults {
-  static const colorThemeDark = 'Bao Dark';
-  static const colorThemeLight = 'Bao Light';
+  static const colorThemeDark = 'Pi Dark';
+  static const colorThemeLight = 'Pi Light';
   static const colorThemeHcDark = 'Default High Contrast';
   static const colorThemeHcLight = 'Default High Contrast Light';
 }
 
 /// `migrateThemeSettingsId`: the current id of a theme once named
 /// [settingsId]. Themes no longer bundled (our former defaults among them)
-/// give way to the Bao theme of their color scheme.
+/// give way to the Pi theme of their color scheme.
 String migrateThemeSettingsId(String settingsId) => switch (settingsId) {
+  'Bao Dark' => ThemeSettingDefaults.colorThemeDark,
+  'Bao Light' => ThemeSettingDefaults.colorThemeLight,
   'Default Dark Modern' => 'Dark Modern',
   'Default Light Modern' => 'Light Modern',
   'Default Dark+' => 'Dark+',

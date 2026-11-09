@@ -10,7 +10,7 @@ import 'jsonc.dart';
 import 'jsonc_file.dart';
 
 /// `User/settings.json`: the user's settings as VS Code keeps them, one
-/// object of dotted keys (`"workbench.colorTheme": "Bao Dark"`).
+/// object of dotted keys (`"workbench.colorTheme": "Pi Dark"`).
 class UserSettings extends JsoncFile {
   UserSettings(super.path, {super.debounce});
 

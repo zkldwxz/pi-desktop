@@ -22,7 +22,7 @@ void main() {
     await workspace.load();
     await expectLater(
       workspace.storeColorTheme(
-        setting: 'Bao Light',
+        setting: 'Pi Light',
         autoDetectColorScheme: true,
       ),
       throwsA(isA<FileSystemException>()),

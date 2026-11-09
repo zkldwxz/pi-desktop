@@ -182,19 +182,19 @@ void main() {
     test('themes', () {
       // VS Code's but Light (Visual Studio), Light+, Dark (Visual Studio),
       // Dark 2026, Light 2026, Monokai, Abyss and Quiet Light, which the
-      // assets leave out, and BaoCode's own Bao Dark and Bao Light.
+      // assets leave out, and pi-desktop's own Pi Dark and Pi Light.
       expect(manifest.themes, hasLength(13));
-      final baoDark = manifest.themeById('Bao Dark')!;
-      expect(baoDark.uiTheme, 'vs-dark');
+      final piDark = manifest.themeById('Pi Dark')!;
+      expect(piDark.uiTheme, 'vs-dark');
       expect(
-        baoDark.assetPath,
-        'themes/theme-bao/themes/bao-dark-color-theme.json',
+        piDark.assetPath,
+        'themes/theme-pi/themes/pi-dark-color-theme.json',
       );
-      final baoLight = manifest.themeById('Bao Light')!;
-      expect(baoLight.uiTheme, 'vs');
+      final piLight = manifest.themeById('Pi Light')!;
+      expect(piLight.uiTheme, 'vs');
       expect(
-        baoLight.assetPath,
-        'themes/theme-bao/themes/bao-light-color-theme.json',
+        piLight.assetPath,
+        'themes/theme-pi/themes/pi-light-color-theme.json',
       );
       expect(manifest.themeById('Visual Studio Light'), isNull);
       expect(manifest.themeById('Light+'), isNull);
@@ -219,7 +219,7 @@ void main() {
         'Dark High Contrast',
       );
       for (final theme in manifest.themes.where(
-        (t) => t.extension != 'theme-bao',
+        (t) => t.extension != 'theme-pi',
       )) {
         expect(
           File('test/fixtures/textmate/themes/${theme.id}.json').existsSync(),

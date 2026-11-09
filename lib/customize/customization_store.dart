@@ -7,33 +7,37 @@ import 'package:path/path.dart' as p;
 import 'customization_disk.dart';
 import 'customizations.dart';
 
-/// Claude Code's customizations on a [CustomizationDisk] (this machine's,
-/// or a remote host's): the user's under its config folder (`~/.claude`
-/// unless moved), a project's under `<project>/.claude` and the project's
-/// root (CLAUDE.md, `.mcp.json`).
+/// Pi's customizations on a [CustomizationDisk] (this machine's, or a
+/// remote host's): the user's under Pi's agent folder, a project's under
+/// `<project>/.pi` and the project's root (`AGENTS.md`).
+///
+/// What is listed is what Pi itself loads (see Pi's docs, Configuration):
+/// skills (`skills/<name>/SKILL.md`), prompt templates (`prompts/*.md`,
+/// typed as `/name`), the instruction files (`AGENTS.md`, `CLAUDE.md`,
+/// `SYSTEM.md`, `APPEND_SYSTEM.md`), MCP servers (`mcp.json`) and the Pi
+/// packages declared in `settings.json`.
 class CustomizationStore {
-  CustomizationStore({
-    this.configDir,
-    this.homeDir,
-    bool pi = false,
-    CustomizationDisk? disk,
-  }) : // Keep the public constructor option out of the store's interface.
-       // ignore: prefer_initializing_formals
-       _pi = pi,
-       _disk = disk ?? CustomizationDisk.local;
+  CustomizationStore({this.configDir, CustomizationDisk? disk})
+    : _disk = disk ?? CustomizationDisk.local;
 
-  /// Pi resources belong to this fork, separate from Claude Code's files.
-  final bool _pi;
-  String get _projectConfig => _pi ? '.pi' : '.claude';
-  String get _contextFile => _pi ? 'AGENTS.md' : 'CLAUDE.md';
-  String get _templates => _pi ? 'prompts' : 'commands';
+  /// Pi's project folder.
+  static const _projectConfig = '.pi';
 
-  /// Claude Code's config folder; by default as the disk's finds it.
+  /// The files Pi reads as instructions beside a project's or the user's
+  /// own, in the order it prefers them.
+  static const contextFiles = [
+    'AGENTS.override.md',
+    'AGENTS.md',
+    'AGENTS.MD',
+    'CLAUDE.md',
+    'CLAUDE.MD',
+  ];
+
+  /// The files that replace or add to its system prompt.
+  static const systemFiles = ['SYSTEM.md', 'APPEND_SYSTEM.md'];
+
+  /// Pi's agent folder; by default as the disk's finds it.
   final String? configDir;
-
-  /// The user's home, where `~/.claude.json` is when the config folder is
-  /// the default one; by default the disk's.
-  final String? homeDir;
 
   final CustomizationDisk? _disk;
 
@@ -54,18 +58,6 @@ class CustomizationStore {
 
   Future<String> config() async => configDir ?? await _files.configDir();
 
-  /// Where the CLI keeps its state and the user's MCP servers: beside the
-  /// default config folder, inside one moved elsewhere.
-  Future<String> _claudeJson() async {
-    final config = await this.config();
-    if (_pi) return _paths.join(config, 'mcp.json');
-    final home = homeDir ?? await _files.homeDir();
-    if (home != null && _paths.equals(config, _paths.join(home, '.claude'))) {
-      return _paths.join(home, '.claude.json');
-    }
-    return _paths.join(config, '.claude.json');
-  }
-
   /// Those of [kind], the user's and [project]'s (none of a project's when
   /// null), by scope then name.
   Future<List<Customization>> list(
@@ -73,59 +65,35 @@ class CustomizationStore {
     String? project,
   }) async {
     if (!supported) return const [];
-    if (_pi &&
-        const {
-          CustomizationKind.subagents,
-          CustomizationKind.hooks,
-          CustomizationKind.plugins,
-        }.contains(kind)) {
-      return const [];
-    }
     final config = await this.config();
-    final dotClaude = project == null
-        ? null
-        : _paths.join(project, _projectConfig);
+    final dotPi = project == null ? null : _paths.join(project, _projectConfig);
     final items = switch (kind) {
       CustomizationKind.skills => [
         ...await _skills(
           CustomizationScope.user,
           _paths.join(config, 'skills'),
         ),
-        if (dotClaude != null)
+        if (dotPi != null)
           ...await _skills(
             CustomizationScope.project,
-            _paths.join(dotClaude, 'skills'),
-          ),
-      ],
-      CustomizationKind.subagents => [
-        ...await _markdown(
-          kind,
-          CustomizationScope.user,
-          _paths.join(config, 'agents'),
-        ),
-        if (dotClaude != null)
-          ...await _markdown(
-            kind,
-            CustomizationScope.project,
-            _paths.join(dotClaude, 'agents'),
+            _paths.join(dotPi, 'skills'),
           ),
       ],
       CustomizationKind.commands => [
         ...await _markdown(
           kind,
           CustomizationScope.user,
-          _paths.join(config, _templates),
+          _paths.join(config, 'prompts'),
         ),
-        if (dotClaude != null)
+        if (dotPi != null)
           ...await _markdown(
             kind,
             CustomizationScope.project,
-            _paths.join(dotClaude, _templates),
+            _paths.join(dotPi, 'prompts'),
           ),
       ],
       CustomizationKind.rules => await _rules(config, project),
-      CustomizationKind.mcps => await _servers(project),
-      CustomizationKind.hooks => await _hooks(config, project),
+      CustomizationKind.mcps => await _servers(config, project),
       CustomizationKind.plugins => await _plugins(config, project),
     };
     // A copy: what a kind has none of may be a const list.
@@ -137,25 +105,16 @@ class CustomizationStore {
     });
   }
 
-  /// The file of the `/command` [name] as Claude Code lists it: a skill's
-  /// SKILL.md or a command's markdown, the user's, [project]'s or a
-  /// plugin's (`plugin:name`); null for none (one built in).
+  /// The file of the `/command` [name] as Pi lists it: a skill's SKILL.md
+  /// (typed `/skill:name`) or a prompt template's markdown, the user's or
+  /// [project]'s; null for none (one built in).
   Future<String?> commandFile(String name, {String? project}) async {
     if (!supported) return null;
-    final colon = name.indexOf(':');
-    if (colon > 0) {
-      return _pluginCommandFile(
-        name.substring(0, colon),
-        name.substring(colon + 1),
-      );
-    }
-    for (final skill in await list(
-      CustomizationKind.skills,
-      project: project,
-    )) {
-      if (skill.name == name ||
-          _paths.basename(_paths.dirname(skill.path)) == name) {
-        return skill.path;
+    final skill = name.startsWith('skill:') ? name.substring(6) : name;
+    for (final item in await list(CustomizationKind.skills, project: project)) {
+      if (item.name == skill ||
+          _paths.basename(_paths.dirname(item.path)) == skill) {
+        return item.path;
       }
     }
     for (final command in await list(
@@ -163,34 +122,6 @@ class CustomizationStore {
       project: project,
     )) {
       if (command.name == '/$name') return command.path;
-    }
-    return null;
-  }
-
-  /// Plugin [plugin]'s skill or command [name], where it is installed.
-  Future<String?> _pluginCommandFile(String plugin, String name) async {
-    final installed = await _json(
-      _paths.join(await config(), 'plugins', 'installed_plugins.json'),
-    );
-    if (installed?['plugins'] case final Map<String, Object?> plugins) {
-      for (final MapEntry(key: id, value: entry) in plugins.entries) {
-        final at = id.indexOf('@');
-        if ((at < 0 ? id : id.substring(0, at)) != plugin) continue;
-        final install = switch (entry) {
-          final List<Object?> installs =>
-            installs.whereType<Map<String, Object?>>().firstOrNull,
-          final Map<String, Object?> install => install,
-          _ => null,
-        };
-        if (install?['installPath'] case final String root) {
-          for (final path in [
-            _paths.join(root, 'skills', name, 'SKILL.md'),
-            _paths.join(root, 'commands', '$name.md'),
-          ]) {
-            if (await _files.read(path) != null) return path;
-          }
-        }
-      }
     }
     return null;
   }
@@ -205,24 +136,30 @@ class CustomizationStore {
 
   /// Makes a new one of [kind] named [name] from its template: the user's,
   /// or [project]'s. Returns its file; throws an [IdeFileExistsException]
-  /// when one by that name is there already.
+  /// when one by that name is there already. Of the rules there is the one
+  /// to make, `AGENTS.md`, whatever the name.
   Future<String> create(
     CustomizationKind kind,
     CustomizationScope scope,
     String name, {
     String? project,
   }) async {
-    if (!kind.creatable || !isCustomizationName(name)) {
+    if (!kind.creatable ||
+        (kind != CustomizationKind.rules && !isCustomizationName(name))) {
       throw ArgumentError.value(name, 'name');
     }
+    final config = await this.config();
     final base = scope == CustomizationScope.user
-        ? await config()
+        ? config
         : _paths.join(project!, _projectConfig);
     final path = switch (kind) {
       CustomizationKind.skills => _paths.join(base, 'skills', name, 'SKILL.md'),
-      CustomizationKind.subagents => _paths.join(base, 'agents', '$name.md'),
-      CustomizationKind.commands => _paths.join(base, _templates, '$name.md'),
-      _ => _paths.join(base, 'rules', '$name.md'),
+      CustomizationKind.commands => _paths.join(base, 'prompts', '$name.md'),
+      // Beside the project's folder: its root, as Pi reads it.
+      _ => _paths.join(
+        scope == CustomizationScope.user ? config : project!,
+        'AGENTS.md',
+      ),
     };
     final taken = kind == CustomizationKind.skills
         ? await _files.isDirectory(_paths.dirname(path)) != null
@@ -233,29 +170,26 @@ class CustomizationStore {
   }
 
   /// The file [kind] is kept in for [scope], to be edited whole (see
-  /// [CustomizationKind.configuredIn]): a project's `.mcp.json`, a settings
-  /// file for hooks. Null where there is none (or no [project]).
+  /// [CustomizationKind.configuredIn]): Pi's `mcp.json`. Null where there
+  /// is none (or no [project]).
   Future<String?> configFile(
     CustomizationKind kind,
     CustomizationScope scope, {
     String? project,
   }) async {
-    if (!supported || (!_pi && !kind.configuredIn(scope))) return null;
-    if (kind == CustomizationKind.mcps) {
-      if (_pi) {
-        return scope == CustomizationScope.user
-            ? _paths.join(await config(), 'mcp.json')
-            : project == null
-            ? null
-            : _paths.join(project, _projectConfig, 'mcp.json');
-      }
-      return project == null ? null : _paths.join(project, '.mcp.json');
-    }
-    for (final (own, path) in _settingsFiles(await config(), project)) {
-      if (own == scope) return path;
-    }
-    return null;
+    if (!supported || !kind.configuredIn(scope)) return null;
+    if (kind != CustomizationKind.mcps) return null;
+    return _mcpFile(await config(), scope, project);
   }
+
+  String? _mcpFile(String config, CustomizationScope scope, String? project) =>
+      switch (scope) {
+        CustomizationScope.user => _paths.join(config, 'mcp.json'),
+        CustomizationScope.project =>
+          project == null
+              ? null
+              : _paths.join(project, _projectConfig, 'mcp.json'),
+      };
 
   /// Removes [item]'s file, or its folder (a skill's).
   Future<void> delete(Customization item) async {
@@ -279,55 +213,34 @@ class CustomizationStore {
 
   static const _pretty = JsonEncoder.withIndent('  ');
 
-  /// Those synced from claude.ai: `synced/<bucket>/<skill>/` of the
-  /// user's skills, which the next sync writes over.
-  static const _synced = 'synced';
-
   /// Each folder of [root] with a SKILL.md.
   Future<List<Customization>> _skills(
     CustomizationScope scope,
     String root,
   ) async {
-    Future<List<String>> folders(String dir) async => [
-      for (final child in await _files.children(dir))
-        if (child.directory && !_paths.basename(child.path).startsWith('.'))
-          child.path,
-    ];
     final skills = <Customization>[];
-    for (final folder in await folders(root)) {
-      if (scope == CustomizationScope.user &&
-          _paths.basename(folder) == _synced) {
-        for (final bucket in await folders(folder)) {
-          for (final synced in await folders(bucket)) {
-            skills.addAll([?await _skill(CustomizationScope.synced, synced)]);
-          }
-        }
-      } else {
-        skills.addAll([?await _skill(scope, folder)]);
+    for (final child in await _files.children(root)) {
+      if (!child.directory || _paths.basename(child.path).startsWith('.')) {
+        continue;
       }
+      final path = _paths.join(child.path, 'SKILL.md');
+      final text = await _files.read(path);
+      if (text == null) continue;
+      skills.add(
+        Customization(
+          kind: CustomizationKind.skills,
+          scope: scope,
+          name: switch (parseFrontMatter(text)['name']) {
+            final name? when name.isNotEmpty => name,
+            _ => _paths.basename(child.path),
+          },
+          description: describeMarkdown(text),
+          path: path,
+          removePath: child.path,
+        ),
+      );
     }
     return skills;
-  }
-
-  /// The skill in [folder], if it has a SKILL.md; one synced is shown, not
-  /// edited or deleted here.
-  Future<Customization?> _skill(CustomizationScope scope, String folder) async {
-    final path = _paths.join(folder, 'SKILL.md');
-    final text = await _files.read(path);
-    if (text == null) return null;
-    final synced = scope == CustomizationScope.synced;
-    return Customization(
-      kind: CustomizationKind.skills,
-      scope: scope,
-      name: switch (parseFrontMatter(text)['name']) {
-        final name? when name.isNotEmpty => name,
-        _ => _paths.basename(folder),
-      },
-      description: describeMarkdown(text),
-      path: path,
-      editable: !synced,
-      removePath: synced ? null : folder,
-    );
   }
 
   /// How deep [_markdown] goes: links may loop.
@@ -350,7 +263,8 @@ class CustomizationStore {
               Customization(
                 kind: kind,
                 scope: scope,
-                name: _markdownName(kind, child.path, text),
+                // A command as it is typed.
+                name: '/${_paths.basenameWithoutExtension(child.path)}',
                 description: describeMarkdown(text),
                 path: child.path,
                 removePath: child.path,
@@ -365,182 +279,97 @@ class CustomizationStore {
     return found;
   }
 
-  /// A subagent's own name, else its file's; a command as it is typed.
-  String _markdownName(CustomizationKind kind, String path, String text) {
-    final file = _paths.basenameWithoutExtension(path);
-    if (kind == CustomizationKind.commands) return '/$file';
-    return switch (parseFrontMatter(text)['name']) {
-      final name? when name.isNotEmpty => name,
-      _ => file,
-    };
-  }
-
-  /// The memory files Claude Code reads: CLAUDE.md, the user's and the
-  /// project's, CLAUDE.local.md, and each file of a `rules/` folder.
+  /// The instruction files Pi reads: the agent folder's (`AGENTS.md` or
+  /// `CLAUDE.md`, `SYSTEM.md`, `APPEND_SYSTEM.md`), the project's root's and
+  /// its `.pi` folder's.
   Future<List<Customization>> _rules(String config, String? project) async {
-    Future<Customization?> memory(
+    Future<List<Customization>> files(
       CustomizationScope scope,
-      String path,
-      String base,
+      String dir,
+      List<String> names,
     ) async {
-      final text = await _files.read(path);
-      if (text == null) return null;
-      return Customization(
-        kind: CustomizationKind.rules,
-        scope: scope,
-        name: _paths.relative(path, from: base),
-        description: describeMarkdown(text),
-        path: path,
-      );
+      final found = <Customization>[];
+      for (final child in await _files.children(dir)) {
+        final name = _paths.basename(child.path);
+        if (child.directory || !names.contains(name)) continue;
+        final text = await _files.read(child.path);
+        if (text == null) continue;
+        found.add(
+          Customization(
+            kind: CustomizationKind.rules,
+            scope: scope,
+            name: name,
+            description: describeMarkdown(text),
+            path: child.path,
+          ),
+        );
+      }
+      return found;
     }
 
-    Future<List<Customization>> folder(
-      CustomizationScope scope,
-      String root,
-      String base,
-    ) async => [
-      for (final rule in await _markdown(CustomizationKind.rules, scope, root))
-        Customization(
-          kind: rule.kind,
-          scope: rule.scope,
-          name: _paths.relative(rule.path, from: base),
-          description: rule.description,
-          path: rule.path,
-          removePath: rule.removePath,
-        ),
-    ];
-
     return [
-      ?await memory(
-        CustomizationScope.user,
-        _paths.join(config, _contextFile),
-        config,
-      ),
-      ...await folder(
-        CustomizationScope.user,
-        _paths.join(config, 'rules'),
-        config,
-      ),
+      ...await files(CustomizationScope.user, config, [
+        ...contextFiles,
+        ...systemFiles,
+      ]),
       if (project != null) ...[
-        ?await memory(
+        ...await files(CustomizationScope.project, project, contextFiles),
+        ...await files(
           CustomizationScope.project,
-          _paths.join(project, _contextFile),
-          project,
-        ),
-        ?await memory(
-          CustomizationScope.project,
-          _paths.join(project, _projectConfig, _contextFile),
-          project,
-        ),
-        ...await folder(
-          CustomizationScope.project,
-          _paths.join(project, _projectConfig, 'rules'),
-          project,
-        ),
-        ?await memory(
-          CustomizationScope.local,
-          _paths.join(project, 'CLAUDE.local.md'),
-          project,
+          _paths.join(project, _projectConfig),
+          systemFiles,
         ),
       ],
     ];
   }
 
-  /// The MCP servers: the user's and the project's private ones, in
-  /// `~/.claude.json` (which the CLI rewrites: shown, not edited), the
-  /// project's shared ones in its `.mcp.json`, and the claude.ai
-  /// connectors the CLI has reached through the user's account (which it
-  /// keeps the names of alone).
-  Future<List<Customization>> _servers(String? project) async {
-    final claudeJson = await _claudeJson();
-    final state = await _json(claudeJson);
-    final projects = state?['projects'];
-    // What `/mcp` turned off in the project: the user's and its private
-    // ones by name, its `.mcp.json`'s apart.
-    final own = switch (projects) {
-      final Map<String, Object?> projects when project != null =>
-        projects[project],
-      _ => null,
-    };
-    Set<String> names(String key) => switch (own) {
-      final Map<String, Object?> own when own[key] is List<Object?> =>
-        (own[key] as List<Object?>).whereType<String>().toSet(),
-      _ => const {},
-    };
-    final disabled = names('disabledMcpServers');
-    final disabledShared = names('disabledMcpjsonServers');
-    List<Customization> servers(
+  /// The MCP servers: those of the user's `mcp.json` and the project's
+  /// `.pi/mcp.json`.
+  Future<List<Customization>> _servers(String config, String? project) async {
+    Future<List<Customization>> servers(
       CustomizationScope scope,
-      Object? entries,
-      String path, {
-      required bool editable,
-    }) => [
-      if (entries is Map<String, Object?>)
-        for (final MapEntry(key: name, value: server) in entries.entries)
-          Customization(
-            kind: CustomizationKind.mcps,
-            scope: scope,
-            name: name,
-            description: _describeServer(server),
-            path: path,
-            editable: editable,
-            detail: _pretty.convert({name: server}),
-            server: server is Map<String, Object?> ? server : null,
-            enabled:
-                (scope == CustomizationScope.project
-                        ? disabledShared
-                        : disabled)
-                    .contains(name)
-                ? false
-                : null,
-          ),
-    ];
+      String? path,
+    ) async {
+      if (path == null) return const [];
+      final entries = (await _json(path))?['mcpServers'];
+      return [
+        if (entries is Map<String, Object?>)
+          for (final MapEntry(key: name, value: server) in entries.entries)
+            Customization(
+              kind: CustomizationKind.mcps,
+              scope: scope,
+              name: name,
+              description: _describeServer(server),
+              path: path,
+              detail: _pretty.convert({name: server}),
+              server: server is Map<String, Object?> ? server : null,
+              enabled:
+                  server is Map<String, Object?> && server['enabled'] == false
+                  ? false
+                  : null,
+            ),
+      ];
+    }
 
-    final mcpJson = project == null
-        ? null
-        : _pi
-        ? _paths.join(project, _projectConfig, 'mcp.json')
-        : _paths.join(project, '.mcp.json');
     return [
-      ...servers(
+      ...await servers(
         CustomizationScope.user,
-        state?['mcpServers'],
-        claudeJson,
-        editable: _pi,
+        _mcpFile(config, CustomizationScope.user, project),
       ),
-      if (state?['claudeAiMcpEverConnected'] case final List<Object?> names)
-        for (final name in names.whereType<String>().toSet())
-          Customization(
-            kind: CustomizationKind.mcps,
-            scope: CustomizationScope.synced,
-            name: name,
-            description: 'claude.ai',
-            path: claudeJson,
-            editable: false,
-            detail: _pretty.convert({
-              name: {'source': 'claude.ai'},
-            }),
-          ),
-      if (project != null && projects is Map<String, Object?>)
-        ...servers(
-          CustomizationScope.local,
-          (projects[project] as Map<String, Object?>?)?['mcpServers'],
-          claudeJson,
-          editable: false,
-        ),
-      if (mcpJson != null)
-        ...servers(
-          CustomizationScope.project,
-          (await _json(mcpJson))?['mcpServers'],
-          mcpJson,
-          editable: true,
-        ),
+      ...await servers(
+        CustomizationScope.project,
+        _mcpFile(config, CustomizationScope.project, project),
+      ),
     ];
   }
 
   /// `command args…`, or the URL a remote server is at.
   static String _describeServer(Object? server) {
     if (server is! Map<String, Object?>) return '';
+    if (server['description'] case final String description
+        when description.isNotEmpty) {
+      return description;
+    }
     if (server['url'] case final String url) {
       return switch (server['type']) {
         final String type => '$type · $url',
@@ -554,110 +383,103 @@ class CustomizationStore {
     ].join(' ');
   }
 
-  /// The settings files: the user's, the project's and its local one.
-  List<(CustomizationScope, String)> _settingsFiles(
-    String config,
-    String? project,
-  ) => [
-    (CustomizationScope.user, _paths.join(config, 'settings.json')),
-    if (project != null) ...[
-      (
-        CustomizationScope.project,
-        _paths.join(project, _projectConfig, 'settings.json'),
-      ),
-      (
-        CustomizationScope.local,
-        _paths.join(project, _projectConfig, 'settings.local.json'),
-      ),
-    ],
-  ];
-
-  /// Each hook of the settings files, by event and matcher; its file is
-  /// edited whole.
-  Future<List<Customization>> _hooks(String config, String? project) async => [
-    for (final (scope, path) in _settingsFiles(config, project))
-      if ((await _json(path))?['hooks'] case final Map<String, Object?> events)
-        for (final MapEntry(key: event, value: groups) in events.entries)
-          if (groups is List<Object?>)
-            for (final group in groups.whereType<Map<String, Object?>>())
-              for (final hook
-                  in (group['hooks'] as List<Object?>? ?? const [])
-                      .whereType<Map<String, Object?>>())
-                Customization(
-                  kind: CustomizationKind.hooks,
-                  scope: scope,
-                  name: switch (group['matcher']) {
-                    final String matcher when matcher.isNotEmpty =>
-                      '$event · $matcher',
-                    _ => event,
-                  },
-                  description: switch (hook['command'] ?? hook['prompt']) {
-                    final String command => command,
-                    _ => '${hook['type'] ?? ''}',
-                  },
-                  path: path,
-                ),
-  ];
-
-  /// The plugins installed (`plugins/installed_plugins.json`), and whether
-  /// the settings enable each.
+  /// The Pi packages declared in `settings.json` (the user's) and
+  /// `.pi/settings.json` (the project's): each entry a source string, or an
+  /// object with a `source`.
   Future<List<Customization>> _plugins(String config, String? project) async {
-    final installed = await _json(
-      _paths.join(config, 'plugins', 'installed_plugins.json'),
-    );
-    final plugins = installed?['plugins'];
-    if (plugins is! Map<String, Object?>) return const [];
-    final enabled = <String, bool>{};
-    for (final (_, path) in _settingsFiles(config, project)) {
-      if ((await _json(path))?['enabledPlugins']
-          case final Map<String, Object?> map) {
-        for (final MapEntry(:key, :value) in map.entries) {
-          if (value is bool) enabled[key] = value;
-        }
+    Future<List<Customization>> declared(
+      CustomizationScope scope,
+      String path,
+    ) async {
+      final entries = (await _json(path))?['packages'];
+      if (entries is! List<Object?>) return const [];
+      final found = <Customization>[];
+      for (final entry in entries) {
+        final source = switch (entry) {
+          final String source => source,
+          final Map<String, Object?> entry when entry['source'] is String =>
+            entry['source'] as String,
+          _ => null,
+        };
+        if (source == null || source.isEmpty) continue;
+        found.add(await _plugin(config, scope, path, source, entry));
       }
+      return found;
     }
+
     return [
-      for (final MapEntry(key: id, value: entry) in plugins.entries)
-        if (switch (entry) {
-              // Version 2 lists each install; version 1 has the one.
-              final List<Object?> installs =>
-                installs.whereType<Map<String, Object?>>().firstOrNull,
-              final Map<String, Object?> install => install,
-              _ => null,
-            }
-            case final install?)
-          await _plugin(id, install, enabled[id] ?? false),
+      ...await declared(
+        CustomizationScope.user,
+        _paths.join(config, 'settings.json'),
+      ),
+      if (project != null)
+        ...await declared(
+          CustomizationScope.project,
+          _paths.join(project, _projectConfig, 'settings.json'),
+        ),
     ];
   }
 
   Future<Customization> _plugin(
-    String id,
-    Map<String, Object?> install,
-    bool enabled,
+    String config,
+    CustomizationScope scope,
+    String settings,
+    String source,
+    Object? entry,
   ) async {
-    final root = install['installPath'] as String?;
-    final manifestPath = root == null
-        ? null
-        : _paths.join(root, '.claude-plugin', 'plugin.json');
-    final manifest = manifestPath == null ? null : await _json(manifestPath);
-    final at = id.indexOf('@');
+    final name = packageName(source);
+    // What Pi installed under its npm folder tells what it is.
+    Map<String, Object?>? manifest;
+    if (source.startsWith('npm:')) {
+      manifest = await _json(
+        _paths.join(config, 'npm', 'node_modules', name, 'package.json'),
+      );
+    }
+    final version = manifest?['version'];
     return Customization(
       kind: CustomizationKind.plugins,
-      scope: CustomizationScope.plugin,
-      name: at < 0 ? id : id.substring(0, at),
+      scope: scope,
+      name: name,
       description: switch (manifest?['description']) {
-        final String description => description,
-        _ => [
-          if (at >= 0) id.substring(at + 1),
-          if (install['version'] case final String version) version,
-        ].join(' · '),
+        final String description when description.isNotEmpty => description,
+        _ => source,
       },
-      path: manifestPath ?? root ?? id,
+      path: settings,
       editable: false,
       detail: _pretty.convert({
-        id: {...install, 'enabled': enabled},
+        'source': source,
+        'version': ?version,
+        if (entry is Map<String, Object?>)
+          for (final MapEntry(:key, :value) in entry.entries)
+            if (key != 'source') key: value,
       }),
-      enabled: enabled,
+      source: source,
     );
+  }
+
+  /// A package's name as Pi's settings spell its [source]: `npm:@a/b@1.0`
+  /// is `@a/b`, `git:github.com/a/b@v1` is `a/b`, a path its folder's name.
+  static String packageName(String source) {
+    String unversioned(String text) {
+      final at = text.lastIndexOf('@');
+      return at > 0 ? text.substring(0, at) : text;
+    }
+
+    if (source.startsWith('npm:')) return unversioned(source.substring(4));
+    if (source.startsWith('git:') ||
+        source.startsWith('http://') ||
+        source.startsWith('https://') ||
+        source.startsWith('ssh://')) {
+      final repo = unversioned(
+        source.replaceFirst(RegExp(r'^[a-z]+:(//)?'), ''),
+      ).replaceFirst(RegExp(r'\.git$'), '');
+      final parts = repo.split('/').where((part) => part.isNotEmpty).toList();
+      return parts.length >= 2
+          ? parts.sublist(parts.length - 2).join('/')
+          : repo;
+    }
+    final trimmed = source.replaceAll(RegExp(r'[\\/]+$'), '');
+    final cut = trimmed.lastIndexOf(RegExp(r'[\\/]'));
+    return cut < 0 ? trimmed : trimmed.substring(cut + 1);
   }
 }

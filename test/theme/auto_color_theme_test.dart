@@ -38,27 +38,27 @@ void main() {
       var changes = 0;
       files.settings.addListener(() => changes++);
       await storage.storeColorTheme(
-        setting: 'Bao Light',
+        setting: 'Pi Light',
         autoDetectColorScheme: true,
       );
       expect(files.settings['workbench.colorTheme'], 'Kimbie Dark');
       expect(files.settings['window.autoDetectColorScheme'], isTrue);
       changes = 0;
-      await storage.storeColorTheme(setting: 'Bao Dark');
+      await storage.storeColorTheme(setting: 'Pi Dark');
       expect(changes, 1);
-      expect(files.settings['workbench.colorTheme'], 'Bao Dark');
+      expect(files.settings['workbench.colorTheme'], 'Pi Dark');
       expect(files.settings['window.autoDetectColorScheme'], isFalse);
       expect(await files.settings.readText(), contains('// 保留说明'));
       await files.settings.writeText('{');
       await expectLater(
         storage.storeColorTheme(
-          setting: 'Bao Light',
+          setting: 'Pi Light',
           autoDetectColorScheme: true,
         ),
         throwsA(isA<JsoncFileException>()),
       );
       expect(await files.settings.readText(), '{');
-      expect(workspace.colorThemeSetting, 'Bao Dark');
+      expect(workspace.colorThemeSetting, 'Pi Dark');
       expect(workspace.autoDetectColorScheme, isFalse);
     },
   );
@@ -85,7 +85,7 @@ void main() {
     await tester.runAsync(themes.initialize);
     await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
     await tester.pumpAndSettle();
-    expect(themes.colorTheme.settingsId, 'Bao Light');
+    expect(themes.colorTheme.settingsId, 'Pi Light');
     // The platform's event and the wait for it in real async, not to be
     // held up by the fake clock.
     await tester.runAsync(() async {
@@ -94,7 +94,7 @@ void main() {
       await themes.initialize();
     });
     await tester.pumpAndSettle();
-    expect(themes.colorTheme.settingsId, 'Bao Dark');
+    expect(themes.colorTheme.settingsId, 'Pi Dark');
     expect(themes.colorThemeSetting, 'Kimbie Dark');
     await tester.runAsync(() async {
       tester.binding.platformDispatcher.platformBrightnessTestValue =
@@ -102,14 +102,14 @@ void main() {
       await themes.initialize();
     });
     await tester.pumpAndSettle();
-    expect(themes.colorTheme.settingsId, 'Bao Light');
+    expect(themes.colorTheme.settingsId, 'Pi Light');
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.runAsync(() async {
       tester.binding.platformDispatcher.platformBrightnessTestValue =
           Brightness.dark;
       await themes.initialize();
     });
-    expect(themes.colorTheme.settingsId, 'Bao Light');
+    expect(themes.colorTheme.settingsId, 'Pi Light');
   }, timeout: const Timeout(Duration(seconds: 30)));
 
   test('the default and a fixed theme do not follow the system', () async {
@@ -118,7 +118,7 @@ void main() {
     await themes.initialize();
     await themes.setPlatformBrightness(Brightness.light);
     expect(themes.autoDetectColorScheme, isFalse);
-    expect(themes.colorThemeId, 'Bao Dark');
+    expect(themes.colorThemeId, 'Pi Dark');
     await themes.setColorTheme('Kimbie Dark');
     await themes.setPlatformBrightness(Brightness.dark);
     expect(themes.colorTheme.settingsId, 'Kimbie Dark');
@@ -137,15 +137,15 @@ void main() {
     await themes.initialize();
     await themes.setColorTheme(IdeColorThemeController.autoId);
     expect(themes.colorThemeId, IdeColorThemeController.autoId);
-    expect(themes.colorTheme.settingsId, 'Bao Light');
+    expect(themes.colorTheme.settingsId, 'Pi Light');
     expect(kept.preferences['colorTheme'], 'Kimbie Dark');
     expect(kept.preferences['autoDetectColorScheme'], isTrue);
 
     await themes.setPlatformBrightness(Brightness.dark);
-    expect(themes.colorTheme.settingsId, 'Bao Dark');
+    expect(themes.colorTheme.settingsId, 'Pi Dark');
     expect(kept.preferences['colorTheme'], 'Kimbie Dark');
     await themes.setPlatformBrightness(Brightness.light);
-    expect(themes.colorTheme.settingsId, 'Bao Light');
+    expect(themes.colorTheme.settingsId, 'Pi Light');
 
     await themes.setColorTheme('Solarized Light');
     expect(themes.autoDetectColorScheme, isFalse);
@@ -169,17 +169,17 @@ void main() {
     await themes.setColorTheme('Solarized Light', preview: true);
     await themes.setColorTheme('Solarized Light');
     await themes.setColorTheme(IdeColorThemeController.autoId);
-    expect(themes.colorTheme.settingsId, 'Bao Light');
+    expect(themes.colorTheme.settingsId, 'Pi Light');
     expect(through, isEmpty);
 
     await themes.setPlatformBrightness(Brightness.dark);
-    expect(themes.colorTheme.settingsId, 'Bao Dark');
-    expect(through, ['Bao Dark']);
+    expect(themes.colorTheme.settingsId, 'Pi Dark');
+    expect(through, ['Pi Dark']);
   });
 
   test('Auto restarted paints at the system\'s appearance now, not the '
       'cached one', () async {
-    final old = WorkbenchThemeService()..restore(setting: 'Bao Dark');
+    final old = WorkbenchThemeService()..restore(setting: 'Pi Dark');
     addTearDown(old.dispose);
     await old.initialize();
     final themes = WorkbenchThemeService()
@@ -193,7 +193,7 @@ void main() {
     expect(themes.colorThemeId, IdeColorThemeController.autoId);
     expect(themes.colors.dark, isFalse);
     await themes.initialize();
-    expect(themes.colorTheme.settingsId, 'Bao Light');
+    expect(themes.colorTheme.settingsId, 'Pi Light');
     expect(themes.colorThemeSetting, 'Kimbie Dark');
   });
 
@@ -211,7 +211,7 @@ void main() {
     expect(themes.colorTheme.settingsId, 'Red');
     await themes.restoreColorThemePreview();
     expect(themes.colorThemeId, IdeColorThemeController.autoId);
-    expect(themes.colorTheme.settingsId, 'Bao Dark');
+    expect(themes.colorTheme.settingsId, 'Pi Dark');
     expect(themes.colorThemeSetting, 'Kimbie Dark');
   });
 
@@ -246,8 +246,8 @@ void main() {
       expect(files.settings['window.autoDetectColorScheme'], isTrue);
       expect(await files.settings.readText(), contains('// 保留说明'));
 
-      await themes.setColorTheme('Bao Dark');
-      expect(files.settings['workbench.colorTheme'], 'Bao Dark');
+      await themes.setColorTheme('Pi Dark');
+      expect(files.settings['workbench.colorTheme'], 'Pi Dark');
       expect(files.settings['window.autoDetectColorScheme'], isFalse);
       await files.settings.writeText('{');
       await expectLater(
@@ -255,7 +255,7 @@ void main() {
         throwsA(isA<JsoncFileException>()),
       );
       expect(themes.autoDetectColorScheme, isFalse);
-      expect(themes.colorTheme.settingsId, 'Bao Dark');
+      expect(themes.colorTheme.settingsId, 'Pi Dark');
     },
   );
 
@@ -269,7 +269,7 @@ void main() {
     addTearDown(workspace.dispose);
     final restoring = workspace.load();
     final caching = workspace.storeColorTheme(
-      setting: 'Bao Light',
+      setting: 'Pi Light',
       data: 'new cache',
       cacheOnly: true,
     );
@@ -296,7 +296,7 @@ void main() {
       kept.fail = true;
       await expectLater(
         workspace.storeColorTheme(
-          setting: 'Bao Light',
+          setting: 'Pi Light',
           data: 'new cache',
           autoDetectColorScheme: true,
         ),
@@ -306,7 +306,7 @@ void main() {
       expect(workspace.autoDetectColorScheme, isFalse);
       await expectLater(
         workspace.storeColorTheme(
-          setting: 'Bao Light',
+          setting: 'Pi Light',
           data: 'new cache',
           cacheOnly: true,
         ),
@@ -336,12 +336,12 @@ void main() {
     final saving = themes.setColorTheme(IdeColorThemeController.autoId);
     await kept.started!.future;
     final failure = expectLater(saving, throwsA(isA<FileSystemException>()));
-    final preview = themes.setColorTheme('Bao Light', preview: true);
+    final preview = themes.setColorTheme('Pi Light', preview: true);
     kept.release!.complete();
     await Future.wait([failure, preview]);
     expect(themes.colorThemeSetting, 'Kimbie Dark');
     expect(themes.autoDetectColorScheme, isFalse);
-    expect(themes.colorTheme.settingsId, 'Bao Light');
+    expect(themes.colorTheme.settingsId, 'Pi Light');
   });
 
   test('a fallback not kept leaves the theme kept as it was', () async {
@@ -357,11 +357,11 @@ void main() {
     addTearDown(themes.dispose);
     await themes.initialize();
     expect(themes.colorThemeSetting, 'Missing Extension Theme');
-    expect(themes.colorTheme.settingsId, 'Bao Dark');
-    await themes.setColorTheme('Bao Light', preview: true);
+    expect(themes.colorTheme.settingsId, 'Pi Dark');
+    await themes.setColorTheme('Pi Light', preview: true);
     await themes.restoreColorThemePreview();
     expect(themes.colorThemeSetting, 'Missing Extension Theme');
-    expect(themes.colorTheme.settingsId, 'Bao Dark');
+    expect(themes.colorTheme.settingsId, 'Pi Dark');
   });
 
   test('the picker accepting a theme of an extension gone reports it, and '
@@ -391,7 +391,7 @@ void main() {
     final item = pick.items.whereType<IdeQuickPickItem>().firstWhere(
       (item) => item.label == 'Temporary Theme',
     );
-    await themes.setColorTheme('Bao Light', preview: true);
+    await themes.setColorTheme('Pi Light', preview: true);
     await themes.setExtensionThemes(const []);
     pick.onDidAccept!(item);
     pick.onDidHide!();
@@ -406,7 +406,7 @@ void main() {
     );
     addTearDown(() => folder.delete(recursive: true));
     await File('${folder.path}/theme.json').writeAsString('{"colors":{}}');
-    final themes = WorkbenchThemeService()..restore(setting: 'Bao Dark');
+    final themes = WorkbenchThemeService()..restore(setting: 'Pi Dark');
     addTearDown(themes.dispose);
     await themes.initialize();
     await themes.setExtensionThemes([
@@ -431,25 +431,25 @@ void main() {
     expect(themes.colorTheme.settingsId, 'Red');
     await themes.setExtensionThemes(const []);
     await themes.restoreColorThemePreview();
-    expect(themes.colorTheme.settingsId, 'Bao Light');
+    expect(themes.colorTheme.settingsId, 'Pi Light');
   });
 
   test('a slow preview cancelled is not applied after going back', () async {
     final bundle = _DelayedBundle();
     final themes = WorkbenchThemeService(bundle: bundle)
-      ..restore(setting: 'Bao Dark');
+      ..restore(setting: 'Pi Dark');
     addTearDown(themes.dispose);
     await themes.initialize();
     bundle.delay = true;
     final shown = <String>[];
     themes.addListener(() => shown.add(themes.colorTheme.settingsId));
-    final preview = themes.setColorTheme('Bao Light', preview: true);
+    final preview = themes.setColorTheme('Pi Light', preview: true);
     await bundle.started.future;
     final restoring = themes.restoreColorThemePreview();
     bundle.release.complete();
     await Future.wait([preview, restoring]);
-    expect(themes.colorThemeId, 'Bao Dark');
-    expect(shown, isNot(contains('Bao Light')));
+    expect(themes.colorThemeId, 'Pi Dark');
+    expect(shown, isNot(contains('Pi Light')));
   });
 }
 

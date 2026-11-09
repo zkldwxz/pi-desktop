@@ -1,3 +1,5 @@
+import 'dart:io' show SocketException;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,8 +18,8 @@ import 'package:pi_desktop/customize/mcp_probe.dart';
 import 'package:pi_desktop/settings/pages/customize_page.dart';
 import 'package:pi_desktop/ide/ide_code_editor.dart';
 import 'package:pi_desktop/ide/ide_input.dart';
-import 'package:pi_desktop/ide/ide_switch.dart';
-import 'package:pi_desktop/kernel/extension_switches.dart';
+import 'package:pi_desktop/customize/pi_package_catalog.dart';
+import 'package:pi_desktop/kernel/pi/pi_cli.dart';
 import 'package:pi_desktop/ide/markdown/markdown_preview.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 import 'package:pi_desktop/main.dart';
@@ -36,9 +38,6 @@ class _MemoryStore implements CustomizationStore {
   String? get configDir => '/c';
 
   @override
-  String? get homeDir => null;
-
-  @override
   bool get supported => true;
 
   @override
@@ -53,12 +52,16 @@ class _MemoryStore implements CustomizationStore {
   /// The MCP servers listed.
   List<Customization> servers = const [];
 
+  /// The plugins listed.
+  List<Customization> plugins = const [];
+
   @override
   Future<List<Customization>> list(
     CustomizationKind kind, {
     String? project,
   }) async => [
     if (kind == CustomizationKind.mcps) ...servers,
+    if (kind == CustomizationKind.plugins) ...plugins,
     if (kind == CustomizationKind.skills)
       for (final MapEntry(key: path, value: text) in files.entries)
         Customization(
@@ -84,9 +87,8 @@ class _MemoryStore implements CustomizationStore {
     CustomizationKind kind,
     CustomizationScope scope, {
     String? project,
-  }) async =>
-      kind == CustomizationKind.hooks && scope == CustomizationScope.user
-      ? '/c/settings.json'
+  }) async => kind == CustomizationKind.mcps && scope == CustomizationScope.user
+      ? '/c/mcp.json'
       : null;
 
   @override
@@ -104,7 +106,7 @@ class _MemoryStore implements CustomizationStore {
   }) async {
     final path = scope == CustomizationScope.user
         ? '/c/skills/$name/SKILL.md'
-        : '$project/.claude/skills/$name/SKILL.md';
+        : '$project/.pi/skills/$name/SKILL.md';
     files[path] = template(kind, name);
     return path;
   }
@@ -150,6 +152,21 @@ MarkdownEditor _markdown(WidgetTester tester) =>
     tester.widget<MarkdownEditor>(_inView(find.byType(MarkdownEditor)));
 
 void main() {
+  final search = CustomizeView.packageSearch;
+  final command = CustomizeView.piCommand;
+  final prober = CustomizeView.mcpProber;
+  setUp(() {
+    // Never the real registry, nor a real pi.
+    CustomizeView.packageSearch = (query) async => const [];
+    CustomizeView.piCommand = (arguments, {cwd}) async =>
+        const PiCommandResult(0, '', '');
+  });
+  tearDown(() {
+    CustomizeView.packageSearch = search;
+    CustomizeView.piCommand = command;
+    CustomizeView.mcpProber = prober;
+  });
+
   testWidgets('Customize lists the skills, in place of the chat', (
     tester,
   ) async {
@@ -161,8 +178,12 @@ void main() {
     expect(find.byType(ChatScreen), findsNothing);
     expect(_inView(find.text('pdf')), findsOneWidget);
     expect(_inView(find.text('Reads PDF files')), findsOneWidget);
-    for (final chip in ['Plugins', 'MCPs', 'Skills', 'Subagents', 'Rules']) {
+    for (final chip in ['Plugins', 'MCPs', 'Skills', 'Rules', 'Commands']) {
       expect(_inView(find.text(chip)), findsOneWidget);
+    }
+    // What Pi has none of is not offered.
+    for (final chip in ['Subagents', 'Hooks']) {
+      expect(_inView(find.text(chip)), findsNothing);
     }
 
     // Searching keeps the ones that match.
@@ -308,7 +329,8 @@ void main() {
     await tester.pump();
     expect(
       find.text(
-        'Officially lowercase, digits and - only; claude.ai may reject it',
+        'The Agent Skills naming is lowercase letters, digits and - only; '
+        'Pi loads others, but other tools may not',
       ),
       findsOneWidget,
     );
@@ -323,34 +345,32 @@ void main() {
     expect(_markdown(tester).controller.text, contains('name: release-notes'));
   }, variant: _mac);
 
-  testWidgets('MCPs and hooks say where they come from; a settings file '
-      'not there yet is made when saved', (tester) async {
+  testWidgets('MCPs and rules say where they come from; mcp.json not there '
+      'yet is made when saved', (tester) async {
     final store = _MemoryStore();
+    CustomizeView.packageSearch = (query) async => const [];
     await _pumpApp(tester, store);
     await tester.tap(_inSidebar(find.text('Skills')));
     await tester.pumpAndSettle();
 
     await tester.tap(_inView(find.text('MCPs')));
     await tester.pumpAndSettle();
-    expect(_inView(find.textContaining('claude mcp add')), findsWidgets);
+    expect(_inView(find.textContaining('pi mcp add')), findsWidgets);
+    expect(_inView(find.textContaining('claude mcp')), findsNothing);
 
-    await tester.tap(_inView(find.text('Plugins')));
+    await tester.tap(_inView(find.text('Rules')));
     await tester.pumpAndSettle();
-    expect(_inView(find.textContaining('/plugin')), findsOneWidget);
+    expect(_inView(find.textContaining('AGENTS.md')), findsWidgets);
 
-    await tester.tap(_inView(find.text('Hooks')));
+    await tester.tap(_inView(find.text('MCPs')));
     await tester.pumpAndSettle();
-    expect(_inView(find.textContaining('"hooks"')), findsWidgets);
-    await tester.tap(_inView(find.text('Edit settings.json')).first);
+    await tester.tap(_inView(find.text('Edit mcp.json')).first);
     await tester.pumpAndSettle();
-    expect(_editorText(tester), CustomizationKind.hooks.configTemplate);
-    expect(store.files, isNot(contains('/c/settings.json')));
+    expect(_editorText(tester), CustomizationKind.mcps.configTemplate);
+    expect(store.files, isNot(contains('/c/mcp.json')));
     await tester.tap(_inView(find.text('Save')));
     await tester.pumpAndSettle();
-    expect(
-      store.files['/c/settings.json'],
-      CustomizationKind.hooks.configTemplate,
-    );
+    expect(store.files['/c/mcp.json'], CustomizationKind.mcps.configTemplate);
   }, variant: _mac);
 
   testWidgets('MCP servers show whether they answer; one that failed says '
@@ -360,7 +380,7 @@ void main() {
       scope: CustomizationScope.user,
       name: name,
       description: 'npx $name',
-      path: '/home/.claude.json',
+      path: '/c/mcp.json',
       editable: false,
       detail: '{}',
       enabled: enabled,
@@ -439,72 +459,120 @@ void main() {
     expect(_inView(find.text('Failed')), findsOneWidget);
   }, variant: _mac);
 
-  testWidgets('switches: a skill, an MCP server and one of its tools, kept '
-      'as they are turned', (tester) async {
-    tester.view.physicalSize = const Size(1200, 1000);
+  testWidgets('the plugin store lists Pi packages to install, and what is '
+      'installed can be removed', (tester) async {
+    tester.view.physicalSize = const Size(1200, 1400);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
-    final store = _MemoryStore()
-      ..servers = [
-        const Customization(
-          kind: CustomizationKind.mcps,
-          scope: CustomizationScope.user,
-          name: 'git',
-          path: '/home/.claude.json',
-          editable: false,
-          server: {'command': 'git-mcp'},
+    final store = _MemoryStore();
+    final searched = <String>[];
+    CustomizeView.packageSearch = (query) async {
+      searched.add(query);
+      return const [
+        PiPackageListing(
+          name: 'pi-tools',
+          version: '1.2.0',
+          description: 'Handy tools for Pi',
+          author: 'someone',
         ),
+        PiPackageListing(name: 'pi-extra', version: '0.3.0'),
       ];
-    CustomizeView.mcpProber = (config, {cwd}) async => const McpProbeResult(
-      McpProbeStatus.connected,
-      tools: [
-        (name: 'status', description: 'Shows the status'),
-        (name: 'push', description: ''),
-      ],
-    );
-    var kept = ExtensionSwitches.none;
-    ExtensionSwitches.current = () => kept;
-    ExtensionSwitches.save = (switches) async => kept = switches;
-    addTearDown(() {
-      ExtensionSwitches.current = () => ExtensionSwitches.none;
-      ExtensionSwitches.save = null;
-    });
+    };
+    final ran = <List<String>>[];
+    CustomizeView.piCommand = (arguments, {cwd}) async {
+      ran.add(arguments);
+      if (arguments.first == 'install') {
+        store.plugins = [
+          Customization(
+            kind: CustomizationKind.plugins,
+            scope: CustomizationScope.user,
+            name: 'pi-tools',
+            description: 'Handy tools for Pi',
+            path: '/c/settings.json',
+            editable: false,
+            source: 'npm:pi-tools',
+          ),
+        ];
+      } else {
+        store.plugins = const [];
+      }
+      return const PiCommandResult(0, '', '');
+    };
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(body: CustomizeSettingsPage(customizations: store)),
       ),
     );
     await tester.pumpAndSettle();
-    Finder switchOf(String label) => find.byWidgetPredicate(
-      (widget) => widget is IdeSwitch && widget.semanticLabel == label,
+    await tester.tap(find.text('Plugins'));
+    await tester.pumpAndSettle();
+
+    // The gallery, most used first when nothing is asked.
+    expect(searched, ['']);
+    expect(find.text('Plugin store'), findsOneWidget);
+    expect(find.text('Handy tools for Pi'), findsOneWidget);
+    expect(find.text('v1.2.0'), findsOneWidget);
+    expect(find.text('Install'), findsNWidgets(2));
+    expect(find.textContaining('claude'), findsNothing);
+
+    await tester.enterText(find.byType(TextField).last, 'tools');
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(searched, ['', 'tools']);
+
+    // Installing runs `pi install`, and the plugin is listed after it.
+    await tester.tap(find.text('Install').first);
+    await tester.pumpAndSettle();
+    expect(ran, [
+      ['install', 'npm:pi-tools'],
+    ]);
+    expect(find.text('Installed'), findsOneWidget);
+    expect(find.text('Install'), findsOneWidget);
+
+    // Removing asks first, then runs `pi remove`.
+    await tester.tap(find.byIcon(Icons.more_horiz_rounded).first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Remove'));
+    await tester.pumpAndSettle();
+    expect(find.text('Remove pi-tools?'), findsOneWidget);
+    await tester.tap(find.text('Remove').last);
+    await tester.pumpAndSettle();
+    expect(ran.last, ['remove', 'npm:pi-tools']);
+    expect(find.text('Installed'), findsNothing);
+  });
+
+  testWidgets('a failed install says what pi said, and the store that '
+      'cannot be reached says so', (tester) async {
+    tester.view.physicalSize = const Size(1200, 1400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final store = _MemoryStore();
+    CustomizeView.packageSearch = (query) async => const [
+      PiPackageListing(name: 'pi-tools', version: '1.0.0'),
+    ];
+    CustomizeView.piCommand = (arguments, {cwd}) async =>
+        const PiCommandResult(1, '', 'npm ERR! network');
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(body: CustomizeSettingsPage(customizations: store)),
+      ),
     );
-    bool on(String label) => tester.widget<IdeSwitch>(switchOf(label)).value;
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Plugins'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Install'));
+    await tester.pumpAndSettle();
+    expect(find.text('pi did not finish: npm ERR! network'), findsOneWidget);
+    expect(find.text('Installed'), findsNothing);
 
-    // All on to start.
-    expect(on('pdf'), isTrue);
-    await tester.tap(switchOf('pdf'));
+    CustomizeView.packageSearch = (query) async =>
+        throw const SocketException('offline');
+    await tester.enterText(find.byType(TextField).last, 'x');
+    await tester.pump(const Duration(milliseconds: 500));
     await tester.pumpAndSettle();
-    expect(kept.disabledSkills, {'pdf'});
-    expect(on('pdf'), isFalse);
-
-    // A server's tools, as asking it found them, each with a switch.
-    await tester.tap(find.text('MCPs'));
-    await tester.pumpAndSettle();
-    expect(find.text('status'), findsNothing);
-    await tester.tap(find.text('2 tools'));
-    await tester.pumpAndSettle();
-    expect(find.text('Shows the status'), findsOneWidget);
-    await tester.tap(switchOf('push'));
-    await tester.pumpAndSettle();
-    expect(kept.disabledTools, {
-      'git': {'push'},
-    });
-    // The server off: its tools shown off, not to be turned.
-    await tester.tap(switchOf('git'));
-    await tester.pumpAndSettle();
-    expect(kept.disabledServers, {'git'});
-    expect(on('status'), isFalse);
-    expect(tester.widget<IdeSwitch>(switchOf('status')).enabled, isFalse);
+    expect(
+      find.textContaining('Could not reach the plugin store'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('Settings → Customize edits a skill in place, without a title '

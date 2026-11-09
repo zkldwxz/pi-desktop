@@ -162,8 +162,8 @@ abstract final class AppColors {
     return colors['textLink.foreground'];
   }
 
-  /// Claude's terracotta: its spark while it thinks. Not the theme's.
-  static const claude = Color(0xFFD97857);
+  /// Pi's teal: its spark while it thinks. Not the theme's.
+  static const pi = Color(0xFF8ABEB7);
 
   /// `textPreformat.foreground`.
   static Color get inlineCode => _colors['textPreformat.foreground'];

@@ -18,7 +18,7 @@ import 'usage_style.dart';
 /// Settings → Usage's prices: the models called in the time shown and
 /// those priced, a row each, their prices a million tokens typed in place
 /// (kept as a field is left), what they came to in that time; and that
-/// BaoCode can keep them (the baocode-usage skill).
+/// pi-desktop can keep them (the pi-desktop-usage skill).
 class UsagePricesCard extends StatelessWidget {
   const UsagePricesCard({super.key, required this.summary, this.prices});
 

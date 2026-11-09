@@ -243,7 +243,7 @@ class StashController extends ChangeNotifier {
     appEvent(
       'stash',
       'shortcut, ${shown ? 'shown' : 'hidden'}, '
-          'from ${capture.inApp ? 'BaoCode' : 'another app'}',
+          'from ${capture.inApp ? 'pi-desktop' : 'another app'}',
     );
     if (!shown) {
       unawaited(present(capture));

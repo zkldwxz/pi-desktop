@@ -378,7 +378,7 @@ class _Window extends StatelessWidget {
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: const Text(
-                        'BaoCode',
+                        'pi-desktop',
                         style: TextStyle(
                           color: Color(0xFF1B1A17),
                           fontSize: 8.5,

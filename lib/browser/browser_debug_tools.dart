@@ -1264,7 +1264,7 @@ Future<String> _saveHar(
     jsonEncode({
       'log': {
         'version': '1.2',
-        'creator': {'name': 'BaoCode', 'version': '1'},
+        'creator': {'name': 'pi-desktop', 'version': '1'},
         'pages': const [],
         'entries': entries,
       },

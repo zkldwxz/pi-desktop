@@ -1850,7 +1850,7 @@ void main() {
           inputSchema: const {'type': 'object'},
           asksItself: true,
           run: (input, call) async =>
-              '${await call.ask!(const ApprovalRequest(id: '', title: 'Run it here?', toolName: 'mcp__baocode__ask_me', alwaysAllowLabel: 'Always for this host'))}',
+              '${await call.ask!(const ApprovalRequest(id: '', title: 'Run it here?', toolName: 'mcp__pi_desktop__ask_me', alwaysAllowLabel: 'Always for this host'))}',
         ),
       );
       addTearDown(() => ClaudeSdkTools.unregister('ask_me'));
@@ -1863,7 +1863,7 @@ void main() {
         'request_id': 'p1',
         'request': {
           'subtype': 'can_use_tool',
-          'tool_name': 'mcp__baocode__ask_me',
+          'tool_name': 'mcp__pi_desktop__ask_me',
           'input': <String, Object?>{},
         },
       });
@@ -6285,7 +6285,7 @@ exec /usr/bin/env "\$@"
           'type': 'text',
           'text':
               '<system-reminder>The user is now writing to you from the '
-              'BaoCode app on their phone.</system-reminder>',
+              'pi-desktop app on their phone.</system-reminder>',
         },
         {'type': 'text', 'text': 'why is this red\n[Image #1]'},
       ]);

@@ -1,51 +1,43 @@
-// What Claude Code is customized with, as the Customize page lists it:
-// skills, subagents, slash commands, rules (CLAUDE.md and `rules/`), MCP
-// servers, hooks and plugins, each the user's own (under its config folder)
-// or a project's (under `<project>/.claude/`). See customization_store.dart
-// for where each is read from.
+// What Pi is customized with, as the Customize page lists it: plugins (Pi
+// packages), MCP servers, skills, rules (the AGENTS.md and system-prompt
+// files) and commands (prompt templates), each the user's own (under Pi's
+// agent folder) or a project's (under `<project>/.pi/`, and the project's
+// root). See customization_store.dart for where each is read from.
 
 /// The kinds the page has a chip for, in its order.
 enum CustomizationKind {
   plugins,
   mcps,
   skills,
-  subagents,
   rules,
-  commands,
-  hooks;
+  commands;
 
   /// Kept as markdown files of their own, made from a template ([template])
   /// and edited as text.
   bool get creatable => switch (this) {
-    skills || subagents || commands || rules => true,
-    plugins || mcps || hooks => false,
+    skills || commands || rules => true,
+    plugins || mcps => false,
   };
 
-  /// Kept in a JSON file of [scope]'s meant to be edited by hand, among
-  /// other settings: a project's `.mcp.json`, a settings file's hooks.
+  /// Kept in a JSON file of [scope]'s meant to be edited by hand: Pi's
+  /// `mcp.json`, the user's and a project's.
   bool configuredIn(CustomizationScope scope) => switch (this) {
-    mcps => scope == CustomizationScope.project,
-    hooks =>
-      scope == CustomizationScope.user ||
-          scope == CustomizationScope.project ||
-          scope == CustomizationScope.local,
+    mcps =>
+      scope == CustomizationScope.user || scope == CustomizationScope.project,
     _ => false,
   };
 
   /// What such a file starts as, where there is none yet.
   String get configTemplate => switch (this) {
     mcps => '{\n  "mcpServers": {}\n}\n',
-    hooks => '{\n  "hooks": {}\n}\n',
     _ => '',
   };
 }
 
-/// Whose a customization is: the user's (every project's), synced to the
-/// user from claude.ai, a project's (shared, in its repository), the
-/// user's for a project alone (local, not shared), or a plugin's.
-enum CustomizationScope { user, synced, project, local, plugin }
+/// Whose a customization is: the user's (every project's), or a project's.
+enum CustomizationScope { user, project }
 
-/// One skill, subagent, command, rule, server, hook or plugin.
+/// One plugin, server, skill, rule or command.
 class Customization {
   const Customization({
     required this.kind,
@@ -58,6 +50,7 @@ class Customization {
     this.detail,
     this.enabled,
     this.server,
+    this.source,
   });
 
   final CustomizationKind kind;
@@ -65,33 +58,36 @@ class Customization {
   final String name;
 
   /// One line of what it is for: a markdown file's `description`, a
-  /// server's command, a hook's.
+  /// server's command, a plugin's source.
   final String description;
 
   /// The file it is in: edited as text where [editable].
   final String path;
 
-  /// Its file is its own, or one meant to be edited by hand (a project's
-  /// `.mcp.json`, a settings file's hooks); not a file the CLI rewrites
-  /// (`~/.claude.json`) or a plugin's.
+  /// Its file is its own, or one meant to be edited by hand (`mcp.json`);
+  /// not a plugin's entry in the settings.
   final bool editable;
 
   /// What deleting it removes: a skill's folder, a markdown file; null
-  /// where it cannot be deleted here (a server or hook among others).
+  /// where it cannot be deleted here (a server among others, a plugin,
+  /// which is removed with `pi remove`).
   final String? removePath;
 
   /// Shown in place of its file where that is not [editable]: e.g. a
-  /// server's entry in `~/.claude.json`, as JSON. Where it is, what its
-  /// file starts as if not there yet (a settings file opened for hooks).
+  /// server's entry in `mcp.json`, as JSON.
   final String? detail;
 
-  /// A plugin's: whether settings enable it. An MCP server's: false where
-  /// the project has it turned off (`/mcp`'s Disable), else null.
+  /// An MCP server's: false where its entry says `"enabled": false`, else
+  /// null.
   final bool? enabled;
 
   /// An MCP server's entry (`command`, `args`, `env`, or `url`): what is
-  /// started to ask whether it answers. Null for a claude.ai connector's.
+  /// started to ask whether it answers.
   final Map<String, Object?>? server;
+
+  /// A plugin's source as Pi's settings name it (`npm:name@1.0.0`,
+  /// `git:…`, a path): what `pi remove` takes.
+  final String? source;
 }
 
 /// The front matter of a markdown file (`---` lines around `key: value`
@@ -168,12 +164,11 @@ String describeMarkdown(String text) {
   return '';
 }
 
-/// A name a new skill, subagent, command or rule can take: its file's or
-/// folder's name too, so nothing a file name cannot hold on any platform,
-/// and no whitespace (what follows a space in `/name args` is arguments).
-/// It starts with a letter or digit, which also keeps it a plain YAML
-/// scalar in the template's `name:`. Up to 64 characters, Chinese included:
-/// Claude Code finds and runs them all by such a name.
+/// A name a new skill or command can take: its file's or folder's name
+/// too, so nothing a file name cannot hold on any platform, and no
+/// whitespace (what follows a space in `/name args` is arguments). It starts
+/// with a letter or digit, which also keeps it a plain YAML scalar in the
+/// template's `name:`. Up to 64 characters.
 bool isCustomizationName(String name) =>
     name.runes.length <= 64 &&
     RegExp(
@@ -182,14 +177,12 @@ bool isCustomizationName(String name) =>
     ).hasMatch(name) &&
     !name.endsWith('.');
 
-/// Whether [name] keeps to the official naming of [kind]'s: lowercase
-/// letters, digits and hyphens for a skill or subagent (the Agent Skills
-/// spec; claude.ai may refuse a skill named otherwise). Claude Code itself
-/// does not hold to it, so a name that does not is let through, with a
-/// note.
+/// Whether [name] keeps to the Agent Skills naming of a skill: lowercase
+/// letters, digits and hyphens. Pi itself loads others, so a name that does
+/// not is let through, with a note.
 bool followsOfficialNaming(CustomizationKind kind, String name) =>
     switch (kind) {
-      CustomizationKind.skills || CustomizationKind.subagents => RegExp(
+      CustomizationKind.skills => RegExp(
         r'^[a-z0-9][a-z0-9-]*$',
       ).hasMatch(name),
       _ => true,
@@ -200,27 +193,19 @@ String template(CustomizationKind kind, String name) => switch (kind) {
   CustomizationKind.skills =>
     '---\n'
         'name: $name\n'
-        'description: What this skill does, and when Claude should use it.\n'
+        'description: What this skill does, and when Pi should use it.\n'
         '---\n'
         '\n'
         '# $name\n'
         '\n'
-        'Instructions Claude follows when it uses this skill.\n',
-  CustomizationKind.subagents =>
-    '---\n'
-        'name: $name\n'
-        'description: When Claude should hand a task to this subagent.\n'
-        '---\n'
-        '\n'
-        'You are a subagent that…\n',
+        'Instructions Pi follows when it uses this skill.\n',
   CustomizationKind.commands =>
     '---\n'
         'description: What /$name does.\n'
         '---\n'
         '\n'
         'The prompt /$name sends. \$ARGUMENTS stands for what follows it.\n',
-  CustomizationKind.rules => '# $name\n\n- A rule Claude keeps to.\n',
-  CustomizationKind.plugins ||
-  CustomizationKind.mcps ||
-  CustomizationKind.hooks => '',
+  CustomizationKind.rules =>
+    '# Project instructions\n\n- A rule Pi keeps to.\n',
+  CustomizationKind.plugins || CustomizationKind.mcps => '',
 };

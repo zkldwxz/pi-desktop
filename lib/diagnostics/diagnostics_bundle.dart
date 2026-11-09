@@ -15,7 +15,7 @@ class DiagnosticsLog {
   const DiagnosticsLog(this.name, this.size, {this.source});
 
   /// `errors.log`, `hangs/hang-20261011-013600-1234.dmp`,
-  /// `crashes/BaoCode-2026-10-28-120616.ips`.
+  /// `crashes/pi-desktop-2026-10-28-120616.ips`.
   final String name;
   final int size;
 

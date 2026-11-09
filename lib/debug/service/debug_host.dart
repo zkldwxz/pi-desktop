@@ -113,7 +113,7 @@ final class DebugPickItem<T> {
 
 /// The IDE, as the debug service sees it.
 class DebugServiceHost {
-  String get productName => 'BaoCode';
+  String get productName => 'pi-desktop';
 
   String get locale => 'en';
 

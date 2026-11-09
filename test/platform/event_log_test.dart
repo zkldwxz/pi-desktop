@@ -32,7 +32,7 @@ void main() {
     expect(
       lines.first,
       startsWith(
-        '--- BaoCode $appVersionString · ${Platform.operatingSystem} ',
+        '--- pi-desktop $appVersionString · ${Platform.operatingSystem} ',
       ),
     );
     expect(lines.first, endsWith('pid $pid ---'));
@@ -47,7 +47,7 @@ void main() {
     log().record('app', 'second run');
 
     final text = File(log().path).readAsStringSync();
-    expect(RegExp('--- BaoCode').allMatches(text), hasLength(2));
+    expect(RegExp('--- pi-desktop').allMatches(text), hasLength(2));
     expect(text.indexOf('first run'), lessThan(text.indexOf('second run')));
   });
 

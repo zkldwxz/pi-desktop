@@ -8,8 +8,6 @@ import 'package:path/path.dart' as p;
 import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
 
 import '../base/smooth_scroll.dart';
-import '../ide/ide_switch.dart';
-import '../kernel/extension_switches.dart';
 import '../chat/floating/floating_placement.dart';
 import '../chat/widgets/hover_builder.dart';
 import '../ide/ide_code_editor.dart';
@@ -32,45 +30,40 @@ import '../workspace/title_bar_double_click.dart';
 import '../workspace/workspace.dart';
 import 'customization_store.dart';
 import 'customizations.dart';
+import '../kernel/pi/pi_cli.dart';
 import 'mcp_probe.dart';
+import 'pi_package_catalog.dart';
 
 extension CustomizationKindLabels on CustomizationKind {
   String label(AppLocalizations l10n) => switch (this) {
     CustomizationKind.plugins => l10n.customizeKindPlugins,
     CustomizationKind.mcps => l10n.customizeKindMcps,
     CustomizationKind.skills => l10n.customizeKindSkills,
-    CustomizationKind.subagents => l10n.customizeKindSubagents,
     CustomizationKind.rules => l10n.customizeKindRules,
     CustomizationKind.commands => l10n.customizeKindCommands,
-    CustomizationKind.hooks => l10n.customizeKindHooks,
   };
 
   IconData get icon => switch (this) {
     CustomizationKind.plugins => Codicons.package,
     CustomizationKind.mcps => Codicons.server,
     CustomizationKind.skills => Codicons.zap,
-    CustomizationKind.subagents => Codicons.hubot,
     CustomizationKind.rules => Codicons.law,
     CustomizationKind.commands => Codicons.terminal,
-    CustomizationKind.hooks => Codicons.link,
   };
 }
 
 extension on CustomizationScope {
   String label(AppLocalizations l10n) => switch (this) {
     CustomizationScope.user => l10n.customizeScopeUser,
-    CustomizationScope.synced => l10n.customizeScopeSynced,
     CustomizationScope.project => l10n.customizeScopeProject,
-    CustomizationScope.local => l10n.customizeScopeLocal,
-    CustomizationScope.plugin => l10n.customizeScopePlugin,
   };
 }
 
-/// Claude Code's customizations, in place of the chat: a chip for each
-/// kind (skills, subagents, commands, rules, MCP servers, hooks, plugins),
-/// the user's and the project's of each; skills, subagents, commands and
-/// rules made new, edited and deleted here, the others' files edited or
-/// shown.
+/// Pi's customizations, in place of the chat: a chip for each kind
+/// (plugins, MCP servers, skills, rules, commands), the user's and the
+/// project's of each; skills, commands and rules made new, edited and
+/// deleted here, MCP servers' file edited whole, and plugins (Pi packages)
+/// installed from the plugin store and removed.
 class CustomizeView extends StatefulWidget {
   const CustomizeView({
     super.key,
@@ -132,6 +125,18 @@ class CustomizeView extends StatefulWidget {
   @visibleForTesting
   static McpProber? mcpProber = platformMcpProber;
 
+  /// Searches Pi's package gallery for the plugin store; replaceable under
+  /// test.
+  @visibleForTesting
+  static Future<List<PiPackageListing>> Function(String query) packageSearch =
+      searchPiPackages;
+
+  /// Runs `pi` with the arguments given (`install`, `remove`), in the
+  /// folder given; replaceable under test.
+  @visibleForTesting
+  static Future<PiCommandResult> Function(List<String> arguments, {String? cwd})
+  piCommand = (arguments, {cwd}) => runPiCommand(arguments, cwd: cwd);
+
   @override
   State<CustomizeView> createState() => CustomizeViewState();
 }
@@ -155,7 +160,7 @@ class CustomizeViewState extends State<CustomizeView> {
   void initState() {
     super.initState();
     _query.addListener(() => setState(() {}));
-    ExtensionSwitches.changes?.addListener(_switchesChanged);
+    _storeQuery.addListener(_storeQueryChanged);
     unawaited(_load());
   }
 
@@ -186,8 +191,9 @@ class CustomizeViewState extends State<CustomizeView> {
 
   @override
   void dispose() {
-    ExtensionSwitches.changes?.removeListener(_switchesChanged);
     _query.dispose();
+    _storeQuery.dispose();
+    _storeTimer?.cancel();
     _scroll.dispose();
     super.dispose();
   }
@@ -203,6 +209,7 @@ class CustomizeViewState extends State<CustomizeView> {
 
   Future<void> _load() async {
     final generation = ++_generation;
+    if (_kind == CustomizationKind.plugins) _openStore();
     try {
       final items = await widget.store.list(_kind, project: _projectPath);
       if (!mounted || generation != _generation) return;
@@ -289,88 +296,136 @@ class CustomizeViewState extends State<CustomizeView> {
     }
   }
 
-  // --- Switches -----------------------------------------------------------
+  // --- Plugins: the store and the installed ------------------------------
 
-  /// What was switched, shown until it is written (or, with nowhere to
-  /// write it, kept here).
-  ExtensionSwitches? _switched;
+  final TextEditingController _storeQuery = TextEditingController();
+  Timer? _storeTimer;
+  List<PiPackageListing>? _listings;
+  Object? _storeError;
+  bool _storeLoading = false;
+  int _storeGeneration = 0;
 
-  ExtensionSwitches get _switches => _switched ?? ExtensionSwitches.current();
+  /// The sources being installed or removed.
+  final Set<String> _busy = {};
 
-  /// Whether [_kind]'s rows have switches: skills and MCP servers, which
-  /// Claude Code is given as flag settings.
-  bool get _switchable =>
-      _kind == CustomizationKind.skills || _kind == CustomizationKind.mcps;
+  /// Why the last install or removal failed.
+  String? _packageError;
 
-  void _switchesChanged() {
-    if (mounted) setState(() {});
-  }
+  /// Whether packages can be installed from here: on this machine alone,
+  /// where the bundled Pi is run.
+  bool get _canManagePackages => widget.store.isLocal && canRunPiCommands;
 
-  Future<void> _switch(ExtensionSwitches switches) async {
-    setState(() => _switched = switches);
-    final save = ExtensionSwitches.save;
-    if (save == null) return;
-    try {
-      await save(switches);
-    } on Object catch (error) {
-      if (mounted) setState(() => _error = error);
-    }
-    if (mounted && identical(_switched, switches)) {
-      setState(() => _switched = null);
+  void _openStore() {
+    if (_listings == null && !_storeLoading && _canManagePackages) {
+      unawaited(_searchStore());
     }
   }
 
-  /// The MCP servers whose tools are shown, by [_groupKey].
-  final Set<String> _expanded = {};
-
-  String _groupKey(Customization item) =>
-      '${item.scope.name}\u0000${item.name}';
-
-  void _toggleExpanded(String key) => setState(
-    () => _expanded.contains(key) ? _expanded.remove(key) : _expanded.add(key),
-  );
-
-  /// [item]'s switch, an MCP server's or a skill's; null for none.
-  Widget? _switchOf(Customization item) {
-    if (!_switchable) return null;
-    final switches = _switches;
-    final l10n = context.l10n;
-    final on = item.kind == CustomizationKind.mcps
-        ? switches.serverEnabled(item.name)
-        : switches.skillEnabled(item.name);
-    return _RowSwitch(
-      value: on,
-      label: item.name,
-      tooltip: on ? l10n.mcpDisable : l10n.mcpEnable,
-      onChanged: (enabled) => unawaited(
-        _switch(
-          item.kind == CustomizationKind.mcps
-              ? switches.withServer(item.name, enabled)
-              : switches.withSkills([item.name], enabled),
-        ),
-      ),
+  void _storeQueryChanged() {
+    _storeTimer?.cancel();
+    _storeTimer = Timer(
+      const Duration(milliseconds: 400),
+      () => unawaited(_searchStore()),
     );
+  }
+
+  Future<void> _searchStore() async {
+    final generation = ++_storeGeneration;
+    setState(() {
+      _storeLoading = true;
+      _storeError = null;
+    });
+    try {
+      final found = await CustomizeView.packageSearch(_storeQuery.text.trim());
+      if (!mounted || generation != _storeGeneration) return;
+      setState(() {
+        _listings = found;
+        _storeLoading = false;
+      });
+    } on Object catch (error) {
+      if (!mounted || generation != _storeGeneration) return;
+      setState(() {
+        _listings = const [];
+        _storeError = error;
+        _storeLoading = false;
+      });
+    }
+  }
+
+  /// Whether a plugin of the name is installed, for the user or the
+  /// project shown.
+  bool _installed(PiPackageListing listing) => [
+    for (final item in _items ?? const <Customization>[])
+      if (item.kind == CustomizationKind.plugins) item.name,
+  ].contains(listing.name);
+
+  /// Runs `pi` with [arguments] for [source], then lists the plugins again.
+  Future<void> _packageCommand(
+    String source,
+    List<String> arguments, {
+    String? cwd,
+  }) async {
+    setState(() {
+      _busy.add(source);
+      _packageError = null;
+    });
+    try {
+      final result = await CustomizeView.piCommand(arguments, cwd: cwd);
+      if (!mounted) return;
+      if (!result.ok) setState(() => _packageError = result.failure);
+    } on Object catch (error) {
+      if (mounted) setState(() => _packageError = '$error');
+    }
+    if (!mounted) return;
+    setState(() => _busy.remove(source));
+    await _load();
+  }
+
+  Future<void> _install(PiPackageListing listing) =>
+      _packageCommand(listing.source, ['install', listing.source]);
+
+  Future<void> _removePlugin(Customization item) async {
+    final l10n = context.l10n;
+    final source = item.source;
+    if (source == null) return;
+    final choice = await showIdeDialog(
+      context,
+      message: l10n.pluginRemoveTitle(item.name),
+      detail: l10n.pluginRemoveMessage(source),
+      buttons: [l10n.pluginRemove],
+    );
+    if (choice != 0 || !mounted) return;
+    final project = item.scope == CustomizationScope.project;
+    await _packageCommand(source, [
+      'remove',
+      source,
+      if (project) '--local',
+    ], cwd: project ? _projectPath : null);
+    if (mounted && identical(_open, item)) setState(() => _open = null);
   }
 
   Future<void> _create(CustomizationScope scope) async {
     final l10n = context.l10n;
-    final name = await showDialog<String>(
-      context: context,
-      barrierColor: const Color(0x99000000),
-      builder: (context) => _NameDialog(
-        kind: _kind,
-        title: l10n.customizeNewTitle(_kind.label(l10n)),
-        taken: {
-          for (final item in _items ?? const <Customization>[])
-            if (item.scope == scope && item.removePath != null)
-              p.basenameWithoutExtension(
-                item.kind == CustomizationKind.skills
-                    ? item.removePath!
-                    : item.path,
-              ),
-        },
-      ),
-    );
+    // The rules are the one AGENTS.md: no name to ask.
+    final name = _kind == CustomizationKind.rules
+        ? 'AGENTS'
+        : await showDialog<String>(
+            context: context,
+            barrierColor: const Color(0x99000000),
+            builder: (context) => _NameDialog(
+              kind: _kind,
+              title: l10n.customizeNewTitle(_kind.label(l10n)),
+              taken: {
+                for (final item in _items ?? const <Customization>[])
+                  if (item.scope == scope && item.removePath != null)
+                    p.basenameWithoutExtension(
+                      item.kind == CustomizationKind.skills
+                          ? item.removePath!
+                          : item.path,
+                    ),
+              },
+            ),
+          );
     if (name == null || !mounted) return;
     try {
       final path = await widget.store.create(
@@ -522,21 +577,8 @@ class CustomizeViewState extends State<CustomizeView> {
     }
     final items = _shown;
     final scopes = [
-      if (_kind == CustomizationKind.plugins)
-        CustomizationScope.plugin
-      else ...[
-        CustomizationScope.user,
-        if (_kind == CustomizationKind.skills ||
-            _kind == CustomizationKind.mcps)
-          CustomizationScope.synced,
-        if (_project != null) ...[
-          CustomizationScope.project,
-          if (_kind == CustomizationKind.rules ||
-              _kind == CustomizationKind.mcps ||
-              _kind == CustomizationKind.hooks)
-            CustomizationScope.local,
-        ],
-      ],
+      CustomizationScope.user,
+      if (_project != null) CustomizationScope.project,
     ];
     return ListView(
       controller: _scroll,
@@ -561,8 +603,107 @@ class CustomizeViewState extends State<CustomizeView> {
               for (final item in items)
                 if (item.scope == scope) item,
             ]),
+        if (_packageError case final error?) ...[
+          const SizedBox(height: 12),
+          SelectableText(
+            l10n.pluginActionFailed(error),
+            style: TextStyle(
+              color: themeColors['errorForeground'],
+              fontSize: 12,
+            ),
+          ),
+        ],
+        if (_kind == CustomizationKind.plugins) ..._buildStore(l10n),
       ],
     );
+  }
+
+  /// The plugin store: Pi's package gallery, searched, each with Install.
+  List<Widget> _buildStore(AppLocalizations l10n) {
+    if (!_canManagePackages) {
+      return [
+        const SizedBox(height: 20),
+        Text(
+          l10n.pluginStoreLocalOnly,
+          style: TextStyle(color: AppColors.textFaint, fontSize: 12.5),
+        ),
+      ];
+    }
+    final listings = _listings;
+    return [
+      const SizedBox(height: 28),
+      Text(
+        l10n.pluginStoreTitle,
+        style: TextStyle(
+          color: AppColors.text,
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      const SizedBox(height: 4),
+      Text(
+        l10n.pluginStoreHint,
+        style: TextStyle(color: AppColors.textFaint, fontSize: 12),
+      ),
+      const SizedBox(height: 10),
+      _SearchBox(
+        controller: _storeQuery,
+        hint: l10n.pluginStoreSearchPlaceholder,
+      ),
+      const SizedBox(height: 8),
+      if (_storeError case final error?)
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            l10n.pluginStoreFailed('$error'),
+            style: TextStyle(
+              color: themeColors['errorForeground'],
+              fontSize: 12,
+            ),
+          ),
+        )
+      else if (listings == null || (_storeLoading && listings.isEmpty))
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 16),
+          child: Center(
+            child: SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(strokeWidth: 1.6),
+            ),
+          ),
+        )
+      else if (listings.isEmpty)
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            l10n.pluginStoreEmpty,
+            style: TextStyle(color: AppColors.textFaint, fontSize: 12.5),
+          ),
+        )
+      else
+        Container(
+          decoration: BoxDecoration(
+            color: themeColors['editorWidget.background'],
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppColors.partBorder),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            children: [
+              for (final (i, listing) in listings.indexed) ...[
+                if (i > 0) Divider(height: 1, color: AppColors.partBorder),
+                _StoreRow(
+                  listing: listing,
+                  installed: _installed(listing),
+                  busy: _busy.contains(listing.source),
+                  onInstall: () => unawaited(_install(listing)),
+                ),
+              ],
+            ],
+          ),
+        ),
+    ];
   }
 
   Widget _buildChips(AppLocalizations l10n) {
@@ -634,20 +775,14 @@ class CustomizeViewState extends State<CustomizeView> {
     CustomizationScope scope,
     List<Customization> items,
   ) {
+    // The rules are one file, AGENTS.md: made where there is none.
     final creatable =
         _kind.creatable &&
-        (scope == CustomizationScope.user ||
-            scope == CustomizationScope.project);
+        !(_kind == CustomizationKind.rules &&
+            items.any((item) => item.name.startsWith('AGENTS')));
     final configurable = _kind.configuredIn(scope);
-    // Where none are, what is said of adding some is shown: all but those
-    // synced from claude.ai.
-    final shownEmpty =
-        creatable ||
-        configurable ||
-        _kind == CustomizationKind.plugins ||
-        (_kind == CustomizationKind.mcps && scope != CustomizationScope.synced);
     final searching = _query.text.trim().isNotEmpty;
-    if (items.isEmpty && (searching || !shownEmpty)) return const [];
+    if (items.isEmpty && searching) return const [];
     return [
       const SizedBox(height: 20),
       // As tall as its button, with one or not: the groups line up from
@@ -764,77 +899,24 @@ class CustomizeViewState extends State<CustomizeView> {
     ];
   }
 
-  /// A group's rows: each item's, an MCP server's tools under its, when
-  /// shown.
+  /// A group's rows.
   List<Widget> _rows(List<Customization> items) => [
-    for (final item in items) ...[
-      _itemRow(item),
-      if (item.kind == CustomizationKind.mcps &&
-          _expanded.contains(_groupKey(item)))
-        ..._toolRows(item),
-    ],
+    for (final item in items) _itemRow(item),
   ];
 
   Widget _itemRow(Customization item) {
-    final tools = item.kind == CustomizationKind.mcps
-        ? _probes[_probeKey(item)]?.tools
-        : null;
-    final on = switch (item.kind) {
-      CustomizationKind.mcps => _switches.serverEnabled(item.name),
-      CustomizationKind.skills => _switches.skillEnabled(item.name),
-      _ => true,
-    };
     return _ItemRow(
       item: item,
       status: _statusOf(item),
+      busy: item.source != null && _busy.contains(item.source),
       onOpen: () => setState(() => _open = item),
       menu: () => _menu(item),
-      toggle: _switchOf(item),
-      dimmed: !on,
-      expanded: tools == null || tools.isEmpty
-          ? null
-          : _expanded.contains(_groupKey(item)),
-      onExpand: () => _toggleExpanded(_groupKey(item)),
-      detail: tools == null || tools.isEmpty
-          ? null
-          : context.l10n.chatToolCount(tools.length),
     );
-  }
-
-  /// [server]'s tools, as asking it found them, each with its switch;
-  /// shown off while the server is.
-  List<Widget> _toolRows(Customization server) {
-    final l10n = context.l10n;
-    final switches = _switches;
-    final serverOn = switches.serverEnabled(server.name);
-    return [
-      for (final tool in _probes[_probeKey(server)]?.tools ?? const [])
-        _ToolRow(
-          name: tool.name,
-          description: tool.description,
-          dimmed: !serverOn || !switches.toolEnabled(server.name, tool.name),
-          toggle: _RowSwitch(
-            value: serverOn && switches.toolEnabled(server.name, tool.name),
-            enabled: serverOn,
-            label: tool.name,
-            tooltip: switches.toolEnabled(server.name, tool.name)
-                ? l10n.mcpDisable
-                : l10n.mcpEnable,
-            onChanged: (enabled) => unawaited(
-              _switch(switches.withTool(server.name, tool.name, enabled)),
-            ),
-          ),
-        ),
-    ];
   }
 
   /// The name of the file [_kind] is kept in for [scope] (see
   /// [CustomizationKind.configuredIn]).
-  String _configName(CustomizationScope scope) => switch ((_kind, scope)) {
-    (CustomizationKind.mcps, _) => '.mcp.json',
-    (_, CustomizationScope.local) => 'settings.local.json',
-    _ => 'settings.json',
-  };
+  String _configName(CustomizationScope scope) => 'mcp.json';
 
   /// What a group with none says: where some come from.
   String _emptyText(AppLocalizations l10n, CustomizationScope scope) =>
@@ -842,12 +924,8 @@ class CustomizeViewState extends State<CustomizeView> {
         (CustomizationKind.plugins, _) => l10n.customizeEmptyPlugins,
         (CustomizationKind.mcps, CustomizationScope.user) =>
           l10n.customizeEmptyMcpsUser,
-        (CustomizationKind.mcps, CustomizationScope.local) =>
-          l10n.customizeEmptyMcpsLocal,
         (CustomizationKind.mcps, _) => l10n.customizeEmptyMcpsProject,
-        (CustomizationKind.hooks, _) => l10n.customizeEmptyHooks(
-          _configName(scope),
-        ),
+        (CustomizationKind.rules, _) => l10n.customizeEmptyRules,
         _ => l10n.customizeEmpty,
       };
 
@@ -915,6 +993,13 @@ class CustomizeViewState extends State<CustomizeView> {
         onSelected: () =>
             unawaited(Clipboard.setData(ClipboardData(text: item.path))),
       ),
+      if (item.source != null && _canManagePackages)
+        SidebarMenuItem(
+          l10n.pluginRemove,
+          icon: Icons.delete_outline_rounded,
+          destructive: true,
+          onSelected: () => unawaited(_removePlugin(item)),
+        ),
       if (item.removePath != null)
         SidebarMenuItem(
           l10n.commonDelete,
@@ -927,9 +1012,12 @@ class CustomizeViewState extends State<CustomizeView> {
 }
 
 class _SearchBox extends StatelessWidget {
-  const _SearchBox({required this.controller});
+  const _SearchBox({required this.controller, this.hint});
 
   final TextEditingController controller;
+
+  /// What the empty box says; the page's search by default.
+  final String? hint;
 
   @override
   Widget build(BuildContext context) {
@@ -943,7 +1031,7 @@ class _SearchBox extends StatelessWidget {
         cursorHeight: 15,
         decoration: InputDecoration(
           isDense: true,
-          hintText: context.l10n.customizeSearchPlaceholder,
+          hintText: hint ?? context.l10n.customizeSearchPlaceholder,
           hintStyle: TextStyle(
             color: colors['input.placeholderForeground'],
             fontSize: 13,
@@ -1020,17 +1108,121 @@ class _Chip extends StatelessWidget {
   );
 }
 
+/// One package of the plugin store: what it is, and Install.
+class _StoreRow extends StatelessWidget {
+  const _StoreRow({
+    required this.listing,
+    required this.installed,
+    required this.busy,
+    required this.onInstall,
+  });
+
+  final PiPackageListing listing;
+  final bool installed;
+  final bool busy;
+  final VoidCallback onInstall;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 9, 12, 9),
+      child: Row(
+        children: [
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              color: AppColors.hover,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Icon(
+              CustomizationKind.plugins.icon,
+              size: 14,
+              color: AppColors.textMuted,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        listing.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'v${listing.version}',
+                      style: TextStyle(
+                        color: AppColors.textFaint,
+                        fontSize: 11.5,
+                      ),
+                    ),
+                  ],
+                ),
+                if (listing.description.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    listing.description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: AppColors.textMuted, fontSize: 12),
+                  ),
+                ],
+                if (listing.author case final author?) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    author,
+                    style: TextStyle(
+                      color: AppColors.textFaint,
+                      fontSize: 11.5,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          if (busy)
+            const SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(strokeWidth: 1.6),
+            )
+          else if (installed)
+            Text(
+              l10n.pluginInstalled,
+              style: TextStyle(color: AppColors.added, fontSize: 12),
+            )
+          else
+            _Chip(
+              outlined: true,
+              onTap: onInstall,
+              child: Text(l10n.pluginInstall),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
 class _ItemRow extends StatelessWidget {
   const _ItemRow({
     required this.item,
     required this.onOpen,
     required this.menu,
     this.status,
-    this.toggle,
-    this.dimmed = false,
-    this.expanded,
-    this.onExpand,
-    this.detail,
+    this.busy = false,
   });
 
   final Customization item;
@@ -1040,22 +1232,9 @@ class _ItemRow extends StatelessWidget {
   /// An MCP server's: whether it answers.
   final McpProbeResult? status;
 
-  /// Its switch, before its actions; none when null.
-  final Widget? toggle;
-
-  /// Switched off: its name and description fainter.
-  final bool dimmed;
-
-  /// Whether what is under it (an MCP server's tools) is shown; null for
-  /// nothing under it.
-  final bool? expanded;
-  final VoidCallback? onExpand;
-
-  /// Beside its name, with [expanded]'s chevron: how many are under it.
-  final String? detail;
-
-  /// A tool's indent, under its server: its name under the server's.
-  static const childIndent = 40.0;
+  /// A plugin being installed or removed: a spinner in place of its
+  /// actions.
+  final bool busy;
 
   @override
   Widget build(BuildContext context) {
@@ -1102,21 +1281,11 @@ class _ItemRow extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                color: dimmed
-                                    ? AppColors.textMuted
-                                    : AppColors.textPrimary,
+                                color: AppColors.textPrimary,
                                 fontSize: 13,
                               ),
                             ),
                           ),
-                          if (expanded case final expanded?) ...[
-                            const SizedBox(width: 6),
-                            _Disclosure(
-                              expanded: expanded,
-                              label: detail,
-                              onTap: onExpand,
-                            ),
-                          ],
                           if (status case final status?) ...[
                             const SizedBox(width: 8),
                             _McpStatusBadge(status),
@@ -1143,9 +1312,7 @@ class _ItemRow extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: dimmed
-                                ? AppColors.textFaint
-                                : AppColors.textMuted,
+                            color: AppColors.textMuted,
                             fontSize: 12,
                           ),
                         ),
@@ -1167,16 +1334,19 @@ class _ItemRow extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                if (toggle case final toggle?) ...[
-                  toggle,
-                  const SizedBox(width: 10),
-                ],
-                SidebarIconButton(
-                  icon: Icons.more_horiz_rounded,
-                  tooltip: l10n.sidebarMoreActions,
-                  size: 22,
-                  onTap: menuState.open,
-                ),
+                if (busy)
+                  const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 1.6),
+                  )
+                else
+                  SidebarIconButton(
+                    icon: Icons.more_horiz_rounded,
+                    tooltip: l10n.sidebarMoreActions,
+                    size: 22,
+                    onTap: menuState.open,
+                  ),
               ],
             ),
           ),
@@ -1184,127 +1354,6 @@ class _ItemRow extends StatelessWidget {
       ),
     );
   }
-}
-
-/// A row's switch, with what turning it says on hover.
-class _RowSwitch extends StatelessWidget {
-  const _RowSwitch({
-    required this.value,
-    required this.label,
-    required this.tooltip,
-    required this.onChanged,
-    this.enabled = true,
-  });
-
-  final bool value;
-  final String label;
-  final String tooltip;
-  final ValueChanged<bool> onChanged;
-  final bool enabled;
-
-  @override
-  Widget build(BuildContext context) => IdeHover(
-    message: tooltip,
-    child: IdeSwitch(
-      value: value,
-      enabled: enabled,
-      semanticLabel: label,
-      onChanged: onChanged,
-    ),
-  );
-}
-
-/// A chevron, and how many it shows or hides: a row's own button.
-class _Disclosure extends StatelessWidget {
-  const _Disclosure({required this.expanded, this.label, this.onTap});
-
-  final bool expanded;
-  final String? label;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) => HoverBuilder(
-    cursor: SystemMouseCursors.click,
-    builder: (context, hovered) => GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-        decoration: BoxDecoration(
-          color: hovered ? AppColors.hover : Colors.transparent,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (label case final label?) ...[
-              Text(
-                label,
-                style: TextStyle(color: AppColors.textFaint, fontSize: 11.5),
-              ),
-              const SizedBox(width: 2),
-            ],
-            Icon(
-              expanded ? Codicons.chevronDown : Codicons.chevronRight,
-              size: 12,
-              color: hovered ? AppColors.text : AppColors.textFaint,
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-/// One of an MCP server's tools, under it, with its switch.
-class _ToolRow extends StatelessWidget {
-  const _ToolRow({
-    required this.name,
-    required this.description,
-    required this.toggle,
-    this.dimmed = false,
-  });
-
-  final String name;
-  final String description;
-  final Widget toggle;
-  final bool dimmed;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(12 + _ItemRow.childIndent, 7, 40, 7),
-    child: Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: dimmed ? AppColors.textMuted : AppColors.text,
-                  fontFamily: AppFonts.mono,
-                  fontFamilyFallback: AppFonts.monoFallbacks,
-                  fontSize: 12,
-                ),
-              ),
-              if (description.isNotEmpty)
-                Text(
-                  description,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: AppColors.textFaint, fontSize: 11.5),
-                ),
-            ],
-          ),
-        ),
-        const SizedBox(width: 8),
-        toggle,
-      ],
-    ),
-  );
 }
 
 /// One customization's file, edited as text (⌘S saves); or, where it is
@@ -1589,13 +1638,7 @@ class _CustomizationEditorState extends State<_CustomizationEditor> {
               bottom: 10,
             ),
             child: SelectableText(
-              _item.editable
-                  ? _item.path
-                  : _item.scope != CustomizationScope.synced
-                  ? l10n.customizeReadOnly
-                  : _item.kind == CustomizationKind.mcps
-                  ? l10n.customizeConnectorReadOnly
-                  : l10n.customizeSyncedReadOnly,
+              _item.editable ? _item.path : l10n.customizeReadOnly,
               maxLines: 1,
               style: TextStyle(color: AppColors.textFaint, fontSize: 11.5),
             ),

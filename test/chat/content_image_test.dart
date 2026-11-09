@@ -97,7 +97,7 @@ void main() {
     });
 
     test('where the CLI saved it is not said: it shows', () {
-      call('s1', 'mcp__baocode__browser_screenshot', {'tabId': 1});
+      call('s1', 'mcp__pi_desktop__browser_screenshot', {'tabId': 1});
       answer('s1', [
         picture,
         {
@@ -111,7 +111,7 @@ void main() {
     });
 
     test('keeps where the CLI saved it, a file of the session', () {
-      call('s1', 'mcp__baocode__browser_screenshot', {'tabId': 1});
+      call('s1', 'mcp__pi_desktop__browser_screenshot', {'tabId': 1});
       answer('s1', [
         picture,
         {'type': 'text', 'text': '[Image: source: /u/tool-results/a.png]'},

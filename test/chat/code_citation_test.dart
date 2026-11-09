@@ -652,7 +652,7 @@ void main() {}
       await pump();
       await tester.pump();
       expect(asked, 1);
-      await tester.runAsync(() => themes.setColorTheme('Bao Light'));
+      await tester.runAsync(() => themes.setColorTheme('Pi Light'));
       await pump();
       await tester.pump();
       expect(asked, 2);

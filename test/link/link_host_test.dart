@@ -33,10 +33,7 @@ void main() {
     host = LinkHost(
       workspace: workspace,
       platform: platform,
-      customizations: CustomizationStore(
-        configDir: config.path,
-        homeDir: config.path,
-      ),
+      customizations: CustomizationStore(configDir: config.path),
       filesOf: (project) => (
         files: _MemoryFiles({
           '~/code/baocode/README.md': '# BaoCode',
@@ -726,7 +723,7 @@ void main() {
     await File(
       p.join(skill.path, 'SKILL.md'),
     ).writeAsString('---\nname: review\ndescription: Reviews a change\n---\n');
-    await File(p.join(config.path, '.claude.json')).writeAsString(
+    await File(p.join(config.path, 'mcp.json')).writeAsString(
       jsonEncode({
         'mcpServers': {
           'github': {'command': 'gh-mcp'},

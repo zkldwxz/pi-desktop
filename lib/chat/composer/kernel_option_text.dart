@@ -52,3 +52,16 @@ KernelOption localizedKernelOption(
     iconBuilder: option.iconBuilder,
   );
 }
+
+/// [command]'s description in the app's language: the Pi commands the app
+/// itself names (`/compact`, `/stats`); those of skills, prompt templates
+/// and extensions say what their authors wrote.
+String localizedCommandDescription(
+  AppLocalizations l10n,
+  String name,
+  String description,
+) => switch ((name, description)) {
+  ('compact', 'Compact the Pi conversation') => l10n.piCommandCompact,
+  ('stats', 'Show Pi session statistics') => l10n.piCommandStats,
+  _ => description,
+};

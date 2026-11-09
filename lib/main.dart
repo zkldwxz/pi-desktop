@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert' show jsonEncode;
 import 'dart:ui' show AppExitResponse, AppExitType;
 
 import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
@@ -60,7 +59,6 @@ import 'kernel/claude_code/turn_stats_stub.dart'
     if (dart.library.io) 'kernel/claude_code/turn_stats_io.dart'
     show turnStatsIn;
 import 'kernel/commit_attribution.dart';
-import 'kernel/extension_switches.dart';
 import 'kernel/prompt_suggestions.dart';
 import 'chat/composer/composer_polish.dart' show ComposerPolishSetting;
 import 'kernel/queued_messages.dart';
@@ -243,11 +241,10 @@ Future<void> main(List<String> arguments) async {
       .firstOrNull
       ?.project
       .name;
-  // Claude Code's skills, agents, commands, rules, servers, hooks and
-  // plugins: the Customize view beside the chat, and Settings → Customize.
+  // Pi's plugins, MCP servers, skills, rules and commands: the Customize
+  // view beside the chat, and Settings → Customize.
   final customizations = CustomizationStore(
     configDir: PiStorage.agentDirectory,
-    pi: true,
   );
   // The phones paired with this computer (Settings → Mobile): listening
   // for them, if they are allowed to connect.
@@ -504,19 +501,6 @@ void followSettingsFiles(SettingsFiles files) {
           debugPrint('${ResumeAfterResetSetting.settingKey} not kept: $error');
         }),
   );
-  // Settings → Customize's switches: the skills, MCP servers and tools
-  // turned off, given each agent at start and as they change.
-  ExtensionSwitches.current = () =>
-      ExtensionSwitches.parse(files.settings.values);
-  ExtensionSwitches.changes = files.settings;
-  ExtensionSwitches.save = (switches) async {
-    final before = ExtensionSwitches.current().toSettings();
-    for (final MapEntry(:key, :value) in switches.toSettings().entries) {
-      if (jsonEncode(before[key]) != jsonEncode(value)) {
-        await files.settings.update(key, value);
-      }
-    }
-  };
   // Pi is the only app runtime. Paths override the bundled, pinned copy.
   PiRuntimeSettings.cliPath = () =>
       switch (files.settings[PiRuntimeSettings.pathKey]) {

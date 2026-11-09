@@ -22,68 +22,12 @@ void main() {
 
   setUp(() {
     temp = Directory.systemTemp.createTempSync('customize');
-    config = p.join(temp.path, 'home', '.claude');
+    config = p.join(temp.path, 'pi-agent');
     project = p.join(temp.path, 'app');
-    store = CustomizationStore(
-      configDir: config,
-      homeDir: p.join(temp.path, 'home'),
-    );
+    store = CustomizationStore(configDir: config);
   });
 
   tearDown(() => temp.deleteSync(recursive: true));
-
-  test(
-    'Pi resources use the isolated config, project .pi, prompts and mcp.json',
-    () async {
-      final ownConfig = p.join(temp.path, 'pi-agent');
-      final pi = CustomizationStore(configDir: ownConfig, pi: true);
-      write(
-        p.join(project, '.claude', 'skills', 'old', 'SKILL.md'),
-        '---\nname: old\n---\n',
-      );
-      write(
-        p.join(project, '.pi', 'skills', 'new', 'SKILL.md'),
-        '---\nname: new\n---\n',
-      );
-      write(p.join(ownConfig, 'prompts', 'review.md'), 'Review the code.\n');
-      write(
-        p.join(ownConfig, 'mcp.json'),
-        jsonEncode({
-          'mcpServers': {
-            'own': {'command': 'own-mcp'},
-          },
-        }),
-      );
-      expect(
-        (await pi.list(
-          CustomizationKind.skills,
-          project: project,
-        )).map((item) => item.name),
-        ['new'],
-      );
-      expect(
-        await pi.commandFile('review'),
-        p.join(ownConfig, 'prompts', 'review.md'),
-      );
-      expect(
-        (await pi.list(CustomizationKind.mcps, project: project)).single.name,
-        'own',
-      );
-      expect(
-        await pi.configFile(CustomizationKind.mcps, CustomizationScope.user),
-        p.join(ownConfig, 'mcp.json'),
-      );
-      expect(
-        await pi.create(
-          CustomizationKind.commands,
-          CustomizationScope.project,
-          'ship',
-          project: project,
-        ),
-        p.join(project, '.pi', 'prompts', 'ship.md'),
-      );
-    },
-  );
 
   test('reads front matter, block scalars and quotes included', () {
     const text =
@@ -105,223 +49,246 @@ void main() {
     expect(bodyOf(text), '\n# PDF\n');
   });
 
-  test('finds a /command\'s file: a skill\'s, a command\'s, a plugin\'s '
-      '(#220)', () async {
-    final skill = p.join(config, 'skills', 'pdf-tools', 'SKILL.md');
-    write(skill, '---\nname: pdf\ndescription: Reads PDFs\n---\n');
-    final command = p.join(project, '.claude', 'commands', 'ship.md');
-    write(command, 'Ship it.\n');
-    final root = p.join(config, 'plugins', 'cache', 'cf');
-    final pluginSkill = p.join(root, 'skills', 'wrangler', 'SKILL.md');
-    write(pluginSkill, '---\nname: wrangler\n---\n');
+  test('lists the skills of the agent folder and the project\'s .pi, '
+      'not Claude Code\'s', () async {
     write(
-      p.join(config, 'plugins', 'installed_plugins.json'),
-      jsonEncode({
-        'version': 2,
-        'plugins': {
-          'cloudflare@market': [
-            {'installPath': root},
-          ],
-        },
-      }),
-    );
-    expect(await store.commandFile('pdf', project: project), skill);
-    expect(await store.commandFile('pdf-tools', project: project), skill);
-    expect(await store.commandFile('ship', project: project), command);
-    expect(await store.commandFile('ship'), isNull);
-    expect(await store.commandFile('cloudflare:wrangler'), pluginSkill);
-    expect(await store.commandFile('cloudflare:nope'), isNull);
-    expect(await store.commandFile('compact', project: project), isNull);
-  });
-
-  test('lists the user\'s and the project\'s skills, agents, commands '
-      'and rules', () async {
-    write(
-      p.join(config, 'skills', 'pdf', 'SKILL.md'),
+      p.join(config, 'skills', 'pdf-tools', 'SKILL.md'),
       '---\nname: pdf\ndescription: Reads PDFs\n---\n',
     );
-    write(p.join(config, 'skills', 'empty', 'notes.txt'), 'no SKILL.md');
-    // Synced from claude.ai, under a bucket: shown, not edited.
+    write(p.join(config, 'skills', 'no-skill-file', 'notes.md'), 'x');
     write(
-      p.join(config, 'skills', 'synced', 'bucket-1', 'docx', 'SKILL.md'),
-      '---\nname: docx\ndescription: Word files\n---\n',
+      p.join(project, '.pi', 'skills', 'ship', 'SKILL.md'),
+      '---\nname: ship\n---\nShips.\n',
     );
     write(
-      p.join(config, 'skills', 'synced', '.bucket-1', 'stale', 'SKILL.md'),
-      '---\nname: stale\n---\n',
+      p.join(project, '.claude', 'skills', 'old', 'SKILL.md'),
+      '---\nname: old\n---\n',
     );
-    write(
-      p.join(project, '.claude', 'skills', 'deploy', 'SKILL.md'),
-      '# Deploy\n\nShips it.\n',
-    );
-    write(
-      p.join(config, 'agents', 'reviewer.md'),
-      '---\nname: code-reviewer\ndescription: Reviews diffs\n---\n',
-    );
-    write(
-      p.join(project, '.claude', 'commands', 'git', 'ship.md'),
-      '---\ndescription: Commit and push\n---\n',
-    );
-    write(p.join(config, 'CLAUDE.md'), '# Me\n\nBe brief.\n');
-    write(p.join(project, 'CLAUDE.md'), 'Use Dart.\n');
-    write(p.join(project, '.claude', 'rules', 'tests.md'), 'Test it.\n');
-
     final skills = await store.list(CustomizationKind.skills, project: project);
     expect(
       [for (final s in skills) (s.scope, s.name, s.description)],
       [
         (CustomizationScope.user, 'pdf', 'Reads PDFs'),
-        (CustomizationScope.synced, 'docx', 'Word files'),
-        (CustomizationScope.project, 'deploy', 'Ships it.'),
+        (CustomizationScope.project, 'ship', 'Ships.'),
       ],
     );
-    expect(skills.first.removePath, p.join(config, 'skills', 'pdf'));
-    expect(skills[1].editable, isFalse);
-    expect(skills[1].removePath, isNull);
+    expect(skills.first.removePath, p.join(config, 'skills', 'pdf-tools'));
+  });
 
-    final agents = await store.list(CustomizationKind.subagents);
-    expect(agents.single.name, 'code-reviewer');
-
+  test('lists the prompt templates as /commands', () async {
+    write(
+      p.join(config, 'prompts', 'review.md'),
+      '---\ndescription: Review the code\n---\nReview \$ARGUMENTS.\n',
+    );
+    write(p.join(project, '.pi', 'prompts', 'ship.md'), 'Ship it.\n');
     final commands = await store.list(
       CustomizationKind.commands,
       project: project,
     );
-    expect(commands.single.name, '/ship');
-    expect(commands.single.description, 'Commit and push');
-
-    final rules = await store.list(CustomizationKind.rules, project: project);
     expect(
-      [for (final r in rules) (r.scope, r.name, r.removePath != null)],
+      [for (final c in commands) (c.scope, c.name, c.description)],
       [
-        (CustomizationScope.user, 'CLAUDE.md', false),
-        (
-          CustomizationScope.project,
-          p.join('.claude', 'rules', 'tests.md'),
-          true,
-        ),
-        (CustomizationScope.project, 'CLAUDE.md', false),
+        (CustomizationScope.user, '/review', 'Review the code'),
+        (CustomizationScope.project, '/ship', 'Ship it.'),
       ],
     );
   });
 
-  test('lists servers, hooks and plugins from their JSON files', () async {
-    write(
-      p.join(temp.path, 'home', '.claude.json'),
-      jsonEncode({
-        'mcpServers': {
-          'github': {'type': 'http', 'url': 'https://example.com/mcp'},
-        },
-        'claudeAiMcpEverConnected': ['claude.ai Docs'],
-        'projects': {
-          project: {
-            'mcpServers': {
-              'db': {
-                'command': 'npx',
-                'args': ['db-mcp', '--ro'],
-              },
-            },
-          },
-        },
-      }),
-    );
-    write(
-      p.join(project, '.mcp.json'),
-      jsonEncode({
-        'mcpServers': {
-          'docs': {'command': 'docs-mcp'},
-        },
-      }),
-    );
-    write(
-      p.join(config, 'settings.json'),
-      jsonEncode({
-        'hooks': {
-          'PostToolUse': [
-            {
-              'matcher': 'Edit',
-              'hooks': [
-                {'type': 'command', 'command': 'dart format .'},
-              ],
-            },
-          ],
-        },
-        'enabledPlugins': {'review@market': true},
-      }),
-    );
-    final installRoot = p.join(config, 'plugins', 'cache', 'review');
-    write(
-      p.join(config, 'plugins', 'installed_plugins.json'),
-      jsonEncode({
-        'version': 2,
-        'plugins': {
-          'review@market': [
-            {'scope': 'user', 'installPath': installRoot, 'version': '1.2.0'},
-          ],
-          'other@market': [
-            {'scope': 'user', 'installPath': '/nowhere', 'version': '0.1.0'},
-          ],
-        },
-      }),
-    );
-    write(
-      p.join(installRoot, '.claude-plugin', 'plugin.json'),
-      jsonEncode({'name': 'review', 'description': 'Reviews code'}),
-    );
+  test('finds a /command\'s file: a skill\'s (as /skill:name) or a '
+      'prompt template\'s', () async {
+    final skill = p.join(config, 'skills', 'pdf-tools', 'SKILL.md');
+    write(skill, '---\nname: pdf\ndescription: Reads PDFs\n---\n');
+    final command = p.join(project, '.pi', 'prompts', 'ship.md');
+    write(command, 'Ship it.\n');
+    expect(await store.commandFile('skill:pdf'), skill);
+    expect(await store.commandFile('pdf-tools'), skill);
+    expect(await store.commandFile('ship', project: project), command);
+    expect(await store.commandFile('ship'), isNull);
+    expect(await store.commandFile('compact'), isNull);
+    expect(await store.commandFile('plugin:thing'), isNull);
+  });
 
+  test('lists the instruction files Pi reads, not Claude Code\'s '
+      'CLAUDE.local.md or rules folders', () async {
+    write(p.join(config, 'AGENTS.md'), '# Mine\n\nAlways run tests.\n');
+    write(p.join(config, 'APPEND_SYSTEM.md'), 'Be brief.\n');
+    write(p.join(config, 'rules', 'style.md'), 'Style.\n');
+    write(p.join(project, 'AGENTS.md'), 'Project rules.\n');
+    write(p.join(project, 'CLAUDE.local.md'), 'Private.\n');
+    write(p.join(project, '.pi', 'SYSTEM.md'), 'You are a reviewer.\n');
+    final rules = await store.list(CustomizationKind.rules, project: project);
+    expect(
+      [for (final r in rules) (r.scope, r.name)],
+      [
+        (CustomizationScope.user, 'AGENTS.md'),
+        (CustomizationScope.user, 'APPEND_SYSTEM.md'),
+        (CustomizationScope.project, 'AGENTS.md'),
+        (CustomizationScope.project, 'SYSTEM.md'),
+      ],
+    );
+    expect(rules.first.description, 'Always run tests.');
+  });
+
+  test('lists MCP servers from mcp.json, the user\'s and the project\'s, '
+      'and whether one is turned off', () async {
+    write(
+      p.join(config, 'mcp.json'),
+      jsonEncode({
+        'mcpServers': {
+          'github': {'url': 'https://example.com/mcp', 'type': 'http'},
+          'old': {'command': 'old-mcp', 'enabled': false},
+        },
+      }),
+    );
+    write(
+      p.join(project, '.pi', 'mcp.json'),
+      jsonEncode({
+        'mcpServers': {
+          'db': {
+            'command': 'npx',
+            'args': ['db-mcp', '--ro'],
+          },
+          'docs': {'url': 'https://docs', 'description': 'The docs'},
+        },
+      }),
+    );
+    write(
+      p.join(config, '.claude.json'),
+      jsonEncode({
+        'mcpServers': {
+          'claude-only': {'command': 'x'},
+        },
+      }),
+    );
     final servers = await store.list(CustomizationKind.mcps, project: project);
     expect(
-      [for (final s in servers) (s.scope, s.name, s.description, s.editable)],
+      [for (final s in servers) (s.scope, s.name, s.description, s.enabled)],
       [
         (
           CustomizationScope.user,
           'github',
           'http · https://example.com/mcp',
-          false,
+          null,
         ),
-        (CustomizationScope.synced, 'claude.ai Docs', 'claude.ai', false),
-        (CustomizationScope.project, 'docs', 'docs-mcp', true),
-        (CustomizationScope.local, 'db', 'npx db-mcp --ro', false),
+        (CustomizationScope.user, 'old', 'old-mcp', false),
+        (CustomizationScope.project, 'db', 'npx db-mcp --ro', null),
+        (CustomizationScope.project, 'docs', 'The docs', null),
       ],
     );
     expect(servers.first.detail, contains('"url"'));
-
-    final hooks = await store.list(CustomizationKind.hooks);
-    expect(hooks.single.name, 'PostToolUse · Edit');
-    expect(hooks.single.description, 'dart format .');
-    expect(hooks.single.path, p.join(config, 'settings.json'));
-
-    final plugins = await store.list(CustomizationKind.plugins);
-    expect(
-      [for (final x in plugins) (x.name, x.description, x.enabled)],
-      [('other', 'market · 0.1.0', false), ('review', 'Reviews code', true)],
-    );
+    expect(servers.first.editable, isTrue);
+    expect(servers.first.path, p.join(config, 'mcp.json'));
   });
 
-  test('finds the file servers and hooks are kept in, by scope', () async {
+  test('lists the Pi packages the settings declare, by name', () async {
+    write(
+      p.join(config, 'settings.json'),
+      jsonEncode({
+        'packages': [
+          'npm:@example/pi-tools@1.0.0',
+          {
+            'source': 'git:github.com/example/pi-skills@v1',
+            'skills': ['skills/a'],
+          },
+          './local-package',
+          {'nothing': true},
+        ],
+      }),
+    );
+    write(
+      p.join(project, '.pi', 'settings.json'),
+      jsonEncode({
+        'packages': ['npm:pi-extra'],
+      }),
+    );
+    // What Pi installed tells what a package is.
+    write(
+      p.join(
+        config,
+        'npm',
+        'node_modules',
+        '@example',
+        'pi-tools',
+        'package.json',
+      ),
+      jsonEncode({'name': '@example/pi-tools', 'description': 'Handy tools'}),
+    );
+    final plugins = await store.list(
+      CustomizationKind.plugins,
+      project: project,
+    );
+    expect(
+      [for (final x in plugins) (x.scope, x.name, x.description, x.source)],
+      [
+        (
+          CustomizationScope.user,
+          '@example/pi-tools',
+          'Handy tools',
+          'npm:@example/pi-tools@1.0.0',
+        ),
+        (
+          CustomizationScope.user,
+          'example/pi-skills',
+          'git:github.com/example/pi-skills@v1',
+          'git:github.com/example/pi-skills@v1',
+        ),
+        (
+          CustomizationScope.user,
+          'local-package',
+          './local-package',
+          './local-package',
+        ),
+        (
+          CustomizationScope.project,
+          'pi-extra',
+          'npm:pi-extra',
+          'npm:pi-extra',
+        ),
+      ],
+    );
+    expect(plugins.every((x) => !x.editable && x.removePath == null), isTrue);
+    expect(plugins[1].detail, contains('"skills"'));
+  });
+
+  test('names a package as its source does', () {
+    for (final (source, name) in [
+      ('npm:@scope/pkg@1.2.3', '@scope/pkg'),
+      ('npm:pkg', 'pkg'),
+      ('npm:pkg@latest', 'pkg'),
+      ('git:github.com/a/b@v1', 'a/b'),
+      ('https://github.com/a/b.git', 'a/b'),
+      ('/abs/path/to/pkg/', 'pkg'),
+      (r'C:\tools\pkg', 'pkg'),
+      ('./pkg', 'pkg'),
+    ]) {
+      expect(CustomizationStore.packageName(source), name, reason: source);
+    }
+  });
+
+  test('finds the file MCP servers are kept in, by scope', () async {
     Future<String?> file(CustomizationKind kind, CustomizationScope scope) =>
         store.configFile(kind, scope, project: project);
     expect(
+      await file(CustomizationKind.mcps, CustomizationScope.user),
+      p.join(config, 'mcp.json'),
+    );
+    expect(
       await file(CustomizationKind.mcps, CustomizationScope.project),
-      p.join(project, '.mcp.json'),
-    );
-    expect(await file(CustomizationKind.mcps, CustomizationScope.user), isNull);
-    expect(
-      await file(CustomizationKind.hooks, CustomizationScope.user),
-      p.join(config, 'settings.json'),
-    );
-    expect(
-      await file(CustomizationKind.hooks, CustomizationScope.local),
-      p.join(project, '.claude', 'settings.local.json'),
+      p.join(project, '.pi', 'mcp.json'),
     );
     expect(
       await store.configFile(
-        CustomizationKind.hooks,
+        CustomizationKind.mcps,
         CustomizationScope.project,
       ),
       isNull,
     );
     expect(
       await file(CustomizationKind.skills, CustomizationScope.user),
+      isNull,
+    );
+    expect(
+      await file(CustomizationKind.plugins, CustomizationScope.user),
       isNull,
     );
   });
@@ -356,10 +323,6 @@ void main() {
       isTrue,
     );
     expect(followsOfficialNaming(CustomizationKind.skills, '代码风格'), isFalse);
-    expect(
-      followsOfficialNaming(CustomizationKind.subagents, 'Reviewer'),
-      isFalse,
-    );
     expect(followsOfficialNaming(CustomizationKind.rules, '代码风格'), isTrue);
     expect(followsOfficialNaming(CustomizationKind.commands, '发布'), isTrue);
   });
@@ -389,21 +352,13 @@ void main() {
       throwsArgumentError,
     );
 
-    final rule = await store.create(
-      CustomizationKind.rules,
-      CustomizationScope.project,
-      'style',
-      project: project,
-    );
-    expect(rule, p.join(project, '.claude', 'rules', 'style.md'));
-
     final chinese = await store.create(
       CustomizationKind.commands,
       CustomizationScope.project,
       '发布说明',
       project: project,
     );
-    expect(chinese, p.join(project, '.claude', 'commands', '发布说明.md'));
+    expect(chinese, p.join(project, '.pi', 'prompts', '发布说明.md'));
     expect(File(chinese).existsSync(), isTrue);
 
     await store.write(skill, '---\nname: notes\ndescription: Edited\n---\n');
@@ -413,5 +368,36 @@ void main() {
     await store.delete(listed.single);
     expect(Directory(p.dirname(skill)).existsSync(), isFalse);
     expect(await store.list(CustomizationKind.skills), isEmpty);
+  });
+
+  test('the rules are the one AGENTS.md: the user\'s in the agent folder, '
+      'a project\'s at its root', () async {
+    final user = await store.create(
+      CustomizationKind.rules,
+      CustomizationScope.user,
+      'AGENTS',
+    );
+    expect(user, p.join(config, 'AGENTS.md'));
+    final mine = await store.create(
+      CustomizationKind.rules,
+      CustomizationScope.project,
+      'AGENTS',
+      project: project,
+    );
+    expect(mine, p.join(project, 'AGENTS.md'));
+    await expectLater(
+      store.create(
+        CustomizationKind.rules,
+        CustomizationScope.project,
+        'AGENTS',
+        project: project,
+      ),
+      throwsA(isA<IdeFileExistsException>()),
+    );
+    expect(
+      () =>
+          store.create(CustomizationKind.plugins, CustomizationScope.user, 'x'),
+      throwsArgumentError,
+    );
   });
 }

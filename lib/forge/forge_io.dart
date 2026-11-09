@@ -16,7 +16,7 @@ String _fingerprint(X509Certificate certificate) =>
 /// client is: see NetworkProxyOverrides).
 class IoForgeHttp implements ForgeHttp, ForgeCertificateTrust {
   late final HttpClient _client = HttpClient()
-    ..userAgent = 'BaoCode'
+    ..userAgent = 'pi-desktop'
     ..connectionTimeout = const Duration(seconds: 15)
     ..badCertificateCallback = _isTrusted;
 

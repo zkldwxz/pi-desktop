@@ -63,7 +63,6 @@ class ErrorLog {
     };
   }
 
-
   /// An error the framework caught: in a build, a layout, a paint, a
   /// gesture's handler.
   void recordFlutterError(FlutterErrorDetails details) => record(
@@ -152,7 +151,7 @@ class ErrorLog {
         file.renameSync(previousPath);
       }
       _append(
-        '--- BaoCode $appVersionString · ${Platform.operatingSystem} '
+        '--- pi-desktop $appVersionString · ${Platform.operatingSystem} '
         '${Platform.operatingSystemVersion} · '
         '${_clock().toIso8601String()} ---\n',
       );

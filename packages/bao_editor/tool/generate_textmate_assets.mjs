@@ -310,8 +310,8 @@ for (const extension of themeExtensions) {
 // BaoCode's own themes, kept in tool/textmate_themes/<extension>/: each includes
 // a bundled theme (`../../theme-defaults/...`) and sets its colors over it.
 const localThemes = [
-  { extension: 'theme-bao', id: 'Bao Dark', label: 'Bao Dark', uiTheme: 'vs-dark', path: 'themes/bao-dark-color-theme.json' },
-  { extension: 'theme-bao', id: 'Bao Light', label: 'Bao Light', uiTheme: 'vs', path: 'themes/bao-light-color-theme.json' },
+  { extension: 'theme-pi', id: 'Pi Dark', label: 'Pi Dark', uiTheme: 'vs-dark', path: 'themes/pi-dark-color-theme.json' },
+  { extension: 'theme-pi', id: 'Pi Light', label: 'Pi Light', uiTheme: 'vs', path: 'themes/pi-light-color-theme.json' },
 ];
 for (const theme of localThemes) {
   const assetPath = `themes/${theme.extension}/${theme.path}`;

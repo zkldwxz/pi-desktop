@@ -6,7 +6,7 @@ import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as p;
 
-import '../kernel/claude_code/claude_environment.dart';
+import '../kernel/pi/pi_storage.dart';
 import 'stash_skill.dart';
 
 /// The picture at [path] (absolute), from its file.
@@ -24,7 +24,7 @@ Future<String?> fetchPageTitle(String url) async {
     request.headers.set(HttpHeaders.acceptHeader, 'text/html');
     request.headers.set(
       HttpHeaders.userAgentHeader,
-      'Mozilla/5.0 (Macintosh) BaoCode',
+      'Mozilla/5.0 (Macintosh) pi-desktop',
     );
     final response = await request.close().timeout(const Duration(seconds: 5));
     if (response.statusCode >= 400) return null;
@@ -138,12 +138,12 @@ Future<Uint8List?> readBytesFile(String path) async {
 }
 
 /// Writes the Stash skill ([StashSkill]), for the stash folder [root],
-/// into Claude Code's skills on this machine: where there is none, or
-/// BaoCode's is not the same.
+/// into Pi's skills on this machine: where there is none, or
+/// pi-desktop's is not the same.
 Future<void> installStashSkill(String root) async {
   try {
     final path = p.join(
-      await ClaudeEnvironment.configDir(),
+      PiStorage.agentDirectory,
       'skills',
       StashSkill.name,
       'SKILL.md',

@@ -68,6 +68,6 @@ void installCrashHandler(String logsFolder) {
   CrashHandler.install(
     events: p.join(logsFolder, 'events.log'),
     reports: hangs.path,
-    header: 'BaoCode $appVersionString',
+    header: 'pi-desktop $appVersionString',
   );
 }

@@ -46,7 +46,7 @@ void main() {
             {
               'type': 'tool_use',
               'id': 'g1',
-              'name': 'mcp__baocode__generate_image',
+              'name': 'mcp__pi_desktop__generate_image',
               'input': {'prompt': 'A red fox\nin snow', 'aspect_ratio': '16:9'},
             },
           ],

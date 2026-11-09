@@ -1789,6 +1789,14 @@
   "@composerCommands": {
     "description": "Suggestion menu title."
   },
+  "piCommandStats": "Show this session's statistics",
+  "@piCommandStats": {
+    "description": "The composer's /stats command's description (Pi's)."
+  },
+  "piCommandCompact": "Compact the conversation to free up context",
+  "@piCommandCompact": {
+    "description": "The composer's /compact command's description (Pi's)."
+  },
   "composerMentions": "Files and conversations",
   "@composerMentions": {
     "description": "Title of the menu @ opens in the composer: the project's files and folders, then the other conversations to refer to, under their projects' folders."
@@ -2108,7 +2116,7 @@
   "mcpLog": "Output (stderr)",
   "mcpNoLog": "It wrote nothing.",
   "mcpSignInHint": "Sign in from a chat's MCP servers panel, or with /mcp.",
-  "mcpProbeNote": "Started and greeted with MCP's initialize, as `claude mcp list` checks it.",
+  "mcpProbeNote": "Started and greeted with MCP's initialize, as `pi mcp list` checks it.",
   "queuedMessages": "{count, plural, =1{1 queued} other{{count} queued}} · sent when the agent is done",
   "@queuedMessages": {
     "placeholders": {
@@ -2478,19 +2486,13 @@
   "settingsGroupAdvanced": "Advanced",
   "generalSettingsTitle": "General",
   "generalSettingsCommitAttribution": "Commit Attribution",
-  "generalSettingsCommitAttributionDescription": "Who the commits and pull requests an agent writes credit. Applies to agents started after a change; Claude Code only for now.",
   "generalSettingsClaudeCore": "Core",
   "@generalSettingsClaudeCore": {
     "description": "Settings → General → Claude Code row: what runs Claude Code sessions, pi-desktop's built-in core (written in Dart) or the Claude Code CLI."
   },
-  "generalSettingsClaudeCoreDescription": "Claude Code CLI: Anthropic's own program, with this machine's sign-in and setup; pick it to use a Claude subscription. Built-in: comes with pi-desktop, and uses only the models added in Settings → Models. By default, the CLI where this machine has Claude Code, else the built-in core; the CLI, picked where there is none, is downloaded for you. Changes apply to new sessions.",
   "generalSettingsClaudeCoreBuiltin": "Built-in",
   "@generalSettingsClaudeCoreBuiltin": {
     "description": "Claude Code core choice: pi-desktop's own agent core, written in Dart and run inside the app."
-  },
-  "generalSettingsClaudeCoreCli": "Claude Code CLI",
-  "@generalSettingsClaudeCoreCli": {
-    "description": "Claude Code core choice: Anthropic's Claude Code command-line program, run as a process."
   },
   "generalSettingsQueuedMessages": "Messages Sent While Working",
   "generalSettingsQueuedMessagesDescription": "PI processes queued messages after the current turn settles. Applies to messages sent after a change.",
@@ -2506,7 +2508,6 @@
   "@generalSettingsPromptSuggestions": {
     "description": "Settings → General switch: whether Claude Code suggests the next prompt in the composer after each turn."
   },
-  "generalSettingsPromptSuggestionsDescription": "After each turn, a greyed-out suggestion for your next message, taken with Tab. Each one is an extra request with the whole conversation; turn it off to save tokens. Applies from the next message; Claude Code only.",
   "generalSettingsCommitAttributionLabel": "Commit Attribution: {name}",
   "@generalSettingsCommitAttributionLabel": {
     "description": "The commit attribution dropdown, as read out: its setting and the choice in effect.",
@@ -2520,7 +2521,6 @@
   "@generalSettingsAttributionAgent": {
     "description": "Commit attribution choice: whatever the agent (e.g. Claude Code) adds of its own."
   },
-  "generalSettingsAttributionAgentDetail": "The agent's own, e.g. Claude Code's, or the attribution set in your ~/.claude/settings.json.",
   "generalSettingsAttributionNone": "None",
   "@generalSettingsAttributionNone": {
     "description": "Commit attribution choice: nothing is added."
@@ -4403,7 +4403,6 @@
   "explorerExcludeSettingDescription": "Files and folders the explorer does not show, comma separated: a name (`node_modules`, `*.log`) matches anywhere, a path (`build/**`, `src/generated`) matches within the folder.",
   "explorerExcludeSettingPlaceholder": "e.g. .git, node_modules, *.log",
   "claudePathSetting": "Path",
-  "claudePathSettingDescription": "Empty: the newest Claude Code on this machine, downloaded if there is none. A path: always that one, e.g. one you built. (claudeCode.path)",
   "claudePathSettingHint": "Automatic",
   "claudePathChecking": "Checking…",
   "claudePathInUse": "In use: {path} ({version})",
@@ -4427,15 +4426,6 @@
       }
     }
   },
-  "claudePathInUseDownloaded": "In use: Claude Code {version}, downloaded by pi-desktop",
-  "@claudePathInUseDownloaded": {
-    "placeholders": {
-      "version": {
-        "type": "String"
-      }
-    }
-  },
-  "claudePathMissing": "None found yet: with the Claude Code CLI picked, it is downloaded as the first conversation starts.",
   "generalSettingsIdeWindows": "Fast Ide Windows",
   "generalSettingsIdeWindowsDescription": "Where the Fast Ide opens: in the main window in place of the chat, one folder at a time, or in windows of its own, one per folder (New Window, ⇧⌘N / Ctrl+Shift+N, opens an empty one). Applies at once. (window.ideWindows)",
   "generalSettingsIdeWindowsSeparate": "Separate windows",
@@ -4544,25 +4534,21 @@
   "customizeKindPlugins": "Plugins",
   "customizeKindMcps": "MCPs",
   "customizeKindSkills": "Skills",
-  "customizeKindSubagents": "Subagents",
   "customizeKindRules": "Rules",
   "customizeKindCommands": "Commands",
-  "customizeKindHooks": "Hooks",
   "customizeScopeUser": "User",
   "customizeScopeProject": "Project",
-  "customizeScopeLocal": "Local",
-  "customizeScopePlugin": "Installed",
   "customizeUserOnly": "User only",
   "customizeNew": "New",
   "customizeEmpty": "Nothing here yet",
   "customizeNoMatches": "No matches",
-  "customizeUnsupported": "Customizing Claude Code needs the desktop app.",
+  "customizeUnsupported": "Customizing Pi needs the desktop app.",
   "customizeSave": "Save",
   "customizeRevert": "Revert",
   "customizeSaved": "Saved",
   "customizeUnsaved": "Unsaved changes",
   "customizeEdit": "Edit",
-  "customizeReadOnly": "Read only: Claude Code keeps this file itself.",
+  "customizeReadOnly": "Read only: Pi keeps this entry in its settings; remove it with Remove.",
   "customizeEnabled": "Enabled",
   "customizeDisabled": "Disabled",
   "customizeBack": "Back",
@@ -4593,7 +4579,7 @@
   },
   "customizeNameHint": "name",
   "customizeNameInvalid": "Starts with a letter or digit; no spaces or / \\ : * ? \" < > | (up to 64)",
-  "customizeNameUnofficial": "Officially lowercase, digits and - only; claude.ai may reject it",
+  "customizeNameUnofficial": "The Agent Skills naming is lowercase letters, digits and - only; Pi loads others, but other tools may not",
   "customizeNameTaken": "One by that name already exists",
   "customizeCreate": "Create",
   "customizeLoadFailed": "Couldn't read: {error}",
@@ -4614,8 +4600,6 @@
   },
   "settingsBack": "Back",
   "settingsSearch": "Search Settings",
-  "customizeScopeSynced": "Synced from claude.ai",
-  "customizeSyncedReadOnly": "Read only: synced from claude.ai, which would write over changes made here.",
   "customizeEditFile": "Edit {file}",
   "@customizeEditFile": {
     "placeholders": {
@@ -4624,19 +4608,81 @@
       }
     }
   },
-  "customizeEmptyPlugins": "None installed. Install plugins with /plugin in Claude Code.",
-  "customizeEmptyMcpsUser": "None yet. Add one with: claude mcp add --scope user <name> -- <command>",
-  "customizeEmptyMcpsLocal": "None yet. Add one with claude mcp add, run in the project.",
-  "customizeEmptyMcpsProject": "None yet. Servers shared with the project go in its .mcp.json.",
-  "customizeEmptyHooks": "None yet. Hooks go under \"hooks\" in {file}.",
-  "@customizeEmptyHooks": {
+  "customizeEmptyPlugins": "None installed. Find Pi packages in the plugin store below.",
+  "customizeEmptyMcpsUser": "None yet. Servers for every project go in mcp.json, or add one with: pi mcp add <name> -- <command>",
+  "customizeEmptyMcpsProject": "None yet. Servers the project needs go in its .pi/mcp.json.",
+  "pluginActionFailed": "pi did not finish: {error}",
+  "@pluginActionFailed": {
+    "description": "Installing or removing a plugin with the pi command failed; {error} is what it said.",
     "placeholders": {
-      "file": {
+      "error": {
         "type": "String"
       }
     }
   },
-  "customizeConnectorReadOnly": "Read only: a claude.ai connector, managed in claude.ai's settings, under Connectors.",
+  "pluginRemoveMessage": "Pi stops loading {source} and removes it from its settings.",
+  "@pluginRemoveMessage": {
+    "description": "The confirmation's text; {source} is the package's source, e.g. npm:name.",
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "pluginRemoveTitle": "Remove {name}?",
+  "@pluginRemoveTitle": {
+    "description": "The confirmation's title for removing an installed plugin.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "pluginRemove": "Remove",
+  "@pluginRemove": {
+    "description": "Removes an installed plugin (a Pi package) from its menu and the confirmation's button."
+  },
+  "pluginInstalled": "Installed",
+  "@pluginInstalled": {
+    "description": "In the plugin store, a package already installed."
+  },
+  "pluginInstall": "Install",
+  "@pluginInstall": {
+    "description": "The plugin store's button to install a package."
+  },
+  "pluginStoreLocalOnly": "Plugins are installed on this computer; a remote host's are not managed here.",
+  "@pluginStoreLocalOnly": {
+    "description": "Shown in place of the plugin store while looking at a remote host's customizations."
+  },
+  "pluginStoreFailed": "Could not reach the plugin store: {error}",
+  "@pluginStoreFailed": {
+    "description": "The plugin store (the npm registry) could not be reached; {error} is why.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "pluginStoreEmpty": "No packages found.",
+  "@pluginStoreEmpty": {
+    "description": "The plugin store's search found no package."
+  },
+  "pluginStoreSearchPlaceholder": "Search Pi packages…",
+  "@pluginStoreSearchPlaceholder": {
+    "description": "The plugin store's search box."
+  },
+  "pluginStoreHint": "Pi packages from npm, as listed in the Pi package gallery. A package runs code on this computer: look at its source before installing it.",
+  "@pluginStoreHint": {
+    "description": "Under the plugin store's heading: what the packages are, and a caution that they run code."
+  },
+  "pluginStoreTitle": "Plugin store",
+  "@pluginStoreTitle": {
+    "description": "Customize → Plugins: the heading of the gallery of Pi packages that can be installed."
+  },
+  "customizeEmptyRules": "None yet. Pi reads AGENTS.md; New makes one.",
+  "@customizeEmptyRules": {
+    "description": "Customize → Rules, a group with none."
+  },
   "settingsSectionModels": "Models",
   "modelsTitle": "Models",
   "modelsDefault": "Default Model for New Sessions",
@@ -5067,19 +5113,14 @@
     }
   },
   "modelsRoles": "Roles",
-  "modelsRolesDescription": "Which model Claude Code uses for each part of its work. Unset, the model picked stands in. All but the main model may be another upstream's: pi-desktop's local proxy sends their requests there.",
   "modelsRoleUnset": "Unset",
   "modelsRoleMain": "Main Model",
   "modelsRoleMainDescription": "Used when the model a session picked of this upstream is gone.",
   "modelsRoleOpus": "Opus Tier",
-  "modelsRoleOpusDescription": "ANTHROPIC_DEFAULT_OPUS_MODEL: what “opus” means, as in Plan mode.",
   "modelsRoleSonnet": "Sonnet Tier",
-  "modelsRoleSonnetDescription": "ANTHROPIC_DEFAULT_SONNET_MODEL: what “sonnet” means.",
   "modelsRoleHaiku": "Haiku Tier",
-  "modelsRoleHaikuDescription": "ANTHROPIC_DEFAULT_HAIKU_MODEL: Claude Code's background work, and agents' titles.",
   "modelsRoleHaikuWarning": "Unset, background work runs on the model picked, which may be slower and cost more. Pick a small, fast model.",
   "modelsRoleSubagent": "Subagents",
-  "modelsRoleSubagentDescription": "CLAUDE_CODE_SUBAGENT_MODEL: the model every subagent runs on, the built-in Explore and Plan and those defined as inherit too, over the one its definition or the agent's call names.",
   "modelsRoleMissing": "This model is no longer one of its upstream's: requests to it will fail.",
   "@modelsRoleMissing": {
     "description": "Under a role that picks another upstream's model, once that upstream or model is gone."
@@ -5089,7 +5130,6 @@
   "modelsAuthDescription": "How the key is sent. Automatic: x-api-key to api.anthropic.com, a bearer token elsewhere.",
   "modelsAuthAuto": "Automatic",
   "modelsNonessential": "Disable Nonessential Traffic",
-  "modelsNonessentialDescription": "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: no telemetry, error reports or update checks, which upstreams other than Anthropic do not answer.",
   "modelsPreserveThinking": "Send Reasoning Back",
   "modelsPreserveThinkingDescription": "Replays the model's reasoning (reasoning_content) in later requests, as DeepSeek and others want.",
   "modelsPromptCacheKey": "Prompt Cache Key",
@@ -6648,7 +6688,7 @@
   "mobileLegacyRepair": "Pair Again",
   "settingsSectionStash": "Stash",
   "settingsSectionCustomize": "Customize",
-  "settingsCustomizeKeywords": "skills subagents rules commands agents claude memory hooks mcp plugins",
+  "settingsCustomizeKeywords": "skills rules agents.md commands prompts memory mcp plugins packages extensions pi",
   "stashTitle": "Stash",
   "stashHeading": "Stash",
   "stashNew": "New stash",
@@ -7379,7 +7419,7 @@
   "browserSettingsStoreDescription": "Use the extension bundled with pi-desktop. A separately configured store listing can also be used.",
   "browserSettingsStoreOpen": "Open Extension",
   "browserSettingsUnpacked": "Install Manually (Developer Mode)",
-  "browserSettingsUnpackedDescription": "Open the extension folder. In chrome://extensions, enable Developer mode, click Load unpacked and choose that folder. BaoCode's extension can stay installed.",
+  "browserSettingsUnpackedDescription": "Open the extension folder. In chrome://extensions, enable Developer mode, click Load unpacked and choose that folder. pi-desktop's extension can stay installed.",
   "browserSettingsUnpackedDownload": "Open Extension Folder",
   "browserSettingsOpen": "Browser Settings",
   "browserHistoryTitle": "Debugging history",
@@ -7490,9 +7530,7 @@
   "sshServerKeyHint": "If the key has a passphrase, it is asked for when connecting.",
   "sshServerCore": "Core",
   "sshServerCoreAuto": "Automatic",
-  "sshServerCoreAutoHint": "The server's Claude Code CLI if it has one, else the built-in core.",
   "sshServerCoreBuiltinHint": "pi-desktop's own core: it runs on the upstreams of Settings → Models.",
-  "sshServerCoreCliHint": "The server's Claude Code CLI, installed there if it has none.",
   "sshServerJump": "Jump Host (optional)",
   "sshServerNoJump": "None: connect directly",
   "sshServerSaveConnect": "Save and Connect",
@@ -8550,7 +8588,7 @@
   "ustatEmptyFiltered": "Nothing matches these filters",
   "ustatConversationNew": "Usage shows once the conversation starts",
   "ustatConversationEmpty": "No calls kept for this conversation",
-  "ustatConversationEmptyDetail": "Only conversations on a custom upstream are counted: Claude's official service does not go through pi-desktop's proxy.",
+  "ustatConversationEmptyDetail": "Only conversations that go through pi-desktop's own upstreams are counted.",
   "ustatRecordOff": "Usage is not being recorded",
   "ustatTurnOn": "Turn on",
   "ustatDataTitle": "Data",
@@ -8603,7 +8641,7 @@
   "resetCreditsHintTomorrow": "Tomorrow",
   "resetCreditsHintAuto": "Reset Automatically",
   "resetCreditsHintLater": "Got It",
-  "ustatPartMemory": "CLAUDE.md & rules",
+  "ustatPartMemory": "AGENTS.md & rules",
   "ustatPartSkills": "Skills",
   "ustatPartMcp": "MCP",
   "ustatPartMessages": "Conversation",

@@ -4946,6 +4946,18 @@ abstract class AppLocalizations {
   /// **'Commands'**
   String get composerCommands;
 
+  /// The composer's /stats command's description (Pi's).
+  ///
+  /// In en, this message translates to:
+  /// **'Show this session\'s statistics'**
+  String get piCommandStats;
+
+  /// The composer's /compact command's description (Pi's).
+  ///
+  /// In en, this message translates to:
+  /// **'Compact the conversation to free up context'**
+  String get piCommandCompact;
+
   /// Title of the menu @ opens in the composer: the project's files and folders, then the other conversations to refer to, under their projects' folders.
   ///
   /// In en, this message translates to:
@@ -5543,7 +5555,7 @@ abstract class AppLocalizations {
   /// No description provided for @mcpProbeNote.
   ///
   /// In en, this message translates to:
-  /// **'Started and greeted with MCP\'s initialize, as `claude mcp list` checks it.'**
+  /// **'Started and greeted with MCP\'s initialize, as `pi mcp list` checks it.'**
   String get mcpProbeNote;
 
   /// No description provided for @queuedMessages.
@@ -6194,35 +6206,17 @@ abstract class AppLocalizations {
   /// **'Commit Attribution'**
   String get generalSettingsCommitAttribution;
 
-  /// No description provided for @generalSettingsCommitAttributionDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Who the commits and pull requests an agent writes credit. Applies to agents started after a change; Claude Code only for now.'**
-  String get generalSettingsCommitAttributionDescription;
-
   /// Settings → General → Claude Code row: what runs Claude Code sessions, pi-desktop's built-in core (written in Dart) or the Claude Code CLI.
   ///
   /// In en, this message translates to:
   /// **'Core'**
   String get generalSettingsClaudeCore;
 
-  /// No description provided for @generalSettingsClaudeCoreDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Claude Code CLI: Anthropic\'s own program, with this machine\'s sign-in and setup; pick it to use a Claude subscription. Built-in: comes with pi-desktop, and uses only the models added in Settings → Models. By default, the CLI where this machine has Claude Code, else the built-in core; the CLI, picked where there is none, is downloaded for you. Changes apply to new sessions.'**
-  String get generalSettingsClaudeCoreDescription;
-
   /// Claude Code core choice: pi-desktop's own agent core, written in Dart and run inside the app.
   ///
   /// In en, this message translates to:
   /// **'Built-in'**
   String get generalSettingsClaudeCoreBuiltin;
-
-  /// Claude Code core choice: Anthropic's Claude Code command-line program, run as a process.
-  ///
-  /// In en, this message translates to:
-  /// **'Claude Code CLI'**
-  String get generalSettingsClaudeCoreCli;
 
   /// No description provided for @generalSettingsQueuedMessages.
   ///
@@ -6254,12 +6248,6 @@ abstract class AppLocalizations {
   /// **'Suggest Next Prompt'**
   String get generalSettingsPromptSuggestions;
 
-  /// No description provided for @generalSettingsPromptSuggestionsDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'After each turn, a greyed-out suggestion for your next message, taken with Tab. Each one is an extra request with the whole conversation; turn it off to save tokens. Applies from the next message; Claude Code only.'**
-  String get generalSettingsPromptSuggestionsDescription;
-
   /// The commit attribution dropdown, as read out: its setting and the choice in effect.
   ///
   /// In en, this message translates to:
@@ -6271,12 +6259,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Follow Agent'**
   String get generalSettingsAttributionAgent;
-
-  /// No description provided for @generalSettingsAttributionAgentDetail.
-  ///
-  /// In en, this message translates to:
-  /// **'The agent\'s own, e.g. Claude Code\'s, or the attribution set in your ~/.claude/settings.json.'**
-  String get generalSettingsAttributionAgentDetail;
 
   /// Commit attribution choice: nothing is added.
   ///
@@ -9717,12 +9699,6 @@ abstract class AppLocalizations {
   /// **'Path'**
   String get claudePathSetting;
 
-  /// No description provided for @claudePathSettingDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Empty: the newest Claude Code on this machine, downloaded if there is none. A path: always that one, e.g. one you built. (claudeCode.path)'**
-  String get claudePathSettingDescription;
-
   /// No description provided for @claudePathSettingHint.
   ///
   /// In en, this message translates to:
@@ -9746,18 +9722,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'In use: {path}'**
   String claudePathInUseUnknown(String path);
-
-  /// No description provided for @claudePathInUseDownloaded.
-  ///
-  /// In en, this message translates to:
-  /// **'In use: Claude Code {version}, downloaded by pi-desktop'**
-  String claudePathInUseDownloaded(String version);
-
-  /// No description provided for @claudePathMissing.
-  ///
-  /// In en, this message translates to:
-  /// **'None found yet: with the Claude Code CLI picked, it is downloaded as the first conversation starts.'**
-  String get claudePathMissing;
 
   /// No description provided for @generalSettingsIdeWindows.
   ///
@@ -10221,12 +10185,6 @@ abstract class AppLocalizations {
   /// **'Skills'**
   String get customizeKindSkills;
 
-  /// No description provided for @customizeKindSubagents.
-  ///
-  /// In en, this message translates to:
-  /// **'Subagents'**
-  String get customizeKindSubagents;
-
   /// No description provided for @customizeKindRules.
   ///
   /// In en, this message translates to:
@@ -10239,12 +10197,6 @@ abstract class AppLocalizations {
   /// **'Commands'**
   String get customizeKindCommands;
 
-  /// No description provided for @customizeKindHooks.
-  ///
-  /// In en, this message translates to:
-  /// **'Hooks'**
-  String get customizeKindHooks;
-
   /// No description provided for @customizeScopeUser.
   ///
   /// In en, this message translates to:
@@ -10256,18 +10208,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Project'**
   String get customizeScopeProject;
-
-  /// No description provided for @customizeScopeLocal.
-  ///
-  /// In en, this message translates to:
-  /// **'Local'**
-  String get customizeScopeLocal;
-
-  /// No description provided for @customizeScopePlugin.
-  ///
-  /// In en, this message translates to:
-  /// **'Installed'**
-  String get customizeScopePlugin;
 
   /// No description provided for @customizeUserOnly.
   ///
@@ -10296,7 +10236,7 @@ abstract class AppLocalizations {
   /// No description provided for @customizeUnsupported.
   ///
   /// In en, this message translates to:
-  /// **'Customizing Claude Code needs the desktop app.'**
+  /// **'Customizing Pi needs the desktop app.'**
   String get customizeUnsupported;
 
   /// No description provided for @customizeSave.
@@ -10332,7 +10272,7 @@ abstract class AppLocalizations {
   /// No description provided for @customizeReadOnly.
   ///
   /// In en, this message translates to:
-  /// **'Read only: Claude Code keeps this file itself.'**
+  /// **'Read only: Pi keeps this entry in its settings; remove it with Remove.'**
   String get customizeReadOnly;
 
   /// No description provided for @customizeEnabled.
@@ -10392,7 +10332,7 @@ abstract class AppLocalizations {
   /// No description provided for @customizeNameUnofficial.
   ///
   /// In en, this message translates to:
-  /// **'Officially lowercase, digits and - only; claude.ai may reject it'**
+  /// **'The Agent Skills naming is lowercase letters, digits and - only; Pi loads others, but other tools may not'**
   String get customizeNameUnofficial;
 
   /// No description provided for @customizeNameTaken.
@@ -10431,18 +10371,6 @@ abstract class AppLocalizations {
   /// **'Search Settings'**
   String get settingsSearch;
 
-  /// No description provided for @customizeScopeSynced.
-  ///
-  /// In en, this message translates to:
-  /// **'Synced from claude.ai'**
-  String get customizeScopeSynced;
-
-  /// No description provided for @customizeSyncedReadOnly.
-  ///
-  /// In en, this message translates to:
-  /// **'Read only: synced from claude.ai, which would write over changes made here.'**
-  String get customizeSyncedReadOnly;
-
   /// No description provided for @customizeEditFile.
   ///
   /// In en, this message translates to:
@@ -10452,38 +10380,98 @@ abstract class AppLocalizations {
   /// No description provided for @customizeEmptyPlugins.
   ///
   /// In en, this message translates to:
-  /// **'None installed. Install plugins with /plugin in Claude Code.'**
+  /// **'None installed. Find Pi packages in the plugin store below.'**
   String get customizeEmptyPlugins;
 
   /// No description provided for @customizeEmptyMcpsUser.
   ///
   /// In en, this message translates to:
-  /// **'None yet. Add one with: claude mcp add --scope user <name> -- <command>'**
+  /// **'None yet. Servers for every project go in mcp.json, or add one with: pi mcp add <name> -- <command>'**
   String get customizeEmptyMcpsUser;
-
-  /// No description provided for @customizeEmptyMcpsLocal.
-  ///
-  /// In en, this message translates to:
-  /// **'None yet. Add one with claude mcp add, run in the project.'**
-  String get customizeEmptyMcpsLocal;
 
   /// No description provided for @customizeEmptyMcpsProject.
   ///
   /// In en, this message translates to:
-  /// **'None yet. Servers shared with the project go in its .mcp.json.'**
+  /// **'None yet. Servers the project needs go in its .pi/mcp.json.'**
   String get customizeEmptyMcpsProject;
 
-  /// No description provided for @customizeEmptyHooks.
+  /// Installing or removing a plugin with the pi command failed; {error} is what it said.
   ///
   /// In en, this message translates to:
-  /// **'None yet. Hooks go under \"hooks\" in {file}.'**
-  String customizeEmptyHooks(String file);
+  /// **'pi did not finish: {error}'**
+  String pluginActionFailed(String error);
 
-  /// No description provided for @customizeConnectorReadOnly.
+  /// The confirmation's text; {source} is the package's source, e.g. npm:name.
   ///
   /// In en, this message translates to:
-  /// **'Read only: a claude.ai connector, managed in claude.ai\'s settings, under Connectors.'**
-  String get customizeConnectorReadOnly;
+  /// **'Pi stops loading {source} and removes it from its settings.'**
+  String pluginRemoveMessage(String source);
+
+  /// The confirmation's title for removing an installed plugin.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name}?'**
+  String pluginRemoveTitle(String name);
+
+  /// Removes an installed plugin (a Pi package) from its menu and the confirmation's button.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get pluginRemove;
+
+  /// In the plugin store, a package already installed.
+  ///
+  /// In en, this message translates to:
+  /// **'Installed'**
+  String get pluginInstalled;
+
+  /// The plugin store's button to install a package.
+  ///
+  /// In en, this message translates to:
+  /// **'Install'**
+  String get pluginInstall;
+
+  /// Shown in place of the plugin store while looking at a remote host's customizations.
+  ///
+  /// In en, this message translates to:
+  /// **'Plugins are installed on this computer; a remote host\'s are not managed here.'**
+  String get pluginStoreLocalOnly;
+
+  /// The plugin store (the npm registry) could not be reached; {error} is why.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not reach the plugin store: {error}'**
+  String pluginStoreFailed(String error);
+
+  /// The plugin store's search found no package.
+  ///
+  /// In en, this message translates to:
+  /// **'No packages found.'**
+  String get pluginStoreEmpty;
+
+  /// The plugin store's search box.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Pi packages…'**
+  String get pluginStoreSearchPlaceholder;
+
+  /// Under the plugin store's heading: what the packages are, and a caution that they run code.
+  ///
+  /// In en, this message translates to:
+  /// **'Pi packages from npm, as listed in the Pi package gallery. A package runs code on this computer: look at its source before installing it.'**
+  String get pluginStoreHint;
+
+  /// Customize → Plugins: the heading of the gallery of Pi packages that can be installed.
+  ///
+  /// In en, this message translates to:
+  /// **'Plugin store'**
+  String get pluginStoreTitle;
+
+  /// Customize → Rules, a group with none.
+  ///
+  /// In en, this message translates to:
+  /// **'None yet. Pi reads AGENTS.md; New makes one.'**
+  String get customizeEmptyRules;
 
   /// No description provided for @settingsSectionModels.
   ///
@@ -11439,12 +11427,6 @@ abstract class AppLocalizations {
   /// **'Roles'**
   String get modelsRoles;
 
-  /// No description provided for @modelsRolesDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Which model Claude Code uses for each part of its work. Unset, the model picked stands in. All but the main model may be another upstream\'s: pi-desktop\'s local proxy sends their requests there.'**
-  String get modelsRolesDescription;
-
   /// No description provided for @modelsRoleUnset.
   ///
   /// In en, this message translates to:
@@ -11469,35 +11451,17 @@ abstract class AppLocalizations {
   /// **'Opus Tier'**
   String get modelsRoleOpus;
 
-  /// No description provided for @modelsRoleOpusDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'ANTHROPIC_DEFAULT_OPUS_MODEL: what “opus” means, as in Plan mode.'**
-  String get modelsRoleOpusDescription;
-
   /// No description provided for @modelsRoleSonnet.
   ///
   /// In en, this message translates to:
   /// **'Sonnet Tier'**
   String get modelsRoleSonnet;
 
-  /// No description provided for @modelsRoleSonnetDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'ANTHROPIC_DEFAULT_SONNET_MODEL: what “sonnet” means.'**
-  String get modelsRoleSonnetDescription;
-
   /// No description provided for @modelsRoleHaiku.
   ///
   /// In en, this message translates to:
   /// **'Haiku Tier'**
   String get modelsRoleHaiku;
-
-  /// No description provided for @modelsRoleHaikuDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'ANTHROPIC_DEFAULT_HAIKU_MODEL: Claude Code\'s background work, and agents\' titles.'**
-  String get modelsRoleHaikuDescription;
 
   /// No description provided for @modelsRoleHaikuWarning.
   ///
@@ -11510,12 +11474,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Subagents'**
   String get modelsRoleSubagent;
-
-  /// No description provided for @modelsRoleSubagentDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'CLAUDE_CODE_SUBAGENT_MODEL: the model every subagent runs on, the built-in Explore and Plan and those defined as inherit too, over the one its definition or the agent\'s call names.'**
-  String get modelsRoleSubagentDescription;
 
   /// Under a role that picks another upstream's model, once that upstream or model is gone.
   ///
@@ -11552,12 +11510,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Disable Nonessential Traffic'**
   String get modelsNonessential;
-
-  /// No description provided for @modelsNonessentialDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: no telemetry, error reports or update checks, which upstreams other than Anthropic do not answer.'**
-  String get modelsNonessentialDescription;
 
   /// No description provided for @modelsPreserveThinking.
   ///
@@ -14868,7 +14820,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsCustomizeKeywords.
   ///
   /// In en, this message translates to:
-  /// **'skills subagents rules commands agents claude memory hooks mcp plugins'**
+  /// **'skills rules agents.md commands prompts memory mcp plugins packages extensions pi'**
   String get settingsCustomizeKeywords;
 
   /// No description provided for @stashTitle.
@@ -16804,7 +16756,7 @@ abstract class AppLocalizations {
   /// No description provided for @browserSettingsUnpackedDescription.
   ///
   /// In en, this message translates to:
-  /// **'Open the extension folder. In chrome://extensions, enable Developer mode, click Load unpacked and choose that folder. BaoCode\'s extension can stay installed.'**
+  /// **'Open the extension folder. In chrome://extensions, enable Developer mode, click Load unpacked and choose that folder. pi-desktop\'s extension can stay installed.'**
   String get browserSettingsUnpackedDescription;
 
   /// No description provided for @browserSettingsUnpackedDownload.
@@ -17347,23 +17299,11 @@ abstract class AppLocalizations {
   /// **'Automatic'**
   String get sshServerCoreAuto;
 
-  /// No description provided for @sshServerCoreAutoHint.
-  ///
-  /// In en, this message translates to:
-  /// **'The server\'s Claude Code CLI if it has one, else the built-in core.'**
-  String get sshServerCoreAutoHint;
-
   /// No description provided for @sshServerCoreBuiltinHint.
   ///
   /// In en, this message translates to:
   /// **'pi-desktop\'s own core: it runs on the upstreams of Settings → Models.'**
   String get sshServerCoreBuiltinHint;
-
-  /// No description provided for @sshServerCoreCliHint.
-  ///
-  /// In en, this message translates to:
-  /// **'The server\'s Claude Code CLI, installed there if it has none.'**
-  String get sshServerCoreCliHint;
 
   /// No description provided for @sshServerJump.
   ///
@@ -21436,7 +21376,7 @@ abstract class AppLocalizations {
   /// No description provided for @ustatConversationEmptyDetail.
   ///
   /// In en, this message translates to:
-  /// **'Only conversations on a custom upstream are counted: Claude\'s official service does not go through pi-desktop\'s proxy.'**
+  /// **'Only conversations that go through pi-desktop\'s own upstreams are counted.'**
   String get ustatConversationEmptyDetail;
 
   /// No description provided for @ustatRecordOff.
@@ -21682,7 +21622,7 @@ abstract class AppLocalizations {
   /// No description provided for @ustatPartMemory.
   ///
   /// In en, this message translates to:
-  /// **'CLAUDE.md & rules'**
+  /// **'AGENTS.md & rules'**
   String get ustatPartMemory;
 
   /// No description provided for @ustatPartSkills.

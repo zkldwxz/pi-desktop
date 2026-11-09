@@ -10,7 +10,7 @@ import '../../remote/remote_location.dart';
 import 'pi_storage.dart';
 import 'pi_transport.dart';
 import 'pi_runtime_paths_io.dart';
-import 'pi_runtime_updates_io.dart' show managedPiCli;
+import 'pi_cli_io.dart' show piCliCommand;
 import 'pi_remote_ssh.dart' show startSshPi, stopRemotePiProcesses;
 
 final _live = <_ProcessPiTransport>{};
@@ -43,27 +43,14 @@ Future<PiTransport> startPi(PiLaunch launch) async {
   }
   final runtime = await findPiRuntime();
   final extension = p.join(runtime.path, 'desktop-extension.mjs');
-  final cli =
-      PiRuntimeSettings.cliPath() ??
-      Platform.environment['PI_DESKTOP_PI_CLI'] ??
-      await managedPiCli() ??
-      p.join(
-        runtime.path,
-        'node_modules',
-        '@earendil-works',
-        'pi-coding-agent',
-        'dist',
-        'bundle',
-        'cli.js',
-      );
-  final node = await piNodeExecutable(runtime);
+  final invocation = await piCliCommand();
   final agentDir = PiStorage.agentDirectory;
   final sessions = PiStorage.sessionsDirectory(launch.cwd);
   await Directory(agentDir).create(recursive: true);
   await Directory(sessions).create(recursive: true);
   await _children.reaped;
   final args = [
-    if (cli.endsWith('.js') || cli.endsWith('.mjs')) cli,
+    ...invocation.prefix,
     '--mode',
     'rpc',
     '--no-approve',
@@ -109,7 +96,7 @@ Future<PiTransport> startPi(PiLaunch launch) async {
   // pinned copy. Inherit neither a different agent dir nor BaoCode's core setup.
   environment.remove('CLAUDECODE');
   final process = await Process.start(
-    cli.endsWith('.js') || cli.endsWith('.mjs') ? node : cli,
+    invocation.executable,
     args,
     workingDirectory: launch.cwd,
     environment: environment,

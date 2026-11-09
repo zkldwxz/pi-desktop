@@ -119,7 +119,7 @@ void main() {
       // VS Code's themes, not BaoCode's own.
       {
         ...manifest.themes
-            .where((t) => t.extension != 'theme-bao')
+            .where((t) => t.extension != 'theme-pi')
             .map((t) => t.id),
         ...unlistedThemes.map((t) => t.id),
       },

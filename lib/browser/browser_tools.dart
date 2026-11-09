@@ -32,7 +32,7 @@ part 'browser_watch.dart';
 
 /// The agents' tools for the user's browser (see browser_bridge.dart): the
 /// tabs shared with BaoCode (its tab group's) alone, through the DevTools
-/// protocol. Their names are `mcp__baocode__browser_…` to an agent.
+/// protocol. Their names are `mcp__pi_desktop__browser_…` to an agent.
 abstract final class BrowserTools {
   static bool _registered = false;
 

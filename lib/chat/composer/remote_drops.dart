@@ -11,7 +11,7 @@ import 'composer_files.dart';
 /// its own under [folder], and their tags are of the copies.
 abstract final class RemoteDrops {
   /// Where on a Linux or macOS host they go.
-  static const folder = '/tmp/baocode-drops';
+  static const folder = '/tmp/pi-desktop-drops';
 
   /// Where on [host]'s they go: [folder], or on a Windows host the user's
   /// temporary folder's.
@@ -19,7 +19,13 @@ abstract final class RemoteDrops {
     if (host case RemoteIdeFileService(host: final ssh)
         when ssh.hello?.platform.os == 'win') {
       final home = ssh.hello!.home;
-      return p.windows.join(home, 'AppData', 'Local', 'Temp', 'baocode-drops');
+      return p.windows.join(
+        home,
+        'AppData',
+        'Local',
+        'Temp',
+        'pi-desktop-drops',
+      );
     }
     return folder;
   }

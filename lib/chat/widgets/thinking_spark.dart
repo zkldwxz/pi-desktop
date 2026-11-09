@@ -11,11 +11,7 @@ import '../../theme/app_theme.dart';
 /// shape sits on the same center, and looks the same everywhere. Still, in
 /// bloom, where motion is turned down.
 class ThinkingSpark extends StatefulWidget {
-  const ThinkingSpark({
-    super.key,
-    this.size = 14,
-    this.color = AppColors.claude,
-  });
+  const ThinkingSpark({super.key, this.size = 14, this.color = AppColors.pi});
 
   final double size;
   final Color color;

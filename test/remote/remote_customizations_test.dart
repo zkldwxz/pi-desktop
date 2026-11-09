@@ -15,7 +15,7 @@ import 'package:path/path.dart' as p;
 import 'remote_harness.dart';
 
 /// Customize on a remote host: the customizations its agents read, its
-/// own `~/.claude` and its projects', through its server.
+/// own Pi agent folder and its projects', through its server.
 void main() {
   late Directory dataDir;
   late Directory temp;
@@ -36,13 +36,12 @@ void main() {
     temp = Directory.systemTemp.createTempSync('baocode-remote-custom-');
     final root = temp.resolveSymbolicLinksSync();
     home = p.join(root, 'home');
-    config = p.join(home, '.claude');
+    config = p.join(home, '.pi-desktop', 'pi-agent');
     project = p.join(root, 'project');
     Directory(project).createSync(recursive: true);
     host = SshHost('dev', connect: MemoryConnector(dataDir.path).call);
     store = CustomizationStore(
       configDir: config,
-      homeDir: home,
       disk: RemoteCustomizationDisk(host),
     );
   });
@@ -52,13 +51,12 @@ void main() {
     dataDir.deleteSync(recursive: true);
   });
 
-  test("the host's skills, the user's, synced and its project's", () async {
+  test("the host's skills, the user's and its project's", () async {
     write(
       p.join(config, 'skills', 'pdf', 'SKILL.md'),
       '---\nname: pdf\ndescription: Reads PDF files\n---\n',
     );
-    write(p.join(config, 'skills', 'synced', 'a', 'web', 'SKILL.md'), 'Web');
-    write(p.join(project, '.claude', 'skills', 'ship', 'SKILL.md'), 'Ships');
+    write(p.join(project, '.pi', 'skills', 'ship', 'SKILL.md'), 'Ships');
     // A skill linked in from elsewhere, as installers do.
     write(p.join(home, 'shared', 'lint', 'SKILL.md'), 'Lints');
     Link(p.join(config, 'skills', 'lint'))
@@ -70,7 +68,6 @@ void main() {
       [
         (CustomizationScope.user, 'lint'),
         (CustomizationScope.user, 'pdf'),
-        (CustomizationScope.synced, 'web'),
         (CustomizationScope.project, 'ship'),
       ],
     );
@@ -79,16 +76,16 @@ void main() {
 
   test('made there, folders and all; edited and deleted there', () async {
     final path = await store.create(
-      CustomizationKind.subagents,
+      CustomizationKind.commands,
       CustomizationScope.project,
       'reviewer',
       project: project,
     );
-    expect(path, p.join(project, '.claude', 'agents', 'reviewer.md'));
+    expect(path, p.join(project, '.pi', 'prompts', 'reviewer.md'));
     expect(File(path).existsSync(), isTrue);
     await expectLater(
       store.create(
-        CustomizationKind.subagents,
+        CustomizationKind.commands,
         CustomizationScope.project,
         'reviewer',
         project: project,
@@ -101,34 +98,35 @@ void main() {
     expect(await store.read(path), 'Reviews');
     expect(await store.exists(path), isTrue);
 
-    final [agent] = await store.list(
-      CustomizationKind.subagents,
+    final [command] = await store.list(
+      CustomizationKind.commands,
       project: project,
     );
-    await store.delete(agent);
+    await store.delete(command);
     expect(File(path).existsSync(), isFalse);
   });
 
-  test('its MCP servers, from its ~/.claude.json and the project', () async {
+  test('its MCP servers, from its mcp.json and the project\'s', () async {
     write(
-      p.join(home, '.claude.json'),
+      p.join(config, 'mcp.json'),
       jsonEncode({
         'mcpServers': {
           'docs': {'command': 'docs-server'},
         },
-        'projects': {
-          project: {
-            'mcpServers': {
-              'db': {'url': 'http://localhost:5432'},
-            },
-          },
+      }),
+    );
+    write(
+      p.join(project, '.pi', 'mcp.json'),
+      jsonEncode({
+        'mcpServers': {
+          'db': {'url': 'http://localhost:5432'},
         },
       }),
     );
     final servers = await store.list(CustomizationKind.mcps, project: project);
     expect(
       [for (final server in servers) (server.scope, server.name)],
-      [(CustomizationScope.user, 'docs'), (CustomizationScope.local, 'db')],
+      [(CustomizationScope.user, 'docs'), (CustomizationScope.project, 'db')],
     );
     expect(store.isLocal, isFalse);
   });

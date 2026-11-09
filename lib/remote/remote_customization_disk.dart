@@ -28,8 +28,9 @@ class RemoteCustomizationDisk implements CustomizationDisk {
   @override
   p.Context get paths => host.paths;
 
-  /// `CLAUDE_CONFIG_DIR` in the login shell's environment there, else
-  /// `~/.claude`; looked up again after a failure.
+  /// Pi's agent folder there: `PI_CODING_AGENT_DIR` in the login shell's
+  /// environment, else where pi-desktop keeps it (`~/.pi-desktop/pi-agent`);
+  /// looked up again after a failure.
   @override
   Future<String> configDir() async {
     final found = _configDir ??= _findConfigDir();
@@ -50,16 +51,16 @@ class RemoteCustomizationDisk implements CustomizationDisk {
               '-NoProfile',
               '-NonInteractive',
               '-Command',
-              r'$env:CLAUDE_CONFIG_DIR',
+              r'$env:PI_CODING_AGENT_DIR',
             ])
-          : await client.run('printenv', const ['CLAUDE_CONFIG_DIR']);
+          : await client.run('printenv', const ['PI_CODING_AGENT_DIR']);
       final dir = output.stdout.trim();
       if (output.exitCode == 0 && dir.isNotEmpty) return dir;
     } on RemoteException {
       // No printenv there: the default.
     }
     final home = client.hello?.home ?? '';
-    return RemoteLocation.pathsFor(home).join(home, '.claude');
+    return RemoteLocation.pathsFor(home).join(home, '.pi-desktop', 'pi-agent');
   }
 
   @override

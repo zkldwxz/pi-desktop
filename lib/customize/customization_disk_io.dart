@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 
-import '../kernel/claude_code/claude_environment.dart';
+import '../kernel/pi/pi_storage.dart';
 import '../platform/local_paths_io.dart';
 import 'customization_disk.dart';
 
@@ -19,7 +19,7 @@ class _LocalDisk implements CustomizationDisk {
   p.Context get paths => p.context;
 
   @override
-  Future<String> configDir() => ClaudeEnvironment.configDir();
+  Future<String> configDir() async => PiStorage.agentDirectory;
 
   @override
   Future<String?> homeDir() async => homeDirectory;

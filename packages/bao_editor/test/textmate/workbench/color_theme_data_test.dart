@@ -72,7 +72,7 @@ void main() {
   group('bundled themes match VS Code', () {
     // VS Code's themes; BaoCode's own have no upstream to match.
     for (final contribution in manifest.themes.where(
-      (t) => t.extension != 'theme-bao',
+      (t) => t.extension != 'theme-pi',
     )) {
       test(contribution.id, () async {
         final fixture = jsonDecode(
@@ -108,7 +108,7 @@ void main() {
     }
 
     test('Dark 2026 follows its include chain', () async {
-      // Not listed in the manifest, but kept as Bao Dark's include base.
+      // Not listed in the manifest, but kept as Pi Dark's include base.
       final theme = ColorThemeData.fromExtensionTheme(
         const IThemeExtensionPoint(
           id: 'Dark 2026',
@@ -135,13 +135,13 @@ void main() {
       expect(theme.semanticTokenColors.length, 4 + 4);
     });
 
-    test('Bao Dark sets its colors over Dark 2026', () async {
-      final theme = await bundled('Bao Dark');
+    test('Pi Dark sets its colors over Dark 2026', () async {
+      final theme = await bundled('Pi Dark');
       expect(theme.type, ColorScheme.dark);
       expect(theme.semanticHighlighting, isTrue);
-      expect(theme.colors['editor.background'], '#282827');
-      expect(theme.colors['sideBar.background'], '#212120');
-      expect(theme.colors['focusBorder'], '#E5BA7DB3');
+      expect(theme.colors['editor.background'], '#24252B');
+      expect(theme.colors['sideBar.background'], '#1D1F24');
+      expect(theme.colors['focusBorder'], '#97CBC4B3');
       // What it leaves unset, from Dark 2026's include chain.
       expect(theme.colors['button.secondaryBackground'], '#00000000');
       expect(theme.colors['agentsCard.border'], '#00000000');
@@ -150,13 +150,13 @@ void main() {
       expect(theme.semanticTokenColors.length, 4 + 4 + 4);
     });
 
-    test('Bao Light sets its colors over Light 2026', () async {
-      final theme = await bundled('Bao Light');
+    test('Pi Light sets its colors over Light 2026', () async {
+      final theme = await bundled('Pi Light');
       expect(theme.type, ColorScheme.light);
       expect(theme.semanticHighlighting, isTrue);
-      expect(theme.colors['editor.background'], '#FCFBFA');
-      expect(theme.colors['sideBar.background'], '#F3F3F1');
-      expect(theme.colors['button.background'], '#E2B373');
+      expect(theme.colors['editor.background'], '#FBFCFB');
+      expect(theme.colors['sideBar.background'], '#F1F2F3');
+      expect(theme.colors['button.background'], '#8FC6BF');
       // What it leaves unset, from Light 2026's include chain.
       expect(theme.colors['browser.border'], '#00000000');
       // Light 2026's 113 rules, then its own 49 over them.

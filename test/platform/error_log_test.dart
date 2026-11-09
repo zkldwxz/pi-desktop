@@ -39,7 +39,7 @@ void main() {
     expect(
       text,
       startsWith(
-        '--- BaoCode $appVersionString · ${Platform.operatingSystem} ',
+        '--- pi-desktop $appVersionString · ${Platform.operatingSystem} ',
       ),
     );
     expect(

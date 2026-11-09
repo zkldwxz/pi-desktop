@@ -51,7 +51,7 @@ Future<ChannelEntry?> channelEntry(String id) async {
 Future<Uint8List?> _get(Uri url) async {
   final client = HttpClient()
     ..connectionTimeout = _timeout
-    ..userAgent = 'BaoCode/$currentAppVersion (${Platform.operatingSystem})';
+    ..userAgent = 'pi-desktop/$currentAppVersion (${Platform.operatingSystem})';
   try {
     final request = await client.getUrl(url).timeout(_timeout);
     final response = await request.close().timeout(_timeout);

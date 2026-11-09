@@ -80,7 +80,7 @@ class EventLog {
       final before = _runBefore(file);
       _rollIfFull(0);
       _append(
-        '--- BaoCode $appVersionString · ${Platform.operatingSystem} '
+        '--- pi-desktop $appVersionString · ${Platform.operatingSystem} '
         '${Platform.operatingSystemVersion} · pid $pid ---\n',
       );
       if (before != null) _append(_unannounced(before));

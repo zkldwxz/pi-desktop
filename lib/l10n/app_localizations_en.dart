@@ -2848,6 +2848,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get composerCommands => 'Commands';
 
   @override
+  String get piCommandStats => 'Show this session\'s statistics';
+
+  @override
+  String get piCommandCompact => 'Compact the conversation to free up context';
+
+  @override
   String get composerMentions => 'Files and conversations';
 
   @override
@@ -3227,7 +3233,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mcpProbeNote =>
-      'Started and greeted with MCP\'s initialize, as `claude mcp list` checks it.';
+      'Started and greeted with MCP\'s initialize, as `pi mcp list` checks it.';
 
   @override
   String queuedMessages(int count) {
@@ -3662,21 +3668,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generalSettingsCommitAttribution => 'Commit Attribution';
 
   @override
-  String get generalSettingsCommitAttributionDescription =>
-      'Who the commits and pull requests an agent writes credit. Applies to agents started after a change; Claude Code only for now.';
-
-  @override
   String get generalSettingsClaudeCore => 'Core';
 
   @override
-  String get generalSettingsClaudeCoreDescription =>
-      'Claude Code CLI: Anthropic\'s own program, with this machine\'s sign-in and setup; pick it to use a Claude subscription. Built-in: comes with pi-desktop, and uses only the models added in Settings → Models. By default, the CLI where this machine has Claude Code, else the built-in core; the CLI, picked where there is none, is downloaded for you. Changes apply to new sessions.';
-
-  @override
   String get generalSettingsClaudeCoreBuiltin => 'Built-in';
-
-  @override
-  String get generalSettingsClaudeCoreCli => 'Claude Code CLI';
 
   @override
   String get generalSettingsQueuedMessages => 'Messages Sent While Working';
@@ -3695,20 +3690,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generalSettingsPromptSuggestions => 'Suggest Next Prompt';
 
   @override
-  String get generalSettingsPromptSuggestionsDescription =>
-      'After each turn, a greyed-out suggestion for your next message, taken with Tab. Each one is an extra request with the whole conversation; turn it off to save tokens. Applies from the next message; Claude Code only.';
-
-  @override
   String generalSettingsCommitAttributionLabel(String name) {
     return 'Commit Attribution: $name';
   }
 
   @override
   String get generalSettingsAttributionAgent => 'Follow Agent';
-
-  @override
-  String get generalSettingsAttributionAgentDetail =>
-      'The agent\'s own, e.g. Claude Code\'s, or the attribution set in your ~/.claude/settings.json.';
 
   @override
   String get generalSettingsAttributionNone => 'None';
@@ -6032,10 +6019,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get claudePathSetting => 'Path';
 
   @override
-  String get claudePathSettingDescription =>
-      'Empty: the newest Claude Code on this machine, downloaded if there is none. A path: always that one, e.g. one you built. (claudeCode.path)';
-
-  @override
   String get claudePathSettingHint => 'Automatic';
 
   @override
@@ -6050,15 +6033,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String claudePathInUseUnknown(String path) {
     return 'In use: $path';
   }
-
-  @override
-  String claudePathInUseDownloaded(String version) {
-    return 'In use: Claude Code $version, downloaded by pi-desktop';
-  }
-
-  @override
-  String get claudePathMissing =>
-      'None found yet: with the Claude Code CLI picked, it is downloaded as the first conversation starts.';
 
   @override
   String get generalSettingsIdeWindows => 'Fast Ide Windows';
@@ -6309,28 +6283,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customizeKindSkills => 'Skills';
 
   @override
-  String get customizeKindSubagents => 'Subagents';
-
-  @override
   String get customizeKindRules => 'Rules';
 
   @override
   String get customizeKindCommands => 'Commands';
 
   @override
-  String get customizeKindHooks => 'Hooks';
-
-  @override
   String get customizeScopeUser => 'User';
 
   @override
   String get customizeScopeProject => 'Project';
-
-  @override
-  String get customizeScopeLocal => 'Local';
-
-  @override
-  String get customizeScopePlugin => 'Installed';
 
   @override
   String get customizeUserOnly => 'User only';
@@ -6345,8 +6307,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customizeNoMatches => 'No matches';
 
   @override
-  String get customizeUnsupported =>
-      'Customizing Claude Code needs the desktop app.';
+  String get customizeUnsupported => 'Customizing Pi needs the desktop app.';
 
   @override
   String get customizeSave => 'Save';
@@ -6365,7 +6326,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get customizeReadOnly =>
-      'Read only: Claude Code keeps this file itself.';
+      'Read only: Pi keeps this entry in its settings; remove it with Remove.';
 
   @override
   String get customizeEnabled => 'Enabled';
@@ -6403,7 +6364,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get customizeNameUnofficial =>
-      'Officially lowercase, digits and - only; claude.ai may reject it';
+      'The Agent Skills naming is lowercase letters, digits and - only; Pi loads others, but other tools may not';
 
   @override
   String get customizeNameTaken => 'One by that name already exists';
@@ -6428,41 +6389,71 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsSearch => 'Search Settings';
 
   @override
-  String get customizeScopeSynced => 'Synced from claude.ai';
-
-  @override
-  String get customizeSyncedReadOnly =>
-      'Read only: synced from claude.ai, which would write over changes made here.';
-
-  @override
   String customizeEditFile(String file) {
     return 'Edit $file';
   }
 
   @override
   String get customizeEmptyPlugins =>
-      'None installed. Install plugins with /plugin in Claude Code.';
+      'None installed. Find Pi packages in the plugin store below.';
 
   @override
   String get customizeEmptyMcpsUser =>
-      'None yet. Add one with: claude mcp add --scope user <name> -- <command>';
-
-  @override
-  String get customizeEmptyMcpsLocal =>
-      'None yet. Add one with claude mcp add, run in the project.';
+      'None yet. Servers for every project go in mcp.json, or add one with: pi mcp add <name> -- <command>';
 
   @override
   String get customizeEmptyMcpsProject =>
-      'None yet. Servers shared with the project go in its .mcp.json.';
+      'None yet. Servers the project needs go in its .pi/mcp.json.';
 
   @override
-  String customizeEmptyHooks(String file) {
-    return 'None yet. Hooks go under \"hooks\" in $file.';
+  String pluginActionFailed(String error) {
+    return 'pi did not finish: $error';
   }
 
   @override
-  String get customizeConnectorReadOnly =>
-      'Read only: a claude.ai connector, managed in claude.ai\'s settings, under Connectors.';
+  String pluginRemoveMessage(String source) {
+    return 'Pi stops loading $source and removes it from its settings.';
+  }
+
+  @override
+  String pluginRemoveTitle(String name) {
+    return 'Remove $name?';
+  }
+
+  @override
+  String get pluginRemove => 'Remove';
+
+  @override
+  String get pluginInstalled => 'Installed';
+
+  @override
+  String get pluginInstall => 'Install';
+
+  @override
+  String get pluginStoreLocalOnly =>
+      'Plugins are installed on this computer; a remote host\'s are not managed here.';
+
+  @override
+  String pluginStoreFailed(String error) {
+    return 'Could not reach the plugin store: $error';
+  }
+
+  @override
+  String get pluginStoreEmpty => 'No packages found.';
+
+  @override
+  String get pluginStoreSearchPlaceholder => 'Search Pi packages…';
+
+  @override
+  String get pluginStoreHint =>
+      'Pi packages from npm, as listed in the Pi package gallery. A package runs code on this computer: look at its source before installing it.';
+
+  @override
+  String get pluginStoreTitle => 'Plugin store';
+
+  @override
+  String get customizeEmptyRules =>
+      'None yet. Pi reads AGENTS.md; New makes one.';
 
   @override
   String get settingsSectionModels => 'Models';
@@ -7065,10 +7056,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get modelsRoles => 'Roles';
 
   @override
-  String get modelsRolesDescription =>
-      'Which model Claude Code uses for each part of its work. Unset, the model picked stands in. All but the main model may be another upstream\'s: pi-desktop\'s local proxy sends their requests there.';
-
-  @override
   String get modelsRoleUnset => 'Unset';
 
   @override
@@ -7082,22 +7069,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get modelsRoleOpus => 'Opus Tier';
 
   @override
-  String get modelsRoleOpusDescription =>
-      'ANTHROPIC_DEFAULT_OPUS_MODEL: what “opus” means, as in Plan mode.';
-
-  @override
   String get modelsRoleSonnet => 'Sonnet Tier';
 
   @override
-  String get modelsRoleSonnetDescription =>
-      'ANTHROPIC_DEFAULT_SONNET_MODEL: what “sonnet” means.';
-
-  @override
   String get modelsRoleHaiku => 'Haiku Tier';
-
-  @override
-  String get modelsRoleHaikuDescription =>
-      'ANTHROPIC_DEFAULT_HAIKU_MODEL: Claude Code\'s background work, and agents\' titles.';
 
   @override
   String get modelsRoleHaikuWarning =>
@@ -7105,10 +7080,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modelsRoleSubagent => 'Subagents';
-
-  @override
-  String get modelsRoleSubagentDescription =>
-      'CLAUDE_CODE_SUBAGENT_MODEL: the model every subagent runs on, the built-in Explore and Plan and those defined as inherit too, over the one its definition or the agent\'s call names.';
 
   @override
   String get modelsRoleMissing =>
@@ -7129,10 +7100,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modelsNonessential => 'Disable Nonessential Traffic';
-
-  @override
-  String get modelsNonessentialDescription =>
-      'CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: no telemetry, error reports or update checks, which upstreams other than Anthropic do not answer.';
 
   @override
   String get modelsPreserveThinking => 'Send Reasoning Back';
@@ -9168,7 +9135,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsCustomizeKeywords =>
-      'skills subagents rules commands agents claude memory hooks mcp plugins';
+      'skills rules agents.md commands prompts memory mcp plugins packages extensions pi';
 
   @override
   String get stashTitle => 'Stash';
@@ -10300,7 +10267,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get browserSettingsUnpackedDescription =>
-      'Open the extension folder. In chrome://extensions, enable Developer mode, click Load unpacked and choose that folder. BaoCode\'s extension can stay installed.';
+      'Open the extension folder. In chrome://extensions, enable Developer mode, click Load unpacked and choose that folder. pi-desktop\'s extension can stay installed.';
 
   @override
   String get browserSettingsUnpackedDownload => 'Open Extension Folder';
@@ -10618,16 +10585,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sshServerCoreAuto => 'Automatic';
 
   @override
-  String get sshServerCoreAutoHint =>
-      'The server\'s Claude Code CLI if it has one, else the built-in core.';
-
-  @override
   String get sshServerCoreBuiltinHint =>
       'pi-desktop\'s own core: it runs on the upstreams of Settings → Models.';
-
-  @override
-  String get sshServerCoreCliHint =>
-      'The server\'s Claude Code CLI, installed there if it has none.';
 
   @override
   String get sshServerJump => 'Jump Host (optional)';
@@ -13115,7 +13074,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ustatConversationEmptyDetail =>
-      'Only conversations on a custom upstream are counted: Claude\'s official service does not go through pi-desktop\'s proxy.';
+      'Only conversations that go through pi-desktop\'s own upstreams are counted.';
 
   @override
   String get ustatRecordOff => 'Usage is not being recorded';
@@ -13294,7 +13253,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetCreditsHintLater => 'Got It';
 
   @override
-  String get ustatPartMemory => 'CLAUDE.md & rules';
+  String get ustatPartMemory => 'AGENTS.md & rules';
 
   @override
   String get ustatPartSkills => 'Skills';

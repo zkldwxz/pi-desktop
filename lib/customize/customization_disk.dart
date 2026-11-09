@@ -4,7 +4,7 @@ import 'customization_disk_stub.dart'
     if (dart.library.io) 'customization_disk_io.dart'
     as platform;
 
-/// The files Claude Code's customizations are kept in: this machine's, or
+/// The files Pi's customizations are kept in: this machine's, or
 /// those of a remote host, where its agents run.
 abstract interface class CustomizationDisk {
   /// This machine's; null where there are no files (the web).
@@ -17,7 +17,7 @@ abstract interface class CustomizationDisk {
   /// How paths are spelled there.
   p.Context get paths;
 
-  /// Claude Code's config folder there (`~/.claude` unless moved).
+  /// Pi's agent folder there.
   Future<String> configDir();
 
   /// The user's home there; null where none is known.

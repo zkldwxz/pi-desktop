@@ -1050,7 +1050,7 @@ class WorkspaceBridge {
     };
   }
 
-  /// The skills, servers, plugins and subagents: the user's, and those of
+  /// The skills, servers and plugins: the user's, and those of
   /// the projects on this machine.
   Future<List<LinkExtension>> _extensions() async {
     final store = customizations;
@@ -1059,7 +1059,6 @@ class WorkspaceBridge {
       CustomizationKind.skills: 'skill',
       CustomizationKind.mcps: 'mcp',
       CustomizationKind.plugins: 'plugin',
-      CustomizationKind.subagents: 'agent',
     };
     final local = [
       for (final project in workspace.sidebarProjects)
@@ -1078,9 +1077,7 @@ class WorkspaceBridge {
       return [
         for (final item in items)
           // A project's own; the user's come once, with no project.
-          if ((project == null) ==
-              (item.scope != CustomizationScope.project &&
-                  item.scope != CustomizationScope.local))
+          if ((project == null) == (item.scope != CustomizationScope.project))
             LinkExtension(
               kind: kinds[kind]!,
               scope: item.scope.name,

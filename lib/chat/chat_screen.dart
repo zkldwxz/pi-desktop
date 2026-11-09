@@ -37,6 +37,7 @@ import 'resume_after_reset.dart';
 import 'chat_width.dart';
 import 'composer/command_details.dart';
 import 'composer/composer.dart';
+import 'composer/kernel_option_text.dart' show localizedCommandDescription;
 import 'composer/composer_embeds.dart';
 import 'composer/composer_mock_data.dart';
 import 'composer/file_mentions.dart';
@@ -877,9 +878,16 @@ class _ChatScreenState extends State<ChatScreen>
             Suggestion(
               kind: SuggestionKind.command,
               label: command.name,
-              detail: command.argumentHint.isEmpty
-                  ? command.description
-                  : '${command.argumentHint}  ${command.description}',
+              detail: () {
+                final description = localizedCommandDescription(
+                  context.l10n,
+                  command.name,
+                  command.description,
+                );
+                return command.argumentHint.isEmpty
+                    ? description
+                    : '${command.argumentHint}  $description';
+              }(),
               icon: command.icon,
             ),
       ];

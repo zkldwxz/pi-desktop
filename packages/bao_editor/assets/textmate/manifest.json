@@ -2375,18 +2375,18 @@
       "path": "themes/theme-tomorrow-night-blue/themes/tomorrow-night-blue-color-theme.json"
     },
     {
-      "extension": "theme-bao",
-      "id": "Bao Dark",
-      "label": "Bao Dark",
+      "extension": "theme-pi",
+      "id": "Pi Dark",
+      "label": "Pi Dark",
       "uiTheme": "vs-dark",
-      "path": "themes/theme-bao/themes/bao-dark-color-theme.json"
+      "path": "themes/theme-pi/themes/pi-dark-color-theme.json"
     },
     {
-      "extension": "theme-bao",
-      "id": "Bao Light",
-      "label": "Bao Light",
+      "extension": "theme-pi",
+      "id": "Pi Light",
+      "label": "Pi Light",
       "uiTheme": "vs",
-      "path": "themes/theme-bao/themes/bao-light-color-theme.json"
+      "path": "themes/theme-pi/themes/pi-light-color-theme.json"
     }
   ]
 }

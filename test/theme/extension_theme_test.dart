@@ -45,12 +45,12 @@ void main() {
   ];
 
   test('an extension\'s theme is listed and applies from its file', () async {
-    final service = WorkbenchThemeService()..restore(setting: 'Bao Dark');
+    final service = WorkbenchThemeService()..restore(setting: 'Pi Dark');
     await service.initialize();
     await service.setExtensionThemes(themes());
     expect(
       service.colorThemes.map((theme) => theme.id),
-      containsAll(['Bao Dark', 'Acme Dark']),
+      containsAll(['Pi Dark', 'Acme Dark']),
     );
 
     await service.setColorTheme('Acme Dark');
@@ -83,6 +83,6 @@ void main() {
       ..restore(setting: 'Acme Dark');
     await service.initialize();
     await service.setExtensionThemes(const []);
-    expect(service.colorTheme.settingsId, 'Bao Dark');
+    expect(service.colorTheme.settingsId, 'Pi Dark');
   });
 }
