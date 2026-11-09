@@ -118,6 +118,11 @@ jobs:
           VERSION: ${{ needs.check.outputs.version }}
         run: |
           app="build/macos/Build/Products/Release/pi-desktop.app"
+          # The server SSH projects run on their host: built here for Linux (x64,
+          # arm64) and this Mac, carried gzipped (lib/remote/remote_binaries.dart).
+          dart run tool/build_remote_server.dart --out build/remote
+          mkdir -p "$app/Contents/Resources/remote"
+          cp build/remote/VERSION build/remote/pi-desktop-server-*.gz "$app/Contents/Resources/remote/"
           dart run tool/bundle_pi_runtime.dart --target "$app/Contents/Resources/pi-runtime" --platform macos --arch ${{ matrix.arch }}
           arch=${{ matrix.arch }}
           [ "$arch" != x64 ] || arch=x86_64

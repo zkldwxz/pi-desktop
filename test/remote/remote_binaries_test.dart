@@ -84,10 +84,22 @@ void main() {
 
   test('the builds in the folder, when they are there', () async {
     installer();
-    File(p.join(remote, 'pi-desktop-server-linux-x64')).writeAsStringSync('raw');
+    File(p.join(remote, 'pi-desktop-server-linux-x64'))
+        .writeAsStringSync('raw');
     final binaries = found();
     expect(binaries, isA<DirectoryServerBinaries>());
     expect(utf8.decode((await binaries!.read('linux-x64'))!), 'raw');
+    expect(requested, isEmpty);
+  });
+
+  test('the builds an app carries gzipped, read as they were built', () async {
+    installer();
+    File(p.join(remote, 'pi-desktop-server-linux-arm64.gz'))
+        .writeAsBytesSync(gzip.encode(utf8.encode('zipped')));
+    final binaries = found();
+    expect(binaries, isA<DirectoryServerBinaries>());
+    expect(utf8.decode((await binaries!.read('linux-arm64'))!), 'zipped');
+    expect(await binaries.read('linux-x64'), isNull);
     expect(requested, isEmpty);
   });
 

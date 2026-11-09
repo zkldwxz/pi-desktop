@@ -141,7 +141,7 @@ void main() {
       expect(theme.semanticHighlighting, isTrue);
       expect(theme.colors['editor.background'], '#24252B');
       expect(theme.colors['sideBar.background'], '#1D1F24');
-      expect(theme.colors['focusBorder'], '#97CBC4B3');
+      expect(theme.colors['focusBorder'], '#81E1CCB3');
       // What it leaves unset, from Dark 2026's include chain.
       expect(theme.colors['button.secondaryBackground'], '#00000000');
       expect(theme.colors['agentsCard.border'], '#00000000');
@@ -154,9 +154,9 @@ void main() {
       final theme = await bundled('Pi Light');
       expect(theme.type, ColorScheme.light);
       expect(theme.semanticHighlighting, isTrue);
-      expect(theme.colors['editor.background'], '#FBFCFB');
+      expect(theme.colors['editor.background'], '#FAFCFC');
       expect(theme.colors['sideBar.background'], '#F1F2F3');
-      expect(theme.colors['button.background'], '#8FC6BF');
+      expect(theme.colors['button.background'], '#7CD9C5');
       // What it leaves unset, from Light 2026's include chain.
       expect(theme.colors['browser.border'], '#00000000');
       // Light 2026's 113 rules, then its own 49 over them.

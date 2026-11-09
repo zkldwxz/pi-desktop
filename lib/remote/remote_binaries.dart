@@ -12,7 +12,8 @@ import 'host_server_platform.dart'
     if (dart.library.ffi) 'host_server_platform_ffi.dart';
 
 /// The server builds in [directory] (tool/build_remote_server.dart writes
-/// them): `pi-desktop-server-<platform>` (`linux-x64`, `darwin-arm64`, …), and
+/// them): `pi-desktop-server-<platform>` (`linux-x64`, `darwin-arm64`, …),
+/// each as it is or gzipped (`….gz`, which an app carries to stay small), and
 /// `VERSION`, which names them.
 class DirectoryServerBinaries implements RemoteServerBinaries {
   DirectoryServerBinaries(this.directory, this.version);
@@ -22,7 +23,9 @@ class DirectoryServerBinaries implements RemoteServerBinaries {
     final version = readVersion(directory);
     if (version == null) return null;
     final built = platforms.any(
-      (platform) => File(p.join(directory, fileName(platform))).existsSync(),
+      (platform) =>
+          File(p.join(directory, fileName(platform))).existsSync() ||
+          File(p.join(directory, '${fileName(platform)}.gz')).existsSync(),
     );
     return built ? DirectoryServerBinaries(directory, version) : null;
   }
@@ -59,7 +62,9 @@ class DirectoryServerBinaries implements RemoteServerBinaries {
   @override
   Future<List<int>?> read(String platform) async {
     final file = File(p.join(directory, fileName(platform)));
-    return file.existsSync() ? file.readAsBytes() : null;
+    if (file.existsSync()) return file.readAsBytes();
+    final zipped = File(p.join(directory, '${fileName(platform)}.gz'));
+    return zipped.existsSync() ? gzip.decode(await zipped.readAsBytes()) : null;
   }
 }
 
@@ -169,7 +174,9 @@ class DownloadedServerBinaries implements RemoteServerBinaries {
   }
 
   Future<List<int>> _fetch(String platform, ServerDownload download) async {
-    final file = File(p.join(cacheDir, version, 'pi-desktop-server-$platform.gz'));
+    final file = File(
+      p.join(cacheDir, version, 'pi-desktop-server-$platform.gz'),
+    );
     final name = SshLauncher.describe(platform);
     if (await file.exists()) {
       final kept = await file.readAsBytes();

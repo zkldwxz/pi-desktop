@@ -11,12 +11,12 @@
       <stop offset="1" stop-color="#FFFFFF" stop-opacity=".08"/>
     </linearGradient>
     <linearGradient id="pi" x1="512" y1="300" x2="512" y2="740" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#B7DDD6"/>
-      <stop offset="1" stop-color="#7FB6AC"/>
+      <stop offset="0" stop-color="#BDF5E8"/>
+      <stop offset="1" stop-color="#4FD6BA"/>
     </linearGradient>
     <radialGradient id="glow" cx="512" cy="520" r="360" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#8ABEB7" stop-opacity=".20"/>
-      <stop offset="1" stop-color="#8ABEB7" stop-opacity="0"/>
+      <stop offset="0" stop-color="#5EE0C4" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#5EE0C4" stop-opacity="0"/>
     </radialGradient>
     <filter id="shadow" filterUnits="userSpaceOnUse" x="40" y="60" width="944" height="944" color-interpolation-filters="sRGB">
       <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000" flood-opacity=".38"/>
@@ -33,5 +33,5 @@
     <path d="M616 372V588C616 652 642 690 700 690"/>
   </g>
   <!-- the cursor of a prompt -->
-  <rect x="772" y="600" width="50" height="112" rx="14" fill="#E8F3F1" opacity=".95" transform="translate(-34 -14)"/>
+  <rect x="772" y="600" width="50" height="112" rx="14" fill="#F2FFFB" opacity=".96" transform="translate(-34 -14)"/>
 </svg>
