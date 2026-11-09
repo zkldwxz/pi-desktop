@@ -4,6 +4,8 @@
 #
 #   Actions → macOS build → Run workflow         (pick the architecture)
 #   git push to a build/** branch                (both architectures)
+#   (workflow_dispatch needs this file on the default branch; until it is
+#   merged there, the branch below builds on every push.)
 name: macOS build
 
 on:
@@ -15,7 +17,7 @@ on:
         options: [both, arm64, x64]
         default: both
   push:
-    branches: ['build/**']
+    branches: ['build/**', 'claude/relaxed-clarke-wc7ko2']
 
 permissions:
   contents: read
