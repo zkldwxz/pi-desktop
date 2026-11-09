@@ -1,8 +1,8 @@
 // Where the Git log's details show: beside the table by the width, or as
 // picked from the toolbar's menu, beside it or under it whatever the width.
 
-import 'package:baocode/ide/git/ide_git_log_view.dart';
-import 'package:baocode/ide/ide_diff_options.dart';
+import 'package:pi-desktop/ide/git/ide_git_log_view.dart';
+import 'package:pi-desktop/ide/ide_diff_options.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';

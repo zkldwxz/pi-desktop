@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/settings/jsonc.dart';
+import 'package:pi-desktop/settings/jsonc.dart';
 
 /// [text] with [path] set to [value] (or removed, or inserted) as
 /// [modifyJsonc] edits it.

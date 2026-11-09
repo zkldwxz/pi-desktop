@@ -2,8 +2,8 @@
 // icon and a name each, a branch and its remote's as one, the last giving
 // way to their icons alone when the row is short of room.
 
-import 'package:baocode/ide/git/git_model.dart';
-import 'package:baocode/ide/git/ide_git_ref_labels.dart';
+import 'package:pi-desktop/ide/git/git_model.dart';
+import 'package:pi-desktop/ide/git/ide_git_ref_labels.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -86,7 +86,7 @@ void main() {
   testWidgets("a long subject is cut short before the branch's name; its "
       'hover has the whole commit', (tester) async {
     const subject =
-        'Merge pull request #341 from baocode-dev/feat/git-parity with a '
+        'Merge pull request #341 from pi-desktop-dev/feat/git-parity with a '
         'subject long enough to be cut short in any table';
     await pump(tester, 900, 'v1.0', subject: subject);
     expect(find.text('topic'), findsWidgets);

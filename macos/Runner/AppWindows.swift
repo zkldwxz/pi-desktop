@@ -1,7 +1,7 @@
 import Cocoa
 import FlutterMacOS
 
-/// The app's windows for Flutter, over `baocode/windows` (see
+/// The app's windows for Flutter, over `pi-desktop/windows` (see
 /// lib/window/window_host.dart): the main one (the chat's, the engine's
 /// implicit view) and the IDE's beside it, each a view of the one engine.
 ///
@@ -18,7 +18,7 @@ import FlutterMacOS
 final class AppWindows: NSObject {
   static var shared: AppWindows?
 
-  private static let mainShownKey = "BaoCodeMainShownAtLaunch"
+  private static let mainShownKey = "PiDesktopMainShownAtLaunch"
 
   /// Whether the main window shows at launch, as Flutter last said
   /// (`setMainShownAtLaunch`): not when only the IDE's windows come back.
@@ -51,7 +51,7 @@ final class AppWindows: NSObject {
     self.engine = engine
     self.main = main
     channel = FlutterMethodChannel(
-      name: "baocode/windows", binaryMessenger: engine.binaryMessenger)
+      name: "pi-desktop/windows", binaryMessenger: engine.binaryMessenger)
     super.init()
     channel.setMethodCallHandler { [weak self] call, result in
       guard let self else {
@@ -102,7 +102,7 @@ final class AppWindows: NSObject {
     case "create":
       let arguments = call.arguments as? [String: Any] ?? [:]
       result(create(
-        title: arguments["title"] as? String ?? "BaoCode",
+        title: arguments["title"] as? String ?? "pi-desktop",
         frame: arguments["frame"] as? [String: Any],
         width: arguments["width"] as? Double))
     case "close":
@@ -193,7 +193,7 @@ final class AppWindows: NSObject {
 
   // MARK: Windows
 
-  private func window(_ viewId: Int64) -> BaoWindow? {
+  private func window(_ viewId: Int64) -> PiWindow? {
     viewId == 0 ? main : windows[viewId]
   }
 
@@ -205,7 +205,7 @@ final class AppWindows: NSObject {
     let flutter = FlutterViewController(engine: engine, nibName: nil, bundle: nil)
     let viewId = flutter.viewIdentifier
     // An agent's window (AppWindows.openAgent) asks to be narrower.
-    var size = BaoWindow.defaultSize
+    var size = PiWindow.defaultSize
     if let width, width > 0 { size.width = width }
     let window = IdeWindow(
       contentRect: NSRect(origin: .zero, size: size),
@@ -222,7 +222,7 @@ final class AppWindows: NSObject {
       window.setFrame(rect, display: false)
       if frame["maximized"] as? Bool == true { window.zoom(nil) }
       fullScreen = frame["fullscreen"] as? Bool == true
-    } else if let front = NSApp.keyWindow as? BaoWindow, front.isVisible,
+    } else if let front = NSApp.keyWindow as? PiWindow, front.isVisible,
               !front.styleMask.contains(.fullScreen) {
       // Down and right of the one in front, as a document window.
       window.setFrameTopLeftPoint(front.cascadeTopLeft(
@@ -296,14 +296,14 @@ final class AppWindows: NSObject {
   /// The window to ask in (quitting, a notification's sheet): the one in
   /// front, else the main one, shown.
   func bringFront() {
-    let front = NSApp.keyWindow as? BaoWindow
-      ?? NSApp.orderedWindows.first { $0 is BaoWindow && $0.isVisible } as? BaoWindow
+    let front = NSApp.keyWindow as? PiWindow
+      ?? NSApp.orderedWindows.first { $0 is PiWindow && $0.isVisible } as? PiWindow
       ?? main
     show(front)
   }
 
-  /// Asks Flutter whether [window] may close (see BaoWindow).
-  func closeRequested(_ window: BaoWindow) {
+  /// Asks Flutter whether [window] may close (see PiWindow).
+  func closeRequested(_ window: PiWindow) {
     channel.invokeMethod("closeRequested", arguments: window.viewId)
   }
 
@@ -323,7 +323,7 @@ final class AppWindows: NSObject {
           let viewId = liveViewId(of: window) else { return }
     tellEngine("windowDidBecomeKey:", viewId)
     // The stash's panel is none of the app's windows (see StashPanel).
-    guard window is BaoWindow else { return }
+    guard window is PiWindow else { return }
     channel.invokeMethod("focused", arguments: viewId)
     Attention.shared?.refreshTray()
   }
@@ -359,7 +359,7 @@ final class AppWindows: NSObject {
   }
 
   @objc private func frameChanged(_ notification: Notification) {
-    guard started, let window = notification.object as? BaoWindow,
+    guard started, let window = notification.object as? PiWindow,
           let viewId = liveViewId(of: window) else { return }
     frameTimers[viewId]?.invalidate()
     frameTimers[viewId] = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) {
@@ -434,7 +434,7 @@ final class AppWindows: NSObject {
 
   /// The next of the app's windows shown, the one in front last.
   @objc private func cycleWindows(_ sender: Any?) {
-    let shown = NSApp.orderedWindows.filter { $0 is BaoWindow && $0.isVisible && !$0.isMiniaturized }
+    let shown = NSApp.orderedWindows.filter { $0 is PiWindow && $0.isVisible && !$0.isMiniaturized }
     guard shown.count > 1, let next = shown.last else { return }
     show(next)
   }
@@ -444,7 +444,7 @@ final class AppWindows: NSObject {
   func menuItems(target: AnyObject, choose: Selector, newWindow: Selector) -> [NSMenuItem] {
     guard started else { return [] }
     var items: [NSMenuItem] = []
-    let key = NSApp.keyWindow as? BaoWindow
+    let key = NSApp.keyWindow as? PiWindow
     for entry in entries {
       let item = NSMenuItem(title: entry.title, action: choose, keyEquivalent: "")
       item.target = target
@@ -490,4 +490,4 @@ final class AppWindows: NSObject {
 }
 
 /// A window the IDE opens: one folder's (or none's, its welcome page).
-final class IdeWindow: BaoWindow {}
+final class IdeWindow: PiWindow {}

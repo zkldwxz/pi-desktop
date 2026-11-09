@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See packages/bao_editor/lib/monaco/LICENSE.txt for license information.
+ *  Licensed under the MIT License. See packages/pi_editor/lib/monaco/LICENSE.txt for license information.
  *--------------------------------------------------------------------------------------------*/
 // The workbench's color theme (`workbench.colorTheme`): which bundled VS Code
 // theme is current, its colors as widgets read them, and keeping the choice.
@@ -11,7 +11,7 @@
 // `restoreColorTheme`) and common/workbenchThemeService.ts
 // (`ThemeSettingDefaults`, `COLOR_THEME_*_INITIAL_COLORS`,
 // `migrateThemeSettingsId`). The themes are the ones bundled under
-// packages/bao_editor/assets/textmate (textmate_manifest.dart).
+// packages/pi_editor/assets/textmate (textmate_manifest.dart).
 //
 // Deviations: settings and storage are two preference entries the app keeps
 // (`ColorThemeStorage`), read once at startup; no customizations, transient
@@ -30,24 +30,24 @@ import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:bao_editor/monaco/vs/base/common/color.dart' as vs;
-import 'package:bao_editor/monaco/vs/platform/theme/common/color_utils.dart';
-import 'package:bao_editor/monaco/vs/platform/theme/common/theme.dart';
-import 'package:bao_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
-import 'package:bao_editor/monaco/vs/workbench/services/themes/common/workbench_theme_service.dart'
+import 'package:pi_editor/monaco/vs/base/common/color.dart' as vs;
+import 'package:pi_editor/monaco/vs/platform/theme/common/color_utils.dart';
+import 'package:pi_editor/monaco/vs/platform/theme/common/theme.dart';
+import 'package:pi_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
+import 'package:pi_editor/monaco/vs/workbench/services/themes/common/workbench_theme_service.dart'
     show IThemeExtensionPoint;
 import 'package:path/path.dart' as p;
-import 'package:bao_editor/textmate/textmate_manifest.dart';
-import 'package:bao_editor/textmate/textmate_syntax.dart'
+import 'package:pi_editor/textmate/textmate_manifest.dart';
+import 'package:pi_editor/textmate/textmate_syntax.dart'
     show TextMateThemeSource;
-import 'package:bao_editor/textmate/textmate_worker.dart'
+import 'package:pi_editor/textmate/textmate_worker.dart'
     show decodeTextMateResource;
 
 import '../ide/ide_color_theme_picker.dart';
 import '../platform/event_log.dart';
 import 'workbench_theme_initial_colors.dart';
 
-export 'package:bao_editor/monaco/vs/platform/theme/common/theme.dart'
+export 'package:pi_editor/monaco/vs/platform/theme/common/theme.dart'
     show
         ColorScheme,
         ThemeTypeSelector,

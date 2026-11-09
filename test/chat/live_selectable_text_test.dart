@@ -1,4 +1,4 @@
-import 'package:baocode/chat/widgets/live_selectable_text.dart';
+import 'package:pi-desktop/chat/widgets/live_selectable_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

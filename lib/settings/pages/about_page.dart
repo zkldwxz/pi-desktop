@@ -12,13 +12,13 @@ import '../../workspace/editor_launcher.dart' show openExternal;
 import '../../workspace/window_header/about_dialog.dart' show aboutIconAsset;
 import 'settings_widgets.dart';
 
-/// Settings → About: what BaoCode is, which build this is, and where it
+/// Settings → About: what pi-desktop is, which build this is, and where it
 /// is made in the open: its repository (a star there helps others find
 /// it), its site, its changelog, and where to tell of a problem.
 class AboutSettingsPage extends StatelessWidget {
   const AboutSettingsPage({super.key});
 
-  static final website = Uri.parse('https://baocode.dev');
+  static final website = Uri.parse('https://github.com/zkldwxz/pi-desktop');
   static final issues = StarPrompt.repository.replace(
     path: '${StarPrompt.repository.path}/issues',
   );
@@ -58,7 +58,7 @@ class AboutSettingsPage extends StatelessWidget {
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       Text(
-                        'BaoCode',
+                        'pi-desktop',
                         style: TextStyle(
                           color: AppColors.textPrimary,
                           fontSize: 17,

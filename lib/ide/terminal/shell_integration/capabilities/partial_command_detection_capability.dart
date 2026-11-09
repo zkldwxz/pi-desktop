@@ -10,12 +10,12 @@
 // src/vs/platform/terminal/common/capabilities/
 // partialCommandDetectionCapability.ts.
 
-import 'package:bao_xterm/common/buffer/types.dart';
-import 'package:bao_xterm/common/event.dart';
-import 'package:bao_xterm/common/lifecycle.dart';
-import 'package:bao_xterm/common/public/parser_api.dart';
-import 'package:bao_xterm/headless/terminal.dart';
-import 'package:bao_xterm/typings/xterm.dart' show IFunctionIdentifier;
+import 'package:pi_xterm/common/buffer/types.dart';
+import 'package:pi_xterm/common/event.dart';
+import 'package:pi_xterm/common/lifecycle.dart';
+import 'package:pi_xterm/common/public/parser_api.dart';
+import 'package:pi_xterm/headless/terminal.dart';
+import 'package:pi_xterm/typings/xterm.dart' show IFunctionIdentifier;
 
 import 'capabilities.dart';
 

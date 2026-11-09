@@ -6,16 +6,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/base/uri.dart' show VsUri;
-import 'package:baocode/debug/base/event.dart';
-import 'package:baocode/debug/common/debug_model.dart';
-import 'package:baocode/debug/common/debug_storage.dart';
-import 'package:baocode/debug/common/debug_types.dart';
-import 'package:baocode/debug/service/debug_configuration_manager.dart';
-import 'package:baocode/debug/service/debug_service.dart';
-import 'package:baocode/debug/service/debugger.dart';
-import 'package:baocode/debug/session/debug_adapter.dart';
-import 'package:baocode/debug/session/debug_session.dart';
+import 'package:pi-desktop/base/uri.dart' show VsUri;
+import 'package:pi-desktop/debug/base/event.dart';
+import 'package:pi-desktop/debug/common/debug_model.dart';
+import 'package:pi-desktop/debug/common/debug_storage.dart';
+import 'package:pi-desktop/debug/common/debug_types.dart';
+import 'package:pi-desktop/debug/service/debug_configuration_manager.dart';
+import 'package:pi-desktop/debug/service/debug_service.dart';
+import 'package:pi-desktop/debug/service/debugger.dart';
+import 'package:pi-desktop/debug/session/debug_adapter.dart';
+import 'package:pi-desktop/debug/session/debug_session.dart';
 
 import '../../support/fake_debug_adapter.dart';
 

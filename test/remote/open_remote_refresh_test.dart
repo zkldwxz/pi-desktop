@@ -3,11 +3,11 @@ library;
 
 import 'dart:io';
 
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/remote/open_remote.dart';
-import 'package:baocode/remote/ssh_host.dart';
-import 'package:baocode/theme/codicons.dart';
+import 'package:pi-desktop/ide/ide_quick_input.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/remote/open_remote.dart';
+import 'package:pi-desktop/remote/ssh_host.dart';
+import 'package:pi-desktop/theme/codicons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -22,8 +22,8 @@ void main() {
   late SshHosts hosts;
 
   setUp(() {
-    dataDir = Directory.systemTemp.createTempSync('baocode-remote-data-');
-    home = Directory.systemTemp.createTempSync('baocode-remote-home-');
+    dataDir = Directory.systemTemp.createTempSync('pi-desktop-remote-data-');
+    home = Directory.systemTemp.createTempSync('pi-desktop-remote-home-');
     hosts = SshHosts(connect: MemoryConnector(dataDir.path).call);
   });
   tearDown(() async {

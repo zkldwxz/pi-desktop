@@ -15,31 +15,31 @@ import '../l10n/l10n.dart';
 import '../theme/app_theme.dart';
 import '../theme/workbench_theme.dart' hide ColorScheme;
 
-import 'package:bao_editor/monaco/flutter/diff_editor.dart';
-import 'package:bao_editor/monaco/flutter/diff_editor_model.dart';
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/vs/editor/common/diff/range_mapping.dart'
+import 'package:pi_editor/monaco/flutter/diff_editor.dart';
+import 'package:pi_editor/monaco/flutter/diff_editor_model.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/vs/editor/common/diff/range_mapping.dart'
     show DetailedLineRangeMapping, LineRangeMapping;
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
-import 'package:bao_editor/monaco/flutter/editor_view_painters.dart'
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart';
+import 'package:pi_editor/monaco/flutter/editor_view_painters.dart'
     show EditorViewGeometry;
-import 'package:bao_editor/monaco/flutter/monaco_syntax.dart';
-import 'package:bao_editor/monaco/flutter/selection_adapter.dart';
-import 'package:bao_editor/monaco/flutter/theme_assets.dart';
-import 'package:bao_editor/monaco/vs/editor/common/core/cursor_columns.dart';
-import 'package:bao_editor/monaco/vs/editor/common/core/position.dart';
-import 'package:bao_editor/monaco/vs/editor/contrib/find/browser/replace_pattern.dart';
-import 'package:bao_editor/monaco/vs/editor/contrib/gotoError/browser/marker_navigation.dart';
-import 'package:bao_editor/monaco/vs/editor/common/model/search/piece_tree_search.dart';
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_keybindings.dart';
-import 'package:bao_editor/monaco/flutter/language_configuration_assets.dart';
-import 'package:bao_editor/monaco/flutter/language_overrides.dart';
-import 'package:bao_editor/monaco/vs/editor/common/languages/language_configuration_registry.dart'
+import 'package:pi_editor/monaco/flutter/monaco_syntax.dart';
+import 'package:pi_editor/monaco/flutter/selection_adapter.dart';
+import 'package:pi_editor/monaco/flutter/theme_assets.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/cursor_columns.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/position.dart';
+import 'package:pi_editor/monaco/vs/editor/contrib/find/browser/replace_pattern.dart';
+import 'package:pi_editor/monaco/vs/editor/contrib/gotoError/browser/marker_navigation.dart';
+import 'package:pi_editor/monaco/vs/editor/common/model/search/piece_tree_search.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_keybindings.dart';
+import 'package:pi_editor/monaco/flutter/language_configuration_assets.dart';
+import 'package:pi_editor/monaco/flutter/language_overrides.dart';
+import 'package:pi_editor/monaco/vs/editor/common/languages/language_configuration_registry.dart'
     show plainTextLanguageConfiguration;
-import 'package:bao_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
-import 'package:bao_editor/textmate/textmate_syntax.dart';
+import 'package:pi_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
+import 'package:pi_editor/textmate/textmate_syntax.dart';
 
 import '../base/uri.dart' show VsUri;
 
@@ -98,7 +98,7 @@ typedef IdeEditorPosition = ({
 enum IdeCompareWith { branch, revision, clipboard, localHistory }
 
 /// The Fast IDE editor: the painted Monaco port by default, with the Flutter
-/// TextField kept as a fallback (`--dart-define=BAOCODE_NATIVE_EDITOR=false`).
+/// TextField kept as a fallback (`--dart-define=PI_DESKTOP_NATIVE_EDITOR=false`).
 class IdeEditor extends StatefulWidget {
   const IdeEditor({
     super.key,
@@ -109,7 +109,7 @@ class IdeEditor extends StatefulWidget {
     required this.onPositionChanged,
     this.onScrolled,
     this.nativeEditorEnabled = const bool.fromEnvironment(
-      'BAOCODE_NATIVE_EDITOR',
+      'PI_DESKTOP_NATIVE_EDITOR',
       defaultValue: true,
     ),
     this.onOpenLocation,
@@ -136,7 +136,7 @@ class IdeEditor extends StatefulWidget {
   /// ([IdeEditorState.keepViewStates]).
   final VoidCallback? onScrolled;
 
-  /// Opt out with --dart-define=BAOCODE_NATIVE_EDITOR=false, or override in
+  /// Opt out with --dart-define=PI_DESKTOP_NATIVE_EDITOR=false, or override in
   /// tests. The painted surface is a partial Monaco port; see PARITY.md.
   final bool nativeEditorEnabled;
 

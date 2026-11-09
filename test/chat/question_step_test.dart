@@ -1,7 +1,7 @@
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/widgets/step_header.dart';
-import 'package:baocode/chat/widgets/tool_call_row.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/widgets/step_header.dart';
+import 'package:pi-desktop/chat/widgets/tool_call_row.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

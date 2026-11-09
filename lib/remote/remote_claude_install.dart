@@ -9,8 +9,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:bao_remote/client.dart';
-import 'package:bao_remote/claude.dart';
+import 'package:pi_remote/client.dart';
+import 'package:pi_remote/claude.dart';
 import 'package:path/path.dart' as p;
 
 import 'ssh_host.dart';
@@ -46,7 +46,7 @@ Future<void> _install(SshHost host, Directory? downloads) async {
   final build = await release.current(ClaudeRelease.platformOf(platform));
   final file = File(
     p.join(
-      (downloads ?? Directory(p.join(Directory.systemTemp.path, 'baocode')))
+      (downloads ?? Directory(p.join(Directory.systemTemp.path, 'pi-desktop')))
           .path,
       'claude-${build.version}-${build.platform}',
     ),

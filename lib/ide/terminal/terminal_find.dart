@@ -27,11 +27,11 @@
 // when the theme changes (which also moves one match up and recolors only
 // the current match).
 
-import 'package:bao_xterm/addons/addon_search/search_addon.dart';
-import 'package:bao_xterm/addons/addon_search/typings/addon_search.dart'
+import 'package:pi_xterm/addons/addon_search/search_addon.dart';
+import 'package:pi_xterm/addons/addon_search/typings/addon_search.dart'
     hide SearchAddon;
-import 'package:bao_xterm/common/event.dart';
-import 'package:bao_xterm/common/lifecycle.dart';
+import 'package:pi_xterm/common/event.dart';
+import 'package:pi_xterm/common/lifecycle.dart';
 
 /// The terminal's find state over its search addon: VS Code's
 /// TerminalFindWidget and SimpleFindWidget without their DOM.

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bao_link/bao_link.dart';
+import 'package:pi_link/pi_link.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -286,7 +286,7 @@ class _MobileSettingsPageState extends State<MobileSettingsPage> {
     );
   }
 
-  /// The relay picked: one of BaoCode's, or Custom last.
+  /// The relay picked: one of pi-desktop's, or Custom last.
   Widget _pinnedRelay(AppLocalizations l10n) {
     final host = _host;
     final picked = host.relays.single;

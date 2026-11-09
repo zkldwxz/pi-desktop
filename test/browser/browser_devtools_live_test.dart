@@ -4,15 +4,15 @@
 // replay, WebSockets, site data, dialogs, uploads, coverage, memory, the CPU,
 // and a recording of the user. Run by hand:
 //
-//   BAO_BROWSER_LIVE="/path/to/Google Chrome for Testing" \
+//   PI_BROWSER_LIVE="/path/to/Google Chrome for Testing" \
 //     flutter test test/browser/browser_devtools_live_test.dart
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/browser/browser_bridge.dart';
-import 'package:baocode/browser/browser_tools.dart';
-import 'package:baocode/kernel/claude_code/claude_sdk_tools.dart';
+import 'package:pi-desktop/browser/browser_bridge.dart';
+import 'package:pi-desktop/browser/browser_tools.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_sdk_tools.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
@@ -56,23 +56,23 @@ String _mappings(List<List<List<int>>> lines) {
 }
 
 void main() {
-  final chrome = Platform.environment['BAO_BROWSER_LIVE'];
+  final chrome = Platform.environment['PI_BROWSER_LIVE'];
   final host = p.absolute(
-    'build/macos/Build/Products/Debug/BaoCode.app/Contents/MacOS/'
-    'baocode-browser-host',
+    'build/macos/Build/Products/Debug/pi-desktop.app/Contents/MacOS/'
+    'pi-desktop-browser-host',
   );
 
   test(
     "an agent debugs a page with DevTools' tools through the extension",
     () async {
-      final profile = Directory.systemTemp.createTempSync('bao-devtools-');
+      final profile = Directory.systemTemp.createTempSync('pi-devtools-');
       final hosts = Directory(p.join(profile.path, 'NativeMessagingHosts'))
         ..createSync();
       File(p.join(hosts.path, '${BrowserBridge.hostName}.json'))
           .writeAsStringSync(
             jsonEncode({
               'name': BrowserBridge.hostName,
-              'description': 'BaoCode',
+              'description': 'pi-desktop',
               'path': host,
               'type': 'stdio',
               'allowed_origins': [
@@ -161,7 +161,7 @@ void main() {
       });
       final page = 'http://127.0.0.1:${server.port}/';
 
-      final sockets = Directory('/tmp').createTempSync('bao-');
+      final sockets = Directory('/tmp').createTempSync('pi-');
       addTearDown(() => sockets.deleteSync(recursive: true));
       BrowserBridge.socketFolder = sockets.path;
       final bridge = BrowserBridge.instance;
@@ -697,7 +697,7 @@ void main() {
 
       await call('browser_close', {'tabId': tabId});
     },
-    skip: chrome == null ? 'BAO_BROWSER_LIVE not set' : false,
+    skip: chrome == null ? 'PI_BROWSER_LIVE not set' : false,
     timeout: const Timeout(Duration(minutes: 4)),
   );
 }

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_remote/local.dart' show AppPaths;
+import 'package:pi_remote/local.dart' show AppPaths;
 import 'package:path/path.dart' as p;
 
 import '../kernel/claude_code/claude_environment.dart';

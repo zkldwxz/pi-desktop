@@ -5,7 +5,7 @@ import WebKit
 /// The channel build's login window (see lib/channel/account/): the user's
 /// channel's account site in a web view of its own, signed in to as in a
 /// browser, its cookies and storage kept in memory only, gone once it
-/// closes. Over `baocode/login_window`: `open`, `evaluate` (a script's
+/// closes. Over `pi-desktop/login_window`: `open`, `evaluate` (a script's
 /// value, as the JSON string the script makes of it), `cookies` (the site's,
 /// HttpOnly ones too) and `close`; `closed` back, however it closed.
 final class LoginWindowChannel: NSObject, NSWindowDelegate, WKUIDelegate, WKNavigationDelegate {
@@ -14,7 +14,7 @@ final class LoginWindowChannel: NSObject, NSWindowDelegate, WKUIDelegate, WKNavi
   private var webView: WKWebView?
 
   init(messenger: FlutterBinaryMessenger) {
-    channel = FlutterMethodChannel(name: "baocode/login_window", binaryMessenger: messenger)
+    channel = FlutterMethodChannel(name: "pi-desktop/login_window", binaryMessenger: messenger)
     super.init()
     channel.setMethodCallHandler { [weak self] call, result in
       self?.handle(call, result: result)

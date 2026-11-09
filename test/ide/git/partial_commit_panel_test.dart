@@ -2,8 +2,8 @@
 // with a check box by each change; one unchecked, the file is checked in
 // part, and the commit takes the others alone, through an index of its own.
 
-import 'package:baocode/ide/git/ide_git_commit_panel.dart';
-import 'package:baocode/ide/ide_diff_options.dart';
+import 'package:pi-desktop/ide/git/ide_git_commit_panel.dart';
+import 'package:pi-desktop/ide/ide_diff_options.dart';
 import 'package:flutter/material.dart' show TextField;
 import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/services.dart';

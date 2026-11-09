@@ -197,7 +197,7 @@ String imageEditField(String model) => _isGptImage(model) ? 'image[]' : 'image';
   List<(String, ImageInput)> files,
 ) {
   final boundary =
-      '----baocode${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}';
+      '----pi-desktop${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}';
   final out = BytesBuilder(copy: false);
   void line(String text) => out.add(utf8.encode('$text\r\n'));
   for (final MapEntry(:key, :value) in fields.entries) {

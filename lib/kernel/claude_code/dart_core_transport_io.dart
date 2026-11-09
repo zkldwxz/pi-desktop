@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:bao_agent/bao_agent.dart';
+import 'package:pi_agent/pi_agent.dart';
 
 import '../../models/launch_environment.dart';
 import '../../network/network_proxy_io.dart';
 import 'claude_code_transport.dart';
 import 'claude_environment.dart';
 
-/// A session on BaoCode's own core: package:bao_agent's engine in an
+/// A session on pi-desktop's own core: package:pi_agent's engine in an
 /// isolate of its own, speaking what the CLI speaks on its stdin and
 /// stdout, started as [ClaudeLaunch] would start the CLI.
 class DartCoreTransport implements ClaudeCodeTransport {

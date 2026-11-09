@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/theme/svg_icons.dart';
+import 'package:pi-desktop/theme/svg_icons.dart';
 
 void main() {
   testWidgets('an SVG icon is its size in a larger box, as a glyph is, '

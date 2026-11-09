@@ -1,18 +1,18 @@
 // Runs the real CLI on the model of a settings file of the app's (one it
-// wrote for an upstream: BAOCODE_LIVE_SETTINGS), for a person to start.
+// wrote for an upstream: PI_DESKTOP_LIVE_SETTINGS), for a person to start.
 @Tags(['e2e'])
 library;
 
 import 'dart:io';
 
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/review/change_review.dart';
-import 'package:baocode/chat/review/review_store_io.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/claude_code/process_transport.dart';
-import 'package:baocode/kernel/kernel_types.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/review/change_review.dart';
+import 'package:pi-desktop/chat/review/review_store_io.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/process_transport.dart';
+import 'package:pi-desktop/kernel/kernel_types.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -20,7 +20,7 @@ import 'package:path/path.dart' as p;
 import 'e2e_claude_real_test.dart' show tempProject;
 
 void main() {
-  final settings = Platform.environment['BAOCODE_LIVE_SETTINGS'];
+  final settings = Platform.environment['PI_DESKTOP_LIVE_SETTINGS'];
 
   test(
     "real Claude Code: each conversation's edits and its subagent's are "
@@ -28,7 +28,7 @@ void main() {
     () async {
       final cwd = await tempProject();
       final checkpoints = p.join(
-        (await Directory.systemTemp.createTemp('baocode-e2e-review-')).path,
+        (await Directory.systemTemp.createTemp('pi-desktop-e2e-review-')).path,
         'checkpoints',
       );
       String read(String name) => File(p.join(cwd, name)).readAsStringSync();
@@ -123,7 +123,7 @@ void main() {
       expect(first.fileChanges, isEmpty);
       expect(listed(second), {'b.txt': (1, 1, FileChangeKind.modified)});
     },
-    skip: settings == null ? 'BAOCODE_LIVE_SETTINGS is not set' : false,
+    skip: settings == null ? 'PI_DESKTOP_LIVE_SETTINGS is not set' : false,
     timeout: const Timeout(Duration(minutes: 10)),
   );
 }

@@ -4,24 +4,24 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/composer/composer_files.dart';
-import 'package:baocode/icons/project_icon.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/theme/workbench_theme.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/composer/composer_files.dart';
+import 'package:pi-desktop/icons/project_icon.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/theme/workbench_theme.dart';
 import 'package:flutter/services.dart';
 
 import 'dart:ui' as ui;
 
-import 'package:baocode/ide/git/ide_git_log_view.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/ide/terminal/terminal_instance.dart';
-import 'package:baocode/ide/terminal/terminal_view.dart';
-import 'package:baocode/settings/user_settings.dart';
-import 'package:baocode/workspace/chat_grid.dart';
-import 'package:baocode/workspace/window_controls.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/ide/git/ide_git_log_view.dart';
+import 'package:pi-desktop/ide/ide_workbench.dart';
+import 'package:pi-desktop/ide/terminal/terminal_instance.dart';
+import 'package:pi-desktop/ide/terminal/terminal_view.dart';
+import 'package:pi-desktop/settings/user_settings.dart';
+import 'package:pi-desktop/workspace/chat_grid.dart';
+import 'package:pi-desktop/workspace/window_controls.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
@@ -97,7 +97,7 @@ class ShowScene {
   final SettingsFiles settings;
 
   static void log(String message) =>
-      stderr.writeln('BAOCODE_SHOWCASE_LOG $message');
+      stderr.writeln('PI_DESKTOP_SHOWCASE_LOG $message');
 
   String code(String project) => p.join(home, 'code', project);
 

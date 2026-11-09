@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:bao_remote/lsp.dart';
+import 'package:pi_remote/lsp.dart';
 import 'package:flutter/services.dart';
 
-export 'package:bao_remote/lsp.dart' show MasonPackage, MasonRegistry;
+export 'package:pi_remote/lsp.dart' show MasonPackage, MasonRegistry;
 
 /// The registry bundled as [MasonRegistry.assetPath].
 Future<MasonRegistry> loadMasonRegistry({AssetBundle? bundle}) async =>

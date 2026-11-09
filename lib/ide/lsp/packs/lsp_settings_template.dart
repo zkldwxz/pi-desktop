@@ -6,9 +6,9 @@ import '../../../platform/data_dir.dart' show writeFileAtomically;
 /// none: its examples commented out, so that it changes nothing until the
 /// user has it do something (#304).
 const lspSettingsTemplate = '''
-// Language servers: your own, and settings for those BaoCode knows.
+// Language servers: your own, and settings for those pi-desktop knows.
 // Saved, it applies to the open files at once. Every field:
-// https://github.com/baocode-dev/baocode/blob/main/lib/ide/lsp/packs/README.md
+// https://github.com/zkldwxz/pi-desktop/blob/main/lib/ide/lsp/packs/README.md
 {
   // A server of your own for a language, e.g. rust-glancer in place of
   // rust-analyzer for Rust. Its command is a name on your PATH, or the

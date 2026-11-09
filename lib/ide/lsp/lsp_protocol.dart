@@ -6,9 +6,9 @@
 /// (e.g. `data` for a later resolve) round-trips unchanged.
 library;
 
-import 'package:bao_remote/lsp.dart' show JsonMap;
+import 'package:pi_remote/lsp.dart' show JsonMap;
 
-export 'package:bao_remote/lsp.dart' show JsonMap;
+export 'package:pi_remote/lsp.dart' show JsonMap;
 
 JsonMap? _map(Object? value) =>
     value is Map ? value.cast<String, Object?>() : null;

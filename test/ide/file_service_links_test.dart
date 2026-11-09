@@ -3,7 +3,7 @@ library;
 
 import 'dart:io';
 
-import 'package:baocode/ide/file_service.dart';
+import 'package:pi-desktop/ide/file_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
@@ -15,8 +15,8 @@ void main() {
   late IdeFileService files;
 
   setUp(() {
-    project = Directory.systemTemp.createTempSync('baocode-links-');
-    outside = Directory.systemTemp.createTempSync('baocode-links-outside-');
+    project = Directory.systemTemp.createTempSync('pi-desktop-links-');
+    outside = Directory.systemTemp.createTempSync('pi-desktop-links-outside-');
     files = IdeFileService(project.path);
   });
   tearDown(() {

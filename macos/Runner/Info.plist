@@ -25,19 +25,19 @@
 			</array>
 		</dict>
 	</array>
-	<!-- baocode://, by which the Finder extension hands the app what its
+	<!-- pi-desktop://, by which the Finder extension hands the app what its
 	     context menu is on, a site's one-click import an upstream, and
 	     the channel build's setup page what it was told, and a page or
-	     tool a file to open in the IDE, baocode://file/… (see
+	     tool a file to open in the IDE, pi-desktop://file/… (see
 	     AppDelegate.swift). -->
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>dev.baocode.desktop</string>
+			<string>dev.pi.desktop.desktop</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>baocode</string>
+				<string>pi-desktop</string>
 			</array>
 		</dict>
 	</array>
@@ -78,7 +78,7 @@
 	     Without this string it refuses at once, with no dialog and no
 	     entry under Privacy & Security → Automation. -->
 	<key>NSAppleEventsUsageDescription</key>
-	<string>A program run in BaoCode wants to control another app.</string>
+	<string>A program run in pi-desktop wants to control another app.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>$(PRODUCT_COPYRIGHT)</string>
 	<key>NSMainNibFile</key>
@@ -86,10 +86,10 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>BaoCode lets the phones paired with it find it on the local network.</string>
+	<string>pi-desktop lets the phones paired with it find it on the local network.</string>
 	<key>NSBonjourServices</key>
 	<array>
-		<string>_baocode._tcp</string>
+		<string>_pi-desktop._tcp</string>
 	</array>
 </dict>
 </plist>

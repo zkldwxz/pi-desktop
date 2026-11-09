@@ -12,7 +12,7 @@ enum DataDirectoryContents {
   empty,
 
   /// The app's data ([DataDirectory.markers]): used as it is.
-  baocodeData,
+  piDesktopData,
 
   /// Other files: the app's are put beside them.
   other,
@@ -107,7 +107,7 @@ Future<T> retryWhileInUse<T>(
 
 /// Moving the data directory: checking a folder, copying the app's data
 /// there (or using what is there), and pointing the next run at it through
-/// `~/.baocode/config-dir.json`, written last. The run that made the change
+/// `~/.pi-desktop/config-dir.json`, written last. The run that made the change
 /// keeps its folder until the app restarts; the next one offers to remove
 /// what is left in the old one ([previousDirectory], [removeOldData]).
 ///
@@ -125,11 +125,11 @@ class DataDirectoryService {
 
   /// The user's home; under `flutter test` (and no [environment] given) a
   /// temporary folder instead, as [DataDirectory.current] is, so no test
-  /// reads or writes the user's `~/.baocode`.
+  /// reads or writes the user's `~/.pi-desktop`.
   static String _defaultHome(Map<String, String>? environment) {
     if (environment == null &&
         Platform.environment.containsKey('FLUTTER_TEST')) {
-      return p.join(Directory.systemTemp.path, 'baocode-test-home-$pid');
+      return p.join(Directory.systemTemp.path, 'pi-desktop-test-home-$pid');
     }
     return AppPaths.home(environment ?? Platform.environment);
   }
@@ -139,13 +139,13 @@ class DataDirectoryService {
   final Map<String, String> environment;
   final String home;
 
-  /// `~/.baocode/config-dir.json`.
+  /// `~/.pi-desktop/config-dir.json`.
   String get pointerFile => DataDirectoryPointer.fileIn(home);
 
   /// The platform's place for the data.
   String get defaultPath => DataDirectory.defaultPath(environment);
 
-  /// Whether `BAOCODE_DATA_DIR` decides the folder, whatever is chosen here.
+  /// Whether `PI_DESKTOP_DATA_DIR` decides the folder, whatever is chosen here.
   bool get setByEnvironment =>
       environment[DataDirectory.environmentVariable]?.trim().isNotEmpty ??
       false;
@@ -244,7 +244,7 @@ class DataDirectoryService {
     await for (final entity in Directory(path).list(followLinks: false)) {
       final name = p.basename(entity.path);
       if (DataDirectory.markers.contains(name)) {
-        return DataDirectoryContents.baocodeData;
+        return DataDirectoryContents.piDesktopData;
       }
       if (!_systemFiles.contains(name.toLowerCase())) empty = false;
     }

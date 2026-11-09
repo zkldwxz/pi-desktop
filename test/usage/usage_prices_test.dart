@@ -1,9 +1,9 @@
-import 'package:baocode/usage/usage_ledger.dart';
-import 'package:baocode/usage/usage_prices.dart';
-import 'package:baocode/usage/usage_query.dart';
-import 'package:baocode/usage/usage_record.dart';
-import 'package:baocode/usage/usage_skill.dart';
-import 'package:baocode/usage/usage_tools.dart';
+import 'package:pi-desktop/usage/usage_ledger.dart';
+import 'package:pi-desktop/usage/usage_prices.dart';
+import 'package:pi-desktop/usage/usage_query.dart';
+import 'package:pi-desktop/usage/usage_record.dart';
+import 'package:pi-desktop/usage/usage_skill.dart';
+import 'package:pi-desktop/usage/usage_tools.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 UsageCall _call(
@@ -257,10 +257,10 @@ void main() {
     });
   });
 
-  test("the skill is written where there is none or it is BaoCode's", () {
+  test("the skill is written where there is none or it is pi-desktop's", () {
     final text = UsageSkill.text();
-    expect(text, contains('mcp__baocode__usage_report'));
-    expect(text, contains('mcp__baocode__model_prices'));
+    expect(text, contains('mcp__pi_desktop__usage_report'));
+    expect(text, contains('mcp__pi_desktop__model_prices'));
     expect(UsageSkill.stale(null, text), isTrue);
     expect(UsageSkill.stale(text, text), isFalse);
     expect(UsageSkill.stale('${UsageSkill.marker}\nold', text), isTrue);

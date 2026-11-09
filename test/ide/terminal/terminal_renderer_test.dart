@@ -8,21 +8,21 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/terminal/terminal_colors.dart';
-import 'package:baocode/ide/terminal/terminal_render_adapter.dart';
-import 'package:baocode/ide/terminal/terminal_render_source.dart';
-import 'package:baocode/ide/terminal/terminal_render_theme.dart';
-import 'package:baocode/ide/terminal/terminal_renderer.dart';
-import 'package:bao_xterm/addons/addon_unicode11/unicode_v11.dart';
-import 'package:bao_xterm/common/buffer/attribute_data.dart';
-import 'package:bao_xterm/common/buffer/constants.dart';
-import 'package:bao_xterm/common/services/buffer_service.dart';
-import 'package:bao_xterm/common/services/core_service.dart';
-import 'package:bao_xterm/common/services/decoration_service.dart';
-import 'package:bao_xterm/common/services/log_service.dart';
-import 'package:bao_xterm/common/services/options_service.dart';
-import 'package:bao_xterm/headless/terminal.dart' as headless;
-import 'package:bao_xterm/typings/xterm.dart';
+import 'package:pi-desktop/ide/terminal/terminal_colors.dart';
+import 'package:pi-desktop/ide/terminal/terminal_render_adapter.dart';
+import 'package:pi-desktop/ide/terminal/terminal_render_source.dart';
+import 'package:pi-desktop/ide/terminal/terminal_render_theme.dart';
+import 'package:pi-desktop/ide/terminal/terminal_renderer.dart';
+import 'package:pi_xterm/addons/addon_unicode11/unicode_v11.dart';
+import 'package:pi_xterm/common/buffer/attribute_data.dart';
+import 'package:pi_xterm/common/buffer/constants.dart';
+import 'package:pi_xterm/common/services/buffer_service.dart';
+import 'package:pi_xterm/common/services/core_service.dart';
+import 'package:pi_xterm/common/services/decoration_service.dart';
+import 'package:pi_xterm/common/services/log_service.dart';
+import 'package:pi_xterm/common/services/options_service.dart';
+import 'package:pi_xterm/headless/terminal.dart' as headless;
+import 'package:pi_xterm/typings/xterm.dart';
 
 const _fg = Color(0xFFCCCCCC); // Dark 2026 terminal.foreground
 const _bg = Color(0xFF191A1B); // terminal.background

@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/file_service.dart';
-import 'package:baocode/ide/git/git_service.dart';
-import 'package:baocode/ide/git/repository_scan.dart';
+import 'package:pi-desktop/ide/file_service.dart';
+import 'package:pi-desktop/ide/git/git_service.dart';
+import 'package:pi-desktop/ide/git/repository_scan.dart';
 import 'package:path/path.dart' as p;
 
 /// Lists the folders of [tree] (every path's folders, by `/`).
@@ -216,7 +216,7 @@ void main() {
 
   test('a repository\'s submodules are read from its .gitmodules, from a '
       'folder in it too', () async {
-    final dir = await Directory.systemTemp.createTemp('baocode-submodules-');
+    final dir = await Directory.systemTemp.createTemp('pi-desktop-submodules-');
     addTearDown(() => dir.delete(recursive: true));
     final root = dir.path;
     Future<void> git(List<String> arguments) async {

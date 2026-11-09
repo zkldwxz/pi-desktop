@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:markdown/markdown.dart' as md;
-import 'package:baocode/chat/chat_find.dart';
-import 'package:baocode/chat/side_panel/file_link_menu.dart';
-import 'package:baocode/chat/side_panel/file_open.dart';
-import 'package:baocode/chat/widgets/markdown_view.dart';
-import 'package:baocode/theme/material_file_icons.dart';
+import 'package:pi-desktop/chat/chat_find.dart';
+import 'package:pi-desktop/chat/side_panel/file_link_menu.dart';
+import 'package:pi-desktop/chat/side_panel/file_open.dart';
+import 'package:pi-desktop/chat/widgets/markdown_view.dart';
+import 'package:pi-desktop/theme/material_file_icons.dart';
 
 Future<void> pumpMarkdown(WidgetTester tester, String data) =>
     tester.pumpWidget(MaterialApp(home: Scaffold(body: MarkdownView(data))));
@@ -72,7 +72,7 @@ void main() {
               existence: existence,
               child: const MarkdownView(
                 'See [a.dart](lib/a.dart#L3), `lib/b.dart`, `lib/c.dart` '
-                'and [the site](https://baocode.dev).',
+                'and [the site](https://github.com/zkldwxz/pi-desktop).',
               ),
             ),
           ),

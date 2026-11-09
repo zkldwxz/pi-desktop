@@ -1,8 +1,8 @@
-import 'package:baocode/forge/forge_accounts.dart';
-import 'package:baocode/forge/forge_api.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/models/secret_store.dart';
-import 'package:baocode/settings/pages/accounts_page.dart';
+import 'package:pi-desktop/forge/forge_accounts.dart';
+import 'package:pi-desktop/forge/forge_api.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/models/secret_store.dart';
+import 'package:pi-desktop/settings/pages/accounts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

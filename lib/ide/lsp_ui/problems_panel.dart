@@ -29,7 +29,7 @@ import '../../theme/material_file_icons.dart';
 import '../../theme/workbench_theme.dart';
 import '../../workspace/islands.dart';
 
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
 
 import '../host_paths.dart';
 import '../ide_hover.dart';

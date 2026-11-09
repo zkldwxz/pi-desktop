@@ -1,4 +1,4 @@
-// Takes a remote server build already published at dl.baocode.dev (by
+// Takes a remote server build already published at the pi-desktop site (by
 // .github/workflows/remote.yml's server-* tags, or with a release) instead
 // of building one: its VERSION and servers.json, all the installers carry.
 // An app packaged with them downloads the builds CI made, not ones only
@@ -14,7 +14,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-const _base = 'https://dl.baocode.dev/releases/remote';
+const _base = 'https://github.com/zkldwxz/pi-desktop';
 
 Future<void> main(List<String> arguments) async {
   final root = File.fromUri(Platform.script).parent.parent.absolute;

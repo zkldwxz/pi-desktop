@@ -3,29 +3,29 @@
 // kept with no agent looking, its secrets not; the bodies and the user's
 // steps once detailed; read back with browser_history; cleared. Run by hand:
 //
-//   BAO_BROWSER_LIVE="/path/to/Google Chrome for Testing" \
+//   PI_BROWSER_LIVE="/path/to/Google Chrome for Testing" \
 //     flutter test test/browser/browser_history_live_test.dart
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/browser/browser_bridge.dart';
-import 'package:baocode/browser/browser_tools.dart';
-import 'package:baocode/kernel/claude_code/claude_sdk_tools.dart';
+import 'package:pi-desktop/browser/browser_bridge.dart';
+import 'package:pi-desktop/browser/browser_tools.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_sdk_tools.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
 void main() {
-  final chrome = Platform.environment['BAO_BROWSER_LIVE'];
+  final chrome = Platform.environment['PI_BROWSER_LIVE'];
   final host = p.absolute(
-    'build/macos/Build/Products/Debug/BaoCode.app/Contents/MacOS/'
-    'baocode-browser-host',
+    'build/macos/Build/Products/Debug/pi-desktop.app/Contents/MacOS/'
+    'pi-desktop-browser-host',
   );
 
   test(
     "a shared tab's history is kept, read back, and cleared",
     () async {
-      final profile = Directory.systemTemp.createTempSync('bao-history-');
+      final profile = Directory.systemTemp.createTempSync('pi-history-');
       addTearDown(() => profile.deleteSync(recursive: true));
       final hosts = Directory(p.join(profile.path, 'NativeMessagingHosts'))
         ..createSync();
@@ -33,7 +33,7 @@ void main() {
           .writeAsStringSync(
             jsonEncode({
               'name': BrowserBridge.hostName,
-              'description': 'BaoCode',
+              'description': 'pi-desktop',
               'path': host,
               'type': 'stdio',
               'allowed_origins': [
@@ -84,7 +84,7 @@ document.getElementById('save').addEventListener('click', async () => {
       });
       final page = 'http://127.0.0.1:${server.port}/';
 
-      final sockets = Directory('/tmp').createTempSync('bao-');
+      final sockets = Directory('/tmp').createTempSync('pi-');
       addTearDown(() => sockets.deleteSync(recursive: true));
       BrowserBridge.socketFolder = sockets.path;
       final bridge = BrowserBridge.instance;

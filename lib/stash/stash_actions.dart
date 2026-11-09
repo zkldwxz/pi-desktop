@@ -38,7 +38,7 @@ StashReference stashReferenceOf(StashStore store, StashNote note) {
 }
 
 /// [project]'s name in the menus that pick a project: with its host
-/// after it (`baocode · home-imac`) where it is another machine's and
+/// after it (`pi-desktop · home-imac`) where it is another machine's and
 /// another project is called the same.
 String stashProjectLabel(Workspace workspace, Project project) {
   final host = RemoteLocation.hostOf(project.path);

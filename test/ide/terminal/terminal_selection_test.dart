@@ -1,19 +1,19 @@
 // Copyright (c) 2017 The xterm.js authors. All rights reserved.
-// Licensed under the MIT License. See packages/bao_xterm/lib/LICENSE.txt.
+// Licensed under the MIT License. See packages/pi_xterm/lib/LICENSE.txt.
 // Adapted from xterm.js src/browser/services/SelectionService.test.ts
 // (c58ea36), with mouse-driven cases added.
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/terminal/terminal_mouse.dart';
-import 'package:baocode/ide/terminal/terminal_selection.dart';
-import 'package:bao_xterm/common/buffer/buffer_line.dart';
-import 'package:bao_xterm/common/buffer/cell_data.dart';
-import 'package:bao_xterm/common/buffer/types.dart';
-import 'package:bao_xterm/common/event.dart';
+import 'package:pi-desktop/ide/terminal/terminal_mouse.dart';
+import 'package:pi-desktop/ide/terminal/terminal_selection.dart';
+import 'package:pi_xterm/common/buffer/buffer_line.dart';
+import 'package:pi_xterm/common/buffer/cell_data.dart';
+import 'package:pi_xterm/common/buffer/types.dart';
+import 'package:pi_xterm/common/event.dart';
 
-import 'package:bao_xterm/testing/test_utils.dart';
+import 'package:pi_xterm/testing/test_utils.dart';
 
 class _DataCoreService extends MockCoreService {
   final List<String> data = [];

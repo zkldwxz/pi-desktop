@@ -1,4 +1,4 @@
-export 'package:bao_remote/lsp.dart'
+export 'package:pi_remote/lsp.dart'
     show
         LspCatalog,
         LspFeature,

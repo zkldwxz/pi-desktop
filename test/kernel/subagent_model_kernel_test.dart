@@ -1,11 +1,11 @@
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/widgets/agent_step.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/kernel/transcript.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/widgets/agent_step.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi-desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi-desktop/kernel/transcript.dart';
+import 'package:pi-desktop/models/model_provider.dart';
+import 'package:pi-desktop/models/model_providers.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../kernel_test.dart' show FakeCli;

@@ -10,7 +10,7 @@ import '../base/smooth_scroll.dart';
 import '../chat/composer/composer_files.dart';
 import '../chat/widgets/hover_builder.dart';
 import '../chat/widgets/scroll_edge_fade.dart';
-import '../icons/brand_logos.dart' show BaoCodeLogo;
+import '../icons/brand_logos.dart' show PiDesktopLogo;
 import '../ide/file_views.dart';
 import '../ide/ide_button.dart';
 import '../ide/ide_dialog.dart';
@@ -2012,7 +2012,7 @@ class _StashDetailState extends State<StashDetail> with _StashActions {
               Builder(
                 builder: (context) => IdeButton(
                   label: l10n.stashImplement,
-                  leading: const BaoCodeLogo(),
+                  leading: const PiDesktopLogo(),
                   onPressed: () {
                     final box = context.findRenderObject() as RenderBox?;
                     if (box == null) return;
@@ -2125,7 +2125,7 @@ class _StashRow extends StatelessWidget {
   final StashNote note;
   final StashController store;
 
-  /// Its hover's actions: carried out in BaoCode (its menus under the
+  /// Its hover's actions: carried out in pi-desktop (its menus under the
   /// [Rect]), done or not.
   final ValueChanged<Rect> onImplement;
   final VoidCallback onToggleDone;
@@ -2337,7 +2337,7 @@ extension on _StashRow {
                   if (box == null) return;
                   onImplement(box.localToGlobal(Offset.zero) & box.size);
                 },
-                child: const BaoCodeLogo(size: 14),
+                child: const PiDesktopLogo(size: 14),
               ),
             ),
             _RowAction(

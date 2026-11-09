@@ -2,46 +2,46 @@ import 'dart:async';
 import 'dart:math' show Random;
 import 'dart:ui' as ui;
 
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/composer/composer_picker.dart';
-import 'package:baocode/chat/composer/session_model_picker.dart';
-import 'package:baocode/chat/panels/activity_strip.dart';
-import 'package:baocode/chat/panels/interaction_panel.dart';
-import 'package:baocode/chat/panels/context_usage_panel.dart';
-import 'package:baocode/chat/panels/mcp_servers_panel.dart';
-import 'package:baocode/chat/panels/queue_panel.dart';
-import 'package:baocode/chat/side_panel/file_open.dart';
-import 'package:baocode/chat/composer/composer_embeds.dart';
-import 'package:baocode/chat/widgets/activity_row.dart';
-import 'package:baocode/chat/widgets/thinking_spark.dart';
-import 'package:baocode/chat/widgets/command_step.dart';
-import 'package:baocode/chat/widgets/pixel_loader.dart';
-import 'package:baocode/ide/ide_hover.dart';
-import 'package:baocode/ide/ide_switch.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/composer/composer_images.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/sidebar/sidebar.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/workspace/workspace.dart';
-import 'package:baocode/chat/agent_view.dart';
-import 'package:baocode/chat/widgets/plan_card.dart';
-import 'package:baocode/chat/widgets/user_message_bubble.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_translator.dart';
+import 'package:pi-desktop/chat/chat_screen.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/composer/composer.dart';
+import 'package:pi-desktop/chat/composer/composer_picker.dart';
+import 'package:pi-desktop/chat/composer/session_model_picker.dart';
+import 'package:pi-desktop/chat/panels/activity_strip.dart';
+import 'package:pi-desktop/chat/panels/interaction_panel.dart';
+import 'package:pi-desktop/chat/panels/context_usage_panel.dart';
+import 'package:pi-desktop/chat/panels/mcp_servers_panel.dart';
+import 'package:pi-desktop/chat/panels/queue_panel.dart';
+import 'package:pi-desktop/chat/side_panel/file_open.dart';
+import 'package:pi-desktop/chat/composer/composer_embeds.dart';
+import 'package:pi-desktop/chat/widgets/activity_row.dart';
+import 'package:pi-desktop/chat/widgets/thinking_spark.dart';
+import 'package:pi-desktop/chat/widgets/command_step.dart';
+import 'package:pi-desktop/chat/widgets/pixel_loader.dart';
+import 'package:pi-desktop/ide/ide_hover.dart';
+import 'package:pi-desktop/ide/ide_switch.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/composer/composer_images.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/kernel_types.dart';
+import 'package:pi-desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/main.dart';
+import 'package:pi-desktop/sidebar/sidebar.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
+import 'package:pi-desktop/theme/codicons.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
+import 'package:pi-desktop/chat/agent_view.dart';
+import 'package:pi-desktop/chat/widgets/plan_card.dart';
+import 'package:pi-desktop/chat/widgets/user_message_bubble.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_translator.dart';
 
 import 'kernel_test.dart' show FakeCli;
 
@@ -395,7 +395,7 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
     final workspace = Workspace.mock();
-    await tester.pumpWidget(BaoCodeApp(workspace: workspace));
+    await tester.pumpWidget(PiDesktopApp(workspace: workspace));
     await tester.pump();
     await tester.tap(
       find.descendant(
@@ -776,7 +776,7 @@ void main() {
     // editor's build, and the input turned into a grey box until the app
     // restarted.
     const suggestion =
-        r'Run release\win-unpacked\BaoCode.exe'
+        r'Run release\win-unpacked\pi-desktop.exe'
         '\n'
         r'then open "C:\Users"';
     final (:session, :cli) = await pumpScripted(tester);
@@ -790,7 +790,7 @@ void main() {
       find.descendant(
         of: find.byType(ChatComposer),
         matching: find.text(
-          r'Run release\win-unpacked\BaoCode.exe then open "C:\Users"    Tab',
+          r'Run release\win-unpacked\pi-desktop.exe then open "C:\Users"    Tab',
           findRichText: true,
         ),
       ),
@@ -1565,7 +1565,7 @@ void main() {
       kernels: [claude],
       projects: const [Project('app', '/tmp/app')],
     );
-    await tester.pumpWidget(BaoCodeApp(workspace: workspace));
+    await tester.pumpWidget(PiDesktopApp(workspace: workspace));
     await tester.pump();
     final thread = workspace.create();
     await tester.pump();

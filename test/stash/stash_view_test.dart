@@ -1,25 +1,25 @@
 import 'dart:async';
 
-import 'package:baocode/forge/forge_accounts.dart';
-import 'package:baocode/ide/ide_list.dart' show IdeListColors;
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/models/secret_store.dart';
-import 'package:baocode/stash/stash_ai.dart';
-import 'package:baocode/stash/stash_controller.dart';
-import 'package:baocode/stash/stash_disk.dart';
-import 'package:baocode/stash/stash_host.dart';
-import 'package:baocode/stash/stash_note.dart';
-import 'package:baocode/stash/stash_note_editor.dart';
-import 'package:baocode/stash/stash_store.dart';
-import 'package:baocode/sidebar/sidebar.dart' show SidebarIconButton;
-import 'package:baocode/stash/stash_thread_view.dart';
-import 'package:baocode/ide/ide_hover.dart';
-import 'package:baocode/stash/stash_view.dart';
-import 'package:baocode/chat/chat_session.dart' show ComposerMessage;
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/forge/forge_accounts.dart';
+import 'package:pi-desktop/ide/ide_list.dart' show IdeListColors;
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/models/model_providers.dart';
+import 'package:pi-desktop/models/secret_store.dart';
+import 'package:pi-desktop/stash/stash_ai.dart';
+import 'package:pi-desktop/stash/stash_controller.dart';
+import 'package:pi-desktop/stash/stash_disk.dart';
+import 'package:pi-desktop/stash/stash_host.dart';
+import 'package:pi-desktop/stash/stash_note.dart';
+import 'package:pi-desktop/stash/stash_note_editor.dart';
+import 'package:pi-desktop/stash/stash_store.dart';
+import 'package:pi-desktop/sidebar/sidebar.dart' show SidebarIconButton;
+import 'package:pi-desktop/stash/stash_thread_view.dart';
+import 'package:pi-desktop/ide/ide_hover.dart';
+import 'package:pi-desktop/stash/stash_view.dart';
+import 'package:pi-desktop/chat/chat_session.dart' show ComposerMessage;
+import 'package:pi-desktop/theme/app_theme.dart';
+import 'package:pi-desktop/theme/codicons.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
@@ -358,7 +358,7 @@ void main() {
       final ids = <int>[];
       for (final (title, project) in [
         ('Alpha', null),
-        ('Beta', '~/code/baocode'),
+        ('Beta', '~/code/pi-desktop'),
         ('Gamma', '~/code/cursor-docs'),
       ]) {
         final note = await store.create(body: '$title\n\nmore');
@@ -400,7 +400,7 @@ void main() {
 
     await tester.tap(find.text('Any project'));
     await tester.pump(const Duration(milliseconds: 300));
-    await tester.tap(find.text('baocode').last);
+    await tester.tap(find.text('pi-desktop').last);
     await tester.pump();
     await tester.tap(find.text('cursor-docs').last);
     await tester.pump(const Duration(milliseconds: 300));
@@ -593,7 +593,7 @@ void main() {
     Finder action(String tooltip) => find.byWidgetPredicate(
       (widget) => widget is IdeHover && widget.message == tooltip,
     );
-    expect(action('Implement in BaoCode'), findsOneWidget);
+    expect(action('Implement in pi-desktop'), findsOneWidget);
     expect(action('More'), findsWidgets);
     await tester.tap(action('Mark Done'));
     await tester.runAsync(() => Future<void>.delayed(Duration.zero));

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:bao_sampler/bao_sampler.dart';
+import 'package:pi_sampler/pi_sampler.dart';
 import 'package:path/path.dart' as p;
 
 /// Starts [executable] with [arguments], on its own: nothing waits for it.
@@ -22,7 +22,7 @@ typedef TakeSample = Future<bool> Function(String path, int seconds);
 ///   thread is the one Dart runs on, beside it `io.flutter.raster`). The
 ///   Dart code's frames read `??? (in App) load address … + 0x…`.
 /// - Windows and Linux: the app's UI thread sampled from within
-///   (package:bao_sampler, every 20 ms); the Dart code's frames read
+///   (package:pi_sampler, every 20 ms); the Dart code's frames read
 ///   `app.so+0x…` or `libapp.so+0x…`.
 ///
 /// `dart run tool/symbolize_jank_sample.dart` names them with the build's

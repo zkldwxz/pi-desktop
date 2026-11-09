@@ -3,8 +3,8 @@
 // it shown at once. The commit's menu in the table copies its references'
 // names too.
 
-import 'package:baocode/ide/git/git_service.dart';
-import 'package:baocode/ide/git/ide_git_log_view.dart' show ideGitUnwrapBody;
+import 'package:pi-desktop/ide/git/git_service.dart';
+import 'package:pi-desktop/ide/git/ide_git_log_view.dart' show ideGitUnwrapBody;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

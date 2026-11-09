@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:bao_remote/client.dart';
-import 'package:baocode/ide/ide_input.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/models/secret_store.dart';
-import 'package:baocode/remote/remote_host_settings.dart';
-import 'package:baocode/remote/ssh_host.dart';
-import 'package:baocode/remote/ssh_passwords.dart';
-import 'package:baocode/settings/pages/ssh_page.dart';
-import 'package:baocode/workspace/preference_store.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_remote/client.dart';
+import 'package:pi-desktop/ide/ide_input.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/models/secret_store.dart';
+import 'package:pi-desktop/remote/remote_host_settings.dart';
+import 'package:pi-desktop/remote/ssh_host.dart';
+import 'package:pi-desktop/remote/ssh_passwords.dart';
+import 'package:pi-desktop/settings/pages/ssh_page.dart';
+import 'package:pi-desktop/workspace/preference_store.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -26,7 +26,7 @@ void main() {
   late RemoteHostSettings settings;
 
   setUp(() {
-    dir = Directory.systemTemp.createTempSync('baocode-ssh-page-');
+    dir = Directory.systemTemp.createTempSync('pi-desktop-ssh-page-');
     settings = RemoteHostSettings.instance = RemoteHostSettings(
       file: p.join(dir.path, 'remote-hosts.json'),
     );

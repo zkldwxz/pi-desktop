@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:bao_editor/textmate/textmate_syntax.dart' show TextMateSyntax;
+import 'package:pi_editor/textmate/textmate_syntax.dart' show TextMateSyntax;
 import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

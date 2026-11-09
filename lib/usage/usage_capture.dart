@@ -16,10 +16,10 @@ abstract final class UsageHeaders {
   static const contextCompacted = 'x-claude-code-context-compacted';
   static const toolDurations = 'x-claude-code-prev-tool-durations';
 
-  /// BaoCode's own: the conversation one of the app's small jobs (a
+  /// pi-desktop's own: the conversation one of the app's small jobs (a
   /// title) is for. Its call is kept there, as an auxiliary one, whatever
   /// session Claude Code's process gave itself.
-  static const session = 'x-baocode-session';
+  static const session = 'x-pi-desktop-session';
 
   /// Claude Code's variable that has it send them to a gateway (what the
   /// proxy is to it).

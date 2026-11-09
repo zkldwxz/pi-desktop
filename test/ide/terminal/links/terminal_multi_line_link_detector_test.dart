@@ -13,12 +13,12 @@
 import 'dart:math' as math;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/terminal/links/links.dart';
-import 'package:baocode/ide/terminal/links/terminal_link_parsing.dart';
-import 'package:baocode/ide/terminal/links/terminal_link_resolver.dart';
-import 'package:baocode/ide/terminal/links/terminal_multi_line_link_detector.dart';
-import 'package:bao_xterm/headless/public/terminal.dart';
-import 'package:bao_xterm/typings/xterm_headless.dart' hide Terminal;
+import 'package:pi-desktop/ide/terminal/links/links.dart';
+import 'package:pi-desktop/ide/terminal/links/terminal_link_parsing.dart';
+import 'package:pi-desktop/ide/terminal/links/terminal_link_resolver.dart';
+import 'package:pi-desktop/ide/terminal/links/terminal_multi_line_link_detector.dart';
+import 'package:pi_xterm/headless/public/terminal.dart';
+import 'package:pi_xterm/typings/xterm_headless.dart' hide Terminal;
 
 import 'link_test_utils.dart';
 

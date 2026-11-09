@@ -10,10 +10,10 @@
 // move the window's scale, the Appearance settings' Interface Size, by
 // [CodeFont.uiScaleStep] at a time.
 //
-// Show Chat Window is BaoCode's: the chat's window back from an IDE's. It
+// Show Chat Window is pi-desktop's: the chat's window back from an IDE's. It
 // has no keys of its own: ⌘0 / Ctrl+0 are Focus Side Bar's.
 
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 
 import 'chat_keybindings.dart' show ChatContextKeys;
 import 'default_keybindings.dart' show CommandInfo;
@@ -22,7 +22,7 @@ abstract final class WindowCommandIds {
   static const newWindow = 'workbench.action.newWindow';
   static const closeWindow = 'workbench.action.closeWindow';
   static const switchWindow = 'workbench.action.switchWindow';
-  static const showChat = 'baocode.window.showChat';
+  static const showChat = 'pi-desktop.window.showChat';
   static const toggleFullScreen = 'workbench.action.toggleFullScreen';
   static const zoomIn = 'workbench.action.zoomIn';
   static const zoomOut = 'workbench.action.zoomOut';

@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_history_view.dart';
+import 'package:pi-desktop/chat/chat_history_view.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
-import 'package:baocode/chat/mock_conversation.dart';
-import 'package:baocode/chat/widgets/chat_minimap.dart';
-import 'package:baocode/chat/widgets/fold_line.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/widgets/edge_fade_mask.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/chat/mock_conversation.dart';
+import 'package:pi-desktop/chat/widgets/chat_minimap.dart';
+import 'package:pi-desktop/chat/widgets/fold_line.dart';
+import 'package:pi-desktop/chat/composer/composer.dart';
+import 'package:pi-desktop/chat/widgets/edge_fade_mask.dart';
+import 'package:pi-desktop/main.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 
 void main() {
   testWidgets('renders the chat history', (tester) async {
-    await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+    await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
 
     await tester.pump();
 
@@ -48,7 +48,7 @@ void main() {
         () => messenger.setMockMethodCallHandler(SystemChannels.platform, null),
       );
 
-      await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+      await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
       await tester.pump();
       final selectionArea = tester.widget<SelectionArea>(
         find.byType(SelectionArea),
@@ -78,7 +78,7 @@ void main() {
 
   testWidgets('scrollbar thumb jumps across the virtual feed', (tester) async {
     _scrollbarOnly();
-    await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+    await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
     await tester.pumpAndSettle();
     final controller = tester
         .widget<SuperListView>(find.byType(SuperListView))
@@ -158,7 +158,7 @@ void main() {
   });
 
   testWidgets('expands and collapses a thinking block', (tester) async {
-    await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+    await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
     await tester.pump();
     tester
         .widget<SuperListView>(find.byType(SuperListView))
@@ -187,7 +187,7 @@ void main() {
     // 2x, like a Retina display: the list's bottom edge can land mid-pixel.
     tester.view.devicePixelRatio = 2;
     addTearDown(tester.view.reset);
-    await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+    await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
     await tester.pump();
     final list = find.byType(SuperListView);
     final controller = tester.widget<SuperListView>(list).controller!;
@@ -274,7 +274,7 @@ void main() {
   });
 
   testWidgets('top fade only shows when content is above', (tester) async {
-    await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+    await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
     await tester.pump();
     // The two edge fades of the list's mask: top, then bottom.
     List<bool> fadesShown() {
@@ -301,7 +301,7 @@ void main() {
 
   testWidgets('a mouse wheel scrolls the history as far as it says, as '
       'Chrome does', (tester) async {
-    await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+    await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
     for (var i = 0; i < 3; i++) {
       await tester.pump();
     }
@@ -324,7 +324,7 @@ void main() {
   testWidgets('a trackpad swipe up does not snap back to the bottom', (
     tester,
   ) async {
-    await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+    await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
     await tester.pump();
     final list = find.byType(SuperListView);
     final position = tester.widget<SuperListView>(list).controller!.position;
@@ -377,7 +377,7 @@ void main() {
   testWidgets('a drag beside the scrollbar, just missing it, selects '
       'nothing', (tester) async {
     _scrollbarOnly();
-    await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+    await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
     await tester.pump(const Duration(milliseconds: 500));
     final list = find.byType(SuperListView);
     final rect = tester.getRect(list);
@@ -416,7 +416,7 @@ void main() {
     tester,
   ) async {
     _scrollbarOnly();
-    await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+    await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
     await tester.pump();
     final list = find.byType(SuperListView);
     final position = tester.widget<SuperListView>(list).controller!.position;
@@ -478,7 +478,7 @@ void main() {
       () => messenger.setMockMethodCallHandler(SystemChannels.platform, null),
     );
 
-    await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+    await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
     await tester.pump();
     final list = find.byType(SuperListView);
 
@@ -585,7 +585,7 @@ void main() {
         return copied ?? '';
       }
 
-      await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+      await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
       await tester.pump();
 
       // Click at the start of the last message: the anchor.
@@ -680,7 +680,7 @@ void main() {
       () => messenger.setMockMethodCallHandler(SystemChannels.platform, null),
     );
 
-    await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+    await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
     await tester.pump();
     final anchor =
         tester.getTopLeft(find.textContaining('已完成修改').last) +

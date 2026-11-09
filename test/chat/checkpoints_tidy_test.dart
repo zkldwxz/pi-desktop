@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:baocode/chat/review/review_store_io.dart';
+import 'package:pi-desktop/chat/review/review_store_io.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
@@ -15,7 +15,7 @@ void main() {
   final long = DateTime.now().subtract(const Duration(days: 60));
 
   setUp(() async {
-    temp = await Directory.systemTemp.createTemp('baocode_tidy_');
+    temp = await Directory.systemTemp.createTemp('pi_desktop_tidy_');
     checkpoints = p.join(await temp.resolveSymbolicLinks(), 'checkpoints');
   });
 

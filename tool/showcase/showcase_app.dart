@@ -1,4 +1,4 @@
-// The showcase app: BaoCodeApp, whole, on a made-up developer's machine
+// The showcase app: PiDesktopApp, whole, on a made-up developer's machine
 // (a home folder of its own with well-known open-source projects, their
 // past Claude Code sessions, a Git identity and a shell), its agents
 // playing scripts (show_transport.dart, scripts.dart), driven through its
@@ -7,41 +7,41 @@
 // home folder first; see tool/showcase/README.md.
 //
 // Its settings come from the environment:
-// - BAOCODE_SHOWCASE_HOME: the made-up home folder (also the process's
+// - PI_DESKTOP_SHOWCASE_HOME: the made-up home folder (also the process's
 //   HOME, for Git and the shell).
-// - BAOCODE_SHOWCASE_DATA: the app's data folder.
-// - BAOCODE_SHOWCASE_OUT: where the pictures and videos go.
-// - BAOCODE_SHOWCASE_LOCALE: `en` or `zh`.
-// - BAOCODE_SHOWCASE_SCENES: the scenes to run, comma-separated; all by
+// - PI_DESKTOP_SHOWCASE_DATA: the app's data folder.
+// - PI_DESKTOP_SHOWCASE_OUT: where the pictures and videos go.
+// - PI_DESKTOP_SHOWCASE_LOCALE: `en` or `zh`.
+// - PI_DESKTOP_SHOWCASE_SCENES: the scenes to run, comma-separated; all by
 //   default.
-// - BAOCODE_SHOWCASE_VIDEO: `0` for pictures only.
+// - PI_DESKTOP_SHOWCASE_VIDEO: `0` for pictures only.
 
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui' show ViewFocusState;
 
-import 'package:bao_editor/monaco/flutter/language_assets.dart';
-import 'package:bao_remote/local.dart' show ClaudeEnvironment;
-import 'package:baocode/customize/customization_store.dart';
-import 'package:baocode/icons/emoji_sheet.dart';
-import 'package:baocode/ide/lsp/packs/language_packs.dart';
-import 'package:baocode/ide/terminal/terminal_instance.dart';
-import 'package:baocode/keybindings/keybindings_sync.dart';
-import 'package:baocode/keybindings/keymap.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/kernel_registry.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/main.dart' show BaoCodeApp, followSettingsFiles;
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/platform/memory_budget.dart';
-import 'package:baocode/remote/project_host.dart';
-import 'package:baocode/search/claude_conversation_search.dart';
-import 'package:baocode/settings/app_locale.dart';
-import 'package:baocode/settings/app_settings.dart';
-import 'package:baocode/settings/user_settings.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/workspace/preference_store.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_editor/monaco/flutter/language_assets.dart';
+import 'package:pi_remote/local.dart' show ClaudeEnvironment;
+import 'package:pi-desktop/customize/customization_store.dart';
+import 'package:pi-desktop/icons/emoji_sheet.dart';
+import 'package:pi-desktop/ide/lsp/packs/language_packs.dart';
+import 'package:pi-desktop/ide/terminal/terminal_instance.dart';
+import 'package:pi-desktop/keybindings/keybindings_sync.dart';
+import 'package:pi-desktop/keybindings/keymap.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi-desktop/kernel/kernel_registry.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/main.dart' show PiDesktopApp, followSettingsFiles;
+import 'package:pi-desktop/platform/data_dir.dart';
+import 'package:pi-desktop/platform/memory_budget.dart';
+import 'package:pi-desktop/remote/project_host.dart';
+import 'package:pi-desktop/search/claude_conversation_search.dart';
+import 'package:pi-desktop/settings/app_locale.dart';
+import 'package:pi-desktop/settings/app_settings.dart';
+import 'package:pi-desktop/settings/user_settings.dart';
+import 'package:pi-desktop/theme/workbench_theme.dart';
+import 'package:pi-desktop/workspace/preference_store.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -77,18 +77,18 @@ Future<void> main() async {
 }
 
 Future<void> _run() async {
-  final home = _env('BAOCODE_SHOWCASE_HOME');
-  final out = _env('BAOCODE_SHOWCASE_OUT');
-  Story.locale = _env('BAOCODE_SHOWCASE_LOCALE', 'en');
-  final wanted = Platform.environment['BAOCODE_SHOWCASE_SCENES']
+  final home = _env('PI_DESKTOP_SHOWCASE_HOME');
+  final out = _env('PI_DESKTOP_SHOWCASE_OUT');
+  Story.locale = _env('PI_DESKTOP_SHOWCASE_LOCALE', 'en');
+  final wanted = Platform.environment['PI_DESKTOP_SHOWCASE_SCENES']
       ?.split(',')
       .map((s) => s.trim())
       .where((s) => s.isNotEmpty)
       .toSet();
-  final video = Platform.environment['BAOCODE_SHOWCASE_VIDEO'] != '0';
+  final video = Platform.environment['PI_DESKTOP_SHOWCASE_VIDEO'] != '0';
 
   MemoryBudget.apply();
-  DataDirectory.current = DataDirectory(_env('BAOCODE_SHOWCASE_DATA'));
+  DataDirectory.current = DataDirectory(_env('PI_DESKTOP_SHOWCASE_DATA'));
   // Claude Code's folder, Git and the shell are the made-up home's.
   ClaudeEnvironment.use({
     ...Platform.environment,
@@ -159,7 +159,7 @@ Future<void> _run() async {
       ShowFrame(
         window: window,
         shotKey: shotKey,
-        child: BaoCodeApp(
+        child: PiDesktopApp(
           key: UniqueKey(),
           workspace: workspace,
           appLocale: locale,
@@ -195,7 +195,7 @@ Future<void> _run() async {
 }
 
 /// No request leaves the machine: the pictures are of what the showcase
-/// made up, not of what a server answers (the upstreams baocode.dev lists,
+/// made up, not of what a server answers (the upstreams the pi-desktop site lists,
 /// say), and the app asks no one anything for them. Only the app's own
 /// servers on this machine answer (its model proxy, say); each request
 /// refused is in the log.
@@ -229,7 +229,7 @@ class _KeptMessenger implements BinaryMessenger {
   final BinaryMessenger _messenger;
 
   static const _kept = {
-    'baocode/window': {
+    'pi-desktop/window': {
       'growWindow',
       'setAlwaysOnTop',
       'setAppearance',
@@ -294,7 +294,7 @@ void _isolateFromTheDesktop() {
 Future<void> _bringWindowFront() async {
   final view = WidgetsBinding.instance.platformDispatcher.implicitView;
   try {
-    await const MethodChannel('baocode/windows')
+    await const MethodChannel('pi-desktop/windows')
         .invokeMethod('focus', view?.viewId ?? 0);
   } on Object catch (error) {
     ShowScene.log('could not bring the window to the front: $error');

@@ -7,23 +7,23 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/chat_width.dart';
-import 'package:baocode/chat/panels/context_usage_panel.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/kernel/extension_switches.dart';
-import 'package:baocode/l10n/app_localizations.dart';
-import 'package:baocode/theme/code_font.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/usage/ui/conversation_usage_view.dart';
-import 'package:baocode/usage/ui/usage_calls.dart';
-import 'package:baocode/usage/ui/usage_dashboard.dart';
-import 'package:baocode/usage/usage_ledger.dart';
-import 'package:baocode/usage/usage_prices.dart';
-import 'package:baocode/usage/usage_query.dart';
-import 'package:baocode/usage/usage_record.dart';
-import 'package:baocode/usage/usage_trace.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/chat_width.dart';
+import 'package:pi-desktop/chat/panels/context_usage_panel.dart';
+import 'package:pi-desktop/kernel/kernel_types.dart';
+import 'package:pi-desktop/kernel/extension_switches.dart';
+import 'package:pi-desktop/l10n/app_localizations.dart';
+import 'package:pi-desktop/theme/code_font.dart';
+import 'package:pi-desktop/theme/codicons.dart';
+import 'package:pi-desktop/theme/workbench_theme.dart';
+import 'package:pi-desktop/usage/ui/conversation_usage_view.dart';
+import 'package:pi-desktop/usage/ui/usage_calls.dart';
+import 'package:pi-desktop/usage/ui/usage_dashboard.dart';
+import 'package:pi-desktop/usage/usage_ledger.dart';
+import 'package:pi-desktop/usage/usage_prices.dart';
+import 'package:pi-desktop/usage/usage_query.dart';
+import 'package:pi-desktop/usage/usage_record.dart';
+import 'package:pi-desktop/usage/usage_trace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -62,18 +62,18 @@ final _shape = UsageShape(
     'WebFetch': 610,
     'ToolSearch': 520,
     'TaskStop': 210,
-    'mcp__baocode__browser_click': 420,
-    'mcp__baocode__browser_navigate': 380,
-    'mcp__baocode__browser_screenshot': 450,
-    'mcp__baocode__browser_snapshot': 520,
-    'mcp__baocode__generate_image': 980,
+    'mcp__pi_desktop__browser_click': 420,
+    'mcp__pi_desktop__browser_navigate': 380,
+    'mcp__pi_desktop__browser_screenshot': 450,
+    'mcp__pi_desktop__browser_snapshot': 520,
+    'mcp__pi_desktop__generate_image': 980,
     'mcp__claude_ai_Claude_Docs__batch': 1650,
     'mcp__claude_ai_Claude_Docs__update': 930,
     'mcp__claude_ai_Claude_Docs__guide': 240,
     'mcp__github__create_pull_request': 760,
     'mcp__github__search_code': 540,
   },
-  mcpNotes: {'baocode': 310, 'claude.ai Claude Docs': 1460},
+  mcpNotes: {'pi-desktop': 310, 'claude.ai Claude Docs': 1460},
   skills: {
     'dataviz': 380,
     'code-review': 290,
@@ -805,18 +805,18 @@ final _panelUsage = ContextUsage(
     ],
     'mcpTools': [
       {
-        'name': 'mcp__baocode__browser_open',
-        'serverName': 'baocode',
+        'name': 'mcp__pi_desktop__browser_open',
+        'serverName': 'pi-desktop',
         'tokens': 420,
       },
       {
-        'name': 'mcp__baocode__browser_click',
-        'serverName': 'baocode',
+        'name': 'mcp__pi_desktop__browser_click',
+        'serverName': 'pi-desktop',
         'tokens': 380,
       },
       {
-        'name': 'mcp__baocode__browser_screenshot',
-        'serverName': 'baocode',
+        'name': 'mcp__pi_desktop__browser_screenshot',
+        'serverName': 'pi-desktop',
         'tokens': 900,
         'isLoaded': false,
       },

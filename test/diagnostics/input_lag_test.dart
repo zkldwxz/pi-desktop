@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:baocode/diagnostics/input_lag.dart';
-import 'package:baocode/platform/event_log.dart';
+import 'package:pi-desktop/diagnostics/input_lag.dart';
+import 'package:pi-desktop/platform/event_log.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

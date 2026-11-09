@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bao_link/bao_link.dart';
+import 'package:pi_link/pi_link.dart';
 import 'package:flutter/foundation.dart';
 
 import '../bots/bots.dart';
@@ -126,10 +126,10 @@ class PendingPairing {
 
 /// How the relays to keep to are chosen (Settings → Mobile).
 enum LinkRelayMode {
-  /// BaoCode's, the nearest that answers.
+  /// pi-desktop's, the nearest that answers.
   auto,
 
-  /// Only the one picked: one of BaoCode's, or one at an address given.
+  /// Only the one picked: one of pi-desktop's, or one at an address given.
   pinned,
 
   /// None: phones reach this computer directly, at [LinkHost.linkPort].
@@ -465,7 +465,7 @@ class LinkHost extends ChangeNotifier {
     });
   }
 
-  /// Keeps to [url] alone: one of BaoCode's relays, or one of the user's
+  /// Keeps to [url] alone: one of pi-desktop's relays, or one of the user's
   /// own.
   Future<void> pinRelay(String url) async {
     if (!_loaded) return;

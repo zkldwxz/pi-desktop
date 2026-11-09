@@ -1,5 +1,5 @@
 // Copyright (c) 2017 The xterm.js authors. All rights reserved.
-// Licensed under the MIT License. See packages/bao_xterm/lib/LICENSE.txt.
+// Licensed under the MIT License. See packages/pi_xterm/lib/LICENSE.txt.
 // Ported from xterm.js addons/addon-webgl/src/WebglRenderer.ts
 // (`_updateModel`), CellColorResolver.ts, TextureAtlas.ts (the colors and
 // the decorations of `_drawToCache`), RectangleRenderer.ts (backgrounds and
@@ -40,14 +40,14 @@ import 'terminal_render_metrics.dart';
 import 'terminal_render_source.dart';
 import 'terminal_render_theme.dart';
 
-import 'package:bao_xterm/common/buffer/attribute_data.dart';
-import 'package:bao_xterm/common/buffer/cell_data.dart';
-import 'package:bao_xterm/common/buffer/constants.dart';
-import 'package:bao_xterm/common/color.dart';
-import 'package:bao_xterm/common/input/text_decoder.dart';
-import 'package:bao_xterm/common/lifecycle.dart';
-import 'package:bao_xterm/common/services/services.dart';
-import 'package:bao_xterm/common/types.dart';
+import 'package:pi_xterm/common/buffer/attribute_data.dart';
+import 'package:pi_xterm/common/buffer/cell_data.dart';
+import 'package:pi_xterm/common/buffer/constants.dart';
+import 'package:pi_xterm/common/color.dart';
+import 'package:pi_xterm/common/input/text_decoder.dart';
+import 'package:pi_xterm/common/lifecycle.dart';
+import 'package:pi_xterm/common/services/services.dart';
+import 'package:pi_xterm/common/types.dart';
 
 /// Upstream `INVERTED_DEFAULT_COLOR`: a link underline in the background
 /// color.

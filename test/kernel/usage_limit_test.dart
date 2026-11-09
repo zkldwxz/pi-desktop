@@ -1,4 +1,4 @@
-import 'package:baocode/kernel/claude_code/usage_limit.dart';
+import 'package:pi-desktop/kernel/claude_code/usage_limit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

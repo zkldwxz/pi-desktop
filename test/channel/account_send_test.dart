@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/channel/account/account_api.dart';
-import 'package:baocode/channel/account/account_send_io.dart';
+import 'package:pi-desktop/channel/account/account_api.dart';
+import 'package:pi-desktop/channel/account/account_send_io.dart';
 
 void main() {
   late HttpServer server;

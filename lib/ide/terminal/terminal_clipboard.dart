@@ -15,7 +15,7 @@
 // terminalClipboard.ts (`shouldPasteTerminalText`) and
 // terminal.clipboard.contribution.ts (`TerminalClipboardContribution`, the
 // copy and paste actions' keybindings); and from xterm.js c58ea36
-// src/browser/Clipboard.ts (MIT, see packages/bao_xterm/lib/LICENSE.txt).
+// src/browser/Clipboard.ts (MIT, see packages/pi_xterm/lib/LICENSE.txt).
 //
 // Deviations: the dialog is the embedder's [TerminalClipboard.confirmPaste]
 // (without it a multi-line paste goes ahead); the primary selection is the
@@ -29,10 +29,10 @@ import 'package:flutter/services.dart';
 import 'terminal_mouse.dart';
 import 'terminal_selection.dart';
 
-import 'package:bao_xterm/browser/clipboard.dart' as xterm_clipboard;
-import 'package:bao_xterm/common/lifecycle.dart';
-import 'package:bao_xterm/common/services/services.dart';
-import 'package:bao_xterm/common/types.dart';
+import 'package:pi_xterm/browser/clipboard.dart' as xterm_clipboard;
+import 'package:pi_xterm/common/lifecycle.dart';
+import 'package:pi_xterm/common/services/services.dart';
+import 'package:pi_xterm/common/types.dart';
 
 /// VS Code's `terminal.integrated.enableMultiLinePasteWarning`.
 enum TerminalMultiLinePasteWarning {

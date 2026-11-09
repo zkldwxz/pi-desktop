@@ -8,7 +8,7 @@ import 'frame_watch.dart';
 /// The app's own side's logs: the Windows app's (windows/runner/
 /// log_folder.h) and the macOS app's hang watchdog's (macos/Runner/
 /// HangWatchdog.swift).
-const logsChannel = MethodChannel('baocode/logs');
+const logsChannel = MethodChannel('pi-desktop/logs');
 
 /// Tells the app's own side where the logs [folder] is (`setFolder`): its
 /// own logs go there too (Windows' window.log, the hang reports in

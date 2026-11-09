@@ -1,9 +1,9 @@
-import 'package:baocode/chat/resume_after_reset.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/workspace/preference_store.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/chat/resume_after_reset.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi-desktop/models/model_providers.dart';
+import 'package:pi-desktop/workspace/preference_store.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -3,18 +3,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:baocode/diagnostics/diagnostics_bundle.dart';
-import 'package:baocode/diagnostics/diagnostics_upload.dart';
-import 'package:baocode/ide/ide_button.dart';
-import 'package:baocode/ide/ide_input.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/settings/pages/settings_dropdown.dart';
-import 'package:baocode/settings/pages/updates_page.dart';
-import 'package:baocode/settings/user_settings.dart';
-import 'package:baocode/update/update_controller.dart';
-import 'package:baocode/update/update_service.dart';
-import 'package:baocode/update/update_settings.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi-desktop/diagnostics/diagnostics_bundle.dart';
+import 'package:pi-desktop/diagnostics/diagnostics_upload.dart';
+import 'package:pi-desktop/ide/ide_button.dart';
+import 'package:pi-desktop/ide/ide_input.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/settings/pages/settings_dropdown.dart';
+import 'package:pi-desktop/settings/pages/updates_page.dart';
+import 'package:pi-desktop/settings/user_settings.dart';
+import 'package:pi-desktop/update/update_controller.dart';
+import 'package:pi-desktop/update/update_service.dart';
+import 'package:pi-desktop/update/update_settings.dart';
+import 'package:pi-desktop/update/version.dart';
 
 import 'update_fakes.dart';
 
@@ -46,7 +46,7 @@ void main() {
   late UserSettings settings;
 
   setUp(() async {
-    data = await Directory.systemTemp.createTemp('baocode-updates-page');
+    data = await Directory.systemTemp.createTemp('pi-desktop-updates-page');
     settings = UserSettings(p.join(data.path, 'settings.json'));
     await settings.load();
   });

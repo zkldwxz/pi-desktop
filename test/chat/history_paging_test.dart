@@ -1,17 +1,17 @@
 import 'dart:async';
 
-import 'package:bao_remote/claude.dart' show ClaudeHistoryPage;
+import 'package:pi_remote/claude.dart' show ClaudeHistoryPage;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_history_view.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi-desktop/chat/chat_history_view.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi-desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 
 import '../kernel_test.dart' show FakeCli;
 

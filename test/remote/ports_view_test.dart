@@ -3,12 +3,12 @@ library;
 
 import 'dart:io';
 
-import 'package:baocode/l10n/app_localizations.dart';
-import 'package:baocode/remote/port_forwards.dart';
-import 'package:baocode/remote/ports_view.dart';
-import 'package:baocode/remote/remote_host_settings.dart';
-import 'package:baocode/remote/ssh_host.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi-desktop/l10n/app_localizations.dart';
+import 'package:pi-desktop/remote/port_forwards.dart';
+import 'package:pi-desktop/remote/ports_view.dart';
+import 'package:pi-desktop/remote/remote_host_settings.dart';
+import 'package:pi-desktop/remote/ssh_host.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -27,7 +27,7 @@ void main() {
   final previous = RemoteHostSettings.instance;
 
   setUp(() async {
-    dir = Directory.systemTemp.createTempSync('baocode-ports-view-');
+    dir = Directory.systemTemp.createTempSync('pi-desktop-ports-view-');
     hosts = SshHosts(connect: MemoryConnector(dir.path).call);
     settings = RemoteHostSettings.instance = RemoteHostSettings(
       file: p.join(dir.path, 'remote-hosts.json'),

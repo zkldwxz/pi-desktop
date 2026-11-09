@@ -2,16 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/widgets/content_image.dart';
-import 'package:baocode/images/image_picks.dart';
-import 'package:baocode/images/image_steps.dart';
-import 'package:baocode/images/image_tools.dart';
-import 'package:baocode/kernel/claude_code/claude_code_translator.dart';
-import 'package:baocode/kernel/claude_code/claude_sdk_tools.dart';
-import 'package:baocode/kernel/transcript.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/widgets/content_image.dart';
+import 'package:pi-desktop/images/image_picks.dart';
+import 'package:pi-desktop/images/image_steps.dart';
+import 'package:pi-desktop/images/image_tools.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_translator.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_sdk_tools.dart';
+import 'package:pi-desktop/kernel/transcript.dart';
+import 'package:pi-desktop/models/model_provider.dart';
+import 'package:pi-desktop/models/model_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -46,7 +46,7 @@ void main() {
             {
               'type': 'tool_use',
               'id': 'g1',
-              'name': 'mcp__baocode__generate_image',
+              'name': 'mcp__pi_desktop__generate_image',
               'input': {'prompt': 'A red fox\nin snow', 'aspect_ratio': '16:9'},
             },
           ],

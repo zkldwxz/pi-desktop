@@ -1,13 +1,13 @@
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/kernel/agent_kernel.dart' show KernelChoiceKind;
-import 'package:baocode/l10n/app_localizations.dart';
-import 'package:baocode/models/codex/codex_service.dart';
-import 'package:baocode/models/codex/codex_usage.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/workspace/chat_quota_bar.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart' show KernelChoiceKind;
+import 'package:pi-desktop/l10n/app_localizations.dart';
+import 'package:pi-desktop/models/codex/codex_service.dart';
+import 'package:pi-desktop/models/codex/codex_usage.dart';
+import 'package:pi-desktop/models/model_provider.dart';
+import 'package:pi-desktop/models/model_providers.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
+import 'package:pi-desktop/theme/codicons.dart';
+import 'package:pi-desktop/workspace/chat_quota_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

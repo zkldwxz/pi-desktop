@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/theme/code_font.dart';
-import 'package:baocode/theme/ui_zoom.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/main.dart';
+import 'package:pi-desktop/theme/code_font.dart';
+import 'package:pi-desktop/theme/ui_zoom.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 
 void main() {
   testWidgets('lays out in the space divided by its scale, and paints, hits '
@@ -80,7 +80,7 @@ void main() {
 
     Future<Rect> rowAt(int percent) async {
       CodeFont.uiScale.value = percent;
-      await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+      await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
       await tester.pump();
       final row = find.text('Sticky user message on scroll');
       final box = tester.renderObject<RenderBox>(row);

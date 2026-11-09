@@ -2,7 +2,7 @@
 // picked on the Git log: its branch, its changes, what Git does there;
 // the folder's own again when its main one is picked.
 
-import 'package:baocode/ide/git/git_repository.dart';
+import 'package:pi-desktop/ide/git/git_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;

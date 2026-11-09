@@ -44,7 +44,7 @@ class ComposerMessage {
 /// changes (see [ChatSession.send]), for its replies to suit the screen
 /// they are read on. Not its system prompt, which would break its cache.
 enum UserPlace {
-  /// The BaoCode app on their phone: replies read as chat bubbles.
+  /// The pi-desktop app on their phone: replies read as chat bubbles.
   phone,
 
   /// The desktop app's composer.
@@ -53,7 +53,7 @@ enum UserPlace {
   /// What the agent is told when the user comes to write from here.
   String get note => switch (this) {
     phone =>
-      '<system-reminder>The user is now writing to you from the BaoCode '
+      '<system-reminder>The user is now writing to you from the pi-desktop '
           'app on their phone, and reads your replies there as chat bubbles '
           'on a small screen. Reply as in a chat: plain, conversational text '
           'in short paragraphs, the outcome first. A little formatting is '
@@ -62,7 +62,7 @@ enum UserPlace {
           'them. This holds until you are told they are back at their '
           'computer.</system-reminder>',
     computer =>
-      '<system-reminder>The user is back at their computer, in the BaoCode '
+      '<system-reminder>The user is back at their computer, in the pi-desktop '
           'desktop app: reply as you normally would there, Markdown and '
           'all.</system-reminder>',
   };

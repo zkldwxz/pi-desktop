@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/widgets/edit_step.dart';
-import 'package:baocode/chat/widgets/step_header.dart';
-import 'package:baocode/ide/ide_code_diff.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/widgets/edit_step.dart';
+import 'package:pi-desktop/chat/widgets/step_header.dart';
+import 'package:pi-desktop/ide/ide_code_diff.dart';
 
 void main() {
   test('the sides number their lines as their files do, across hunks', () {

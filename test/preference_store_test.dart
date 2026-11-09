@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/workspace/preference_store.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/workspace/preference_store.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 
 void main() {
   test('a file not written fails its write, the next tried', () async {
     final folder = await Directory.systemTemp.createTemp(
-      'baocode-prefs-failure',
+      'pi-desktop-prefs-failure',
     );
     addTearDown(() => folder.delete(recursive: true));
     final parent = File('${folder.path}/parent');
@@ -36,7 +36,7 @@ void main() {
 
   test('preferences written to a file are read back; none, or a broken '
       'file, reads as none', () async {
-    final folder = await Directory.systemTemp.createTemp('baocode-prefs');
+    final folder = await Directory.systemTemp.createTemp('pi-desktop-prefs');
     addTearDown(() => folder.delete(recursive: true));
     final path = '${folder.path}/nested/preferences.json';
     final store = PreferenceStore.file(path);

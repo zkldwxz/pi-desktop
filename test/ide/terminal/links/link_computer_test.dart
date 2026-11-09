@@ -7,7 +7,7 @@
 // src/vs/editor/test/common/modes/linkComputer.test.ts.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/terminal/links/link_computer.dart';
+import 'package:pi-desktop/ide/terminal/links/link_computer.dart';
 
 class SimpleLinkComputerTarget implements ILinkComputerTarget {
   SimpleLinkComputerTarget(this._lines);

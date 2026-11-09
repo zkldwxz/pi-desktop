@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_remote/files.dart' show IdeFileExistsException;
+import 'package:pi_remote/files.dart' show IdeFileExistsException;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
-import 'package:baocode/customize/customization_store.dart';
-import 'package:baocode/customize/customizations.dart';
+import 'package:pi-desktop/customize/customization_store.dart';
+import 'package:pi-desktop/customize/customizations.dart';
 
 void main() {
   late Directory temp;

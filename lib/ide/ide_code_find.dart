@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
-import 'package:bao_editor/monaco/vs/editor/common/core/position.dart';
-import 'package:bao_editor/monaco/vs/editor/common/model/search/piece_tree_search.dart';
-import 'package:bao_editor/monaco/vs/editor/contrib/find/browser/replace_pattern.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/position.dart';
+import 'package:pi_editor/monaco/vs/editor/common/model/search/piece_tree_search.dart';
+import 'package:pi_editor/monaco/vs/editor/contrib/find/browser/replace_pattern.dart';
 
 import '../diagnostics/input_lag.dart';
 import 'ide_find_widget.dart';

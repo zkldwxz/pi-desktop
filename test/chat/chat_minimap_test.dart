@@ -1,17 +1,17 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_feed.dart';
-import 'package:baocode/chat/chat_history_view.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer_draft.dart';
-import 'package:baocode/chat/composer/composer_files.dart';
-import 'package:baocode/chat/widgets/assistant_text.dart';
-import 'package:baocode/chat/widgets/chat_minimap.dart';
-import 'package:baocode/chat/widgets/hover_scrollbar.dart';
-import 'package:baocode/chat/widgets/user_message_bubble.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi-desktop/chat/chat_feed.dart';
+import 'package:pi-desktop/chat/chat_history_view.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/composer/composer_draft.dart';
+import 'package:pi-desktop/chat/composer/composer_files.dart';
+import 'package:pi-desktop/chat/widgets/assistant_text.dart';
+import 'package:pi-desktop/chat/widgets/chat_minimap.dart';
+import 'package:pi-desktop/chat/widgets/hover_scrollbar.dart';
+import 'package:pi-desktop/chat/widgets/user_message_bubble.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 
 class _Feed extends ChangeNotifier implements ChatFeed {
   _Feed(this.items);

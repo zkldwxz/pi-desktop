@@ -132,7 +132,7 @@ class _ChatHistoryViewState extends State<ChatHistoryView>
   final _BottomAnchoredScrollController _scrollController =
       _BottomAnchoredScrollController();
   final FocusNode _selectionFocusNode = FocusNode(
-    debugLabel: 'BaoCode chat selection',
+    debugLabel: 'pi-desktop chat selection',
   );
 
   /// Steps the user opened (true) or closed (false). Others follow

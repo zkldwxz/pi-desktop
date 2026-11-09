@@ -1,8 +1,8 @@
-import 'package:bao_editor/monaco/flutter/wheel_glide.dart';
+import 'package:pi_editor/monaco/flutter/wheel_glide.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/base/smooth_scroll.dart';
+import 'package:pi-desktop/base/smooth_scroll.dart';
 
 const _frame = Duration(microseconds: 16667);
 
@@ -119,7 +119,7 @@ void main() {
       late ScrollController controller;
       await tester.pumpWidget(
         MaterialApp(
-          scrollBehavior: const BaoScrollBehavior(),
+          scrollBehavior: const PiScrollBehavior(),
           home: SmoothScrolling(
             builder: (context, shown) => ListView.builder(
               controller: controller = shown,

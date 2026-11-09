@@ -2,14 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/composer/composer_embeds.dart';
-import 'package:baocode/chat/composer/composer_files.dart';
-import 'package:baocode/chat/composer/paste_store.dart';
-import 'package:baocode/chat/widgets/text_preview.dart';
-import 'package:baocode/chat/widgets/user_message_bubble.dart';
-import 'package:baocode/kernel/claude_code/claude_code_transport.dart';
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi-desktop/chat/composer/composer_embeds.dart';
+import 'package:pi-desktop/chat/composer/composer_files.dart';
+import 'package:pi-desktop/chat/composer/paste_store.dart';
+import 'package:pi-desktop/chat/widgets/text_preview.dart';
+import 'package:pi-desktop/chat/widgets/user_message_bubble.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_transport.dart';
+import 'package:pi-desktop/platform/data_dir.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 
 /// A paste of [lines] lines.
 String _log(int lines) =>
@@ -67,13 +67,13 @@ void main() {
   test('Claude Code may read the folder they are kept in', () {
     expect(
       ClaudeLaunch.readRule(
-        '/Users/me/Library/Application Support/baocode/pastes',
+        '/Users/me/Library/Application Support/pi-desktop/pastes',
       ),
-      'Read(//Users/me/Library/Application Support/baocode/pastes/**)',
+      'Read(//Users/me/Library/Application Support/pi-desktop/pastes/**)',
     );
     expect(
-      ClaudeLaunch.readRule(r'C:\Users\me\AppData\Roaming\baocode\pastes'),
-      'Read(//c/Users/me/AppData/Roaming/baocode/pastes/**)',
+      ClaudeLaunch.readRule(r'C:\Users\me\AppData\Roaming\pi-desktop\pastes'),
+      'Read(//c/Users/me/AppData/Roaming/pi-desktop/pastes/**)',
     );
     expect(
       const ClaudeLaunch(cwd: '/p', readable: ['/data/pastes']).settings,

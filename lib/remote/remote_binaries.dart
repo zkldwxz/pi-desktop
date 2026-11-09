@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:bao_remote/client.dart';
-import 'package:bao_remote/local.dart' show ClaudeEnvironment;
+import 'package:pi_remote/client.dart';
+import 'package:pi_remote/local.dart' show ClaudeEnvironment;
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:path/path.dart' as p;
 
@@ -12,7 +12,7 @@ import 'host_server_platform.dart'
     if (dart.library.ffi) 'host_server_platform_ffi.dart';
 
 /// The server builds in [directory] (tool/build_remote_server.dart writes
-/// them): `baocode-server-<platform>` (`linux-x64`, `darwin-arm64`, …), and
+/// them): `pi-desktop-server-<platform>` (`linux-x64`, `darwin-arm64`, …), and
 /// `VERSION`, which names them.
 class DirectoryServerBinaries implements RemoteServerBinaries {
   DirectoryServerBinaries(this.directory, this.version);
@@ -44,7 +44,7 @@ class DirectoryServerBinaries implements RemoteServerBinaries {
   @override
   final String version;
 
-  static String fileName(String platform) => 'baocode-server-$platform';
+  static String fileName(String platform) => 'pi-desktop-server-$platform';
 
   /// Those there are builds for.
   static const platforms = [
@@ -169,7 +169,7 @@ class DownloadedServerBinaries implements RemoteServerBinaries {
   }
 
   Future<List<int>> _fetch(String platform, ServerDownload download) async {
-    final file = File(p.join(cacheDir, version, 'baocode-server-$platform.gz'));
+    final file = File(p.join(cacheDir, version, 'pi-desktop-server-$platform.gz'));
     final name = SshLauncher.describe(platform);
     if (await file.exists()) {
       final kept = await file.readAsBytes();
@@ -181,14 +181,14 @@ class DownloadedServerBinaries implements RemoteServerBinaries {
     } on Object catch (error) {
       throw SshConnectException(
         SshFailure.server,
-        'The BaoCode server for $name could not be downloaded',
+        'The pi-desktop server for $name could not be downloaded',
         detail: '${download.url}: $error',
       );
     }
     if (!download.matches(bytes)) {
       throw SshConnectException(
         SshFailure.server,
-        'The BaoCode server downloaded for $name is not the one this '
+        'The pi-desktop server downloaded for $name is not the one this '
         'app was built with',
         detail: '${download.url}',
       );
@@ -245,7 +245,7 @@ class DownloadedServerBinaries implements RemoteServerBinaries {
 /// [DownloadedServerBinaries], keeping them in [cacheDir], the data
 /// folder's cache by default): in the bundle's resources on macOS
 /// (`Contents/Resources/remote`), beside the executable elsewhere
-/// (`remote/`); `BAOCODE_REMOTE_SERVER_DIR`, else `build/remote` of the
+/// (`remote/`); `PI_DESKTOP_REMOTE_SERVER_DIR`, else `build/remote` of the
 /// checkout (the working folder's, or one the executable is built under),
 /// in development. Null when there are none.
 RemoteServerBinaries? bundledServerBinaries({
@@ -259,7 +259,7 @@ RemoteServerBinaries? bundledServerBinaries({
   current ??= Directory.current.path;
   final exeDir = p.dirname(executable);
   final directories = [
-    ?environment['BAOCODE_REMOTE_SERVER_DIR'],
+    ?environment['PI_DESKTOP_REMOTE_SERVER_DIR'],
     if (Platform.isMacOS) p.join(p.dirname(exeDir), 'Resources', 'remote'),
     p.join(exeDir, 'remote'),
     p.join(exeDir, 'data', 'remote'),
@@ -336,10 +336,10 @@ class SourceServerBinaries implements RemoteServerBinaries {
     );
   }
 
-  static const _source = 'packages/bao_remote/bin/baocode_server.dart';
+  static const _source = 'packages/pi_remote/bin/pi_desktop_server.dart';
 
   /// The packages the server is built from.
-  static const _serverPackages = ['bao_remote', 'bao_agent'];
+  static const _serverPackages = ['pi_remote', 'pi_agent'];
 
   final String root;
   final String _dart;
@@ -364,7 +364,7 @@ class SourceServerBinaries implements RemoteServerBinaries {
     if (os != 'linux' && platform != host) {
       throw SshConnectException(
         SshFailure.server,
-        'The BaoCode server for $name can only be built on '
+        'The pi-desktop server for $name can only be built on '
         '${os == 'darwin' ? 'a Mac' : 'Windows'} of that architecture: run '
         'tool/build_remote_server.dart there (--only $platform), and give '
         'its build to this one with --from',
@@ -384,7 +384,7 @@ class SourceServerBinaries implements RemoteServerBinaries {
           os == 'darwin' ? 'macos' : os,
           '--target-arch',
           arch,
-          '-Dbaocode.version=$version',
+          '-Dpi-desktop.version=$version',
           '-o',
           out.path,
           _source,
@@ -396,7 +396,7 @@ class SourceServerBinaries implements RemoteServerBinaries {
         _built.remove(platform);
         throw SshConnectException(
           SshFailure.server,
-          'The BaoCode server could not be built for $name',
+          'The pi-desktop server could not be built for $name',
           detail: '${result.stdout}\n${result.stderr}'.trim(),
         );
       }
@@ -420,7 +420,7 @@ class SourceServerBinaries implements RemoteServerBinaries {
   }
 
   /// The server's sources, hashed: its package's Dart and pubspec, and
-  /// those of the core it carries (package:bao_agent).
+  /// those of the core it carries (package:pi_agent).
   static String _hashSources(String root) {
     final packages = Directory(p.join(root, 'packages'));
     final files = [

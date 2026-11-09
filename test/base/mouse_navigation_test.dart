@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/base/mouse_navigation.dart';
+import 'package:pi-desktop/base/mouse_navigation.dart';
 
 void main() {
   testWidgets('the innermost that goes back has the press; one that does '

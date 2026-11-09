@@ -1,9 +1,9 @@
-import 'package:bao_markdown/bao_markdown.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/composer/composer_controller.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi_markdown/pi_markdown.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/composer/composer.dart';
+import 'package:pi-desktop/chat/composer/composer_controller.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

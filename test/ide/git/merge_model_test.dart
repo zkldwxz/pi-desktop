@@ -3,7 +3,7 @@
 // conflict the ancestor's until a side is applied; typing in the result
 // keeps them in step.
 
-import 'package:baocode/ide/git/git_merge_model.dart';
+import 'package:pi-desktop/ide/git/git_merge_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 String lines(List<String> lines) => '${lines.join('\n')}\n';

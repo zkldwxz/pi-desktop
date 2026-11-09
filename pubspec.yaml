@@ -1,4 +1,4 @@
-name: baocode
+name: pi-desktop
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -24,16 +24,16 @@ environment:
 # The terminal and the editor, ported as packages of their own (MIT, not on
 # pub.dev yet): see each one's HANDOFF.md.
 workspace:
-  - packages/bao_agent
-  - packages/bao_conpty
-  - packages/bao_editor
-  - packages/bao_iroh
-  - packages/bao_link
-  - packages/bao_markdown
-  - packages/bao_pty
-  - packages/bao_remote
-  - packages/bao_sampler
-  - packages/bao_xterm
+  - packages/pi_agent
+  - packages/pi_conpty
+  - packages/pi_editor
+  - packages/pi_iroh
+  - packages/pi_link
+  - packages/pi_markdown
+  - packages/pi_pty
+  - packages/pi_remote
+  - packages/pi_sampler
+  - packages/pi_xterm
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -42,20 +42,20 @@ workspace:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  bao_agent:
-    path: packages/bao_agent
-  bao_editor:
-    path: packages/bao_editor
-  bao_link:
-    path: packages/bao_link
-  bao_pty:
-    path: packages/bao_pty
-  bao_remote:
-    path: packages/bao_remote
-  bao_sampler:
-    path: packages/bao_sampler
-  bao_xterm:
-    path: packages/bao_xterm
+  pi_agent:
+    path: packages/pi_agent
+  pi_editor:
+    path: packages/pi_editor
+  pi_link:
+    path: packages/pi_link
+  pi_pty:
+    path: packages/pi_pty
+  pi_remote:
+    path: packages/pi_remote
+  pi_sampler:
+    path: packages/pi_sampler
+  pi_xterm:
+    path: packages/pi_xterm
   # The names project icons are kept under (lib/icons/icon_library.dart).
   bonsoir: ^7.1.5
   clock: ^1.1.2
@@ -67,8 +67,8 @@ dependencies:
   flutter_math_fork: ^0.7.4
   # The editor of the stashes, markdown files' previews and the chat's
   # input.
-  bao_markdown:
-    path: packages/bao_markdown
+  pi_markdown:
+    path: packages/pi_markdown
   flutter_svg: ^2.3.0
   # Pasted web pages, made markdown (lib/stash/stash_html.dart).
   html: ^0.15.0

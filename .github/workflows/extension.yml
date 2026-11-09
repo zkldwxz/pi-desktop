@@ -1,12 +1,12 @@
-# Packs BaoCode's browser extension (browser_extension/) and publishes it:
-# the zip to load unpacked on dl.baocode.dev, where baocode.dev/download
+# Packs pi-desktop's browser extension (browser_extension/) and publishes it:
+# the zip to load unpacked on the pi-desktop site, where the pi-desktop site/download
 # links to it (/dl/browser-extension), and the store's to the Chrome Web
 # Store. docs/release.md, 11.
 #
 #   git tag extension-v0.1.0 && git push origin extension-v0.1.0
 #                           publish 0.1.0 (manifest.json's version)
 #   git tag extension-test-foo && git push origin extension-test-foo
-#                           pack, and put both zips at dl.baocode.dev/test/…
+#                           pack, and put both zips at the pi-desktop site/test/…
 #   a pull request that changes the extension
 #                           pack it, to see that it does
 name: Extension
@@ -29,7 +29,7 @@ concurrency:
 
 env:
   # The extension's id: the store's, which the zip to load unpacked has too
-  # (its manifest's "key"), and BaoCode lets in (BrowserBridge.extensionIds).
+  # (its manifest's "key"), and pi-desktop lets in (BrowserBridge.extensionIds).
   EXTENSION_ID: jfjagocghaaheooicmdnhcholmgdkngk
 
 jobs:
@@ -65,7 +65,7 @@ jobs:
       - name: Check the extension
         run: |
           node --check browser_extension/background.js
-          # The id BaoCode lets in is the manifest key's.
+          # The id pi-desktop lets in is the manifest key's.
           id=$(jq -r .key browser_extension/manifest.json | base64 -d | sha256sum | head -c 32 | tr 0-9a-f a-p)
           [ "$id" = "$EXTENSION_ID" ] || { echo "::error::manifest.json's key is extension $id, not $EXTENSION_ID"; exit 1; }
           grep -q "'$EXTENSION_ID'" lib/browser/browser_bridge.dart \
@@ -81,10 +81,10 @@ jobs:
         with:
           name: extension
           if-no-files-found: error
-          path: build/browser_extension/BaoCode-browser-*.zip
+          path: build/browser_extension/pi-desktop-browser-*.zip
 
   share:
-    name: Put it at dl.baocode.dev/test/ for testers
+    name: Put it at the pi-desktop site/test/ for testers
     needs: pack
     if: needs.pack.outputs.share == 'true'
     runs-on: ubuntu-latest
@@ -111,11 +111,11 @@ jobs:
             echo "## For testers: the browser extension $VERSION, \`$GITHUB_REF_NAME\`"
             echo
           } >> "$GITHUB_STEP_SUMMARY"
-          for file in dist/BaoCode-browser-*.zip; do
+          for file in dist/pi-desktop-browser-*.zip; do
             name=$(basename "$file")
             aws s3 cp "$file" "s3://$R2_BUCKET/$dir/$name" --cache-control 'public, max-age=86400' \
               --content-type application/zip
-            url="https://dl.baocode.dev/$dir/$name"
+            url="https://github.com/zkldwxz/pi-desktop$dir/$name"
             served=$(curl -fsSI "$url" | tr -d '\r' | awk 'tolower($1) == "content-length:" { print $2 }')
             [ "$served" = "$(stat -c %s "$file")" ] || { echo "::error::$url is not served as uploaded"; exit 1; }
             echo "- [$name]($url)" >> "$GITHUB_STEP_SUMMARY"
@@ -123,7 +123,7 @@ jobs:
           cat "$GITHUB_STEP_SUMMARY"
 
   publish:
-    name: Publish to dl.baocode.dev
+    name: Publish to the pi-desktop site
     needs: pack
     if: needs.pack.outputs.publish == 'true'
     runs-on: ubuntu-latest
@@ -148,15 +148,15 @@ jobs:
           path: dist
       - name: Upload the zip to load unpacked
         run: |
-          aws s3 cp "dist/BaoCode-browser-$VERSION.zip" \
-            "s3://$R2_BUCKET/releases/extension/$VERSION/BaoCode-browser-$VERSION.zip" \
+          aws s3 cp "dist/pi-desktop-browser-$VERSION.zip" \
+            "s3://$R2_BUCKET/releases/extension/$VERSION/pi-desktop-browser-$VERSION.zip" \
             --cache-control 'public, max-age=31536000, immutable' --content-type application/zip
       - name: Write the manifest, and check the download is served
         run: |
-          file="dist/BaoCode-browser-$VERSION.zip"
+          file="dist/pi-desktop-browser-$VERSION.zip"
           sha=$(sha256sum "$file" | cut -d' ' -f1)
           size=$(stat -c %s "$file")
-          url="https://dl.baocode.dev/releases/extension/$VERSION/BaoCode-browser-$VERSION.zip?sha256=${sha:0:16}"
+          url="https://github.com/zkldwxz/pi-desktop$VERSION/pi-desktop-browser-$VERSION.zip?sha256=${sha:0:16}"
           jq -n --arg version "$VERSION" --arg date "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --arg id "$EXTENSION_ID" \
             --arg store "${STORE_URL:-https://chromewebstore.google.com/detail/$EXTENSION_ID}" \
@@ -171,7 +171,7 @@ jobs:
         run: |
           aws s3 cp latest.json "s3://$R2_BUCKET/releases/extension/latest.json" \
             --cache-control 'public, max-age=300' --content-type application/json
-          curl -fsS "https://dl.baocode.dev/releases/extension/latest.json?$GITHUB_RUN_ID" | jq .
+          curl -fsS "https://github.com/zkldwxz/pi-desktop$GITHUB_RUN_ID" | jq .
 
   store:
     name: Submit to the Chrome Web Store
@@ -195,7 +195,7 @@ jobs:
       - name: Upload, and submit for review
         run: |
           if [ -z "$PUBLISHER_ID" ] || [ -z "$CLIENT_ID" ] || [ -z "$CLIENT_SECRET" ] || [ -z "$REFRESH_TOKEN" ]; then
-            echo "::warning::No Chrome Web Store credentials: upload BaoCode-browser-$VERSION-store.zip from this run's artifacts by hand."
+            echo "::warning::No Chrome Web Store credentials: upload pi-desktop-browser-$VERSION-store.zip from this run's artifacts by hand."
             exit 0
           fi
           token=$(curl -fsS https://oauth2.googleapis.com/token \
@@ -204,7 +204,7 @@ jobs:
           item="publishers/$PUBLISHER_ID/items/$EXTENSION_ID"
           api=https://chromewebstore.googleapis.com
           upload=$(curl -sS -X POST -H "Authorization: Bearer $token" \
-            -T "dist/BaoCode-browser-$VERSION-store.zip" "$api/upload/v2/$item:upload")
+            -T "dist/pi-desktop-browser-$VERSION-store.zip" "$api/upload/v2/$item:upload")
           echo "$upload" | jq .
           state=$(echo "$upload" | jq -r .uploadState)
           # A big zip is taken in later: asked after till it is.

@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_link/bao_link.dart';
-import 'package:bao_remote/claude.dart' show ClaudeHistoryPage;
-import 'package:baocode/chat/chat_session.dart' show ComposerMessage, UserPlace;
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/bots/bot_folders.dart';
-import 'package:baocode/bots/bots.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/link/chat_codec.dart';
-import 'package:baocode/link/workspace_bridge.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_link/pi_link.dart';
+import 'package:pi_remote/claude.dart' show ClaudeHistoryPage;
+import 'package:pi-desktop/chat/chat_session.dart' show ComposerMessage, UserPlace;
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/bots/bot_folders.dart';
+import 'package:pi-desktop/bots/bots.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi-desktop/link/chat_codec.dart';
+import 'package:pi-desktop/link/workspace_bridge.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

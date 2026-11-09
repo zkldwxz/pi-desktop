@@ -1,6 +1,6 @@
-import 'package:baocode/l10n/app_localizations.dart';
-import 'package:baocode/settings/pages/about_page.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi-desktop/l10n/app_localizations.dart';
+import 'package:pi-desktop/settings/pages/about_page.dart';
+import 'package:pi-desktop/update/version.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,12 +23,12 @@ void main() {
     await tester.pump();
   }
 
-  testWidgets('says what BaoCode is, which build, and where it is made', (
+  testWidgets('says what pi-desktop is, which build, and where it is made', (
     tester,
   ) async {
     await show(tester, const Locale('zh'));
     expect(find.text('关于'), findsOneWidget);
-    expect(find.text('BaoCode'), findsOneWidget);
+    expect(find.text('pi-desktop'), findsOneWidget);
     expect(
       find.text(
         '版本 ${currentAppVersion.marketing}（${currentAppVersion.build}）',
@@ -36,11 +36,11 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.text('github.com/baocode-dev/baocode · 免费开源，GPL-3.0 许可证'),
+      find.text('github.com/zkldwxz/pi-desktop · 免费开源，GPL-3.0 许可证'),
       findsOneWidget,
     );
     expect(find.text('去 GitHub 点 Star'), findsOneWidget);
-    expect(find.text('baocode.dev'), findsOneWidget);
+    expect(find.text('the pi-desktop site'), findsOneWidget);
     expect(find.text('更新日志'), findsOneWidget);
     expect(find.text('反馈问题'), findsOneWidget);
     expect(tester.takeException(), isNull);
@@ -49,7 +49,7 @@ void main() {
   test('its links', () {
     expect(
       AboutSettingsPage.issues,
-      Uri.parse('https://github.com/baocode-dev/baocode/issues'),
+      Uri.parse('https://github.com/zkldwxz/pi-desktop/issues'),
     );
   });
 }

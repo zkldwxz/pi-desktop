@@ -16,7 +16,7 @@ enum IdeDiffLayout { auto, sideBySide, unified }
 /// What whitespace a diff ignores: none, at the ends of lines, any.
 enum IdeDiffWhitespace { none, trim, all }
 
-/// `baocode.git.detailsLayout`: the Git page's details at the log's right
+/// `pi-desktop.git.detailsLayout`: the Git page's details at the log's right
 /// (beside), under it (below), or by the width (auto).
 enum IdeGitDetailsLayout { auto, beside, below }
 
@@ -27,9 +27,9 @@ class IdeDiffOptions extends ChangeNotifier {
 
   static const _layoutKey = 'diffEditor.layout';
   static const _whitespaceKey = 'diffEditor.ignoreTrimWhitespace';
-  static const _allWhitespaceKey = 'baocode.diff.ignoreAllWhitespace';
+  static const _allWhitespaceKey = 'pi-desktop.diff.ignoreAllWhitespace';
   static const _collapseKey = 'diffEditor.hideUnchangedRegions.enabled';
-  static const _detailsLayoutKey = 'baocode.git.detailsLayout';
+  static const _detailsLayoutKey = 'pi-desktop.git.detailsLayout';
 
   UserSettings? _settings;
 

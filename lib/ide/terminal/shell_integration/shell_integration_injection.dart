@@ -1,8 +1,8 @@
-import 'package:bao_remote/terminal.dart';
+import 'package:pi_remote/terminal.dart';
 
 import '../pty.dart';
 
-export 'package:bao_remote/terminal.dart'
+export 'package:pi_remote/terminal.dart'
     show
         ShellIntegrationConfigInjection,
         ShellIntegrationInjectionFailure,

@@ -1,16 +1,16 @@
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart'
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart'
     show KeybindingPlatform;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/services/commands.dart';
-import 'package:baocode/ide/services/keybindings.dart';
-import 'package:baocode/ide/workbench/actions.dart';
-import 'package:baocode/ide/workbench/context_keys.dart';
-import 'package:baocode/ide/workbench/services.dart';
-import 'package:baocode/ide/workbench/statusbar.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
-import 'package:baocode/l10n/app_localizations.dart';
+import 'package:pi-desktop/ide/services/commands.dart';
+import 'package:pi-desktop/ide/services/keybindings.dart';
+import 'package:pi-desktop/ide/workbench/actions.dart';
+import 'package:pi-desktop/ide/workbench/context_keys.dart';
+import 'package:pi-desktop/ide/workbench/services.dart';
+import 'package:pi-desktop/ide/workbench/statusbar.dart';
+import 'package:pi-desktop/keybindings/keybinding_service.dart';
+import 'package:pi-desktop/l10n/app_localizations.dart';
 
 import 'fake_host.dart';
 

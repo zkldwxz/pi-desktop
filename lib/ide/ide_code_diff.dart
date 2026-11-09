@@ -4,18 +4,18 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
 
-import 'package:bao_editor/monaco/flutter/diff_editor.dart';
-import 'package:bao_editor/monaco/flutter/diff_editor_model.dart';
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
-import 'package:bao_editor/monaco/flutter/language_configuration_assets.dart';
-import 'package:bao_editor/monaco/flutter/lines_diff.dart'
+import 'package:pi_editor/monaco/flutter/diff_editor.dart';
+import 'package:pi_editor/monaco/flutter/diff_editor_model.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart';
+import 'package:pi_editor/monaco/flutter/language_configuration_assets.dart';
+import 'package:pi_editor/monaco/flutter/lines_diff.dart'
     show isSmallLinesDiff;
-import 'package:bao_editor/monaco/vs/editor/common/diff/default_lines_diff_computer/default_lines_diff_computer.dart';
-import 'package:bao_editor/monaco/vs/editor/common/diff/range_mapping.dart';
-import 'package:bao_editor/textmate/textmate_syntax.dart';
+import 'package:pi_editor/monaco/vs/editor/common/diff/default_lines_diff_computer/default_lines_diff_computer.dart';
+import 'package:pi_editor/monaco/vs/editor/common/diff/range_mapping.dart';
+import 'package:pi_editor/textmate/textmate_syntax.dart';
 
 import '../base/shown_when_ready.dart';
 import '../l10n/l10n.dart';

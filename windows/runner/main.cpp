@@ -30,7 +30,7 @@ constexpr unsigned int kMinClientHeight = 540;
 // runs: a second one started (the `code` command, Explorer's Open with)
 // finds it taken, and hands its paths to the first (see OpenRequests).
 // Local\ is the user's session, so another user's copy is another's.
-constexpr wchar_t kSingleInstanceMutex[] = L"Local\\BaoCode.SingleInstance";
+constexpr wchar_t kSingleInstanceMutex[] = L"Local\\pi-desktop.SingleInstance";
 
 // Places |size| in the centre of the monitor under |origin|, capped to that
 // monitor's work area. |size| and |placed| are in logical pixels: Create
@@ -87,7 +87,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   // scenarios in the environment): it runs beside the user's own copy, on
   // a data folder of its own.
   const bool perf_run =
-      ::GetEnvironmentVariableW(L"BAOCODE_PERF_SCENARIOS", nullptr, 0) > 0;
+      ::GetEnvironmentVariableW(L"PI_DESKTOP_PERF_SCENARIOS", nullptr, 0) > 0;
   const HANDLE single_instance =
       perf_run ? nullptr
                : ::CreateMutexW(nullptr, FALSE, kSingleInstanceMutex);
@@ -118,9 +118,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   // default here since 3.47: Skia draws the chat's frames several times
   // faster, in about half the memory (tool/perf, 2026-10). With 1.6.0's
   // Skia some users saw a white strip along the window's sides and bottom.
-  // BAOCODE_IMPELLER=1 brings Impeller back, to compare.
+  // PI_DESKTOP_IMPELLER=1 brings Impeller back, to compare.
   project.set_impeller_switch(
-      ::GetEnvironmentVariableW(L"BAOCODE_IMPELLER", nullptr, 0) > 0
+      ::GetEnvironmentVariableW(L"PI_DESKTOP_IMPELLER", nullptr, 0) > 0
           ? flutter::ImpellerSwitch::Enabled
           : flutter::ImpellerSwitch::Disabled);
 
@@ -134,7 +134,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   Win32Window::Size size(kDefaultWidth, kDefaultHeight);
   Win32Window::Point placed = origin;
   PlaceOnMonitor(origin, &size, &placed);
-  if (!window.Create(L"BaoCode", placed, size)) {
+  if (!window.Create(L"pi-desktop", placed, size)) {
     return EXIT_FAILURE;
   }
   window.SetMinimumSize(Win32Window::Size(kMinClientWidth, kMinClientHeight));

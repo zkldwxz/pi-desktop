@@ -15,7 +15,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 
 /// The window's frame as the picture has it: its size, and how dark the
 /// theme is (the material under the sidebar, the window's edge).

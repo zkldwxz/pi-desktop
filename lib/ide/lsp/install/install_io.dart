@@ -1,4 +1,4 @@
-export 'package:bao_remote/lsp_install.dart'
+export 'package:pi_remote/lsp_install.dart'
     show
         CommandResult,
         CommandRunner,

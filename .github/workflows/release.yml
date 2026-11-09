@@ -1,4 +1,4 @@
-# Builds BaoCode for macOS, Windows (x64, arm64) and Linux and publishes it to dl.baocode.dev
+# Builds pi-desktop for macOS, Windows (x64, arm64) and Linux and publishes it to the pi-desktop site
 # (Cloudflare R2), where installed apps find their updates. docs/release.md
 # has the whole of it: versions, secrets, what goes where.
 #
@@ -8,7 +8,7 @@
 #                                              updating to its own
 #   git tag test-foo && git push origin test-foo
 #                                              build, and put the installers
-#                                              at dl.baocode.dev/test/…, to
+#                                              at the pi-desktop site/test/…, to
 #                                              send to testers (no update)
 #   git tag test-channel-foo && git push origin test-channel-foo
 #                                              the same, of the channel build
@@ -55,7 +55,7 @@ env:
 
 # flutter-action caches nothing here: a tag's run restores only main's
 # caches, so each one missed and saved its own Flutter (2 GB, minutes on
-# Windows) for no other run. bao_iroh's library is main's (bao_iroh.yml).
+# Windows) for no other run. pi_iroh's library is main's (pi_iroh.yml).
 jobs:
   check:
     name: Check the version
@@ -109,7 +109,7 @@ jobs:
               echo "::error::Tag $GITHUB_REF_NAME, but pubspec.yaml is $version: the tag has to be v$marketing-channel"
               exit 1
             fi
-            published=$(curl -fsS https://dl.baocode.dev/releases/latest.json | jq -r .version)
+            published=$(curl -fsS https://github.com/zkldwxz/pi-desktop | jq -r .version)
             if [ "$published" != "$version" ]; then
               echo "::error::$published is published, pubspec.yaml is $version: the channel build alone goes beside the version published"
               exit 1
@@ -138,7 +138,7 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          published=$(curl -fsS https://dl.baocode.dev/releases/latest.json | jq -r .version || true)
+          published=$(curl -fsS https://github.com/zkldwxz/pi-desktop | jq -r .version || true)
           echo "Published: ${published:-none}, this: $VERSION"
           [ -z "$published" ] && exit 0
           # x.y.z+build, compared number by number.
@@ -155,7 +155,7 @@ jobs:
           EOF
 
   # Once, for both apps: they carry its servers.json, and download the
-  # build a host needs from dl.baocode.dev (docs/ssh-remote.md, 9.3). Its
+  # build a host needs from the pi-desktop site (docs/ssh-remote.md, 9.3). Its
   # artifacts: remote (VERSION, servers.json, the .gz), remote-linux.
   remote:
     name: Remote server
@@ -210,13 +210,13 @@ jobs:
         if: env.NOTARY_KEY != ''
         run: |
           echo "$NOTARY_KEY" > "$RUNNER_TEMP/notary.p8"
-          echo "BAOCODE_NOTARY_KEY=$RUNNER_TEMP/notary.p8" >> "$GITHUB_ENV"
+          echo "PI_DESKTOP_NOTARY_KEY=$RUNNER_TEMP/notary.p8" >> "$GITHUB_ENV"
       - name: Install create-dmg
         run: brew install create-dmg
-      # bao_iroh's Rust (the phones' link), built by its build hook where
+      # pi_iroh's Rust (the phones' link), built by its build hook where
       # main's build of it is not in the cache (Rust set up for it then).
       - id: iroh
-        uses: ./.github/actions/bao-iroh-prebuilt
+        uses: ./.github/actions/pi-iroh-prebuilt
       - if: steps.iroh.outputs.hit != 'true'
         uses: ./.github/actions/setup-rust
       - name: Build
@@ -228,9 +228,9 @@ jobs:
           job: Remote server / Build the remote server
       - name: Sign, notarise and package
         env:
-          BAOCODE_MACOS_SIGN_IDENTITY: ${{ secrets.MACOS_SIGN_IDENTITY }}
-          BAOCODE_NOTARY_KEY_ID: ${{ secrets.NOTARY_KEY_ID }}
-          BAOCODE_NOTARY_ISSUER: ${{ secrets.NOTARY_ISSUER }}
+          PI_DESKTOP_MACOS_SIGN_IDENTITY: ${{ secrets.MACOS_SIGN_IDENTITY }}
+          PI_DESKTOP_NOTARY_KEY_ID: ${{ secrets.NOTARY_KEY_ID }}
+          PI_DESKTOP_NOTARY_ISSUER: ${{ secrets.NOTARY_ISSUER }}
         run: dart run tool/build_macos.dart --skip-build ${{ matrix.edition == 'channel' && '--channel' || '' }}
       - name: Launch each app, as an update installs it
         run: |
@@ -241,17 +241,17 @@ jobs:
           for arch in arm64 x64; do
             dir="$RUNNER_TEMP/launch-$arch"
             mkdir "$dir"
-            ditto -x -k build/installers/BaoCode-*-mac-$arch$SUFFIX.zip "$dir"
-            BAOCODE_DATA_DIR="$dir-data" \
-              "$dir/BaoCode.app/Contents/MacOS/BaoCode" > "$dir.log" 2>&1 &
+            ditto -x -k build/installers/pi-desktop-*-mac-$arch$SUFFIX.zip "$dir"
+            PI_DESKTOP_DATA_DIR="$dir-data" \
+              "$dir/pi-desktop.app/Contents/MacOS/pi-desktop" > "$dir.log" 2>&1 &
             pid=$!
             sleep 15
             if ! kill -0 $pid 2>/dev/null; then
               cat "$dir.log"
-              echo "::error::BaoCode ($arch) exited within 15 seconds of launch"
+              echo "::error::pi-desktop ($arch) exited within 15 seconds of launch"
               exit 1
             fi
-            echo "BaoCode ($arch) is running after 15 seconds"
+            echo "pi-desktop ($arch) is running after 15 seconds"
             kill $pid
           done
       - uses: actions/upload-artifact@v6
@@ -259,8 +259,8 @@ jobs:
           name: macos${{ env.SUFFIX }}
           if-no-files-found: error
           path: |
-            build/installers/BaoCode-*.dmg
-            build/installers/BaoCode-*-mac-*.zip
+            build/installers/pi-desktop-*.dmg
+            build/installers/pi-desktop-*-mac-*.zip
       # The Dart code's symbols, for a jank sample's `??? (in App)` frames
       # (tool/build_macos.dart). Not released: kept with the run.
       - uses: actions/upload-artifact@v6
@@ -329,10 +329,10 @@ jobs:
           if ((Get-FileHash $is -Algorithm SHA256).Hash -ne '9C73C3BAE7ED48D44112A0F48E66742C00090BDB5BEF71D9D3C056C66E97B732') { throw 'innosetup-6.7.3.exe: wrong SHA-256' }
           $setup = Start-Process $is -ArgumentList '/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/SP-','/ALLUSERS' -Wait -PassThru
           if ($setup.ExitCode -ne 0) { throw "Inno Setup's installer exited with $($setup.ExitCode)" }
-      # bao_iroh's Rust (the phones' link), built by its build hook where
+      # pi_iroh's Rust (the phones' link), built by its build hook where
       # main's build of it is not in the cache (Rust set up for it then).
       - id: iroh
-        uses: ./.github/actions/bao-iroh-prebuilt
+        uses: ./.github/actions/pi-iroh-prebuilt
       - if: steps.iroh.outputs.hit != 'true'
         uses: ./.github/actions/setup-rust
       - name: Build
@@ -348,7 +348,7 @@ jobs:
         with:
           name: windows-${{ matrix.arch }}${{ env.SUFFIX }}
           if-no-files-found: error
-          path: build/installers/BaoCode-*-setup${{ env.ARCH_SUFFIX }}${{ env.SUFFIX }}.exe
+          path: build/installers/pi-desktop-*-setup${{ env.ARCH_SUFFIX }}${{ env.SUFFIX }}.exe
       # The Dart code's symbols, for a hang report's app.so+0x… frames
       # (tool/build_windows.dart). Not released: kept with the run.
       - uses: actions/upload-artifact@v6
@@ -381,7 +381,7 @@ jobs:
       SUFFIX: ${{ matrix.edition == 'channel' && '-channel' || '' }}
       # The channel build's login window is WebKitGTK's
       # (linux/runner/CMakeLists.txt).
-      BAOCODE_CHANNEL: ${{ matrix.edition == 'channel' && 'true' || '' }}
+      PI_DESKTOP_CHANNEL: ${{ matrix.edition == 'channel' && 'true' || '' }}
     steps:
       - uses: actions/checkout@v5
       - uses: subosito/flutter-action@v2
@@ -403,13 +403,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev \
             liblzma-dev libstdc++-12-dev xvfb dbus-x11
-          if [ "$BAOCODE_CHANNEL" = true ]; then
+          if [ "$PI_DESKTOP_CHANNEL" = true ]; then
             sudo apt-get install -y libwebkit2gtk-4.1-dev
           fi
-      # bao_iroh's Rust (the phones' link), built by its build hook where
+      # pi_iroh's Rust (the phones' link), built by its build hook where
       # main's build of it is not in the cache (Rust set up for it then).
       - id: iroh
-        uses: ./.github/actions/bao-iroh-prebuilt
+        uses: ./.github/actions/pi-iroh-prebuilt
       - if: steps.iroh.outputs.hit != 'true'
         uses: ./.github/actions/setup-rust
       # The Dart code's symbols are saved beside it, for a jank sample's
@@ -420,7 +420,7 @@ jobs:
           mkdir -p build/symbols
           flutter build linux --release \
             "--extra-gen-snapshot-options=--save-debugging-info=$PWD/build/symbols/app.linux-${{ matrix.arch }}.symbols" \
-            ${{ matrix.edition == 'channel' && '--dart-define=BAOCODE_CHANNEL=true' || '' }}
+            ${{ matrix.edition == 'channel' && '--dart-define=PI_DESKTOP_CHANNEL=true' || '' }}
       - uses: ./.github/actions/wait-for-artifact
         with:
           name: remote
@@ -429,12 +429,12 @@ jobs:
       - name: Package the .deb and the tarball
         run: |
           sh tool/package_linux_deb.sh ${{ matrix.edition == 'channel' && '--channel' || '' }}
-          dpkg-deb --info build/installers/BaoCode-*.deb
-          # The phones' link (bao_iroh's Rust) is in it.
-          dpkg-deb --contents build/installers/BaoCode-*.deb | grep -q 'lib/libbao_iroh.so$'
+          dpkg-deb --info build/installers/pi-desktop-*.deb
+          # The phones' link (pi_iroh's Rust) is in it.
+          dpkg-deb --contents build/installers/pi-desktop-*.deb | grep -q 'lib/libpi_iroh.so$'
       - name: Install the package and launch it
         run: |
-          sudo apt-get install -y ./build/installers/BaoCode-*.deb
+          sudo apt-get install -y ./build/installers/pi-desktop-*.deb
           log="$RUNNER_TEMP/launch.log"
           # A browser's folder, for the host's manifest to be written in; the
           # socket in a runtime folder of the user's alone, as on a desktop.
@@ -443,25 +443,25 @@ jobs:
           mkdir -m 700 "$XDG_RUNTIME_DIR"
           # One that does not exist is asked about, and the app waits there.
           mkdir "$RUNNER_TEMP/launch-data"
-          BAOCODE_DATA_DIR="$RUNNER_TEMP/launch-data" \
-            dbus-run-session -- xvfb-run -a /opt/baocode/baocode > "$log" 2>&1 &
+          PI_DESKTOP_DATA_DIR="$RUNNER_TEMP/launch-data" \
+            dbus-run-session -- xvfb-run -a /opt/pi-desktop/pi-desktop > "$log" 2>&1 &
           sleep 15
-          if ! pgrep -x baocode > /dev/null; then
+          if ! pgrep -x pi-desktop > /dev/null; then
             cat "$log"
-            echo "::error::BaoCode exited within 15 seconds of launch"
+            echo "::error::pi-desktop exited within 15 seconds of launch"
             exit 1
           fi
-          echo "BaoCode is running after 15 seconds"
+          echo "pi-desktop is running after 15 seconds"
           # The browser extension's host: where the manifest says, and
-          # reaching the BaoCode running.
-          manifest="$HOME/.config/google-chrome/NativeMessagingHosts/dev.baocode.browser.json"
+          # reaching the pi-desktop running.
+          manifest="$HOME/.config/google-chrome/NativeMessagingHosts/dev.pi.desktop.browser.json"
           cat "$manifest"
-          grep -q '"path": "/opt/baocode/baocode-browser-host"' "$manifest"
+          grep -q '"path": "/opt/pi-desktop/pi-desktop-browser-host"' "$manifest"
           python3 - << 'EOF'
           import json, signal, struct, subprocess
           signal.alarm(10)
           host = subprocess.Popen(
-              ["/opt/baocode/baocode-browser-host",
+              ["/opt/pi-desktop/pi-desktop-browser-host",
                "chrome-extension://jfjagocghaaheooicmdnhcholmgdkngk/"],
               stdin=subprocess.PIPE, stdout=subprocess.PIPE)
           while True:
@@ -473,14 +473,14 @@ jobs:
           host.stdin.close()
           host.wait()
           EOF
-          pkill -x baocode || true
+          pkill -x pi-desktop || true
       - uses: actions/upload-artifact@v6
         with:
           name: linux-${{ matrix.arch }}${{ env.SUFFIX }}
           if-no-files-found: error
           path: |
-            build/installers/BaoCode-*.deb
-            build/installers/BaoCode-*.tar.gz
+            build/installers/pi-desktop-*.deb
+            build/installers/pi-desktop-*.tar.gz
       # Not released: kept with the run.
       - uses: actions/upload-artifact@v6
         with:
@@ -490,7 +490,7 @@ jobs:
           path: build/symbols/app.linux-${{ matrix.arch }}.symbols
 
   share:
-    name: Put it at dl.baocode.dev/test/ for testers
+    name: Put it at the pi-desktop site/test/ for testers
     needs: [check, remote, macos, windows, linux]
     if: needs.check.outputs.share == 'true'
     runs-on: ubuntu-latest
@@ -542,10 +542,10 @@ jobs:
             echo "## For testers: $MARKETING, \`$GITHUB_REF_NAME\` (${GITHUB_SHA::7})"
             echo
           } >> "$GITHUB_STEP_SUMMARY"
-          for file in dist/macos/BaoCode-*.dmg dist/windows/BaoCode-*-setup*.exe dist/linux/BaoCode-*.deb; do
+          for file in dist/macos/pi-desktop-*.dmg dist/windows/pi-desktop-*-setup*.exe dist/linux/pi-desktop-*.deb; do
             name=$(basename "$file")
             aws s3 cp "$file" "s3://$R2_BUCKET/$dir/$name" --cache-control 'public, max-age=86400'
-            url="https://dl.baocode.dev/$dir/$name"
+            url="https://github.com/zkldwxz/pi-desktop$dir/$name"
             served=$(curl -fsSI "$url" | tr -d '\r' | awk 'tolower($1) == "content-length:" { print $2 }')
             [ "$served" = "$(stat -c %s "$file")" ] || { echo "::error::$url is not served as uploaded"; exit 1; }
             echo "- [$name]($url)" >> "$GITHUB_STEP_SUMMARY"
@@ -553,7 +553,7 @@ jobs:
           cat "$GITHUB_STEP_SUMMARY"
 
   publish:
-    name: Publish to dl.baocode.dev
+    name: Publish to the pi-desktop site
     needs: [check, remote, macos, windows, linux]
     if: needs.check.outputs.publish == 'true'
     runs-on: ubuntu-latest
@@ -582,9 +582,9 @@ jobs:
         with:
           channel: stable
           flutter-version: ${{ env.FLUTTER_VERSION }}
-      # For `dart run tool/release_manifest.dart`: bao_iroh's build hook
+      # For `dart run tool/release_manifest.dart`: pi_iroh's build hook
       # runs for it too.
-      - uses: ./.github/actions/bao-iroh-prebuilt
+      - uses: ./.github/actions/pi-iroh-prebuilt
       - uses: actions/download-artifact@v7
         with:
           path: dist
@@ -596,14 +596,14 @@ jobs:
           [ "$CHANNEL_ONLY" = true ] && editions=(-channel)
           for edition in "${editions[@]}"; do
             for arch in arm64 x64; do
-              cp dist/macos$edition/BaoCode-$MARKETING-$arch$edition.dmg \
-                dist/macos$edition/BaoCode-$MARKETING-mac-$arch$edition.zip out/
+              cp dist/macos$edition/pi-desktop-$MARKETING-$arch$edition.dmg \
+                dist/macos$edition/pi-desktop-$MARKETING-mac-$arch$edition.zip out/
             done
-            cp dist/windows-x64$edition/BaoCode-$MARKETING-setup$edition.exe \
-              dist/windows-arm64$edition/BaoCode-$MARKETING-setup-arm64$edition.exe out/
+            cp dist/windows-x64$edition/pi-desktop-$MARKETING-setup$edition.exe \
+              dist/windows-arm64$edition/pi-desktop-$MARKETING-setup-arm64$edition.exe out/
             for arch in x64 arm64; do
-              cp dist/linux-$arch$edition/BaoCode-$MARKETING-linux-*.deb \
-                dist/linux-$arch$edition/BaoCode-$MARKETING-linux-*.tar.gz out/
+              cp dist/linux-$arch$edition/pi-desktop-$MARKETING-linux-*.deb \
+                dist/linux-$arch$edition/pi-desktop-$MARKETING-linux-*.tar.gz out/
             done
           done
           # The remote server, under the name both apps' servers.json give it;
@@ -626,7 +626,7 @@ jobs:
             # the standard build's, its notes and its downloads kept as they
             # are (release_manifest.dart keeps a manifest of the same version).
             editions=(-channel)
-            curl -fsS https://dl.baocode.dev/releases/latest.json -o out/latest.json
+            curl -fsS https://github.com/zkldwxz/pi-desktop -o out/latest.json
             [ "$(jq -r .version out/latest.json)" = "$VERSION" ] || { echo "::error::latest.json is not $VERSION"; exit 1; }
           fi
           for language in en zh; do
@@ -641,17 +641,17 @@ jobs:
           files=()
           for edition in "${editions[@]}"; do
             files+=(
-              --windows$edition out/BaoCode-$MARKETING-setup$edition.exe
-              --windows-arm64$edition out/BaoCode-$MARKETING-setup-arm64$edition.exe
-              --macos-arm64$edition out/BaoCode-$MARKETING-mac-arm64$edition.zip
-              --macos-x64$edition out/BaoCode-$MARKETING-mac-x64$edition.zip
-              --dmg-arm64$edition out/BaoCode-$MARKETING-arm64$edition.dmg
-              --dmg-x64$edition out/BaoCode-$MARKETING-x64$edition.dmg
-              --linux-x64$edition out/BaoCode-$MARKETING-linux-amd64$edition.deb
-              --linux-arm64$edition out/BaoCode-$MARKETING-linux-arm64$edition.deb
+              --windows$edition out/pi-desktop-$MARKETING-setup$edition.exe
+              --windows-arm64$edition out/pi-desktop-$MARKETING-setup-arm64$edition.exe
+              --macos-arm64$edition out/pi-desktop-$MARKETING-mac-arm64$edition.zip
+              --macos-x64$edition out/pi-desktop-$MARKETING-mac-x64$edition.zip
+              --dmg-arm64$edition out/pi-desktop-$MARKETING-arm64$edition.dmg
+              --dmg-x64$edition out/pi-desktop-$MARKETING-x64$edition.dmg
+              --linux-x64$edition out/pi-desktop-$MARKETING-linux-amd64$edition.deb
+              --linux-arm64$edition out/pi-desktop-$MARKETING-linux-arm64$edition.deb
             )
           done
-          BAOCODE_UPDATE_SIGNING_KEY="$key" dart run tool/release_manifest.dart \
+          PI_DESKTOP_UPDATE_SIGNING_KEY="$key" dart run tool/release_manifest.dart \
             --version "$VERSION" \
             "${files[@]}" \
             --manifest out/latest.json \
@@ -670,7 +670,7 @@ jobs:
             aws s3 cp remote-latest.json "s3://$R2_BUCKET/releases/remote/latest.json" \
               --cache-control 'public, max-age=60' --content-type application/json
           fi
-          for file in $(cd out && ls BaoCode-*); do
+          for file in $(cd out && ls pi-desktop-*); do
             aws s3 cp "out/$file" "s3://$R2_BUCKET/releases/$MARKETING/$file" \
               --cache-control "$immutable"
           done
@@ -691,7 +691,7 @@ jobs:
           # without holding a release back.
           aws s3 cp out/latest.json "s3://$R2_BUCKET/releases/latest.json" \
             --cache-control 'public, max-age=300' --content-type application/json
-          curl -fsS "https://dl.baocode.dev/releases/latest.json?$GITHUB_RUN_ID" | jq .
+          curl -fsS "https://github.com/zkldwxz/pi-desktop$GITHUB_RUN_ID" | jq .
       # The standard build's alone; the channel build alone makes none.
       - name: Make the GitHub release
         if: env.CHANNEL_ONLY != 'true'
@@ -702,8 +702,8 @@ jobs:
           [ -f "release-notes/$MARKETING.en.md" ] && notes=(--notes-file "release-notes/$MARKETING.en.md")
           # Published again: the release is made anew, on the tag's commit.
           gh release delete "v$MARKETING" --yes 2>/dev/null || true
-          gh release create "v$MARKETING" --title "BaoCode $MARKETING" "${notes[@]}" \
-            out/BaoCode-$MARKETING-arm64.dmg out/BaoCode-$MARKETING-x64.dmg \
-            out/BaoCode-$MARKETING-setup.exe out/BaoCode-$MARKETING-setup-arm64.exe \
-            out/BaoCode-$MARKETING-linux-amd64.deb out/BaoCode-$MARKETING-linux-arm64.deb \
-            out/BaoCode-$MARKETING-linux-amd64.tar.gz out/BaoCode-$MARKETING-linux-arm64.tar.gz
+          gh release create "v$MARKETING" --title "pi-desktop $MARKETING" "${notes[@]}" \
+            out/pi-desktop-$MARKETING-arm64.dmg out/pi-desktop-$MARKETING-x64.dmg \
+            out/pi-desktop-$MARKETING-setup.exe out/pi-desktop-$MARKETING-setup-arm64.exe \
+            out/pi-desktop-$MARKETING-linux-amd64.deb out/pi-desktop-$MARKETING-linux-arm64.deb \
+            out/pi-desktop-$MARKETING-linux-amd64.tar.gz out/pi-desktop-$MARKETING-linux-arm64.tar.gz

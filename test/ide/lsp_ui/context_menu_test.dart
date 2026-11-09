@@ -2,10 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/ide/lsp/language_features.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi-desktop/ide/ide_quick_input.dart';
+import 'package:pi-desktop/ide/lsp/language_features.dart';
+import 'package:pi-desktop/ide/lsp/lsp_protocol.dart';
 
 import '../workbench/fake_files.dart';
 import 'fake_language_features.dart';

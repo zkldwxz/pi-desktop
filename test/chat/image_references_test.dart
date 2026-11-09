@@ -1,20 +1,20 @@
 import 'dart:ui' as ui;
 
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_history_view.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/composer/composer_controller.dart';
-import 'package:baocode/chat/composer/composer_embeds.dart';
-import 'package:baocode/chat/widgets/user_message_bubble.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi-desktop/chat/chat_history_view.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/chat_screen.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/composer/composer.dart';
+import 'package:pi-desktop/chat/composer/composer_controller.dart';
+import 'package:pi-desktop/chat/composer/composer_embeds.dart';
+import 'package:pi-desktop/chat/widgets/user_message_bubble.dart';
+import 'package:pi-desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
 Future<ChatSession> _pump(WidgetTester tester) async {
@@ -75,7 +75,7 @@ Future<Uint8List> _png() async {
 Future<void> _pasteImages(WidgetTester tester, int count) async {
   final bytes = (await tester.runAsync(_png))!;
   tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-    const MethodChannel('baocode/window'),
+    const MethodChannel('pi-desktop/window'),
     (call) async => switch (call.method) {
       'readPasteboardImages' => [
         for (var i = 0; i < count; i++) {'bytes': bytes, 'type': 'image/png'},
@@ -85,7 +85,7 @@ Future<void> _pasteImages(WidgetTester tester, int count) async {
   );
   addTearDown(
     () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('baocode/window'),
+      const MethodChannel('pi-desktop/window'),
       null,
     ),
   );
@@ -98,7 +98,7 @@ Future<void> _pasteImages(WidgetTester tester, int count) async {
 List<MethodCall> _windowCalls(WidgetTester tester, {String? chosen}) {
   final calls = <MethodCall>[];
   tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-    const MethodChannel('baocode/window'),
+    const MethodChannel('pi-desktop/window'),
     (call) async {
       calls.add(call);
       return switch (call.method) {
@@ -219,7 +219,7 @@ void main() {
     await _pasteImages(tester, 1);
     // Text on the pasteboard now, no image.
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('baocode/window'),
+      const MethodChannel('pi-desktop/window'),
       (call) async => call.method == 'readPasteboardImages' ? [] : null,
     );
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(

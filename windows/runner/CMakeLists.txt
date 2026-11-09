@@ -50,7 +50,7 @@ target_compile_definitions(${BINARY_NAME} PRIVATE "FLUTTER_VERSION_BUILD=${FLUTT
 # The DEV-badged icon for Debug builds (Runner.rc). A generator expression,
 # not CMAKE_BUILD_TYPE: Visual Studio's generator builds every configuration
 # from one cache, where CMAKE_BUILD_TYPE is empty.
-target_compile_definitions(${BINARY_NAME} PRIVATE "$<$<CONFIG:Debug>:BAOCODE_DEV_ICON>")
+target_compile_definitions(${BINARY_NAME} PRIVATE "$<$<CONFIG:Debug>:PI_DESKTOP_DEV_ICON>")
 
 # Disable Windows macros that collide with C++ standard library functions.
 target_compile_definitions(${BINARY_NAME} PRIVATE "NOMINMAX")

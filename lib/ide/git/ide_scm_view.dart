@@ -141,8 +141,8 @@ class IdeScmSession {
   set signOff(bool value) => _choose('git.alwaysSignOff', value);
 
   /// Whether a commit runs the repository's hooks (else `--no-verify`).
-  bool get runHooks => _choice('baocode.git.runHooks', true);
-  set runHooks(bool value) => _choose('baocode.git.runHooks', value);
+  bool get runHooks => _choice('pi-desktop.git.runHooks', true);
+  set runHooks(bool value) => _choose('pi-desktop.git.runHooks', value);
 
   IdeGitCommitOptions get commitOptions =>
       IdeGitCommitOptions(author: author, signOff: signOff, runHooks: runHooks);
@@ -161,9 +161,9 @@ class IdeScmSession {
   /// Whether the commit panel lists the ignored files.
   bool showIgnored = false;
 
-  /// `baocode.git.aiReview`: the model reviews a commit before it is made.
-  bool get aiReview => _choice('baocode.git.aiReview', false);
-  set aiReview(bool value) => _choose('baocode.git.aiReview', value);
+  /// `pi-desktop.git.aiReview`: the model reviews a commit before it is made.
+  bool get aiReview => _choice('pi-desktop.git.aiReview', false);
+  set aiReview(bool value) => _choose('pi-desktop.git.aiReview', value);
 
   /// What the last review found; null when there is none to show.
   List<IdeGitReviewProblem>? review;
@@ -200,9 +200,9 @@ class IdeScmSession {
 
   /// Whether Update Project asks how, as JetBrains IDEs' does until told
   /// not to.
-  bool get updateProjectAsks => _choice('baocode.git.updateProjectAsks', true);
+  bool get updateProjectAsks => _choice('pi-desktop.git.updateProjectAsks', true);
   set updateProjectAsks(bool value) =>
-      _choose('baocode.git.updateProjectAsks', value);
+      _choose('pi-desktop.git.updateProjectAsks', value);
 
   /// Completes to cancel the commit message being generated; null when
   /// none is. Kept here, so that the message still arrives when the view

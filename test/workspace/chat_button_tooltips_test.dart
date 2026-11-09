@@ -6,25 +6,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/panels/interaction_panel.dart';
-import 'package:baocode/ide/ide_hover.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/keybindings/chat_keybindings.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/workspace/back_to_chat_button.dart';
-import 'package:baocode/workspace/chat_grid.dart';
-import 'package:baocode/workspace/editor_launcher.dart';
-import 'package:baocode/workspace/window_header/window_header.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/chat/chat_screen.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/composer/composer.dart';
+import 'package:pi-desktop/chat/panels/interaction_panel.dart';
+import 'package:pi-desktop/ide/ide_hover.dart';
+import 'package:pi-desktop/kernel/kernel_types.dart';
+import 'package:pi-desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi-desktop/keybindings/chat_keybindings.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi-desktop/keybindings/keybinding_service.dart';
+import 'package:pi-desktop/main.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
+import 'package:pi-desktop/workspace/back_to_chat_button.dart';
+import 'package:pi-desktop/workspace/chat_grid.dart';
+import 'package:pi-desktop/workspace/editor_launcher.dart';
+import 'package:pi-desktop/workspace/window_header/window_header.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 
-const _window = MethodChannel('baocode/window');
+const _window = MethodChannel('pi-desktop/window');
 
 final _mac = TargetPlatformVariant.only(TargetPlatform.macOS);
 
@@ -44,7 +44,7 @@ Future<Workspace> pumpApp(WidgetTester tester) async {
     ),
   );
   final workspace = Workspace.mock();
-  await tester.pumpWidget(BaoCodeApp(workspace: workspace));
+  await tester.pumpWidget(PiDesktopApp(workspace: workspace));
   await tester.pump();
   return workspace;
 }

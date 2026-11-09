@@ -5,7 +5,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:baocode/diagnostics/diagnostics_bundle.dart';
+import 'package:pi-desktop/diagnostics/diagnostics_bundle.dart';
 
 /// The files of a tar: name → content.
 Map<String, Uint8List> untar(List<int> tar) {
@@ -38,7 +38,7 @@ void main() {
   late Directory logs;
 
   setUp(() async {
-    logs = await Directory.systemTemp.createTemp('baocode-diagnostics');
+    logs = await Directory.systemTemp.createTemp('pi-desktop-diagnostics');
   });
 
   tearDown(() => logs.delete(recursive: true));
@@ -97,7 +97,7 @@ void main() {
     test('the crash reports between the logs and the hang reports', () {
       write('errors.log', 'a');
       write('hangs/hang-20261011-090000-2.txt', 't');
-      write('reports/BaoCode-2026-10-28-120616.ips', '{}');
+      write('reports/pi-desktop-2026-10-28-120616.ips', '{}');
       final listed = listDiagnosticsLogs(
         logs.path,
         crashFolders: [p.join(logs.path, 'reports')],
@@ -106,7 +106,7 @@ void main() {
         [for (final log in listed) log.name],
         [
           'errors.log',
-          'crashes/BaoCode-2026-10-28-120616.ips',
+          'crashes/pi-desktop-2026-10-28-120616.ips',
           'hangs/hang-20261011-090000-2.txt',
         ],
       );
@@ -155,8 +155,8 @@ void main() {
 
     test("in JSON's escaped slashes, as macOS' crash reports have them", () {
       expect(
-        redactHome(r'"procPath" : "\/Users\/ann\/a\/BaoCode"', '/Users/ann'),
-        r'"procPath" : "~\/a\/BaoCode"',
+        redactHome(r'"procPath" : "\/Users\/ann\/a\/pi-desktop"', '/Users/ann'),
+        r'"procPath" : "~\/a\/pi-desktop"',
       );
     });
 
@@ -244,8 +244,8 @@ void main() {
     test('the crash reports, without the home folder and the key', () {
       write('errors.log', 'boom\n');
       write(
-        'reports/BaoCode-2026-10-28-120616.ips',
-        '{"procPath" : "\\/Users\\/ann\\/BaoCode.app",'
+        'reports/pi-desktop-2026-10-28-120616.ips',
+        '{"procPath" : "\\/Users\\/ann\\/pi-desktop.app",'
             ' "crashReporterKey" : "742F288F"}',
       );
       final bundle = packDiagnosticsSync(
@@ -257,21 +257,21 @@ void main() {
       final files = untar(gzip.decode(bundle.bytes));
       expect(files.keys, [
         'errors.log',
-        'crashes/BaoCode-2026-10-28-120616.ips',
+        'crashes/pi-desktop-2026-10-28-120616.ips',
       ]);
       expect(
-        utf8.decode(files['crashes/BaoCode-2026-10-28-120616.ips']!),
-        '{"procPath" : "~\\/BaoCode.app", "crashReporterKey" : ""}',
+        utf8.decode(files['crashes/pi-desktop-2026-10-28-120616.ips']!),
+        '{"procPath" : "~\\/pi-desktop.app", "crashReporterKey" : ""}',
       );
       expect(
         bundle.files.last.size,
-        files['crashes/BaoCode-2026-10-28-120616.ips']!.length,
+        files['crashes/pi-desktop-2026-10-28-120616.ips']!.length,
       );
     });
 
     test("Windows' reports, in UTF-8, the home folder written ~", () {
       final wer = 'EventType=APPCRASH\r\nAppPath=C:\\Users\\Ann\\b.exe\r\n';
-      write('wer/AppCrash_baocode.exe_1a_2b/Report.wer', [
+      write('wer/AppCrash_pi-desktop.exe_1a_2b/Report.wer', [
         0xff,
         0xfe,
         for (final unit in wer.codeUnits) ...[unit & 0xff, unit >> 8],
@@ -287,7 +287,7 @@ void main() {
         utf8.decode(
           untar(
             gzip.decode(bundle.bytes),
-          )['crashes/AppCrash_baocode.exe_1a_2b.wer']!,
+          )['crashes/AppCrash_pi-desktop.exe_1a_2b.wer']!,
         ),
         'EventType=APPCRASH\r\nAppPath=~\\b.exe\r\n',
       );

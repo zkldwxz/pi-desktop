@@ -15,7 +15,7 @@ const updatePublicKey = 'iBSgPUxNeT4jvgaua22aN/jCDwG+ry8rGc17kMcU4II=';
 /// so a signed installer cannot be passed off as another version (an old
 /// one, to downgrade) or another platform's.
 abstract final class UpdateSignature {
-  /// The bytes signed: `baocode-update-v1`, then the version, platform,
+  /// The bytes signed: `pi-desktop-update-v1`, then the version, platform,
   /// size and SHA-256 (lowercase hex), a line each.
   static Uint8List payload({
     required String version,
@@ -23,7 +23,7 @@ abstract final class UpdateSignature {
     required int size,
     required String sha256,
   }) => utf8.encode(
-    'baocode-update-v1\n$version\n$platform\n$size\n${sha256.toLowerCase()}\n',
+    'pi-desktop-update-v1\n$version\n$platform\n$size\n${sha256.toLowerCase()}\n',
   );
 
   /// Whether [signature] (base64) is [publicKey]'s (base64) over [payload].

@@ -3,16 +3,16 @@
 // by their arrows and typed into, its settings in its gear menu, another
 // changed file gone to from its title.
 
-import 'package:bao_editor/monaco/flutter/diff_editor.dart';
-import 'package:bao_editor/monaco/flutter/diff_editor_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/flutter/viewport_layout.dart'
+import 'package:pi_editor/monaco/flutter/diff_editor.dart';
+import 'package:pi_editor/monaco/flutter/diff_editor_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/viewport_layout.dart'
     show HiddenLineRanges;
-import 'package:baocode/ide/ide_code_diff.dart';
-import 'package:baocode/ide/ide_diff_options.dart';
-import 'package:baocode/ide/ide_image_preview.dart';
-import 'package:baocode/ide/ide_list.dart';
+import 'package:pi-desktop/ide/ide_code_diff.dart';
+import 'package:pi-desktop/ide/ide_diff_options.dart';
+import 'package:pi-desktop/ide/ide_image_preview.dart';
+import 'package:pi-desktop/ide/ide_list.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' show Opacity;

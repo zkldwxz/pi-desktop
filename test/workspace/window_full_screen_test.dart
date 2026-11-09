@@ -1,7 +1,7 @@
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
-import 'package:baocode/keybindings/default_keybindings.dart';
-import 'package:baocode/keybindings/window_keybindings.dart';
-import 'package:baocode/workspace/window_controls.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi-desktop/keybindings/default_keybindings.dart';
+import 'package:pi-desktop/keybindings/window_keybindings.dart';
+import 'package:pi-desktop/workspace/window_controls.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -32,7 +32,7 @@ void main() {
     var full = false;
     final messenger =
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
-    messenger.setMockMethodCallHandler(const MethodChannel('baocode/window'), (
+    messenger.setMockMethodCallHandler(const MethodChannel('pi-desktop/window'), (
       call,
     ) async {
       asked.add(call.method);
@@ -40,7 +40,7 @@ void main() {
     });
     addTearDown(
       () => messenger.setMockMethodCallHandler(
-        const MethodChannel('baocode/window'),
+        const MethodChannel('pi-desktop/window'),
         null,
       ),
     );

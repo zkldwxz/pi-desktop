@@ -2,16 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_feed.dart';
-import 'package:baocode/chat/chat_find.dart';
-import 'package:baocode/chat/chat_history_view.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer_draft.dart';
-import 'package:baocode/chat/side_panel/file_open.dart';
-import 'package:baocode/theme/material_file_icons.dart';
-import 'package:baocode/chat/widgets/markdown_view.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi-desktop/chat/chat_feed.dart';
+import 'package:pi-desktop/chat/chat_find.dart';
+import 'package:pi-desktop/chat/chat_history_view.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/composer/composer_draft.dart';
+import 'package:pi-desktop/chat/side_panel/file_open.dart';
+import 'package:pi-desktop/theme/material_file_icons.dart';
+import 'package:pi-desktop/chat/widgets/markdown_view.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 
 class _Feed extends ChangeNotifier implements ChatFeed {
   _Feed(this.items);

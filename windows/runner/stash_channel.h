@@ -14,7 +14,7 @@
 #include <string>
 #include <utility>
 
-// `baocode/stash` (see lib/stash/stash_host.dart; the macOS app answers the
+// `pi-desktop/stash` (see lib/stash/stash_host.dart; the macOS app answers the
 // same in StashPanel.swift): the shortcut that shows the stash's panel from
 // any app, a hot key of the system's on the main window, and the text in
 // pictures.

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/terminal/terminal_profiles.dart';
-import 'package:baocode/ide/terminal/terminal_shell.dart';
+import 'package:pi-desktop/ide/terminal/terminal_profiles.dart';
+import 'package:pi-desktop/ide/terminal/terminal_shell.dart';
 
 void main() {
   const macEnvironment = {

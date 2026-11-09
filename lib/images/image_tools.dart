@@ -20,7 +20,7 @@ import '../remote/remote_services.dart';
 import '../remote/ssh_host.dart';
 import 'image_picks.dart';
 
-/// The agents' tool for pictures: `mcp__baocode__generate_image`, given
+/// The agents' tool for pictures: `mcp__pi_desktop__generate_image`, given
 /// while an upstream has an image model turned on (Settings → Models). It
 /// asks the model (see image_api.dart), saves what it made where the agent
 /// said (else in the app's folder), and answers with where, and the
@@ -404,7 +404,7 @@ class ImageHost {
   String get _root => RemoteLocation.pathOf(cwd);
 
   /// Where a remote host keeps pictures saved without a path.
-  static const remoteFolder = '/tmp/baocode-images';
+  static const remoteFolder = '/tmp/pi-desktop-images';
 
   /// Past this a reference is not read.
   static const _maxBytes = 20 << 20;

@@ -4,9 +4,9 @@ library;
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/remote/port_forwards.dart';
-import 'package:baocode/remote/remote_host_settings.dart';
-import 'package:baocode/remote/ssh_host.dart';
+import 'package:pi-desktop/remote/port_forwards.dart';
+import 'package:pi-desktop/remote/remote_host_settings.dart';
+import 'package:pi-desktop/remote/ssh_host.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
@@ -24,7 +24,7 @@ void main() {
   late HttpServer web;
 
   setUp(() async {
-    dir = Directory.systemTemp.createTempSync('baocode-ports-');
+    dir = Directory.systemTemp.createTempSync('pi-desktop-ports-');
     connector = MemoryConnector(dir.path);
     hosts = SshHosts(connect: connector.call);
     settings = RemoteHostSettings(file: p.join(dir.path, 'remote-hosts.json'));

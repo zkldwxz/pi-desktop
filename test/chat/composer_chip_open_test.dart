@@ -1,8 +1,8 @@
-import 'package:baocode/chat/composer/composer_mock_data.dart';
-import 'package:baocode/chat/composer/composer_embeds.dart';
-import 'package:baocode/chat/composer/composer_files.dart';
-import 'package:baocode/chat/side_panel/file_open.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi-desktop/chat/composer/composer_mock_data.dart';
+import 'package:pi-desktop/chat/composer/composer_embeds.dart';
+import 'package:pi-desktop/chat/composer/composer_files.dart';
+import 'package:pi-desktop/chat/side_panel/file_open.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;

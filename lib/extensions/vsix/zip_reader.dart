@@ -2,7 +2,7 @@
 // the central directory is read from the end of the file, then only the
 // entries asked for.
 //
-// The record layout follows packages/bao_remote/lib/src/lsp/install/
+// The record layout follows packages/pi_remote/lib/src/lsp/install/
 // archive.dart's `extractZip` (stored and deflated entries, Zip64), copied
 // here rather than imported: that one extracts whole archives from memory
 // and belongs to the language server installer, which is going away.

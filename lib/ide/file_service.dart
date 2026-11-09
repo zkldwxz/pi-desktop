@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:bao_remote/files.dart';
-import 'package:bao_remote/search.dart';
+import 'package:pi_remote/files.dart';
+import 'package:pi_remote/search.dart';
 import 'package:path/path.dart' as p;
 
 import '../l10n/app_localizations.dart';
@@ -10,7 +10,7 @@ import 'file_service_stub.dart'
     if (dart.library.io) 'file_service_io.dart'
     as platform;
 
-export 'package:bao_remote/files.dart';
+export 'package:pi_remote/files.dart';
 
 /// The files an open project's IDE reads and writes: the project's, and
 /// any other opened, as VS Code opens a file outside its workspace. The

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_commands.dart';
-import 'package:baocode/ide/ide_hover.dart';
-import 'package:baocode/ide/ide_modern_ui.dart';
-import 'package:baocode/ide/ide_status_bar.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/ide/lsp_ui/hover_markdown.dart';
-import 'package:baocode/keybindings/default_keybindings.dart'
+import 'package:pi-desktop/ide/ide_commands.dart';
+import 'package:pi-desktop/ide/ide_hover.dart';
+import 'package:pi-desktop/ide/ide_modern_ui.dart';
+import 'package:pi-desktop/ide/ide_status_bar.dart';
+import 'package:pi-desktop/ide/ide_workbench.dart';
+import 'package:pi-desktop/ide/lsp_ui/hover_markdown.dart';
+import 'package:pi-desktop/keybindings/default_keybindings.dart'
     show openSettingsCommandId;
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/theme/window_blur.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/workspace/islands.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
+import 'package:pi-desktop/theme/codicons.dart';
+import 'package:pi-desktop/theme/window_blur.dart';
+import 'package:pi-desktop/theme/workbench_theme.dart';
+import 'package:pi-desktop/workspace/islands.dart';
 
 import 'workbench/fake_files.dart';
 

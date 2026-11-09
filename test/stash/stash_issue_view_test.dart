@@ -1,15 +1,15 @@
-import 'package:baocode/forge/forge_accounts.dart';
-import 'package:baocode/forge/forge_api.dart';
-import 'package:baocode/forge/forge_ref.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/models/secret_store.dart';
-import 'package:baocode/stash/stash_disk.dart';
-import 'package:baocode/stash/stash_forge.dart';
-import 'package:baocode/stash/stash_forge_view.dart';
-import 'package:baocode/stash/stash_issue_view.dart';
-import 'package:baocode/stash/stash_note.dart';
-import 'package:baocode/stash/stash_store.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/forge/forge_accounts.dart';
+import 'package:pi-desktop/forge/forge_api.dart';
+import 'package:pi-desktop/forge/forge_ref.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/models/secret_store.dart';
+import 'package:pi-desktop/stash/stash_disk.dart';
+import 'package:pi-desktop/stash/stash_forge.dart';
+import 'package:pi-desktop/stash/stash_forge_view.dart';
+import 'package:pi-desktop/stash/stash_issue_view.dart';
+import 'package:pi-desktop/stash/stash_note.dart';
+import 'package:pi-desktop/stash/stash_store.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -43,7 +43,7 @@ void main() {
       workspace: Workspace.mock(),
       accounts: accounts,
       remotes: (folder) async => switch (folder) {
-        '~/code/baocode' => ['git@github.com:o/r.git'],
+        '~/code/pi-desktop' => ['git@github.com:o/r.git'],
         _ => const [],
       },
     );
@@ -74,7 +74,7 @@ void main() {
     final note = (await tester.runAsync(
       () => store.create(
         body: 'Crashes, see /Users/leo/app/log.txt',
-        project: '~/code/baocode',
+        project: '~/code/pi-desktop',
       ),
     ))!;
     await tester.runAsync(
@@ -107,7 +107,7 @@ void main() {
 
   testWidgets('kept local, it is not offered again', (tester) async {
     final note = (await tester.runAsync(
-      () => store.create(body: 'Just mine', project: '~/code/baocode'),
+      () => store.create(body: 'Just mine', project: '~/code/pi-desktop'),
     ))!;
     await tester.pumpWidget(app(note.id));
     await tester.runAsync(() => Future<void>.delayed(Duration.zero));
@@ -145,7 +145,7 @@ void main() {
       body: 'On 503.',
     );
     final note = (await tester.runAsync(
-      () => forge.import([item], project: '~/code/baocode'),
+      () => forge.import([item], project: '~/code/pi-desktop'),
     ))!.single;
     await tester.pumpWidget(app(note.id));
     await tester.pump();
@@ -200,7 +200,7 @@ void main() {
       final notes = await forge.import([
         item(3, 'Uploads fail'),
         item(4, 'Uploads fail again'),
-      ], project: '~/code/baocode');
+      ], project: '~/code/pi-desktop');
       return store.merge([for (final note in notes) note.id]);
     }))!;
     await tester.pumpWidget(section(kept.id));
@@ -230,7 +230,7 @@ void main() {
     final note = (await tester.runAsync(
       () => forge.import([
         item(3, 'Uploads fail', comments: 1),
-      ], project: '~/code/baocode'),
+      ], project: '~/code/pi-desktop'),
     ))!.single;
     await tester.pumpWidget(section(note.id));
     await tester.pump();

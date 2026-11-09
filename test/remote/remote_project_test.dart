@@ -6,35 +6,35 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:bao_remote/client.dart';
-import 'package:bao_remote/files.dart' show IdeFileExistsException;
-import 'package:bao_remote/local.dart' show ClaudeEnvironment, CliLocator;
-import 'package:bao_agent/testing.dart';
-import 'package:bao_remote/server.dart' show ServerClaude;
-import 'package:baocode/chat/panels/health_banner.dart';
-import 'package:baocode/ide/git/git_model.dart' show IdeGitGroup;
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/ide/ide_status_bar.dart';
-import 'package:baocode/ide/lsp/lsp_manager.dart';
-import 'package:baocode/ide/lsp/language_features.dart';
-import 'package:baocode/ide/lsp/lsp_server_definition.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_transport.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/models/launch_environment.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/remote/open_remote.dart';
-import 'package:baocode/remote/project_host.dart';
-import 'package:baocode/remote/remote_files.dart';
-import 'package:baocode/remote/remote_claude.dart';
-import 'package:baocode/remote/remote_location.dart';
-import 'package:baocode/remote/remote_services.dart';
-import 'package:baocode/remote/remote_status.dart';
-import 'package:baocode/remote/ssh_host.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_remote/client.dart';
+import 'package:pi_remote/files.dart' show IdeFileExistsException;
+import 'package:pi_remote/local.dart' show ClaudeEnvironment, CliLocator;
+import 'package:pi_agent/testing.dart';
+import 'package:pi_remote/server.dart' show ServerClaude;
+import 'package:pi-desktop/chat/panels/health_banner.dart';
+import 'package:pi-desktop/ide/git/git_model.dart' show IdeGitGroup;
+import 'package:pi-desktop/ide/ide_quick_input.dart';
+import 'package:pi-desktop/ide/ide_status_bar.dart';
+import 'package:pi-desktop/ide/lsp/lsp_manager.dart';
+import 'package:pi-desktop/ide/lsp/language_features.dart';
+import 'package:pi-desktop/ide/lsp/lsp_server_definition.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_transport.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi-desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/models/launch_environment.dart';
+import 'package:pi-desktop/models/model_provider.dart';
+import 'package:pi-desktop/remote/open_remote.dart';
+import 'package:pi-desktop/remote/project_host.dart';
+import 'package:pi-desktop/remote/remote_files.dart';
+import 'package:pi-desktop/remote/remote_claude.dart';
+import 'package:pi-desktop/remote/remote_location.dart';
+import 'package:pi-desktop/remote/remote_services.dart';
+import 'package:pi-desktop/remote/remote_status.dart';
+import 'package:pi-desktop/remote/ssh_host.dart';
+import 'package:pi-desktop/theme/codicons.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -55,8 +55,8 @@ void main() {
   final previous = SshHosts.instance;
 
   setUp(() {
-    dataDir = Directory.systemTemp.createTempSync('baocode-remote-data-');
-    project = Directory.systemTemp.createTempSync('baocode-remote-project-');
+    dataDir = Directory.systemTemp.createTempSync('pi-desktop-remote-data-');
+    project = Directory.systemTemp.createTempSync('pi-desktop-remote-project-');
     root = project.resolveSymbolicLinksSync();
     connector = MemoryConnector(dataDir.path);
     hosts = SshHosts.instance = SshHosts(connect: connector.call);
@@ -271,8 +271,8 @@ void main() {
 
       connector.failure = const SshConnectException(
         SshFailure.server,
-        'The BaoCode server for Linux x64 could not be downloaded',
-        detail: 'https://dl.baocode.dev/x.gz: HTTP 404',
+        'The pi-desktop server for Linux x64 could not be downloaded',
+        detail: 'https://github.com/zkldwxz/pi-desktop HTTP 404',
       );
       await tester.runAsync(
         () => hosts['dev'].ready.then((_) {}, onError: (_) {}),
@@ -281,14 +281,14 @@ void main() {
       expect(
         find.text(
           'Could not connect to dev: '
-          'The BaoCode server for Linux x64 could not be downloaded',
+          'The pi-desktop server for Linux x64 could not be downloaded',
         ),
         findsOneWidget,
       );
       await tester.tap(find.text('Details'));
       await tester.pump();
       expect(
-        find.text('https://dl.baocode.dev/x.gz: HTTP 404'),
+        find.text('https://github.com/zkldwxz/pi-desktop HTTP 404'),
         findsOneWidget,
       );
 
@@ -359,7 +359,7 @@ void main() {
         'once it is, to be read again', () async {
       connector.failure = const SshConnectException(
         SshFailure.server,
-        'The BaoCode server could not be downloaded',
+        'The pi-desktop server could not be downloaded',
       );
       final host = hosts['dev'];
       final files = host.files(root) as RemoteIdeFileService;
@@ -483,7 +483,7 @@ void main() {
       // The CLI there, asked for.
       ClaudeCore.current = () => ClaudeCore.cli;
       addTearDown(() => ClaudeCore.current = () => ClaudeCore.fallback);
-      home = Directory.systemTemp.createTempSync('baocode-remote-home-');
+      home = Directory.systemTemp.createTempSync('pi-desktop-remote-home-');
       config = Directory(p.join(home.path, '.claude'))..createSync();
       fake = File(p.join(home.path, 'fake-claude'))
         ..writeAsStringSync(r'''#!/bin/sh
@@ -507,8 +507,8 @@ printf '%s\n' "$line"
       final environment = {
         'PATH': '/usr/bin:/bin',
         'HOME': home.path,
-        'BAOCODE_CLAUDE_PATH': fake.path,
-        'BAOCODE_CLAUDE_DATA_PATH': config.path,
+        'PI_DESKTOP_CLAUDE_PATH': fake.path,
+        'PI_DESKTOP_CLAUDE_DATA_PATH': config.path,
         'CLAUDE_CONFIG_DIR': config.path,
       };
       CliLocator.use(environment);
@@ -625,12 +625,12 @@ printf '%s\n' "$line"
       },
     );
 
-    test('a build named by BAOCODE_CLAUDE_PATH that is not there: says '
+    test('a build named by PI_DESKTOP_CLAUDE_PATH that is not there: says '
         'so, nothing installed instead', () async {
       final environment = {
         'PATH': '/usr/bin:/bin',
         'HOME': home.path,
-        'BAOCODE_CLAUDE_PATH': p.join(home.path, 'missing'),
+        'PI_DESKTOP_CLAUDE_PATH': p.join(home.path, 'missing'),
       };
       CliLocator.use(environment);
       ClaudeEnvironment.use(environment);
@@ -657,7 +657,7 @@ printf '%s\n' "$line"
     final self = ServerClaude.selfCommand;
 
     setUp(() async {
-      home = Directory.systemTemp.createTempSync('baocode-remote-core-');
+      home = Directory.systemTemp.createTempSync('pi-desktop-remote-core-');
       api = await FakeApi.start(errands: (_) => Reply.text('A title'));
       ClaudeCore.current = () => ClaudeCore.builtin;
       // On the host, as its server saved in the app says.
@@ -667,12 +667,12 @@ printf '%s\n' "$line"
       // The server, from its source, run as the core.
       ServerClaude.selfCommand = () => [
         p.join(p.dirname(Platform.resolvedExecutable), 'dart'),
-        p.absolute('packages/bao_remote/bin/baocode_server.dart'),
+        p.absolute('packages/pi_remote/bin/pi_desktop_server.dart'),
       ];
       if (!File(ServerClaude.selfCommand().first).existsSync()) {
         ServerClaude.selfCommand = () => [
           'dart',
-          p.absolute('packages/bao_remote/bin/baocode_server.dart'),
+          p.absolute('packages/pi_remote/bin/pi_desktop_server.dart'),
         ];
       }
     });
@@ -686,7 +686,7 @@ printf '%s\n' "$line"
     Map<String, String> hostEnvironment({bool key = true}) => {
       'PATH': Platform.environment['PATH'] ?? '/usr/bin:/bin',
       'HOME': home.path,
-      'BAOCODE_CLAUDE_DATA_PATH': p.join(home.path, '.claude'),
+      'PI_DESKTOP_CLAUDE_DATA_PATH': p.join(home.path, '.claude'),
       if (key) ...{
         'ANTHROPIC_API_KEY': 'sk-host',
         'ANTHROPIC_BASE_URL': api.baseUrl,
@@ -767,7 +767,7 @@ printf '%s\n' "$line"
       Process.runSync('chmod', ['+x', fake.path]);
       final environment = {
         ...hostEnvironment(),
-        'BAOCODE_CLAUDE_PATH': fake.path,
+        'PI_DESKTOP_CLAUDE_PATH': fake.path,
       };
       CliLocator.use(environment);
       ClaudeEnvironment.use(environment);

@@ -1,6 +1,6 @@
-import 'package:baocode/ide/terminal/terminal_render_theme.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/theme/code_font.dart';
+import 'package:pi-desktop/ide/terminal/terminal_render_theme.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
+import 'package:pi-desktop/theme/code_font.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 

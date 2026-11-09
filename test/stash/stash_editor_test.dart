@@ -1,17 +1,17 @@
 import 'dart:async';
 
-import 'package:bao_markdown/bao_markdown.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/stash/stash_disk.dart';
-import 'package:baocode/stash/stash_editor.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/stash/stash_store.dart';
+import 'package:pi_markdown/pi_markdown.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/stash/stash_disk.dart';
+import 'package:pi-desktop/stash/stash_editor.dart';
+import 'package:pi-desktop/theme/codicons.dart';
+import 'package:pi-desktop/stash/stash_store.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/models/model_providers.dart';
+import 'package:pi-desktop/models/model_providers.dart';
 
 void main() {
   testWidgets(

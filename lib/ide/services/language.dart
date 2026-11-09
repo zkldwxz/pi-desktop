@@ -6,7 +6,7 @@
 
 import 'dart:async';
 
-import 'package:bao_editor/monaco/vs/editor/common/core/position.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/position.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../l10n/l10n.dart';

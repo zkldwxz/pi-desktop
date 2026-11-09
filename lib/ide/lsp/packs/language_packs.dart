@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:path/path.dart' as p;
 
-import 'package:bao_editor/monaco/flutter/language_assets.dart';
+import 'package:pi_editor/monaco/flutter/language_assets.dart';
 
 import '../catalog/lsp_catalog_overlay.dart';
 import 'lsp_files.dart';

@@ -17,7 +17,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../base/smooth_scroll.dart' show BaoScrollBehavior;
+import '../base/smooth_scroll.dart' show PiScrollBehavior;
 import '../chat/widgets/wheel_latch.dart';
 import '../theme/workbench_theme.dart' show themeColors;
 import 'ide_hover.dart';
@@ -428,7 +428,7 @@ class _IdeInputToggleState extends State<IdeInputToggle> {
 /// Draws no scrollbar: a multi-line text field asks for one whatever
 /// the inherited behavior says (`copyWith(scrollbars: true)`), then builds
 /// it with this.
-class _WithoutScrollbars extends BaoScrollBehavior {
+class _WithoutScrollbars extends PiScrollBehavior {
   const _WithoutScrollbars();
 
   @override

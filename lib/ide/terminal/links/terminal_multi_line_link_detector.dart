@@ -12,7 +12,7 @@
 // terminalMultiLineLinkDetector.ts. Workspace folders are paths; a link's
 // URI is the `file:` URI of the path the resolver found.
 
-import 'package:bao_xterm/typings/xterm_headless.dart';
+import 'package:pi_xterm/typings/xterm_headless.dart';
 
 import 'links.dart';
 import 'terminal_link_helpers.dart';

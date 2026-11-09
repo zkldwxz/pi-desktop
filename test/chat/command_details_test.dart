@@ -1,12 +1,12 @@
 // A /command's whole description and its file (#220): on a tag of it (the
 // menu shows it in its row only, for it not to change height).
 
-import 'package:baocode/chat/composer/command_details.dart';
-import 'package:baocode/chat/composer/composer_embeds.dart';
-import 'package:baocode/chat/composer/composer_mock_data.dart';
-import 'package:baocode/chat/composer/suggestion_menu.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi-desktop/chat/composer/command_details.dart';
+import 'package:pi-desktop/chat/composer/composer_embeds.dart';
+import 'package:pi-desktop/chat/composer/composer_mock_data.dart';
+import 'package:pi-desktop/chat/composer/suggestion_menu.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

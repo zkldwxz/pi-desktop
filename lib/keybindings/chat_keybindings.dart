@@ -11,14 +11,14 @@
 // src/vs/editor/contrib/suggest/browser/suggestController.ts (the suggest
 // widget's keys, for the @ and / menu); the context keys are upstream's
 // (src/vs/workbench/contrib/chat/common/actions/chatContextKeys.ts) where
-// BaoCode has the same.
+// pi-desktop has the same.
 //
 // Deviations:
 // - New Chat starts a new agent, anywhere in the chat window (upstream: in
 //   the chat), on ⌘N/Ctrl+N only: its secondary ⌃L/Ctrl+L is Focus Chat
 //   Input's, which also has ⌘L/Ctrl+L, as Cursor has it. In the IDE, from
 //   its chat, ⌘N/Ctrl+N starts a chat there and ⌘W/Ctrl+W closes its tab
-//   (BaoCode's `baocode.chat.closeTab`), as Close Editor an editor's. From
+//   (pi-desktop's `pi-desktop.chat.closeTab`), as Close Editor an editor's. From
 //   a subagent's conversation, Focus Chat Input goes back to the chat's.
 // - Add Selection to Chat (upstream's has no key) takes ⌘L/Ctrl+L, as
 //   Cursor has it, from the IDE's editor and from the side panel's files
@@ -36,72 +36,72 @@
 //   menu; Add Context… types `@`, which lists the files and context to
 //   mention.
 // - The @ and / menu's keys are commands of their own
-//   (`baocode.chat.*Suggestion*`), not the editor's suggest widget's; the chat
+//   (`pi-desktop.chat.*Suggestion*`), not the editor's suggest widget's; the chat
 //   history's are the list's (`list.focusDown`, …), which scroll it.
-// - BaoCode's own: the agents and the panes they show in, a prompt's options
-//   (`baocode.chat.*`), the side panel's pages and tabs: ⌘W/Ctrl+W closes
+// - pi-desktop's own: the agents and the panes they show in, a prompt's options
+//   (`pi-desktop.chat.*`), the side panel's pages and tabs: ⌘W/Ctrl+W closes
 //   its tab in front while the focus is in it, as Close Editor (elsewhere
 //   Close Pane).
 
 import 'default_keybindings.dart' show CommandInfo;
 
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 
 /// The chat's command ids.
 abstract final class ChatCommandIds {
   // The window's: its agents and panes.
   static const newChat = 'workbench.action.chat.newChat';
-  static const closePane = 'baocode.chat.closePane';
-  static const nextAgent = 'baocode.chat.nextAgent';
-  static const previousAgent = 'baocode.chat.previousAgent';
+  static const closePane = 'pi-desktop.chat.closePane';
+  static const nextAgent = 'pi-desktop.chat.nextAgent';
+  static const previousAgent = 'pi-desktop.chat.previousAgent';
 
   /// Followed by 1 to 9: the agent at that place in the sidebar.
-  static const openAgentAtIndex = 'baocode.chat.openAgentAtIndex';
+  static const openAgentAtIndex = 'pi-desktop.chat.openAgentAtIndex';
 
   /// Followed by 1 to 4: the pane at that place, row by row.
-  static const focusPane = 'baocode.chat.focusPane';
-  static const focusNextPane = 'baocode.chat.focusNextPane';
-  static const focusPreviousPane = 'baocode.chat.focusPreviousPane';
+  static const focusPane = 'pi-desktop.chat.focusPane';
+  static const focusNextPane = 'pi-desktop.chat.focusNextPane';
+  static const focusPreviousPane = 'pi-desktop.chat.focusPreviousPane';
 
   /// The pane beside the focused one, that way.
-  static const focusPaneLeft = 'baocode.chat.focusPaneLeft';
-  static const focusPaneRight = 'baocode.chat.focusPaneRight';
-  static const focusPaneUp = 'baocode.chat.focusPaneUp';
-  static const focusPaneDown = 'baocode.chat.focusPaneDown';
+  static const focusPaneLeft = 'pi-desktop.chat.focusPaneLeft';
+  static const focusPaneRight = 'pi-desktop.chat.focusPaneRight';
+  static const focusPaneUp = 'pi-desktop.chat.focusPaneUp';
+  static const focusPaneDown = 'pi-desktop.chat.focusPaneDown';
 
   /// Among the focused pane's agents (it and those under it), the next or
   /// previous tab.
-  static const nextPaneTab = 'baocode.chat.nextPaneTab';
-  static const previousPaneTab = 'baocode.chat.previousPaneTab';
+  static const nextPaneTab = 'pi-desktop.chat.nextPaneTab';
+  static const previousPaneTab = 'pi-desktop.chat.previousPaneTab';
 
   /// The agents under a pane as tabs above it, or behind its layers
   /// button.
-  static const togglePaneTabs = 'baocode.chat.togglePaneTabs';
-  static const searchAgents = 'baocode.chat.searchAgents';
+  static const togglePaneTabs = 'pi-desktop.chat.togglePaneTabs';
+  static const searchAgents = 'pi-desktop.chat.searchAgents';
 
   /// The search palette, on everything: agents, what was said in them,
   /// files, actions, settings.
-  static const search = 'baocode.chat.search';
-  static const openIde = 'baocode.chat.openIde';
+  static const search = 'pi-desktop.chat.search';
+  static const openIde = 'pi-desktop.chat.openIde';
 
   /// The side panel at the right of the conversations: the focused
   /// agent's changes and the files opened from its conversation.
-  static const toggleSidePanel = 'baocode.chat.toggleSidePanel';
+  static const toggleSidePanel = 'pi-desktop.chat.toggleSidePanel';
 
   /// The side panel to the conversations' other side: their left, or
   /// back to their right.
-  static const toggleSidePanelPosition = 'baocode.chat.toggleSidePanelPosition';
-  static const sidePanelChanges = 'baocode.chat.sidePanel.changes';
-  static const sidePanelFiles = 'baocode.chat.sidePanel.files';
-  static const sidePanelTerminal = 'baocode.chat.sidePanel.terminal';
-  static const sidePanelUsage = 'baocode.chat.sidePanel.usage';
+  static const toggleSidePanelPosition = 'pi-desktop.chat.toggleSidePanelPosition';
+  static const sidePanelChanges = 'pi-desktop.chat.sidePanel.changes';
+  static const sidePanelFiles = 'pi-desktop.chat.sidePanel.files';
+  static const sidePanelTerminal = 'pi-desktop.chat.sidePanel.terminal';
+  static const sidePanelUsage = 'pi-desktop.chat.sidePanel.usage';
 
   /// Closes the side panel's tab in front, on its page shown; hides the
   /// panel where the page has none.
-  static const sidePanelCloseTab = 'baocode.chat.sidePanel.closeTab';
+  static const sidePanelCloseTab = 'pi-desktop.chat.sidePanel.closeTab';
 
   /// The IDE's chat's: closes the tab shown.
-  static const closeTab = 'baocode.chat.closeTab';
+  static const closeTab = 'pi-desktop.chat.closeTab';
 
   // A chat's (see ChatScreen).
   static const focusInput = 'workbench.action.chat.focusInput';
@@ -109,43 +109,43 @@ abstract final class ChatCommandIds {
   static const cancel = 'workbench.action.chat.cancel';
   static const acceptTool = 'workbench.action.chat.acceptTool';
   static const skipTool = 'workbench.action.chat.skipTool';
-  static const toggleContextPanel = 'baocode.chat.toggleContextPanel';
-  static const renameAgent = 'baocode.chat.renameAgent';
-  static const closeSubagent = 'baocode.chat.closeSubagent';
+  static const toggleContextPanel = 'pi-desktop.chat.toggleContextPanel';
+  static const renameAgent = 'pi-desktop.chat.renameAgent';
+  static const closeSubagent = 'pi-desktop.chat.closeSubagent';
 
   /// Find in the conversation shown (see ChatFind).
-  static const find = 'baocode.chat.find';
+  static const find = 'pi-desktop.chat.find';
 
   // Its input's (see ChatComposer).
   static const submit = 'workbench.action.chat.submit';
   static const cancelEdit = 'workbench.edit.chat.cancel';
-  static const showPreviousPrompt = 'baocode.chat.showPreviousPrompt';
-  static const showNextPrompt = 'baocode.chat.showNextPrompt';
-  static const acceptPromptSuggestion = 'baocode.chat.acceptPromptSuggestion';
+  static const showPreviousPrompt = 'pi-desktop.chat.showPreviousPrompt';
+  static const showNextPrompt = 'pi-desktop.chat.showNextPrompt';
+  static const acceptPromptSuggestion = 'pi-desktop.chat.acceptPromptSuggestion';
   static const openModePicker = 'workbench.action.chat.openModePicker';
-  static const nextMode = 'baocode.chat.nextMode';
+  static const nextMode = 'pi-desktop.chat.nextMode';
   static const openModelPicker = 'workbench.action.chat.openModelPicker';
   static const attachContext = 'workbench.action.chat.attachContext';
 
   /// The lines selected in the IDE's editor, or in the side panel's file
   /// shown, put in the chat's input as tags of them.
   static const attachSelection = 'workbench.action.chat.attachSelection';
-  static const pasteRaw = 'baocode.chat.pasteRaw';
-  static const selectNextSuggestion = 'baocode.chat.selectNextSuggestion';
-  static const selectPrevSuggestion = 'baocode.chat.selectPrevSuggestion';
+  static const pasteRaw = 'pi-desktop.chat.pasteRaw';
+  static const selectNextSuggestion = 'pi-desktop.chat.selectNextSuggestion';
+  static const selectPrevSuggestion = 'pi-desktop.chat.selectPrevSuggestion';
   static const acceptSelectedSuggestion =
-      'baocode.chat.acceptSelectedSuggestion';
-  static const hideSuggestWidget = 'baocode.chat.hideSuggestWidget';
+      'pi-desktop.chat.acceptSelectedSuggestion';
+  static const hideSuggestWidget = 'pi-desktop.chat.hideSuggestWidget';
 
   // A prompt's options: a question, a tool's approval, a plan (see
   // InteractionPanel).
-  static const interactionFocusNext = 'baocode.chat.interaction.focusNext';
+  static const interactionFocusNext = 'pi-desktop.chat.interaction.focusNext';
   static const interactionFocusPrevious =
-      'baocode.chat.interaction.focusPrevious';
-  static const interactionBack = 'baocode.chat.interaction.back';
-  static const interactionToggle = 'baocode.chat.interaction.toggle';
-  static const interactionAccept = 'baocode.chat.interaction.accept';
-  static const interactionDismiss = 'baocode.chat.interaction.dismiss';
+      'pi-desktop.chat.interaction.focusPrevious';
+  static const interactionBack = 'pi-desktop.chat.interaction.back';
+  static const interactionToggle = 'pi-desktop.chat.interaction.toggle';
+  static const interactionAccept = 'pi-desktop.chat.interaction.accept';
+  static const interactionDismiss = 'pi-desktop.chat.interaction.dismiss';
 
   /// How many agents [openAgentAtIndex] reaches, and panes [focusPane].
   static const agentIndexes = 9;

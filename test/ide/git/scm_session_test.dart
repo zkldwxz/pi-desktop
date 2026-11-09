@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/git/ide_scm_view.dart';
-import 'package:baocode/settings/user_settings.dart';
+import 'package:pi-desktop/ide/git/ide_scm_view.dart';
+import 'package:pi-desktop/settings/user_settings.dart';
 import 'package:path/path.dart' as p;
 
 /// The choices made in Source Control's dialogs, kept in settings.json as
@@ -13,7 +13,7 @@ void main() {
   late String path;
 
   setUp(() async {
-    temp = await Directory.systemTemp.createTemp('baocode-scm-session');
+    temp = await Directory.systemTemp.createTemp('pi-desktop-scm-session');
     path = p.join(temp.path, 'User', 'settings.json');
   });
 

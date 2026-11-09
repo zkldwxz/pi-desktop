@@ -11,7 +11,7 @@
 // Not part of the test suite. For AOT numbers run, from the repository
 // root:
 //   flutter run --profile -d macos -t tool/textmate_perf_app.dart \
-//     --dart-define=TEXTMATE_PERF_SAMPLE=$PWD/packages/bao_editor/test/fixtures/textmate/samples/bench/textModel.ts
+//     --dart-define=TEXTMATE_PERF_SAMPLE=$PWD/packages/pi_editor/test/fixtures/textmate/samples/bench/textModel.ts
 // It opens a window, and quits when done.
 
 import 'dart:async';
@@ -21,23 +21,23 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/flutter/monaco_syntax.dart';
-import 'package:bao_editor/textmate/textmate_syntax.dart';
-import 'package:bao_editor/textmate/textmate_worker.dart';
-import 'package:baocode/ide/file_service.dart';
-import 'package:baocode/ide/ide_editor.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart';
-import 'package:baocode/theme/workbench_theme.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/monaco_syntax.dart';
+import 'package:pi_editor/textmate/textmate_syntax.dart';
+import 'package:pi_editor/textmate/textmate_worker.dart';
+import 'package:pi-desktop/ide/file_service.dart';
+import 'package:pi-desktop/ide/ide_editor.dart';
+import 'package:pi-desktop/ide/ide_workspace.dart';
+import 'package:pi-desktop/ide/lsp/lsp_protocol.dart';
+import 'package:pi-desktop/theme/workbench_theme.dart';
 
 /// The app does not run in the repository: pass the absolute path with
 /// `--dart-define=TEXTMATE_PERF_SAMPLE=...`.
 const _sample = String.fromEnvironment(
   'TEXTMATE_PERF_SAMPLE',
   defaultValue:
-      'packages/bao_editor/test/fixtures/textmate/samples/bench/textModel.ts',
+      'packages/pi_editor/test/fixtures/textmate/samples/bench/textModel.ts',
 );
 const _copies = 10;
 

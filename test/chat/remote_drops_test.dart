@@ -3,14 +3,14 @@ library;
 
 import 'dart:io';
 
-import 'package:bao_markdown/bao_markdown.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/composer/composer_embeds.dart';
-import 'package:baocode/chat/composer/composer_files.dart';
-import 'package:baocode/chat/composer/remote_drops.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi_markdown/pi_markdown.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/composer/composer.dart';
+import 'package:pi-desktop/chat/composer/composer_embeds.dart';
+import 'package:pi-desktop/chat/composer/composer_files.dart';
+import 'package:pi-desktop/chat/composer/remote_drops.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -21,7 +21,7 @@ void main() {
   late Directory temp;
 
   setUp(() {
-    temp = Directory.systemTemp.createTempSync('baocode_drops_');
+    temp = Directory.systemTemp.createTempSync('pi_desktop_drops_');
   });
   tearDown(() => temp.deleteSync(recursive: true));
 

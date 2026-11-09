@@ -8,28 +8,28 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_remote/client.dart' show SshAuth, SshServer;
-import 'package:baocode/browser/browser_bridge.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/side_panel/side_panel_controller.dart';
-import 'package:baocode/chat/side_panel/side_panel_view.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/ide/lsp/language_features.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart' show LspPosition;
-import 'package:baocode/ide/terminal/terminal_instance.dart';
-import 'package:baocode/ide/terminal/terminal_panel.dart';
-import 'package:baocode/kernel/agent_kernel.dart' show KernelChoiceKind;
-import 'package:baocode/kernel/claude_code/claude_sdk_tools.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/main.dart' as app;
-import 'package:baocode/remote/port_forwards.dart';
-import 'package:baocode/remote/remote_host_settings.dart';
-import 'package:baocode/remote/remote_location.dart';
-import 'package:baocode/remote/ssh_host.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_remote/client.dart' show SshAuth, SshServer;
+import 'package:pi-desktop/browser/browser_bridge.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/composer/composer.dart';
+import 'package:pi-desktop/chat/side_panel/side_panel_controller.dart';
+import 'package:pi-desktop/chat/side_panel/side_panel_view.dart';
+import 'package:pi-desktop/ide/ide_workbench.dart';
+import 'package:pi-desktop/ide/lsp/language_features.dart';
+import 'package:pi-desktop/ide/lsp/lsp_protocol.dart' show LspPosition;
+import 'package:pi-desktop/ide/terminal/terminal_instance.dart';
+import 'package:pi-desktop/ide/terminal/terminal_panel.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart' show KernelChoiceKind;
+import 'package:pi-desktop/kernel/claude_code/claude_sdk_tools.dart';
+import 'package:pi-desktop/kernel/kernel_types.dart';
+import 'package:pi-desktop/main.dart' as app;
+import 'package:pi-desktop/remote/port_forwards.dart';
+import 'package:pi-desktop/remote/remote_host_settings.dart';
+import 'package:pi-desktop/remote/remote_location.dart';
+import 'package:pi-desktop/remote/ssh_host.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -45,26 +45,26 @@ late Directory _out;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final env = Platform.environment;
-  final directory = env['BAOCODE_E2E_OUT'];
-  final host = env['BAOCODE_E2E_HOST'];
-  final root = env['BAOCODE_E2E_ROOT'];
+  final directory = env['PI_DESKTOP_E2E_OUT'];
+  final host = env['PI_DESKTOP_E2E_HOST'];
+  final root = env['PI_DESKTOP_E2E_ROOT'];
   if (directory == null || host == null || root == null) {
     stderr.writeln(
-      'Set BAOCODE_E2E_OUT, BAOCODE_E2E_HOST (user@host) and '
-      'BAOCODE_E2E_ROOT (a Git repository there).',
+      'Set PI_DESKTOP_E2E_OUT, PI_DESKTOP_E2E_HOST (user@host) and '
+      'PI_DESKTOP_E2E_ROOT (a Git repository there).',
     );
     exit(2);
   }
-  final phase = env['BAOCODE_E2E_PHASE'] ?? 'main';
+  final phase = env['PI_DESKTOP_E2E_PHASE'] ?? 'main';
   _out = Directory(directory)..createSync(recursive: true);
   // A browser of the run's own, its host finding this app here: not the
-  // user's, whose extension speaks to the BaoCode they run.
+  // user's, whose extension speaks to the pi-desktop they run.
   final sockets = Directory(p.join(_out.path, 'sockets'))
     ..createSync(recursive: true);
   BrowserBridge.socketFolder = sockets.path;
 
   // The app as it starts for the user (its data folder a copy:
-  // BAOCODE_DATA_DIR), the project then opened in it.
+  // PI_DESKTOP_DATA_DIR), the project then opened in it.
   await app.main(const []);
   final errors = <String>[];
   final presentError = FlutterError.onError;
@@ -81,18 +81,18 @@ Future<void> main() async {
   final location = RemoteLocation.of(host, root);
   var failed = false;
   try {
-    await _until(() => _find<app.BaoCodeApp>() != null, 'the app');
+    await _until(() => _find<app.PiDesktopApp>() != null, 'the app');
     final workspace =
-        (_find<app.BaoCodeApp>()!.widget as app.BaoCodeApp).workspace!;
+        (_find<app.PiDesktopApp>()!.widget as app.PiDesktopApp).workspace!;
     if (phase == 'windows') {
       // Added as the user adds one in the app: a saved server, its key.
       workspace.saveSshServer(
         host,
         SshServer(
-          hostName: env['BAOCODE_E2E_SSH_HOST'] ?? '127.0.0.1',
-          user: env['BAOCODE_E2E_SSH_USER'],
+          hostName: env['PI_DESKTOP_E2E_SSH_HOST'] ?? '127.0.0.1',
+          user: env['PI_DESKTOP_E2E_SSH_USER'],
           auth: SshAuth.key,
-          identityFile: env['BAOCODE_E2E_KEY'],
+          identityFile: env['PI_DESKTOP_E2E_KEY'],
         ),
       );
     }
@@ -104,7 +104,7 @@ Future<void> main() async {
       ..layout = WorkspaceLayout.ide;
     await _until(() => _find<IdeWorkbench>() != null, 'the IDE');
     try {
-      await const MethodChannel('baocode/windows').invokeMethod(
+      await const MethodChannel('pi-desktop/windows').invokeMethod(
         'focus',
         WidgetsBinding.instance.platformDispatcher.implicitView!.viewId,
       );
@@ -162,7 +162,7 @@ void _write(
       'flutterErrors': errors,
     }),
   );
-  stdout.writeln('BAOCODE_E2E_RESULT ${file.path}');
+  stdout.writeln('PI_DESKTOP_E2E_RESULT ${file.path}');
 }
 
 class _Run {
@@ -594,8 +594,8 @@ class _Run {
 
     if (browser) {
       await step('13-browser-tool', () async {
-        final chrome = Platform.environment['BAOCODE_E2E_CHROME'];
-        if (chrome == null) throw StateError('BAOCODE_E2E_CHROME not set');
+        final chrome = Platform.environment['PI_DESKTOP_E2E_CHROME'];
+        if (chrome == null) throw StateError('PI_DESKTOP_E2E_CHROME not set');
         await _startChrome(chrome);
         final bridge = BrowserBridge.instance;
         await _until(
@@ -998,7 +998,7 @@ class _Run {
   Future<void> _prepare(ChatSession session) async {
     await _until(() => session.models != null, 'the models', seconds: 60);
     final model =
-        Platform.environment['BAOCODE_E2E_MODEL'] ?? '@provider-3/glm-5.3';
+        Platform.environment['PI_DESKTOP_E2E_MODEL'] ?? '@provider-3/glm-5.3';
     final models = session.models!;
     final option = models.options.where((o) => o.id == model).firstOrNull;
     if (option == null) {
@@ -1083,13 +1083,13 @@ class _Run {
       ..createSync(recursive: true);
     final hostBinary = p.join(
       p.dirname(Platform.resolvedExecutable),
-      'baocode-browser-host',
+      'pi-desktop-browser-host',
     );
     File(p.join(hosts.path, '${BrowserBridge.hostName}.json'))
         .writeAsStringSync(
           jsonEncode({
             'name': BrowserBridge.hostName,
-            'description': 'BaoCode',
+            'description': 'pi-desktop',
             'path': hostBinary,
             'type': 'stdio',
             'allowed_origins': [
@@ -1098,7 +1098,7 @@ class _Run {
             ],
           }),
         );
-    final extension = Platform.environment['BAOCODE_E2E_EXTENSION']!;
+    final extension = Platform.environment['PI_DESKTOP_E2E_EXTENSION']!;
     final chrome = await Process.start(
       wrapper,
       [

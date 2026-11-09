@@ -4,7 +4,7 @@
 
 import 'dart:async';
 
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/client.dart';
 import 'package:flutter/widgets.dart';
 
 import '../ide/ide_quick_input.dart';
@@ -17,7 +17,7 @@ import 'remote_status.dart' show sshErrorText;
 import 'ssh_host.dart';
 
 /// The command's id, in the palettes and on the start page.
-const openRemoteFolderCommandId = 'baocode.remote.openFolder';
+const openRemoteFolderCommandId = 'pi-desktop.remote.openFolder';
 
 /// Walks the user through opening a remote project: [show] shows each
 /// step's quick pick; [onOpen] is given the project's location.

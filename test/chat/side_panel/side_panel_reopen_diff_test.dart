@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/side_panel/file_open.dart';
-import 'package:baocode/chat/side_panel/side_panel_controller.dart';
+import 'package:pi-desktop/chat/side_panel/file_open.dart';
+import 'package:pi-desktop/chat/side_panel/side_panel_controller.dart';
 
 void main() {
   test("the changes the log came back over show again on the mouse's "

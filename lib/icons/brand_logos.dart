@@ -77,11 +77,11 @@ class BrandLogo extends StatelessWidget {
   }
 }
 
-/// BaoCode's own mark, without the app icon's tile
+/// pi-desktop's own mark, without the app icon's tile
 /// (`assets/branding/logo.svg`): [size] wide, in [color] (the icons' around
 /// it when null), as a codicon is drawn.
-class BaoCodeLogo extends StatelessWidget {
-  const BaoCodeLogo({super.key, this.size = 16, this.color});
+class PiDesktopLogo extends StatelessWidget {
+  const PiDesktopLogo({super.key, this.size = 16, this.color});
 
   static const asset = 'assets/branding/logo.svg';
 

@@ -1,15 +1,15 @@
 import 'dart:io';
 
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/kernel/claude_code/turn_stats.dart';
-import 'package:baocode/kernel/claude_code/turn_stats_io.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/kernel/claude_code/turn_stats.dart';
+import 'package:pi-desktop/kernel/claude_code/turn_stats_io.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
 void main() {
   late Directory dir;
 
-  setUp(() => dir = Directory.systemTemp.createTempSync('baocode-turns-'));
+  setUp(() => dir = Directory.systemTemp.createTempSync('pi-desktop-turns-'));
   tearDown(() => dir.deleteSync(recursive: true));
 
   test('kept and read back, by session and turn', () async {

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:bao_remote/protocol.dart';
+import 'package:pi_remote/protocol.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Two ends of a link in memory: [cut] as a network would (each side's

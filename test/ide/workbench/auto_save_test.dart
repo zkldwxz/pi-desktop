@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/settings/user_settings.dart';
+import 'package:pi-desktop/ide/ide_workspace.dart';
+import 'package:pi-desktop/settings/user_settings.dart';
 import 'package:path/path.dart' as p;
 
 import 'fake_files.dart';
@@ -12,7 +12,7 @@ import 'fake_files.dart';
 /// editor comes to the front.
 void main() {
   UserSettings settingsOf(String json) {
-    final temp = Directory.systemTemp.createTempSync('baocode-auto-save');
+    final temp = Directory.systemTemp.createTempSync('pi-desktop-auto-save');
     addTearDown(() => temp.deleteSync(recursive: true));
     final settings = UserSettings(
       p.join(temp.path, 'User', 'settings.json'),

@@ -15,9 +15,9 @@ import 'usage_quota.dart';
 import 'usage_record.dart';
 import 'usage_skill.dart';
 
-/// The agents' tools for the calls BaoCode keeps (UsageLedger) and the
-/// models' prices (UsagePrices): `mcp__baocode__usage_report` and
-/// `mcp__baocode__model_prices`, which the baocode-usage skill tells of.
+/// The agents' tools for the calls pi-desktop keeps (UsageLedger) and the
+/// models' prices (UsagePrices): `mcp__pi_desktop__usage_report` and
+/// `mcp__pi_desktop__model_prices`, which the pi-desktop-usage skill tells of.
 abstract final class UsageTools {
   static const report = 'usage_report';
   static const prices = 'model_prices';
@@ -68,7 +68,7 @@ abstract final class UsageTools {
   }
 
   /// Writes the skill (UsageSkill) into Claude Code's skills on this
-  /// machine: where there is none, or BaoCode's is not the same.
+  /// machine: where there is none, or pi-desktop's is not the same.
   static Future<void> _installSkill() async {
     try {
       final path = p.join(
@@ -89,7 +89,7 @@ abstract final class UsageTools {
   }
 
   static const _reportDescription =
-      "Reports the model calls BaoCode kept for the user's conversations, "
+      "Reports the model calls pi-desktop kept for the user's conversations, "
       "on Claude Code's own models (a Claude plan, with its limits as they "
       'stood after each call) and on custom upstreams: tokens (input, cache read, cache write, '
       'output), cache hit rate, time to first token, duration, output speed '
@@ -121,7 +121,7 @@ abstract final class UsageTools {
   };
 
   static const _pricesDescription =
-      'Reads or sets the models\' prices BaoCode works out costs with '
+      'Reads or sets the models\' prices pi-desktop works out costs with '
       '(Settings → Usage → Model prices), each a million tokens: input, '
       'output, cache read and cache write, in a currency; and the rules '
       'upstreams price by beyond that: prices by the prompt\'s length '

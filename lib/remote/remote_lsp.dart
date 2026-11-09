@@ -6,7 +6,7 @@
 
 import 'dart:async';
 
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/client.dart';
 
 import '../ide/lsp/catalog/standard_lsp.dart';
 import '../ide/lsp/install/mason_registry.dart';

@@ -173,7 +173,7 @@ class CodexKernel
     if (!_initialized) {
       _initialized = true;
       await _request('initialize', {
-        'clientInfo': {'name': 'baocode', 'version': '1.0.0'},
+        'clientInfo': {'name': 'pi-desktop', 'version': '1.0.0'},
       });
     }
     if (_threadId == null) {

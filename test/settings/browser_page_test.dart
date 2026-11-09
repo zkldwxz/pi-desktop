@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:baocode/browser/browser_bridge.dart';
-import 'package:baocode/browser/browser_tools.dart' show BrowserHistory;
-import 'package:baocode/settings/pages/browser_page.dart';
-import 'package:baocode/settings/user_settings.dart';
+import 'package:pi-desktop/browser/browser_bridge.dart';
+import 'package:pi-desktop/browser/browser_tools.dart' show BrowserHistory;
+import 'package:pi-desktop/settings/pages/browser_page.dart';
+import 'package:pi-desktop/settings/user_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -13,7 +13,7 @@ void main() {
   late UserSettings settings;
 
   setUp(() async {
-    data = await Directory.systemTemp.createTemp('baocode-browser-page');
+    data = await Directory.systemTemp.createTemp('pi-desktop-browser-page');
     settings = UserSettings(p.join(data.path, 'settings.json'));
     await settings.load();
     // Turned off, the host's manifests go: a test's own, not the user's.

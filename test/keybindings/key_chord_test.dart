@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/keybindings/key_chord.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi-desktop/keybindings/key_chord.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 
 void main() {
   group('KeyChord.parse', () {

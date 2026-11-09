@@ -1,9 +1,9 @@
 # 版本与发布
 
-BaoCode 的版本号怎么定、一个版本怎么发出去、发到哪里、已安装的应用怎么拿到它，以及第一次发布前要准备什么。应用这一侧怎么检查、下载、校验、安装，见 [auto-update.md](auto-update.md)。
+pi-desktop 的版本号怎么定、一个版本怎么发出去、发到哪里、已安装的应用怎么拿到它，以及第一次发布前要准备什么。应用这一侧怎么检查、下载、校验、安装，见 [auto-update.md](auto-update.md)。
 
-- 下载与更新：`https://dl.baocode.dev`（Cloudflare R2）
-- 官网：`https://baocode.dev`（Cloudflare Worker `baocode` 的静态资源，`site/`；Workers Builds 从 GitHub 部署）
+- 下载与更新：`https://github.com/zkldwxz/pi-desktop`（Cloudflare R2）
+- 官网：`https://github.com/zkldwxz/pi-desktop`（Cloudflare Worker `pi-desktop` 的静态资源，`site/`；Workers Builds 从 GitHub 部署）
 - 构建与发布：GitHub Actions，`.github/workflows/release.yml`
 - 工具：`tool/bump_version.dart`、`tool/build_macos.dart`、`tool/build_windows.dart`、`tool/build_remote_server.dart`、`tool/release_manifest.dart`
 
@@ -13,7 +13,7 @@ BaoCode 的版本号怎么定、一个版本怎么发出去、发到哪里、已
 2. [版本号](#2-版本号)
 3. [发一个版本](#3-发一个版本)
 4. [CI 做了什么](#4-ci-做了什么)
-5. [dl.baocode.dev 上有什么](#5-dlbaocodedev-上有什么)
+5. [the pi-desktop site 上有什么](#5-dlpi-desktopdev-上有什么)
 6. [更新的数据流](#6-更新的数据流)
 7. [第一次发布前的准备](#7-第一次发布前的准备)
 8. [出了问题](#8-出了问题)
@@ -40,21 +40,21 @@ BaoCode 的版本号怎么定、一个版本怎么发出去、发到哪里、已
                                └ publish  签 latest.json，上传 ────────▶ R2 存储桶
                                           建 GitHub Release              │
                                                                          ▼
-                                                              dl.baocode.dev（CDN）
+                                                              the pi-desktop site（CDN）
                                                                releases/latest.json
                                                                releases/<版本>/…
                                                                releases/remote/…
                                                                   ▲          ▲
-                                     已安装的 BaoCode：每 6 小时读清单 ┘          │
-                                     baocode.dev/download：读清单显示版本和链接 ──┘
+                                     已安装的 pi-desktop：每 6 小时读清单 ┘          │
+                                     the pi-desktop site/download：读清单显示版本和链接 ──┘
 
- git push main ──────────────────────────────────────▶ Workers Builds ─▶ Worker baocode：baocode.dev
+ git push main ──────────────────────────────────────▶ Workers Builds ─▶ Worker pi-desktop：the pi-desktop site
  git push 其他分支 ─────────────────────────────────▶ Workers Builds ─▶ 预览版本（不上线）
 ```
 
 - **网站和安装包分开放**：网站是 Worker 的静态资源，推送 `main` 就发布，和应用的版本无关（见 3 节“发布官网”）；安装包在 R2 上，只有推送 `v*` 标签时才由 CI 发布。静态资源单个文件不能超过 25 MiB，dmg 放不下。
 - **流量不收钱**：Worker 静态资源的请求不计费；R2 的下载流量免费，存储每月 10 GB 以内免费。
-- **旧地址**：`site/_redirects` 把 `baocode.dev/releases/*` 302 到 `dl.baocode.dev/releases/*`，给改地址前打出来的构建用（应用的 `HttpClient` 会跟随重定向）。
+- **旧地址**：`site/_redirects` 把 `the pi-desktop site/releases/*` 302 到 `the pi-desktop site/releases/*`，给改地址前打出来的构建用（应用的 `HttpClient` 会跟随重定向）。
 
 ## 2. 版本号
 
@@ -83,7 +83,7 @@ dart run tool/bump_version.dart 1.4.0    # 1.2.0+12 → 1.4.0+13
 **更新日志**：`release-notes/<版本>.en.md` 和 `release-notes/<版本>.zh.md`，是唯一的来源，不另外维护 CHANGELOG.md。它们会出现在：
 
 - `latest.json`：设置 → 更新里显示（纯文本，按应用语言选）
-- 网站的更新日志页 `baocode.dev/changelog`、`baocode.dev/zh/changelog`：`tool/build_changelog.dart` 生成 `site/changelog.html`、`site/zh/changelog.html`，跟 notes 一起提交（网站没有构建步骤，Cloudflare 原样发布 `site/`）。更新通知里的「更新日志」按钮直接打开这一页对应版本的位置（`#v1.2.0`）
+- 网站的更新日志页 `the pi-desktop site/changelog`、`the pi-desktop site/zh/changelog`：`tool/build_changelog.dart` 生成 `site/changelog.html`、`site/zh/changelog.html`，跟 notes 一起提交（网站没有构建步骤，Cloudflare 原样发布 `site/`）。更新通知里的「更新日志」按钮直接打开这一页对应版本的位置（`#v1.2.0`）
 - GitHub Release 的说明（英文那份）
 
 `bump_version.dart` 会顺手生成草稿（`tool/draft_release_notes.dart`，也可以单独跑）：上一个标签以来的 `feat` / `perf` / `fix` 提交标题，分到「New / Improved / Fixed」（中文「新功能 / 改进 / 修复」）下面，不含 `site`、`ci` 的提交。提交标题是写给开发者的，**草稿要改写成用户看得懂的话**，每版十行左右，中文那份写中文。格式只用普通段落和 `-` 列表：设置页按纯文本显示，标题、加粗之类的 Markdown 符号会原样露出来。
@@ -112,9 +112,9 @@ macOS 最常见的失败是钉票据（`stapler staple`）：Apple 的 CloudKit 
 
 完成后确认：
 
-- [ ] `curl -s https://dl.baocode.dev/releases/latest.json` 是新版本
-- [ ] `https://baocode.dev/download` 显示新版本，两个按钮都能下载
-- [ ] `https://baocode.dev/changelog` 有这个版本
+- [ ] `curl -s https://github.com/zkldwxz/pi-desktop` 是新版本
+- [ ] `https://github.com/zkldwxz/pi-desktop` 显示新版本，两个按钮都能下载
+- [ ] `https://github.com/zkldwxz/pi-desktop` 有这个版本
 - [ ] 装着旧版本的机器上点“检查更新”，能发现、下载、重启装上
 
 **重新发布同一个版本**（标签挪到新提交上）：
@@ -134,7 +134,7 @@ CI 会照常构建，覆盖 R2 上的文件，重新建 GitHub Release。
 git tag test-upstream-import && git push origin test-upstream-import
 ```
 
-CI 照常构建，然后把安装包传到 `dl.baocode.dev/test/<版本>-<标签去掉 test->-<运行编号>/`，链接写在这次运行的 Summary 里，直接发给测试的人，不用登录 GitHub。用的是 `release` 环境里已有的 R2 令牌（环境允许 `test-*` 标签，见 7.2），不签更新清单。同一个标签再测一次：`git tag -f … && git push -f origin …`。
+CI 照常构建，然后把安装包传到 `the pi-desktop site/test/<版本>-<标签去掉 test->-<运行编号>/`，链接写在这次运行的 Summary 里，直接发给测试的人，不用登录 GitHub。用的是 `release` 环境里已有的 R2 令牌（环境允许 `test-*` 标签，见 7.2），不签更新清单。同一个标签再测一次：`git tag -f … && git push -f origin …`。
 
 - 不是更新：`test/` 不在 `releases/` 下，`latest.json` 不变，已安装的应用不会收到它。
 - 版本号就是分支上 `pubspec.yaml` 的版本。测试的人之后会照常收到比它新的正式版。
@@ -156,11 +156,11 @@ dart run tool/build_windows.dart --remote-release <VERSION>  # 指定的那份
 dart run tool/build_macos.dart --remote-release              # macOS 同理
 ```
 
-脚本用 `tool/fetch_remote_server.dart` 取 `servers.json`、确认每个 `.gz` 都能下载，放进 `build/remote-release/` 再打包。应用和服务端是严格一一对应的内部协议（docs/ssh-remote.md），**服务端要从和应用相同（至少 `packages/bao_remote` 相同）的提交发布**，否则连上后可能出错。正式发版（`v*`）也会传 `servers.json`、更新 `releases/remote/latest.json`。
+脚本用 `tool/fetch_remote_server.dart` 取 `servers.json`、确认每个 `.gz` 都能下载，放进 `build/remote-release/` 再打包。应用和服务端是严格一一对应的内部协议（docs/ssh-remote.md），**服务端要从和应用相同（至少 `packages/pi_remote` 相同）的提交发布**，否则连上后可能出错。正式发版（`v*`）也会传 `servers.json`、更新 `releases/remote/latest.json`。
 
-**发布官网**：和应用发版无关，推送到 `main` 就由 Cloudflare Workers Builds 部署到 baocode.dev（GitHub 上这个提交的检查里有“Workers Builds: baocode”）。
+**发布官网**：和应用发版无关，推送到 `main` 就由 Cloudflare Workers Builds 部署到 the pi-desktop site（GitHub 上这个提交的检查里有“Workers Builds: pi-desktop”）。
 
-- 先预览：推送任何别的分支，Workers Builds 只上传一个预览版本、不上线。预览地址是 `https://<版本 ID 前 8 位>-baocode.leokun-cn.workers.dev`，版本 ID 在那个提交的“Workers Builds: baocode”检查详情里。
+- 先预览：推送任何别的分支，Workers Builds 只上传一个预览版本、不上线。预览地址是 `https://<版本 ID 前 8 位>-pi-desktop.leokun-cn.workers.dev`，版本 ID 在那个提交的“Workers Builds: pi-desktop”检查详情里。
 - 只发官网：把 `site/` 的改动单独提交推到 `main` 即可，`main` 上没发版的应用代码不受影响（应用只在推 `v*` 标签时发布）。
 
 ## 4. CI 做了什么
@@ -169,12 +169,12 @@ dart run tool/build_macos.dart --remote-release              # macOS 同理
 
 | Job | 机器 | 做什么 |
 | --- | --- | --- |
-| `check` | Ubuntu | pubspec.yaml 和 `version.dart` 一致；版本是 `x.y.z+build`；标签是 `v<x.y.z>`；不比 `dl.baocode.dev` 上已发布的版本旧（一样就是重新发布，给个提示） |
+| `check` | Ubuntu | pubspec.yaml 和 `version.dart` 一致；版本是 `x.y.z+build`；标签是 `v<x.y.z>`；不比 `the pi-desktop site` 上已发布的版本旧（一样就是重新发布，给个提示） |
 | `remote` | | 调用 `remote.yml`（推 `server-*` 标签时它也单独运行并发布，见第 3 节），下面两步 |
 | `remote` › `build` | macOS 15 | 下载和 Flutter 同版本的 x64 Dart SDK → 编译远程服务端（`--all`：Linux x64/arm64 交叉编译；macOS arm64 用本机的 dart，macOS x64 用 x64 的 dart 经 Rosetta，`dart compile exe` 只能在 Mac 上、按 dart 自己的架构编 macOS 版）→ `tool/test_remote_server_macos.sh`：在这台 Mac 上把两份 macOS 版各跑一遍 → 上传 `remote`（`VERSION`、`servers.json`、`.gz`）和 `remote-linux`（Linux 的两个二进制）两个产物 |
 | `remote` › `linux` | Ubuntu | `tool/test_remote_server.sh`：在 Docker 里的 Ubuntu 20.04 / 24.04、Debian 12、Rocky Linux 8 上，两种架构各跑一遍（arm64 用 QEMU 模拟），要能启动、回答 `initialize`、列出目录 |
 | `macos` | macOS 15 | 有证书就导入临时钥匙串 → `tool/build_macos.dart --build-only`：构建 universal 的 .app → 等 `remote` 产物传上来 → `tool/build_macos.dart --skip-build`：**检查是 universal**（每个可执行文件都有 arm64 和 x86_64）→ 放进 `remote` 任务的 `servers.json` → 用 `ditto --arch` 拆成 Apple silicon（arm64）和 Intel（x64）两个应用，各自检查只剩一种架构，下面每个各做一遍：→ 签名（有证书用 Developer ID，带 hardened runtime；没有就 ad hoc，**不带** hardened runtime，否则系统拒绝加载应用自己的框架、一启动就崩；总要重签，因为放进去的文件要包进签名）→ 做 dmg → 有证书时签 dmg、公证、钉票据 → 打更新用的 zip → **把两个 zip 解开各真正启动一次**（Intel 版经 Rosetta），15 秒内退出就不发 |
-| `windows` | Windows（x64 在 `windows-latest`，arm64 在 `windows-11-arm`） | 装 Inno Setup → `tool/build_windows.dart --build-only --arch <x64\|arm64>` 构建 → 等 `remote` 产物传上来 → `--skip-build --remote-built` 放进 `servers.json`、打安装包。Flutter 只能给本机架构构建，所以 arm64 在 Arm 机器上编；Flutter 的 Windows 压缩包里是 x64 的 Dart，arm64 改为按标签 clone Flutter。arm64 没有打过补丁的引擎（`tool/engine/`），用 Flutter 自带的；OpenSSH 用 `OpenSSH-ARM64.zip`。安装包 `BaoCode-<版本>-setup-arm64.exe`，和 x64 同一个 AppId，互相覆盖安装 |
+| `windows` | Windows（x64 在 `windows-latest`，arm64 在 `windows-11-arm`） | 装 Inno Setup → `tool/build_windows.dart --build-only --arch <x64\|arm64>` 构建 → 等 `remote` 产物传上来 → `--skip-build --remote-built` 放进 `servers.json`、打安装包。Flutter 只能给本机架构构建，所以 arm64 在 Arm 机器上编；Flutter 的 Windows 压缩包里是 x64 的 Dart，arm64 改为按标签 clone Flutter。arm64 没有打过补丁的引擎（`tool/engine/`），用 Flutter 自带的；OpenSSH 用 `OpenSSH-ARM64.zip`。安装包 `pi-desktop-<版本>-setup-arm64.exe`，和 x64 同一个 AppId，互相覆盖安装 |
 | `publish` | Ubuntu | 汇总产物 → 用更新私钥签 `latest.json`（`tool/release_manifest.dart`，带上 dmg 给网站用）→ 上传远程服务端 → 上传安装包 → 按清单里的链接确认 CDN 给出的文件大小对 → **最后**上传 `latest.json` → 建 GitHub Release（附两个 dmg 和 exe；重新发布时先删掉旧的） |
 
 几个设计上的考虑：
@@ -182,34 +182,34 @@ dart run tool/build_macos.dart --remote-release              # macOS 同理
 - **`latest.json` 最后传**：应用一读到新清单就会去下载，安装包必须先就位。
 - **远程服务端只编译一次**：`remote` 任务编译，macOS 和 Windows 两个应用带的是同一份 `servers.json`（四个平台都有），R2 上一个版本只有一个 `releases/remote/<版本>-<二进制哈希>/`。
 - **应用和远程服务端同时编**：`macos`、`windows`、`linux` 不 `needs` `remote`，应用编完、打包前才用 `.github/actions/wait-for-artifact` 等 `remote` 产物（远程服务端的 job 失败或被取消——macOS 机器可能 15 分钟都分不到——就立刻跟着失败，像 `needs` 一样；最多等 20 分钟）；`share`、`publish` 仍然等 `remote` 整个跑完（含 Linux 上的测试）。
-- **bao_iroh 的 Rust 不在发版时编**：`bao_iroh.yml` 在 main 上按 `packages/bao_iroh/rust/` 的哈希给每个目标编一次，存进 main 的缓存（标签上的运行只能读 main 的缓存，标签自己存的别的标签读不到，所以发版任务只读不存，flutter-action 也不开缓存）；各构建任务用 `.github/actions/bao-iroh-prebuilt` 取到 `packages/bao_iroh/build/prebuilt/<target>/`，构建钩子直接用。没取到（Rust 只在标签上改了、或 `bao_iroh.yml` 还没跑完）就照旧现编。
+- **pi_iroh 的 Rust 不在发版时编**：`pi_iroh.yml` 在 main 上按 `packages/pi_iroh/rust/` 的哈希给每个目标编一次，存进 main 的缓存（标签上的运行只能读 main 的缓存，标签自己存的别的标签读不到，所以发版任务只读不存，flutter-action 也不开缓存）；各构建任务用 `.github/actions/pi-iroh-prebuilt` 取到 `packages/pi_iroh/build/prebuilt/<target>/`，构建钩子直接用。没取到（Rust 只在标签上改了、或 `pi_iroh.yml` 还没跑完）就照旧现编。
 - **下载链接带哈希**：`latest.json` 里每个链接末尾是 `?sha256=<文件哈希前 16 位>`。CDN 按完整地址缓存，文件换了地址就换了，不会给出旧文件；应用取文件名时只看路径。
 - **`downloads`**：`latest.json` 里多了这一项，是给网站用的（两个 dmg 和 Windows 安装包的链接、大小，键是 `macos-arm64`、`macos-x64`、`windows`、`windows-arm64`、`linux-x64`、`linux-arm64`），应用不读它。Windows on Arm 的应用按 `windows-arm64` 更新；x64 版在 Arm 上（模拟运行）继续按 `windows-x64` 更新，不自动换。
 - **密钥只在 `release` 环境里**，只有 `v*` 标签能用（见 7.2）。PR 和手动运行拿不到。
 - Flutter 版本固定在工作流的 `FLUTTER_VERSION`，升级 Flutter 时一起改。
 
-## 5. dl.baocode.dev 上有什么
+## 5. the pi-desktop site 上有什么
 
-R2 存储桶，绑定自定义域名 `dl.baocode.dev`，前面是 Cloudflare 的 CDN。
+R2 存储桶，绑定自定义域名 `the pi-desktop site`，前面是 Cloudflare 的 CDN。
 
 ```
 releases/
   latest.json                            应用和下载页读的清单          max-age=300
   1.2.0/
-    BaoCode-1.2.0-setup.exe              Windows：首次安装和自动更新   immutable，一年
-    BaoCode-1.2.0-setup-arm64.exe        Windows on Arm：同上          immutable，一年
-    BaoCode-1.2.0-mac-arm64.zip          macOS Apple silicon：自动更新 immutable，一年
-    BaoCode-1.2.0-mac-x64.zip            macOS Intel：自动更新         immutable，一年
-    BaoCode-1.2.0-arm64.dmg              macOS Apple silicon：首次安装 immutable，一年
-    BaoCode-1.2.0-x64.dmg                macOS Intel：首次安装         immutable，一年
+    pi-desktop-1.2.0-setup.exe              Windows：首次安装和自动更新   immutable，一年
+    pi-desktop-1.2.0-setup-arm64.exe        Windows on Arm：同上          immutable，一年
+    pi-desktop-1.2.0-mac-arm64.zip          macOS Apple silicon：自动更新 immutable，一年
+    pi-desktop-1.2.0-mac-x64.zip            macOS Intel：自动更新         immutable，一年
+    pi-desktop-1.2.0-arm64.dmg              macOS Apple silicon：首次安装 immutable，一年
+    pi-desktop-1.2.0-x64.dmg                macOS Intel：首次安装         immutable，一年
   remote/
     latest.json                          最新发布的服务端（--remote-release 用） max-age=60
     <VERSION>/                           远程服务端，应用连远程主机时按需下载
       servers.json                       各平台的地址、大小、SHA-256（--remote-release 用）
-      baocode-server-linux-x64.gz        immutable，一年
-      baocode-server-linux-arm64.gz
-      baocode-server-darwin-x64.gz
-      baocode-server-darwin-arm64.gz
+      pi-desktop-server-linux-x64.gz        immutable，一年
+      pi-desktop-server-linux-arm64.gz
+      pi-desktop-server-darwin-x64.gz
+      pi-desktop-server-darwin-arm64.gz
 ```
 
 - **旧版本一直保留**：下载页只链最新版，但 `remote/` 下旧目录还有旧版本的用户在用，删了他们连不上远程主机。
@@ -220,30 +220,30 @@ releases/
 
 **发布时**（CI 的 `publish`）：
 
-1. 对每个平台的安装包算 SHA-256，用 Ed25519 私钥签 `baocode-update-v1 / 版本 / 平台 / 大小 / SHA-256` 这段文本。
+1. 对每个平台的安装包算 SHA-256，用 Ed25519 私钥签 `pi-desktop-update-v1 / 版本 / 平台 / 大小 / SHA-256` 这段文本。
 2. 写出 `latest.json`：版本、日期、更新日志、每个平台的 `url / size / sha256 / signature`。
 3. 安装包上传到 `releases/<版本>/`，`latest.json` 覆盖 `releases/latest.json`。
 
 **已安装的应用**（`update.mode` 是默认的“自动检查并下载”时）：
 
-1. 启动 30 秒后、之后每 6 小时，GET `https://dl.baocode.dev/releases/latest.json`。
-2. 解析清单；下载链接必须是 `https://*.baocode.dev`。版本不比自己新，或者没有本平台的条目 → 已是最新，结束。
+1. 启动 30 秒后、之后每 6 小时，GET `https://github.com/zkldwxz/pi-desktop`。
+2. 解析清单；下载链接必须是 `https://*.pi-desktop.dev`。版本不比自己新，或者没有本平台的条目 → 已是最新，结束。
 3. 后台下载本平台的安装包（Mac 按处理器取 Apple silicon 或 Intel 的包，见 [auto-update.md 5.2](auto-update.md#52-latestjson-格式)）到 `<数据目录>/updates/<版本>/`，支持断点续传。
 4. 依次校验大小 → SHA-256 → Ed25519 签名（公钥内置在应用里）。任何一项不过就删掉，报错。macOS 还会检查新 .app 的 bundle id，以及在当前应用有正式签名时，新 .app 是不是同一个 Team 签的。
 5. 主窗口右下角弹通知。用户点“立即重启更新”后，走和平时退出一样的确认（未保存的文件、运行中的 agent 和终端），确认了才安装：
    - Windows：应用退出后，带 `/SILENT /RELAUNCH` 运行新的 setup.exe，覆盖安装到原来的位置，再重新打开。
-   - macOS：解压出新 .app，等应用退出后由脚本替换原来的 BaoCode.app，再打开。
+   - macOS：解压出新 .app，等应用退出后由脚本替换原来的 pi-desktop.app，再打开。
 6. 新版本启动时清理 `updates/` 里旧版本的下载。
 
 设置和对话放在数据目录里，不在安装目录里，更新不会动它们。
 
-**官网**（首页和 `baocode.dev/download`，`site/site.js`）：浏览器读同一份 `latest.json`，按其中的 `downloads` 换上版本号、两个 dmg 和 Windows 安装包的链接（带哈希）和大小。下载页的 macOS 卡片有 Apple silicon 和 Intel 两个按钮，默认突出 Apple silicon；Chromium 系浏览器能报出处理器架构，Intel Mac 上会改为突出 Intel（`site/download.js`）。需要 R2 的 CORS 允许 `https://baocode.dev`（见 7.1）。读不到时显示页面里写死的版本；页面里的下载链接本身写的是 `/dl/windows`、`/dl/windows-arm64`、`/dl/macos-arm64`、`/dl/macos-x64`（Arm64 的按钮先隐藏，`site.js` 读到清单里有 `windows-arm64` 才显示），由 Worker（`site-worker/index.js`，只接管 `/dl/*`）按当时的 `latest.json` 302 到对应安装包，所以脚本没跑完、被拦或页面被缓存时下到的也是最新版，发版不用改页面里的链接。
+**官网**（首页和 `the pi-desktop site/download`，`site/site.js`）：浏览器读同一份 `latest.json`，按其中的 `downloads` 换上版本号、两个 dmg 和 Windows 安装包的链接（带哈希）和大小。下载页的 macOS 卡片有 Apple silicon 和 Intel 两个按钮，默认突出 Apple silicon；Chromium 系浏览器能报出处理器架构，Intel Mac 上会改为突出 Intel（`site/download.js`）。需要 R2 的 CORS 允许 `https://github.com/zkldwxz/pi-desktop`（见 7.1）。读不到时显示页面里写死的版本；页面里的下载链接本身写的是 `/dl/windows`、`/dl/windows-arm64`、`/dl/macos-arm64`、`/dl/macos-x64`（Arm64 的按钮先隐藏，`site.js` 读到清单里有 `windows-arm64` 才显示），由 Worker（`site-worker/index.js`，只接管 `/dl/*`）按当时的 `latest.json` 302 到对应安装包，所以脚本没跑完、被拦或页面被缓存时下到的也是最新版，发版不用改页面里的链接。
 
 **两把“钥匙”管的是不同的事**：
 
 | | 防的是什么 | 没有它会怎样 |
 | --- | --- | --- |
-| 更新签名私钥（Ed25519） | 有人篡改 `dl.baocode.dev` 上的文件或劫持网络，给所有用户推恶意更新 | 发不了更新；泄露的话，后果见 [auto-update.md 6.3](auto-update.md#63-保管) |
+| 更新签名私钥（Ed25519） | 有人篡改 `the pi-desktop site` 上的文件或劫持网络，给所有用户推恶意更新 | 发不了更新；泄露的话，后果见 [auto-update.md 6.3](auto-update.md#63-保管) |
 | Apple Developer ID + 公证 | macOS 的 Gatekeeper 拦截从网上下载的未知应用 | 用户第一次打开 dmg 里的应用时被拦：“已损坏，无法打开” |
 | Windows 代码签名（还没做） | SmartScreen 的“未知发布者”警告 | 第一次安装时多点一次“仍要运行” |
 
@@ -255,13 +255,13 @@ releases/
 
 ### 7.1 Cloudflare
 
-1. **R2 存储桶**：R2 → Create bucket，名字比如 `baocode-downloads`。
-2. **自定义域名**：存储桶 → Settings → Custom Domains → Connect Domain → `dl.baocode.dev`。不要开 `r2.dev` 公共地址。
+1. **R2 存储桶**：R2 → Create bucket，名字比如 `pi-desktop-downloads`。
+2. **自定义域名**：存储桶 → Settings → Custom Domains → Connect Domain → `the pi-desktop site`。不要开 `r2.dev` 公共地址。
 3. **CORS**（给下载页读 `latest.json`）：存储桶 → Settings → CORS Policy：
    ```json
    [
      {
-       "AllowedOrigins": ["https://baocode.dev"],
+       "AllowedOrigins": ["https://github.com/zkldwxz/pi-desktop"],
        "AllowedMethods": ["GET", "HEAD"],
        "AllowedHeaders": ["*"],
        "MaxAgeSeconds": 3600
@@ -269,7 +269,7 @@ releases/
    ]
    ```
 4. **API 令牌**：R2 → Manage R2 API Tokens → Create API token，权限 **Object Read & Write**，范围**只选这个存储桶**。记下 Access Key ID 和 Secret Access Key（只显示一次），以及页面上的 Account ID。
-5. **网站**：Worker `baocode`，静态资源是 `site/`（`_headers`、`_redirects` 照常生效），Settings → Builds 连着 GitHub 仓库（生产分支 `main`），自定义域名 `baocode.dev`。
+5. **网站**：Worker `pi-desktop`，静态资源是 `site/`（`_headers`、`_redirects` 照常生效），Settings → Builds 连着 GitHub 仓库（生产分支 `main`），自定义域名 `the pi-desktop site`。
 
 ### 7.2 GitHub
 
@@ -280,7 +280,7 @@ releases/
 
    | 名字 | 值 |
    | --- | --- |
-   | `UPDATE_SIGNING_KEY` | `~/.baocode-release/update-signing.key` 的内容（一行 base64） |
+   | `UPDATE_SIGNING_KEY` | `~/.pi-desktop-release/update-signing.key` 的内容（一行 base64） |
    | `R2_ACCOUNT_ID` | Cloudflare 的 Account ID |
    | `R2_ACCESS_KEY_ID` | R2 令牌的 Access Key ID |
    | `R2_SECRET_ACCESS_KEY` | R2 令牌的 Secret Access Key |
@@ -293,7 +293,7 @@ releases/
 
 ### 7.3 Apple（macOS 签名与公证）
 
-**需要 Apple 开发者账号吗？** 要。没有的话应用照样能构建、能自动更新，但新用户第一次从网上下载打开时会被 Gatekeeper 拦下（“BaoCode 已损坏，无法打开”），只能在终端里运行 `xattr -dr com.apple.quarantine` 才能打开。对外发布基本绕不过去。
+**需要 Apple 开发者账号吗？** 要。没有的话应用照样能构建、能自动更新，但新用户第一次从网上下载打开时会被 Gatekeeper 拦下（“pi-desktop 已损坏，无法打开”），只能在终端里运行 `xattr -dr com.apple.quarantine` 才能打开。对外发布基本绕不过去。
 
 1. **加入 Apple Developer Program**（每年 99 美元）：<https://developer.apple.com/programs/enroll/>
    - 我们**以个人身份**加入：用本人的 Apple ID（要开双重认证）。中国大陆的表单要求填身份证上的中文姓名和身份证号。在 iPhone 或 Mac 的 Apple Developer App 里注册最快，要拍证件做身份验证；也可以在网页上注册。付款后一般一两天内通过。
@@ -350,13 +350,13 @@ dart run tool/build_macos.dart --remote-built
 dart run tool/build_windows.dart --remote-built
 
 # 有私钥的机器上，两个平台的包都拷过来之后
-BAOCODE_UPDATE_SIGNING_KEY=~/.baocode-release/update-signing.key \
+PI_DESKTOP_UPDATE_SIGNING_KEY=~/.pi-desktop-release/update-signing.key \
   dart run tool/release_manifest.dart \
-    --windows build/installers/BaoCode-1.2.0-setup.exe \
-    --macos-arm64 build/installers/BaoCode-1.2.0-mac-arm64.zip \
-    --macos-x64   build/installers/BaoCode-1.2.0-mac-x64.zip \
-    --dmg-arm64   build/installers/BaoCode-1.2.0-arm64.dmg \
-    --dmg-x64     build/installers/BaoCode-1.2.0-x64.dmg \
+    --windows build/installers/pi-desktop-1.2.0-setup.exe \
+    --macos-arm64 build/installers/pi-desktop-1.2.0-mac-arm64.zip \
+    --macos-x64   build/installers/pi-desktop-1.2.0-mac-x64.zip \
+    --dmg-arm64   build/installers/pi-desktop-1.2.0-arm64.dmg \
+    --dmg-x64     build/installers/pi-desktop-1.2.0-x64.dmg \
     --notes-en release-notes/1.2.0.en.md --notes-zh release-notes/1.2.0.zh.md
 ```
 
@@ -371,12 +371,12 @@ macOS 本机签名时用的环境变量：
 
 | 变量 | 值 |
 | --- | --- |
-| `BAOCODE_MACOS_SIGN_IDENTITY` | 证书的 40 位指纹，或 `Developer ID Application: <名字> (<Team ID>)`；证书在钥匙串里 |
-| `BAOCODE_NOTARY_KEY` | `.p8` 文件的路径 |
-| `BAOCODE_NOTARY_KEY_ID` | Key ID |
-| `BAOCODE_NOTARY_ISSUER` | Issuer ID |
+| `PI_DESKTOP_MACOS_SIGN_IDENTITY` | 证书的 40 位指纹，或 `Developer ID Application: <名字> (<Team ID>)`；证书在钥匙串里 |
+| `PI_DESKTOP_NOTARY_KEY` | `.p8` 文件的路径 |
+| `PI_DESKTOP_NOTARY_KEY_ID` | Key ID |
+| `PI_DESKTOP_NOTARY_ISSUER` | Issuer ID |
 
-只设 `BAOCODE_MACOS_SIGN_IDENTITY` 就只签名、不公证；都不设就是 ad hoc 签名。
+只设 `PI_DESKTOP_MACOS_SIGN_IDENTITY` 就只签名、不公证；都不设就是 ad hoc 签名。
 
 ## 10. 手机版
 
@@ -384,10 +384,10 @@ macOS 本机签名时用的环境变量：
 
 ```sh
 git tag mobile-v0.1.0 && git push origin mobile-v0.1.0      # 发布：标签要和手机版的版本一致
-git tag mobile-test-foo && git push origin mobile-test-foo  # 测试包：APK 传到 dl.baocode.dev/test/mobile-…，iOS 照样传 TestFlight
+git tag mobile-test-foo && git push origin mobile-test-foo  # 测试包：APK 传到 the pi-desktop site/test/mobile-…，iOS 照样传 TestFlight
 ```
 
-CI 从 `baocode-dev/mobile` 的 main 取代码（放在本仓库旁边，`../monad` 的包照常能找到），分两台机器构建：
+CI 从 `pi-desktop-dev/mobile` 的 main 取代码（放在本仓库旁边，`../monad` 的包照常能找到），分两台机器构建：
 
 - **Android**（Ubuntu）：`flutter build apk --release`，用发布密钥签名。每个版本都要用**同一把密钥**，否则装不上旧版之上，只能卸载重装。
 - **iOS**（`macos-26`，要 Xcode 26：App Store Connect 只收 iOS 26 SDK 编的包）：导入 Apple Distribution 证书和 App Store 描述文件 → 把工程里 Runner 目标的 Release 配置改成手动签名（工程本身是自动签名，要登录开发者账号，CI 上没有；只改 Runner，Pods 的目标不能带描述文件）→ `flutter build ipa`，build 号用本工作流的 run number（TestFlight 不收重复的 build 号）→ `xcrun altool --upload-app` 用 App Store Connect API Key 上传到 TestFlight。**`mobile-test-*` 也上传**：iOS 的测试员走 TestFlight。上传后苹果要处理几分钟，测试员才看得到。
@@ -396,7 +396,7 @@ APK 上传时用 `--content-type` 说明类型（`application/vnd.android.packag
 
 发布时 APK 传到 `releases/mobile/<版本>/`，最后写 `releases/mobile/latest.json`（`version`、`pubDate`、`beta`、`downloads.android` 的 `url / size / sha256`；还有 `ios`，见下文）。桌面版的 `latest.json` 不受影响。
 
-iOS 在 App Store Connect 上的 App 是 **BaoCode**（Apple ID `6825371537`，Bundle ID `dev.baocode.mobile`，Team `77SLP2NCVR`）。证书和描述文件一年一换：到期前用 App Store Connect API（或开发者网站）新建 Apple Distribution 证书、用它重做 App Store 描述文件，换掉下面三个密钥。
+iOS 在 App Store Connect 上的 App 是 **pi-desktop**（Apple ID `6825371537`，Bundle ID `dev.pi.desktop.mobile`，Team `77SLP2NCVR`）。证书和描述文件一年一换：到期前用 App Store Connect API（或开发者网站）新建 Apple Distribution 证书、用它重做 App Store 描述文件，换掉下面三个密钥。
 
 TestFlight 上每个 build 都要回答出口合规（加密）问题，否则停在「缺少合规证明」；在手机版的 `Info.plist` 里加 `ITSAppUsesNonExemptEncryption` 就不用每次回答。
 
@@ -412,18 +412,18 @@ ASC_KEY="$(cat AuthKey_$KEY_ID.p8)" ASC_KEY_ID=$KEY_ID ASC_ISSUER=$ISSUER \
 
 | 名字 | 是什么 |
 | --- | --- |
-| `MOBILE_DEPLOY_KEY` | 读 `baocode-dev/mobile` 的部署密钥（私钥）。公钥加在那个仓库的 Settings → Deploy keys，只读即可 |
+| `MOBILE_DEPLOY_KEY` | 读 `pi-desktop-dev/mobile` 的部署密钥（私钥）。公钥加在那个仓库的 Settings → Deploy keys，只读即可 |
 | `ANDROID_KEYSTORE` | Android 发布密钥库（`.jks`）的 base64 |
-| `ANDROID_KEYSTORE_PASSWORD` | 它的密码（密钥别名 `baocode`，密钥密码与之相同） |
+| `ANDROID_KEYSTORE_PASSWORD` | 它的密码（密钥别名 `pi-desktop`，密钥密码与之相同） |
 | `IOS_CERTIFICATE` | Apple Distribution 证书 `.p12` 的 base64 |
 | `IOS_CERTIFICATE_PASSWORD` | 它的密码 |
-| `IOS_PROFILE` | `dev.baocode.mobile` 的 App Store 描述文件（`.mobileprovision`）的 base64 |
+| `IOS_PROFILE` | `dev.pi.desktop.mobile` 的 App Store 描述文件（`.mobileprovision`）的 base64 |
 
 上传 TestFlight 用的是 7.3 公证用的那把 App Store Connect API Key（`NOTARY_KEY`、`NOTARY_KEY_ID`、`NOTARY_ISSUER`），它的职能是 App 管理，两件事都够用。
 
 环境的部署规则里要允许 `mobile-*` 标签。
 
-下载页这两张卡片各带一个二维码（`site/qr/android.svg`、`site/qr/ios.svg`，鼠标悬停或点击卡片时显示）：码里是卡片自己那个按钮的链接，也就是 `/dl/android`、`/dl/ios`，扫到就跳到当时最新的那版安装包。链接变了就先跑 `dart run tool/make_download_qr.dart` 重新生成（`test/tool/download_qr_test.dart` 会检查页面、按钮和码三者一致）。**别把 `dl.baocode.dev` 上带哈希的直链写进码里**：那地址每次发版都换，码是要能一直用的。`latest.json` 里已经没有 iOS 的包：`/dl/ios` 跳到 TestFlight 公开测试的链接（`site-worker/index.js` 的 `TESTFLIGHT`，App Store Connect → BaoCode → TestFlight → Public beta），每个 build 都是这一个，上了 App Store 再换。要暂时下线哪个平台，把它加进 `site-worker/index.js` 的 `MOBILE_OFFLINE`，它的链接就跳回下载页。
+下载页这两张卡片各带一个二维码（`site/qr/android.svg`、`site/qr/ios.svg`，鼠标悬停或点击卡片时显示）：码里是卡片自己那个按钮的链接，也就是 `/dl/android`、`/dl/ios`，扫到就跳到当时最新的那版安装包。链接变了就先跑 `dart run tool/make_download_qr.dart` 重新生成（`test/tool/download_qr_test.dart` 会检查页面、按钮和码三者一致）。**别把 `the pi-desktop site` 上带哈希的直链写进码里**：那地址每次发版都换，码是要能一直用的。`latest.json` 里已经没有 iOS 的包：`/dl/ios` 跳到 TestFlight 公开测试的链接（`site-worker/index.js` 的 `TESTFLIGHT`，App Store Connect → pi-desktop → TestFlight → Public beta），每个 build 都是这一个，上了 App Store 再换。要暂时下线哪个平台，把它加进 `site-worker/index.js` 的 `MOBILE_OFFLINE`，它的链接就跳回下载页。
 
 > 发布密钥库丢了就再也发不了能覆盖安装的 APK：本机和 CI 之外务必另存一份。
 
@@ -434,12 +434,12 @@ ASC_KEY="$(cat AuthKey_$KEY_ID.p8)" ASC_KEY_ID=$KEY_ID ASC_ISSUER=$ISSUER \
 - **Chrome 应用商店**（`/dl/chrome-web-store`）：自动更新。
 - **开发者模式**（`/dl/browser-extension`）：下载 zip，解压后在 `chrome://extensions` 里「加载已解压的扩展程序」。不会自动更新。
 
-两种装法的扩展 ID 一样，都是 `jfjagocghaaheooicmdnhcholmgdkngk`：开发者模式的 zip 里 `manifest.json` 带着 `key`，商店版是第一次上传时带上私钥 `key.pem` 定下的（见 [docs/browser-extension-store](browser-extension-store/README.md#第一次上传)）。应用只认这个 ID（`BrowserBridge.extensionIds`），CI 会检查 `key` 算出来的 ID 和它一致。私钥在 `~/.baocode-signing/browser-extension.pem`，丢了也不影响已上架的扩展（商店有自己的签名），但开发者模式的 ID 就没法再算出来了，务必另存一份。
+两种装法的扩展 ID 一样，都是 `jfjagocghaaheooicmdnhcholmgdkngk`：开发者模式的 zip 里 `manifest.json` 带着 `key`，商店版是第一次上传时带上私钥 `key.pem` 定下的（见 [docs/browser-extension-store](browser-extension-store/README.md#第一次上传)）。应用只认这个 ID（`BrowserBridge.extensionIds`），CI 会检查 `key` 算出来的 ID 和它一致。私钥在 `~/.pi-desktop-signing/browser-extension.pem`，丢了也不影响已上架的扩展（商店有自己的签名），但开发者模式的 ID 就没法再算出来了，务必另存一份。
 
 ```sh
 # 先改 browser_extension/manifest.json 的 version（商店要求每次上传版本号都更大）
 git tag extension-v0.2.0 && git push origin extension-v0.2.0         # 发布：标签要和 manifest 的版本一致
-git tag extension-test-foo && git push origin extension-test-foo     # 只打包，传到 dl.baocode.dev/test/extension-…
+git tag extension-test-foo && git push origin extension-test-foo     # 只打包，传到 the pi-desktop site/test/extension-…
 ```
 
 本地打包：`tool/pack_browser_extension.sh`，产物在 `build/browser_extension/`。
@@ -459,6 +459,6 @@ CI 做的事：
 
 **少发扩展**：扩展只做应用做不了的事：通信、共享标签页的边界（应用的任何请求都越不过它）、工具栏按钮。页面里的一切走 DevTools 协议原样转发（`cdp`，带 `sessionId` 时是页面里 iframe、worker 的会话，事件也带 `sessionId`）；标签页、窗口、分组走 `call`（`chrome.tabs.*`、`chrome.windows.*`、`chrome.tabGroups.*`，只能碰共享的标签页，返回的也只有共享的）和 `subscribe`（这几类的事件，只报共享标签页的）；行为开关走 `configure`（如 `followOpeners`：共享标签页打开的新标签页自动共享，默认开）。所以新功能基本只改应用。只有要新的浏览器权限（manifest 的 `permissions`）时才必须发新版扩展，而且用户要重新同意，尽量少加。
 
-**能力和协议版本**：扩展新增的方法写进 `background.js` 的 `CAPABILITIES`，在握手时告诉应用，应用用 `BrowserConnection.can('…')` 判断后再用，旧扩展照样能连。只有改了已有消息的含义、旧的一方会理解错时，才把 `background.js` 的 `BRIDGE` 和 `BrowserBridge.protocol` 一起加一。版本对不上的连接，应用不用它，并在 设置 → 浏览器 里提示用户更新扩展或更新 BaoCode。商店版扩展会自动更新，通常比应用新；所以改协议时尽量让应用同时兼容旧版，先发应用、再发扩展。
+**能力和协议版本**：扩展新增的方法写进 `background.js` 的 `CAPABILITIES`，在握手时告诉应用，应用用 `BrowserConnection.can('…')` 判断后再用，旧扩展照样能连。只有改了已有消息的含义、旧的一方会理解错时，才把 `background.js` 的 `BRIDGE` 和 `BrowserBridge.protocol` 一起加一。版本对不上的连接，应用不用它，并在 设置 → 浏览器 里提示用户更新扩展或更新 pi-desktop。商店版扩展会自动更新，通常比应用新；所以改协议时尽量让应用同时兼容旧版，先发应用、再发扩展。
 
-**应用这边的 host**：浏览器按 native messaging 启动应用自带的 host，host 再去连应用。macOS 是 `macos/BrowserBridge/host.c`，Xcode 编进 `Contents/MacOS`，应用每次启动把 manifest 写进各浏览器的 `NativeMessagingHosts` 目录，经 Unix socket 连接。Windows 是 `windows/BrowserBridge/host.cpp`，`flutter build windows` 时编成 `baocode-browser-host.exe`，和 manifest `dev.baocode.browser.json` 一起放在 `baocode.exe` 旁边；安装包在 Chrome、Edge、Chromium 的注册表键里指向这个 manifest，卸载时删掉（Brave、Vivaldi 等读 Chrome 的键）。Windows 上 Dart 没有 Unix socket，应用改为监听 127.0.0.1 的随机端口，端口和每次启动新生成的 token 写在临时目录的 `baocode-browser.port`，host 握手时必须带上 token，否则应用直接断开。没经过安装包的本地构建没有注册表键，要测就手动加一条：`reg add HKCU\Software\Google\Chrome\NativeMessagingHosts\dev.baocode.browser /ve /d <构建目录>\dev.baocode.browser.json /f`。改扩展 ID 时 Windows 的 manifest 要一起改，`test/browser/browser_bridge_test.dart` 会检查两边一致。Linux 用的也是 `host.c`：`linux/BrowserBridge/CMakeLists.txt` 在 `flutter build linux` 时把它编成 `baocode-browser-host`，放在 `baocode` 旁边（deb 里是 `/opt/baocode/`）；应用每次启动把 manifest 写进 `~/.config/<浏览器>/NativeMessagingHosts`（设了 `XDG_CONFIG_HOME` 就用它）。socket 放在 `$XDG_RUNTIME_DIR`（只有本用户能进），没有才退回 `$TMPDIR` 或 `/tmp`；`/tmp` 是所有用户共用的，所以 host 连上后会用 `SO_PEERCRED` 核对对方是不是同一个用户，不是就断开，免得别的用户抢先占住 socket、截走浏览器的消息。Snap 版 Chromium 和 Flatpak 装的浏览器有沙箱，启动不了沙箱外的 host，暂不支持，设置 → 浏览器 里会提示改用官方 deb/rpm 包。CI 的 Linux 任务装上 deb 启动后，会检查 manifest 写对了位置，并真的跑一遍 host 连上应用。
+**应用这边的 host**：浏览器按 native messaging 启动应用自带的 host，host 再去连应用。macOS 是 `macos/BrowserBridge/host.c`，Xcode 编进 `Contents/MacOS`，应用每次启动把 manifest 写进各浏览器的 `NativeMessagingHosts` 目录，经 Unix socket 连接。Windows 是 `windows/BrowserBridge/host.cpp`，`flutter build windows` 时编成 `pi-desktop-browser-host.exe`，和 manifest `dev.pi.desktop.browser.json` 一起放在 `pi-desktop.exe` 旁边；安装包在 Chrome、Edge、Chromium 的注册表键里指向这个 manifest，卸载时删掉（Brave、Vivaldi 等读 Chrome 的键）。Windows 上 Dart 没有 Unix socket，应用改为监听 127.0.0.1 的随机端口，端口和每次启动新生成的 token 写在临时目录的 `pi-desktop-browser.port`，host 握手时必须带上 token，否则应用直接断开。没经过安装包的本地构建没有注册表键，要测就手动加一条：`reg add HKCU\Software\Google\Chrome\NativeMessagingHosts\dev.pi.desktop.browser /ve /d <构建目录>\dev.pi.desktop.browser.json /f`。改扩展 ID 时 Windows 的 manifest 要一起改，`test/browser/browser_bridge_test.dart` 会检查两边一致。Linux 用的也是 `host.c`：`linux/BrowserBridge/CMakeLists.txt` 在 `flutter build linux` 时把它编成 `pi-desktop-browser-host`，放在 `pi-desktop` 旁边（deb 里是 `/opt/pi-desktop/`）；应用每次启动把 manifest 写进 `~/.config/<浏览器>/NativeMessagingHosts`（设了 `XDG_CONFIG_HOME` 就用它）。socket 放在 `$XDG_RUNTIME_DIR`（只有本用户能进），没有才退回 `$TMPDIR` 或 `/tmp`；`/tmp` 是所有用户共用的，所以 host 连上后会用 `SO_PEERCRED` 核对对方是不是同一个用户，不是就断开，免得别的用户抢先占住 socket、截走浏览器的消息。Snap 版 Chromium 和 Flatpak 装的浏览器有沙箱，启动不了沙箱外的 host，暂不支持，设置 → 浏览器 里会提示改用官方 deb/rpm 包。CI 的 Linux 任务装上 deb 启动后，会检查 manifest 写对了位置，并真的跑一遍 host 连上应用。

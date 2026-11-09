@@ -1,8 +1,8 @@
-import 'package:bao_link/bao_link.dart'
+import 'package:pi_link/pi_link.dart'
     show BotAbility, BotProactive, isAvatarImage;
 import 'package:path/path.dart' as p;
 
-export 'package:bao_link/bao_link.dart'
+export 'package:pi_link/pi_link.dart'
     show BotAbility, BotProactive, isAvatarImage;
 
 /// A bot as the user made it: who it is ([identity], [gender], [style],

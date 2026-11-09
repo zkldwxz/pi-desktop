@@ -28,13 +28,13 @@ class ContextMenuException implements Exception {
   String toString() => 'ContextMenuException: $message';
 }
 
-/// The menu's items, in the user's language: Open with BaoCode (a new
+/// The menu's items, in the user's language: Open with pi-desktop (a new
 /// agent) and Open with Fast Ide (a new IDE window).
 typedef ContextMenuLabels = ({String agent, String ide});
 
-/// Open with BaoCode and Open with Fast Ide in the system's context menu on
+/// Open with pi-desktop and Open with Fast Ide in the system's context menu on
 /// files, folders and a folder's background: Explorer's on Windows (what
-/// the installer's task adds, see tool/baocode.iss, written for the user
+/// the installer's task adds, see tool/pi-desktop.iss, written for the user
 /// alone), Finder's on macOS (the app's Finder extension, see
 /// macos/FinderExtension/FinderSync.swift, turned on or off as System
 /// Settings would). Either way, what is chosen comes in through

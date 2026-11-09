@@ -4,7 +4,7 @@
 
 import 'dart:async';
 
-import 'package:bao_editor/monaco/vs/editor/common/core/position.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/position.dart';
 import 'package:flutter/foundation.dart';
 
 import '../ide_layout.dart';

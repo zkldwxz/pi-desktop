@@ -1,7 +1,7 @@
 // The Git log's line between the table and the details stays under the
 // pointer as it is dragged, back from past where the details stop too.
 
-import 'package:baocode/ide/git/ide_git_log_view.dart';
+import 'package:pi-desktop/ide/git/ide_git_log_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';

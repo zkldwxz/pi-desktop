@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:baocode/ide/git/git_repository.dart';
-import 'package:baocode/ide/git/git_service.dart';
+import 'package:pi-desktop/ide/git/git_repository.dart';
+import 'package:pi-desktop/ide/git/git_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'fake_git.dart';

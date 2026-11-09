@@ -3,15 +3,15 @@ library;
 
 import 'dart:io';
 
-import 'package:baocode/kernel/claude_code/claude_code_transport.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/claude_code/claude_environment.dart';
-import 'package:baocode/kernel/claude_code/claude_path_setting.dart';
-import 'package:baocode/kernel/claude_code/dart_core_transport_io.dart';
-import 'package:baocode/kernel/claude_code/process_transport_io.dart';
-import 'package:baocode/network/network_proxy_io.dart';
-import 'package:baocode/network/proxy_settings.dart';
-import 'package:baocode/remote/remote_claude.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_transport.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_environment.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_path_setting.dart';
+import 'package:pi-desktop/kernel/claude_code/dart_core_transport_io.dart';
+import 'package:pi-desktop/kernel/claude_code/process_transport_io.dart';
+import 'package:pi-desktop/network/network_proxy_io.dart';
+import 'package:pi-desktop/network/proxy_settings.dart';
+import 'package:pi-desktop/remote/remote_claude.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -39,7 +39,7 @@ void main() {
     late File args;
 
     setUp(() {
-      root = Directory.systemTemp.createTempSync('baocode-core-');
+      root = Directory.systemTemp.createTempSync('pi-desktop-core-');
       cwd = p.join(root.resolveSymbolicLinksSync(), 'project');
       Directory(cwd).createSync();
       args = File(p.join(root.path, 'args'));

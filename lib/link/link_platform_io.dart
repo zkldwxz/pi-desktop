@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_link/bao_link_io.dart';
+import 'package:pi_link/pi_link_io.dart';
 import 'package:bonsoir/bonsoir.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
@@ -70,7 +70,7 @@ class IoLinkPlatform implements LinkPlatform {
       final broadcast = BonsoirBroadcast(
         printLogs: false,
         service: BonsoirService(
-          name: advert.name.isEmpty ? 'BaoCode' : advert.name,
+          name: advert.name.isEmpty ? 'pi-desktop' : advert.name,
           type: LinkDiscovery.type,
           port: advert.port,
           attributes: advert.attributes,

@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'default_keybindings.dart';
 import 'key_chord.dart';
 
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 
 import 'keybinding_resolver.dart';
 import 'when_expression.dart';
@@ -152,7 +152,7 @@ class KeybindingService extends ChangeNotifier {
     _changed();
   }
 
-  /// Whether BaoCode has [command]: a keybinding for one it has not (another
+  /// Whether pi-desktop has [command]: a keybinding for one it has not (another
   /// editor's) is kept, but shown as not supported and never runs.
   bool isSupported(String command) =>
       _commands.containsKey(command) ||

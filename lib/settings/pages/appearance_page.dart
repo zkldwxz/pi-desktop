@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
-import 'package:bao_editor/monaco/vs/platform/theme/common/theme.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart';
+import 'package:pi_editor/monaco/vs/platform/theme/common/theme.dart';
 import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart' hide ColorScheme;
 

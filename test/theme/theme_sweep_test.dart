@@ -4,16 +4,16 @@ import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
-import 'package:bao_editor/textmate/textmate_manifest.dart';
-import 'package:bao_editor/textmate/textmate_syntax.dart'
+import 'package:pi_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
+import 'package:pi_editor/textmate/textmate_manifest.dart';
+import 'package:pi_editor/textmate/textmate_syntax.dart'
     show textMateWorkerLauncher;
-import 'package:baocode/workspace/islands.dart';
-import 'package:baocode/ide/lsp_ui/problems_panel.dart';
-import 'package:baocode/ide/terminal/terminal_colors.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/workspace/islands.dart';
+import 'package:pi-desktop/ide/lsp_ui/problems_panel.dart';
+import 'package:pi-desktop/ide/terminal/terminal_colors.dart';
+import 'package:pi-desktop/main.dart';
+import 'package:pi-desktop/theme/workbench_theme.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 
 import '../ide/workbench/fake_files.dart';
 
@@ -37,8 +37,8 @@ Future<List<ColorThemeData>> _themes() async {
 }
 
 /// Where to write what each theme paints, to look at (e.g.
-/// `BAOCODE_THEME_SNAPSHOTS=/tmp/themes flutter test test/theme/`).
-final _snapshots = Platform.environment['BAOCODE_THEME_SNAPSHOTS'];
+/// `PI_DESKTOP_THEME_SNAPSHOTS=/tmp/themes flutter test test/theme/`).
+final _snapshots = Platform.environment['PI_DESKTOP_THEME_SNAPSHOTS'];
 
 Future<void> _snapshot(WidgetTester tester, String name) async {
   final directory = _snapshots;
@@ -74,7 +74,7 @@ void main() {
         ..restore(setting: theme.settingsId, data: theme.toStorage());
       expect(service.colorThemeId, theme.settingsId);
       final name = theme.settingsId.replaceAll(RegExp(r'[^A-Za-z0-9]+'), '_');
-      // As BaoCodeApp does, which the workbench here is outside of.
+      // As PiDesktopApp does, which the workbench here is outside of.
       terminalColorTheme.value = TerminalColorTheme.resolve(
         service.colors.get,
         type: service.colors.type,
@@ -118,7 +118,7 @@ void main() {
       await tester.sendKeyEvent(LogicalKeyboardKey.escape);
       await tester.pumpWidget(const SizedBox());
 
-      await tester.pumpWidget(BaoCodeApp(workspace: Workspace.mock()));
+      await tester.pumpWidget(PiDesktopApp(workspace: Workspace.mock()));
       await tester.pump();
       expect(tester.takeException(), isNull, reason: theme.settingsId);
       await _snapshot(tester, 'chat_$name');

@@ -90,10 +90,10 @@ when others were not.
 - `a11y.*`: long conversations (`long_history`, `huge_history`) with the
   semantics tree on, as Windows has it whenever something reads the window
   (an input method, a screen reader); the tree's size logged.
-  `BAOCODE_PERF_SEMANTICS=1` turns it on for any scenario.
+  `PI_DESKTOP_PERF_SEMANTICS=1` turns it on for any scenario.
 - `real.history` ([perf_transcript.dart](perf_transcript.dart)): a real
-  session, a Claude Code transcript (`BAOCODE_PERF_TRANSCRIPT=<.jsonl>`;
-  `BAOCODE_PERF_TRANSCRIPT_TURNS=n`, its first turns only) loaded turn by
+  session, a Claude Code transcript (`PI_DESKTOP_PERF_TRANSCRIPT=<.jsonl>`;
+  `PI_DESKTOP_PERF_TRANSCRIPT_TURNS=n`, its first turns only) loaded turn by
   turn, spun through, and a reply streamed below it. Run it on the whole
   transcript and on one turn of it: the difference is what the history
   costs each frame.
@@ -104,14 +104,14 @@ when others were not.
   `tool/symbolize_jank_sample.dart` reads). The Windows report, read with the symbols
   (`--extra-gen-snapshot-options=--save-debugging-info=<file>` as the app
   is built, then `--no-build`), should name `_holdUiThread`; and the event
-  log a 7 s frame. `BAOCODE_PERF_EVENTS=<folder>` keeps the event log
-  there; `BAOCODE_PERF_SLOW_MS` sets what it counts as a slow frame.
+  log a 7 s frame. `PI_DESKTOP_PERF_EVENTS=<folder>` keeps the event log
+  there; `PI_DESKTOP_PERF_SLOW_MS` sets what it counts as a slow frame.
 - `bench.text_layout`: what a paragraph costs to lay out, font by font
   (no cache): to compare machines and renderers.
 
 ## How it works
 
-- **The app** ([perf_app.dart](perf_app.dart)) is `BaoCodeApp` itself, laid
+- **The app** ([perf_app.dart](perf_app.dart)) is `PiDesktopApp` itself, laid
   out in 1024×760 (the main window's default size; `--size` to change)
   whatever the window's size, on a temporary data folder and project.
 - **The agents** ([perf_transport.dart](perf_transport.dart)) are Claude
@@ -152,7 +152,7 @@ For each phase of each scenario:
 | `cpu.pctOfCore` | The process's CPU time (all threads) over the phase, in % of one core. |
 | `frames.perSecond` | Frames drawn a second. Each draws the whole window again (macOS's engine hands over the whole surface), however little changed: what the GPU does is about this many times the window. |
 | `gpu.pct` | The GPU's time for the app's frames, in % of the phase (macOS on Apple's GPUs: the GPU driver's count in the I/O registry, as Activity Monitor's GPU column). |
-| `gpu.windowServerPct` | The same for WindowServer, which composites the app's window with all others: the machine's, so only to compare runs made alike (other apps at rest, the installed BaoCode hidden). |
+| `gpu.windowServerPct` | The same for WindowServer, which composites the app's window with all others: the machine's, so only to compare runs made alike (other apps at rest, the installed pi-desktop hidden). |
 | `memoryMb` | The physical footprint (Activity Monitor's memory, the GPU's for the app in it): at the start, its peak, at the end; and, on macOS, the end's parts, by `footprint`: `gpu` (Metal textures, IOSurfaces), `malloc` (the engine, Skia, fonts), `vmAllocate` (mostly the Dart heap). |
 
 The marks: `delta` (streamed text read from the CLI), `key` (a key typed),
@@ -175,8 +175,8 @@ its results (`memoryPeakMb`) and beside each run as it ends; one over
 
 The app runs with the environment macOS gives it as it is opened (its
 Info.plist's `LSEnvironment`: `MallocLargeCache=0`), which running its
-executable does not give it by itself. `BAOCODE_PERF_FOOTPRINT=1` logs the
-footprint's every part after each phase, and `BAOCODE_PERF_HEAP=1` the Dart
+executable does not give it by itself. `PI_DESKTOP_PERF_FOOTPRINT=1` logs the
+footprint's every part after each phase, and `PI_DESKTOP_PERF_HEAP=1` the Dart
 heaps and their largest classes (with the VM service's own 30MB in the
 footprint).
 
@@ -204,8 +204,8 @@ To look at one scenario in DevTools instead:
 
 ```sh
 flutter run --profile -d macos -t tool/perf/perf_app.dart \
-  --dart-define=BAOCODE_PERF_SCENARIOS=ide.typing \
-  --dart-define=BAOCODE_PERF_REPO=$PWD
+  --dart-define=PI_DESKTOP_PERF_SCENARIOS=ide.typing \
+  --dart-define=PI_DESKTOP_PERF_REPO=$PWD
 ```
 
 ## Adding a scenario
@@ -224,7 +224,7 @@ see happen.
 
 ## Caveats
 
-- On macOS the app is the profile build of BaoCode itself, with its bundle
+- On macOS the app is the profile build of pi-desktop itself, with its bundle
   id: it shares the installed app's user defaults. It leaves alone what
   would reach past its window ([perf_app.dart](perf_app.dart)'s binding):
   it does not move, resize or restyle the window, whose frame and

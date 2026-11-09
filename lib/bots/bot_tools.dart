@@ -34,7 +34,7 @@ class BotToolAccess {
       (!assistant || bot.assistant) && (ability == null || bot.can(ability!));
 }
 
-/// The bots' tools (`mcp__baocode__bot_*`): the user's agents seen,
+/// The bots' tools (`mcp__pi_desktop__bot_*`): the user's agents seen,
 /// managed, written to and started; the projects' files read; what the bot
 /// remembers kept. Each for the bots with its ability on (see
 /// [Bots.offersTool]); none for the agents of projects.

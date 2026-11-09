@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/widgets/image_thumbnails.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/widgets/image_thumbnails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

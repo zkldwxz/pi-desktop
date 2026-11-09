@@ -8,9 +8,9 @@
 
 import 'dart:math' as math;
 
-import 'package:bao_editor/monaco/flutter/lines_diff.dart';
-import 'package:bao_editor/monaco/vs/editor/common/diff/default_lines_diff_computer/default_lines_diff_computer.dart';
-import 'package:bao_editor/monaco/vs/editor/common/diff/range_mapping.dart';
+import 'package:pi_editor/monaco/flutter/lines_diff.dart';
+import 'package:pi_editor/monaco/vs/editor/common/diff/default_lines_diff_computer/default_lines_diff_computer.dart';
+import 'package:pi_editor/monaco/vs/editor/common/diff/range_mapping.dart';
 
 /// The current side (`--ours`, the left) or the incoming (`--theirs`, the
 /// right).

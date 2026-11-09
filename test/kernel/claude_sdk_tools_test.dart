@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:baocode/kernel/claude_code/claude_sdk_tools.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_sdk_tools.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -60,7 +60,7 @@ void main() {
         },
       ),
     );
-    expect(ClaudeSdkTools.servers, ['baocode']);
+    expect(ClaudeSdkTools.servers, ['pi-desktop']);
 
     final init = await ClaudeSdkTools.handle({
       'jsonrpc': '2.0',

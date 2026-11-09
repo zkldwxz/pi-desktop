@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/ide/services/editors.dart';
-import 'package:baocode/ide/workbench/editor_panes.dart';
-import 'package:baocode/ide/workbench/storage.dart';
+import 'package:pi-desktop/ide/ide_workspace.dart';
+import 'package:pi-desktop/ide/services/editors.dart';
+import 'package:pi-desktop/ide/workbench/editor_panes.dart';
+import 'package:pi-desktop/ide/workbench/storage.dart';
 
 import '../fake_files.dart';
 import 'fake_host.dart';

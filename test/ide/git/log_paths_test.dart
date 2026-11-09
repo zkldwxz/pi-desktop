@@ -4,9 +4,9 @@
 // Selection those that changed the lines selected (`git log -L`), their
 // numbers at HEAD.
 
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:baocode/ide/git/git_model.dart';
-import 'package:baocode/ide/ide_explorer.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi-desktop/ide/git/git_model.dart';
+import 'package:pi-desktop/ide/ide_explorer.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

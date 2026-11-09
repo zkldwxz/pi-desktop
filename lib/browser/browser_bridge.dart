@@ -9,7 +9,7 @@ import 'package:path/path.dart' as p;
 
 import '../platform/data_dir.dart';
 
-/// The user's own browsers, reached through BaoCode's extension in them
+/// The user's own browsers, reached through pi-desktop's extension in them
 /// (browser_extension/): each runs the app's native messaging host
 /// (macos/BrowserBridge/host.c, Linux's too; windows/BrowserBridge/host.cpp),
 /// which connects to this socket and passes the extension's messages.
@@ -25,13 +25,13 @@ class BrowserBridge extends ChangeNotifier {
   static final instance = BrowserBridge._();
 
   /// The native messaging host's name, as the extension asks for it.
-  static const hostName = 'dev.baocode.browser';
+  static const hostName = 'dev.pi.desktop.browser';
 
   /// The extension's id: the Chrome Web Store's, and the zip's to load
   /// unpacked (its manifest's key), the same (docs/release.md, 11).
   static const extensionIds = ['jfjagocghaaheooicmdnhcholmgdkngk'];
 
-  /// What BaoCode and the extension say to each other: background.js's
+  /// What pi-desktop and the extension say to each other: background.js's
   /// BRIDGE, one more with each change the other has to know of. A browser
   /// whose extension says another is not used ([mismatched]).
   static const protocol = 1;
@@ -49,15 +49,15 @@ class BrowserBridge extends ChangeNotifier {
 
   /// Where the host finds the app: the same folder for both, the user's
   /// temporary one ([socketFolder] in a test).
-  static String get socketPath => p.join(_folder, 'baocode-browser.sock');
+  static String get socketPath => p.join(_folder, 'pi-desktop-browser.sock');
 
   /// Over [loopback], what the host finds the app by instead: the port on
   /// 127.0.0.1 and the token it says first, `<port> <token>`.
-  static String get portPath => p.join(_folder, 'baocode-browser.port');
+  static String get portPath => p.join(_folder, 'pi-desktop-browser.port');
 
-  /// Over [loopback], held while this BaoCode has the browsers: another
+  /// Over [loopback], held while this pi-desktop has the browsers: another
   /// that cannot have it leaves them to it.
-  static String get _lockPath => p.join(_folder, 'baocode-browser.lock');
+  static String get _lockPath => p.join(_folder, 'pi-desktop-browser.lock');
 
   /// The user's own temporary folder. On Linux, `$XDG_RUNTIME_DIR` (the
   /// user's alone) before `$TMPDIR` or /tmp (shared with every user): as
@@ -95,7 +95,7 @@ class BrowserBridge extends ChangeNotifier {
 
   /// Whether the user lets the agents use the browsers: off, nothing
   /// listens for them, and the browsers find no host to start (it is
-  /// removed); the extension says BaoCode is not running.
+  /// removed); the extension says pi-desktop is not running.
   bool get enabled => _enabled;
   bool _enabled = true;
   set enabled(bool value) {
@@ -142,7 +142,7 @@ class BrowserBridge extends ChangeNotifier {
   /// Whether [start] was asked: to start again when [enabled] again.
   bool _wanted = false;
 
-  /// Whether another BaoCode has the socket: its browsers are its.
+  /// Whether another pi-desktop has the socket: its browsers are its.
   bool get otherApp => _otherApp;
   bool _otherApp = false;
 
@@ -155,7 +155,7 @@ class BrowserBridge extends ChangeNotifier {
   ];
 
   /// The browsers whose extension is connected but speaks another
-  /// [protocol]: one of them, or BaoCode, has to be updated.
+  /// [protocol]: one of them, or pi-desktop, has to be updated.
   List<BrowserConnection> get mismatched => [
     for (final connection in _connections.reversed)
       if (connection.browser != null && !connection.compatible) connection,
@@ -189,18 +189,18 @@ class BrowserBridge extends ChangeNotifier {
     server.listen(_accept);
   }
 
-  /// [socketPath]'s, unless another BaoCode answers there.
+  /// [socketPath]'s, unless another pi-desktop answers there.
   Future<ServerSocket?> _bindSocket() async {
     final path = socketPath;
     if (FileSystemEntity.typeSync(path) != FileSystemEntityType.notFound) {
       try {
-        // Another BaoCode's, if it answers: left to it.
+        // Another pi-desktop's, if it answers: left to it.
         final socket = await Socket.connect(
           InternetAddress(path, type: InternetAddressType.unix),
           0,
         ).timeout(const Duration(seconds: 1));
         socket.destroy();
-        _otherBaoCode();
+        _otherPiDesktop();
         return null;
       } on Object {
         // Left by a run that ended.
@@ -223,12 +223,12 @@ class BrowserBridge extends ChangeNotifier {
   }
 
   /// 127.0.0.1's, at a port the system picks, which [portPath] says with a
-  /// new token; unless another BaoCode holds [_lockPath]. The file is
+  /// new token; unless another pi-desktop holds [_lockPath]. The file is
   /// written whole and then put in place: a host never reads half of it.
   Future<ServerSocket?> _bindLoopback() async {
     final RandomAccessFile lock;
     try {
-      // Not truncated: another BaoCode may hold it.
+      // Not truncated: another pi-desktop may hold it.
       lock = await File(_lockPath).open(mode: FileMode.append);
     } on FileSystemException catch (error) {
       debugPrint('browser bridge: $error');
@@ -238,7 +238,7 @@ class BrowserBridge extends ChangeNotifier {
       await lock.lock(FileLock.exclusive);
     } on FileSystemException {
       await lock.close();
-      _otherBaoCode();
+      _otherPiDesktop();
       return null;
     }
     ServerSocket? server;
@@ -270,7 +270,7 @@ class BrowserBridge extends ChangeNotifier {
   /// before its server listens, and cleared once it is closed.
   String? _token;
 
-  void _otherBaoCode() {
+  void _otherPiDesktop() {
     _otherApp = true;
     notifyListeners();
   }
@@ -283,7 +283,7 @@ class BrowserBridge extends ChangeNotifier {
     for (final connection in [..._connections]) {
       connection._close();
     }
-    // Ours alone: another BaoCode's is left to it. Before the close, which
+    // Ours alone: another pi-desktop's is left to it. Before the close, which
     // ends later: by then a start again may have bound it anew.
     if (server == null) return;
     final lock = _lock;
@@ -293,7 +293,7 @@ class BrowserBridge extends ChangeNotifier {
       // Gone.
     }
     await server.close();
-    // Over loopback, let go once the port's file is gone: another BaoCode
+    // Over loopback, let go once the port's file is gone: another pi-desktop
     // may write its own then.
     _lock = null;
     _token = null;
@@ -314,9 +314,9 @@ class BrowserBridge extends ChangeNotifier {
   // browser's folder for them (those the user has), naming the app's: on
   // macOS and Linux, written again each run, the app moved or not. On
   // Windows, the installer's: the browsers' registry keys point to the
-  // manifest beside baocode.exe (windows/BrowserBridge, tool/baocode.iss),
-  // and stay while BaoCode is installed; turned off, the host finds no
-  // BaoCode to connect to, and the extension says so.
+  // manifest beside pi-desktop.exe (windows/BrowserBridge, tool/pi-desktop.iss),
+  // and stay while pi-desktop is installed; turned off, the host finds no
+  // pi-desktop to connect to, and the extension says so.
 
   /// The browsers' folders for native messaging hosts' manifests, by the
   /// folder each browser keeps its profile in.
@@ -373,7 +373,7 @@ class BrowserBridge extends ChangeNotifier {
   }
 
   /// Whether the user has, on Linux, a browser from Snap or Flatpak, whose
-  /// sandbox keeps BaoCode's host out: said in Settings → Browser while
+  /// sandbox keeps pi-desktop's host out: said in Settings → Browser while
   /// none is connected.
   bool get sandboxedBrowsers {
     final home = _home;
@@ -398,7 +398,7 @@ class BrowserBridge extends ChangeNotifier {
 
   /// The host's executable: beside the app's.
   static String get hostExecutable =>
-      p.join(p.dirname(Platform.resolvedExecutable), 'baocode-browser-host');
+      p.join(p.dirname(Platform.resolvedExecutable), 'pi-desktop-browser-host');
 
   /// Writes the host's manifest for each browser installed: the browsers
   /// then start it for the extension.
@@ -411,7 +411,7 @@ class BrowserBridge extends ChangeNotifier {
     }
     final manifest = const JsonEncoder.withIndent('  ').convert({
       'name': hostName,
-      'description': 'BaoCode',
+      'description': 'pi-desktop',
       'path': hostExecutable,
       'type': 'stdio',
       'allowed_origins': [
@@ -533,8 +533,8 @@ class BrowserConnection {
 
   /// What to tell when [fileAccess] is false: only the user can turn it on.
   static const fileAccessHelp =
-      'The browser does not let BaoCode\'s extension reach local files. Ask '
-      'the user to open chrome://extensions, click Details on BaoCode and '
+      'The browser does not let pi-desktop\'s extension reach local files. Ask '
+      'the user to open chrome://extensions, click Details on pi-desktop and '
       'turn on "Allow access to file URLs" (then try again; the extension '
       'reloads).';
 
@@ -598,7 +598,7 @@ class BrowserConnection {
       '$event',
   ];
 
-  /// Tells the extension how BaoCode wants it ([can] `configure`):
+  /// Tells the extension how pi-desktop wants it ([can] `configure`):
   /// `followOpeners`, whether a tab a shared one opens is shared (on).
   Future<void> configure(Map<String, Object?> config) =>
       request('configure', config);

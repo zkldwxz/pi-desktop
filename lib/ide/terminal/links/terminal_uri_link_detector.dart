@@ -14,7 +14,7 @@
 // Dart cannot parse is skipped (upstream's `URI.parse` accepts anything).
 // Workspace folders are paths instead of the workspace context service.
 
-import 'package:bao_xterm/typings/xterm_headless.dart';
+import 'package:pi_xterm/typings/xterm_headless.dart';
 
 import 'link_computer.dart';
 import 'links.dart';

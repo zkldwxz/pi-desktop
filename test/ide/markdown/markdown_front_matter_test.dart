@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/markdown/markdown_front_matter.dart';
+import 'package:pi-desktop/ide/markdown/markdown_front_matter.dart';
 
 void main() {
   test('a skill\'s front matter reads as its keys and values', () {
     final properties = parseFrontMatterProperties(
-      'name: baocode-stash\n'
+      'name: pi-desktop-stash\n'
       'description: "The user\'s Stash: ideas, \\"bugs\\""\n'
       'allowed-tools:\n'
       '  - "Read(//Users/me/Stash/**)"\n'
@@ -22,7 +22,7 @@ void main() {
           '${property.key} = ${property.text ?? property.items}',
       ],
       [
-        'name = baocode-stash',
+        'name = pi-desktop-stash',
         'description = The user\'s Stash: ideas, "bugs"',
         'allowed-tools = [Read(//Users/me/Stash/**), Edit]',
         "tags = [a, it's]",

@@ -1,4 +1,4 @@
-import 'package:bao_remote/src/platform/windows_executable.dart';
+import 'package:pi_remote/src/platform/windows_executable.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// A program a Windows host is asked to start by name: found as `cmd.exe`

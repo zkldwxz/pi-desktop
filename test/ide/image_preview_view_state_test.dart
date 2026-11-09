@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_image_preview.dart';
+import 'package:pi-desktop/ide/ide_image_preview.dart';
 
 void main() {
   testWidgets('the image preview shows the zoom it was left with, and tells '

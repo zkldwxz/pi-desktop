@@ -1,9 +1,9 @@
 #!/bin/sh
-# Builds baocode-browser-host (host.c) into the app's Contents/MacOS and
+# Builds pi-desktop-browser-host (host.c) into the app's Contents/MacOS and
 # signs it as the app is: run by Xcode, a build phase of Runner's.
 set -e
 src="$PROJECT_DIR/BrowserBridge/host.c"
-out="$TARGET_BUILD_DIR/$EXECUTABLE_FOLDER_PATH/baocode-browser-host"
+out="$TARGET_BUILD_DIR/$EXECUTABLE_FOLDER_PATH/pi-desktop-browser-host"
 arch_flags=""
 for arch in $ARCHS; do arch_flags="$arch_flags -arch $arch"; done
 xcrun clang -O2 -Wall -Wextra $arch_flags \

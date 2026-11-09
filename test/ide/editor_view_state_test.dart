@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/vs/editor/common/core/position.dart';
-import 'package:baocode/ide/file_service.dart';
-import 'package:baocode/ide/ide_editor.dart';
-import 'package:baocode/ide/ide_view_state.dart';
-import 'package:baocode/ide/ide_workspace.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/position.dart';
+import 'package:pi-desktop/ide/file_service.dart';
+import 'package:pi-desktop/ide/ide_editor.dart';
+import 'package:pi-desktop/ide/ide_view_state.dart';
+import 'package:pi-desktop/ide/ide_workspace.dart';
 import 'package:path/path.dart' as p;
 
 import 'workbench/fake_files.dart';

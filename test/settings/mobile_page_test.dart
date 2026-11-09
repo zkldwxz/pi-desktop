@@ -1,9 +1,9 @@
-import 'package:bao_link/bao_link.dart';
-import 'package:baocode/link/link_host.dart';
-import 'package:baocode/link/phone_downloads.dart';
-import 'package:baocode/link/qr_view.dart';
-import 'package:baocode/settings/pages/mobile_page.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi_link/pi_link.dart';
+import 'package:pi-desktop/link/link_host.dart';
+import 'package:pi-desktop/link/phone_downloads.dart';
+import 'package:pi-desktop/link/qr_view.dart';
+import 'package:pi-desktop/settings/pages/mobile_page.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -40,8 +40,8 @@ void main() {
     // The download page's links (site/download.html), which lead to the
     // release current when scanned.
     expect(codes, [
-      'https://baocode.dev/dl/android',
-      'https://baocode.dev/dl/ios',
+      'https://github.com/zkldwxz/pi-desktop',
+      'https://github.com/zkldwxz/pi-desktop',
     ]);
     expect(find.text('Android'), findsOneWidget);
     expect(find.text('iPhone and iPad'), findsOneWidget);
@@ -76,7 +76,7 @@ void main() {
     expect(host.enabled, isTrue);
     expect(_pairCode, findsOneWidget);
     expect(
-      find.text('On, reachable through relay-us1.baocode.dev'),
+      find.text('On, reachable through the pi-desktop site'),
       findsOneWidget,
     );
 
@@ -290,7 +290,7 @@ void main() {
       'https://relay.example.com',
     );
 
-    // One of BaoCode's again: the address gone.
+    // One of pi-desktop's again: the address gone.
     await pick('Custom', us1);
     expect(host.relays, [defaultLinkRelays.first]);
     expect(find.byType(TextField), findsNothing);

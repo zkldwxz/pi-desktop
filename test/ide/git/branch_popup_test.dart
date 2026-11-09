@@ -2,10 +2,10 @@
 // repository's actions, then the recent, local and remote branches, typed
 // to narrow; a branch opens its actions.
 
-import 'package:baocode/ide/git/git_service.dart';
-import 'package:baocode/ide/git/ide_git_branch_popup.dart';
-import 'package:baocode/ide/git/ide_git_push_dialog.dart';
-import 'package:baocode/ide/ide_status_bar.dart';
+import 'package:pi-desktop/ide/git/git_service.dart';
+import 'package:pi-desktop/ide/git/ide_git_branch_popup.dart';
+import 'package:pi-desktop/ide/git/ide_git_push_dialog.dart';
+import 'package:pi-desktop/ide/ide_status_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/notifications/attention_host.dart';
-import 'package:baocode/notifications/attention_service.dart';
-import 'package:baocode/notifications/attention_settings.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/kernel_types.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/notifications/attention_host.dart';
+import 'package:pi-desktop/notifications/attention_service.dart';
+import 'package:pi-desktop/notifications/attention_settings.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 
 /// Records what the service asks of the system.
 class _FakeHost implements AttentionHost {

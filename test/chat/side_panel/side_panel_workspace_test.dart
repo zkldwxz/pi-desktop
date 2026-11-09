@@ -2,23 +2,23 @@
 // IDE's: each folder a root of the files page, a repository of the changes
 // page's to pick from; the files the agent names found in its folders.
 
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:baocode/ide/ide_notifications.dart';
-import 'package:baocode/theme/code_font.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/side_panel/file_link.dart';
-import 'package:baocode/chat/side_panel/file_open.dart';
-import 'package:baocode/chat/side_panel/side_panel_controller.dart';
-import 'package:baocode/chat/side_panel/side_panel_view.dart';
-import 'package:baocode/ide/file_service.dart';
-import 'package:baocode/ide/git/ide_git_commit_panel.dart';
-import 'package:baocode/ide/git/git_repository.dart';
-import 'package:baocode/ide/git/repository_scan.dart';
-import 'package:baocode/ide/ide_explorer.dart';
-import 'package:baocode/ide/ide_list.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/theme/codicons.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi-desktop/ide/ide_notifications.dart';
+import 'package:pi-desktop/theme/code_font.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/side_panel/file_link.dart';
+import 'package:pi-desktop/chat/side_panel/file_open.dart';
+import 'package:pi-desktop/chat/side_panel/side_panel_controller.dart';
+import 'package:pi-desktop/chat/side_panel/side_panel_view.dart';
+import 'package:pi-desktop/ide/file_service.dart';
+import 'package:pi-desktop/ide/git/ide_git_commit_panel.dart';
+import 'package:pi-desktop/ide/git/git_repository.dart';
+import 'package:pi-desktop/ide/git/repository_scan.dart';
+import 'package:pi-desktop/ide/ide_explorer.dart';
+import 'package:pi-desktop/ide/ide_list.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
+import 'package:pi-desktop/theme/codicons.dart';
 import 'package:flutter/gestures.dart' show kSecondaryButton;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

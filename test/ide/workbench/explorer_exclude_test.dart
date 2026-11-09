@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/explorer_excludes.dart';
-import 'package:baocode/ide/ide_explorer.dart';
+import 'package:pi-desktop/ide/explorer_excludes.dart';
+import 'package:pi-desktop/ide/ide_explorer.dart';
 import 'package:path/path.dart' as p;
 
 import 'fake_files.dart';
 
-/// The explorer with hidden files and folders (BaoCode's own
+/// The explorer with hidden files and folders (pi-desktop's own
 /// `explorer.exclude`; see [IdeExplorerExcludes]).
 void main() {
   const files = {

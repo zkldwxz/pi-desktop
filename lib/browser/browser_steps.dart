@@ -341,7 +341,7 @@ class BrowserStep extends StatelessWidget {
   }
 }
 
-/// What BaoCode watches the user do (see [BrowserWatching]): the task they
+/// What pi-desktop watches the user do (see [BrowserWatching]): the task they
 /// were given, their steps so far, and their buttons: done, or give up.
 class _WatchCard extends StatelessWidget {
   const _WatchCard();

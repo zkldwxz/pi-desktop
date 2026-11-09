@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
+import 'package:pi-desktop/ide/ide_quick_input.dart';
+import 'package:pi-desktop/ide/ide_workbench.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi-desktop/keybindings/keybinding_service.dart';
 
 import 'fake_files.dart';
 

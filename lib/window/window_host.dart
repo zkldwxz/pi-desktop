@@ -147,7 +147,7 @@ abstract class WindowHost {
   Future<void> hideStash() async {}
 }
 
-/// [WindowHost] over `baocode/windows` (MainFlutterWindow.swift,
+/// [WindowHost] over `pi-desktop/windows` (MainFlutterWindow.swift,
 /// windows/runner/app_windows.cpp).
 ///
 ///   start                        whether windows can be opened (the
@@ -175,7 +175,7 @@ class ChannelWindowHost extends WindowHost {
   ChannelWindowHost({PlatformDispatcher? dispatcher})
     : _dispatcher = dispatcher ?? PlatformDispatcher.instance;
 
-  static const channel = MethodChannel('baocode/windows');
+  static const channel = MethodChannel('pi-desktop/windows');
 
   final PlatformDispatcher _dispatcher;
 

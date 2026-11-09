@@ -6,6 +6,6 @@ import 'package:crypto/crypto.dart';
 /// the upstream is not told it. The key a conversation's account is kept
 /// by, too ([CodexBalancer]).
 String promptCacheKeyOf(String session) {
-  final digest = sha256.convert(utf8.encode('baocode:$session'));
-  return 'baocode-${'$digest'.substring(0, 32)}';
+  final digest = sha256.convert(utf8.encode('pi-desktop:$session'));
+  return 'pi-desktop-${'$digest'.substring(0, 32)}';
 }

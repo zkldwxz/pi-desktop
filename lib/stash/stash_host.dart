@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-/// Where the stash's shortcut was pressed: in BaoCode itself or not, and
+/// Where the stash's shortcut was pressed: in pi-desktop itself or not, and
 /// whether its panel was what the keyboard was in.
 @immutable
 class StashCapture {
   const StashCapture({this.inApp = false, this.panelInFront});
 
-  /// Pressed in BaoCode itself: its project, branch and conversation are
+  /// Pressed in pi-desktop itself: its project, branch and conversation are
   /// kept as the new stash's source.
   final bool inApp;
 
@@ -33,7 +33,7 @@ class StashCapture {
 /// app, and the text in pictures. Nothing where there is no channel (the web, under test).
 class StashHost {
   StashHost({MethodChannel? channel})
-    : _channel = channel ?? const MethodChannel('baocode/stash') {
+    : _channel = channel ?? const MethodChannel('pi-desktop/stash') {
     _channel.setMethodCallHandler((call) async {
       if (call.method == 'pressed') {
         onPressed?.call(StashCapture.fromJson(call.arguments));

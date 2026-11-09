@@ -2,8 +2,8 @@
 // commit message history (Ctrl+M) and inspections, Add to .gitignore and
 // the Ignored Files group: as JetBrains IDEs have them.
 
-import 'package:baocode/ide/git/git_model.dart';
-import 'package:baocode/ide/git/ide_git_commit_panel.dart';
+import 'package:pi-desktop/ide/git/git_model.dart';
+import 'package:pi-desktop/ide/git/ide_git_commit_panel.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' show TextField;
 import 'package:flutter/services.dart';

@@ -14,9 +14,9 @@
 
 import 'dart:async';
 
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart'
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart'
     show EditorContentChangeEvent, EditorDocumentModel;
-import 'package:bao_editor/monaco/vs/editor/common/core/position.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/position.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 

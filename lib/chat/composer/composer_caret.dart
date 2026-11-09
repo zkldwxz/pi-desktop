@@ -1,4 +1,4 @@
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter/widgets.dart';
 
 /// The composer's text area around its editor [child], and where its caret

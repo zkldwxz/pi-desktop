@@ -6,9 +6,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/platform/data_dir.dart';
-import 'package:baocode/settings/data_dir_service.dart';
-import 'package:baocode/settings/data_dir_startup.dart';
+import 'package:pi-desktop/platform/data_dir.dart';
+import 'package:pi-desktop/settings/data_dir_service.dart';
+import 'package:pi-desktop/settings/data_dir_startup.dart';
 import 'package:path/path.dart' as p;
 
 /// A data folder that cannot be used is reported before the app shows,
@@ -20,7 +20,7 @@ void main() {
   late String pointerFile;
 
   setUp(() {
-    root = Directory.systemTemp.createTempSync('baocode-startup');
+    root = Directory.systemTemp.createTempSync('pi-desktop-startup');
     home = p.join(root.path, 'home');
     pointerFile = DataDirectoryPointer.fileIn(home);
   });
@@ -40,7 +40,7 @@ void main() {
   DataDirectoryResolution missing({
     DataDirectorySource source = DataDirectorySource.pointer,
   }) => DataDirectoryResolution(
-    path: p.join(root.path, 'Volumes', 'D', 'BaoCode'),
+    path: p.join(root.path, 'Volumes', 'D', 'pi-desktop'),
     source: source,
     defaultPath: p.join(root.path, 'default'),
     pointerFile: pointerFile,
@@ -69,7 +69,7 @@ void main() {
         ),
       );
       expect(
-        find.text("BaoCode's data folder is not available"),
+        find.text("pi-desktop's data folder is not available"),
         findsOneWidget,
       );
       expect(find.text(missing().path), findsOneWidget);
@@ -117,7 +117,7 @@ void main() {
         ..writeAsStringSync(
           jsonEncode({'dataDir': missing().path, 'previousDataDir': '/old'}),
         );
-      final chosen = Directory(p.join(root.path, 'E', 'BaoCode'))
+      final chosen = Directory(p.join(root.path, 'E', 'pi-desktop'))
         ..createSync(recursive: true);
       final picks = [p.join(root.path, 'nowhere'), chosen.path];
       final resolved = <DataDirectory>[];
@@ -162,7 +162,7 @@ void main() {
         ),
       );
       expect(
-        find.text("BaoCode's data folder setting cannot be read"),
+        find.text("pi-desktop's data folder setting cannot be read"),
         findsOneWidget,
       );
       expect(find.textContaining('Fix or delete'), findsOneWidget);
@@ -173,7 +173,7 @@ void main() {
           onResolved: (_) {},
         ),
       );
-      expect(find.textContaining('BAOCODE_DATA_DIR'), findsOneWidget);
+      expect(find.textContaining('PI_DESKTOP_DATA_DIR'), findsOneWidget);
       expect(find.text('Choose Another Folder…'), findsNothing);
     });
   });
@@ -228,7 +228,7 @@ void main() {
       await tester.tap(find.text('start'));
       await tester.pump();
       expect(
-        find.text('Remove the data BaoCode left in its previous folder?'),
+        find.text('Remove the data pi-desktop left in its previous folder?'),
         findsOneWidget,
       );
       expect(find.textContaining('User, argv.json, state'), findsOneWidget);

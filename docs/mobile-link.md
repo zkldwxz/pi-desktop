@@ -1,14 +1,14 @@
 # 手机连接（扫码或局域网发现配对、端到端加密、P2P 打洞 + 中继）
 
-手机上的 BaoCode（`../mobile`）通过扫码、或在「附近的电脑」里选择，与桌面端配对。之后手机按**桌面端的公钥**找到它，无论两边在哪个网络：同一网络里直连；跨网时自动打洞直连；打洞不通时经中继转发。两端之间的内容始终端到端加密，中继看不到。
+手机上的 pi-desktop（`../mobile`）通过扫码、或在「附近的电脑」里选择，与桌面端配对。之后手机按**桌面端的公钥**找到它，无论两边在哪个网络：同一网络里直连；跨网时自动打洞直连；打洞不通时经中继转发。两端之间的内容始终端到端加密，中继看不到。
 
-传输层是 [iroh](https://github.com/n0-computer/iroh)（QUIC，Rust）。两端共用一份手写的 Dart 绑定 `packages/bao_iroh`（`rust/` 是 Rust 部分，由 `hook/build.dart` 随 App 一起编译）。不使用 n0 的公共服务（发现、DNS、中继），中继是 BaoCode 自己的。
+传输层是 [iroh](https://github.com/n0-computer/iroh)（QUIC，Rust）。两端共用一份手写的 Dart 绑定 `packages/pi_iroh`（`rust/` 是 Rust 部分，由 `hook/build.dart` 随 App 一起编译）。不使用 n0 的公共服务（发现、DNS、中继），中继是 pi-desktop 自己的。
 
-- 传输：`packages/bao_iroh/`（iroh 端点、连接、成帧的流；C 接口 + `dart:ffi`）
-- 协议：`packages/bao_link/`（两端共用：身份、配对、`LinkPeer` 请求/事件、会话增量；`bao_link_io.dart` 另外导出 iroh 实现 `IrohLinkNode`）
+- 传输：`packages/pi_iroh/`（iroh 端点、连接、成帧的流；C 接口 + `dart:ffi`）
+- 协议：`packages/pi_link/`（两端共用：身份、配对、`LinkPeer` 请求/事件、会话增量；`pi_link_io.dart` 另外导出 iroh 实现 `IrohLinkNode`）
 - 桌面端：`lib/link/`（`LinkHost` 上线与配对，`WorkspaceBridge` 把 Workspace 暴露给手机），设置页 `lib/settings/pages/mobile_page.dart`（设置 → 手机）
 - 手机端：`../mobile/lib/link/`（`PhoneLink` 连接与配对，`link_store.dart` 存储），`lib/state/app_state.dart` 把收到的状态并入界面
-- 测试：`packages/bao_iroh/test/`、`packages/bao_link/test/`（含真 iroh 端点；设了 `BAOCODE_RELAY` 时还经真中继进程）、`test/link/`、`test/settings/mobile_page_test.dart`、`../mobile/test/link_test.dart`
+- 测试：`packages/pi_iroh/test/`、`packages/pi_link/test/`（含真 iroh 端点；设了 `PI_DESKTOP_RELAY` 时还经真中继进程）、`test/link/`、`test/settings/mobile_page_test.dart`、`../mobile/test/link_test.dart`
 
 ## 1. 用户怎么用
 
@@ -28,25 +28,25 @@
 - **中继**：对方常驻的中继 URL。桌面端上线后连到一个中继（离它最近、能连上的那个），手机经这个中继先建立连接，然后两端交换各自观察到的地址、尝试 UDP 打洞，成功后流量切到直连，中继退出。打洞不通（对称 NAT、只放行 TCP 的网络）时一直经中继。
 - **直连地址**：对方自己的地址（`ip:port`），局域网在前。
 
-内置的中继列表至少两个（`packages/bao_link/lib/src/relays.dart` 的 `defaultLinkRelays`），配对时互相告知，连上后桌面端还会在 `hello` 应答里告诉手机它现在的中继和地址，手机每次连上都会更新保存的提示。当前常驻的中继断开 3 秒后，桌面端换到列表里的另一个（`bao_iroh` 里的看门狗，之后最长每 30 秒再试）；手机拨号时会同时带上它保存的和内置的中继。
+内置的中继列表至少两个（`packages/pi_link/lib/src/relays.dart` 的 `defaultLinkRelays`），配对时互相告知，连上后桌面端还会在 `hello` 应答里告诉手机它现在的中继和地址，手机每次连上都会更新保存的提示。当前常驻的中继断开 3 秒后，桌面端换到列表里的另一个（`pi_iroh` 里的看门狗，之后最长每 30 秒再试）；手机拨号时会同时带上它保存的和内置的中继。
 
 **选择中继**：桌面端「设置 → 手机 → 中继」（`LinkRelayMode`）有三种：
 
 - **自动**（默认）：用内置列表，按上面说的挑一个、断了换。
-- **指定一个**：只用选中的那个，可以是内置的之一，也可以选「自定义」填自己部署的中继地址。中继服务开源在 [baocode-dev/relay](https://github.com/baocode-dev/relay)（MIT）。
+- **指定一个**：只用选中的那个，可以是内置的之一，也可以选「自定义」填自己部署的中继地址。中继服务开源在 [pi-desktop-dev/relay](https://github.com/pi-desktop-dev/relay)（MIT）。
 - **仅直连**：不连任何中继，手机只按直连地址找电脑。适合电脑本身有公网 IP（含公网 IPv6）的用户。此时 UDP 端口可以在设置里改（默认 47100，范围 1024–65535），而且只绑这一个端口：被占用就报错，不会像其他模式那样换一个随机端口，因为手机记住的就是这个端口。设置页会列出电脑当前的公网地址；只有局域网地址时提示「还没有公网地址」，这时只能在同一局域网里用。没有中继就没有地址发现，所以电脑在路由器后面、靠端口转发的情况现在拿不到外网地址；电脑换了 IP 也要等手机下次连上（比如在局域网里）才会更新。
 
 手机端没有中继设置，跟着配对的电脑走：已配对的电脑告诉它用哪些中继（二维码里、`hello` 应答里），它就绑哪些；所有已配对的电脑都是仅直连时，手机也不连中继。还没配对时用内置列表。改了中继的电脑，已配对的手机下次连上时从 `hello` 应答里得知，需要的话自己重新上线。
 
-ALPN 是 `baocode/link/2`。iroh 自带 TLS 1.3（双方以各自的 Ed25519 密钥认证），所以连接建立后双方都确知对方的公钥，不需要再做应用层握手。
+ALPN 是 `pi-desktop/link/2`。iroh 自带 TLS 1.3（双方以各自的 Ed25519 密钥认证），所以连接建立后双方都确知对方的公钥，不需要再做应用层握手。
 
 ## 3. 二维码里有什么
 
-`baocode://pair?d=<base64url(JSON)>`，JSON 字段：
+`pi-desktop://pair?d=<base64url(JSON)>`，JSON 字段：
 
 | 字段 | 含义 |
 | --- | --- |
-| `v` | 版本，目前是 2。版本 1（迁移前）的码会提示「电脑上的 BaoCode 版本过旧」 |
+| `v` | 版本，目前是 2。版本 1（迁移前）的码会提示「电脑上的 pi-desktop 版本过旧」 |
 | `n` | 桌面端名称 |
 | `k` | 桌面端公钥（Ed25519，base64url）：也就是它的端点 id |
 | `t` | 一次性令牌（16 字节随机数），只有看到二维码的人知道 |
@@ -63,7 +63,7 @@ ALPN 是 `baocode/link/2`。iroh 自带 TLS 1.3（双方以各自的 Ed25519 密
 
 传输加密由 iroh 的 QUIC/TLS 1.3 负责：每条连接有临时密钥（前向保密），双方以长期密钥签名认证，经中继时中继只能看到加密后的 QUIC 包和两端的 id。
 
-**安全码**：`SHA256("baocode-safety-v2" ‖ 桌面公钥 ‖ 手机公钥)` 前 12 字节，每 3 字节取模 1000，得到 4 组数字。中间人只有换掉其中一把公钥才能插进来，而那样安全码就对不上。
+**安全码**：`SHA256("pi-desktop-safety-v2" ‖ 桌面公钥 ‖ 手机公钥)` 前 12 字节，每 3 字节取模 1000，得到 4 组数字。中间人只有换掉其中一把公钥才能插进来，而那样安全码就对不上。
 
 **配对授权**：桌面端只接受三类手机：
 - 已配对的手机，按公钥（连接的对端 id）识别。
@@ -76,12 +76,12 @@ ALPN 是 `baocode/link/2`。iroh 自带 TLS 1.3（双方以各自的 Ed25519 密
 
 ### 4.1 局域网发现
 
-桌面端在「允许手机连接」且「局域网发现」打开时（设置 → 手机，默认开），用 DNS-SD 广播服务 `_baocode._tcp`：
+桌面端在「允许手机连接」且「局域网发现」打开时（设置 → 手机，默认开），用 DNS-SD 广播服务 `_pi-desktop._tcp`：
 - 端口：iroh 端点绑定的 UDP 端口；
 - 服务名：电脑名；
 - TXT 记录：`v=2`、`k=<桌面公钥 base64url>`、`p=1|0`（是否正在配对）。
 
-格式见 `packages/bao_link/lib/src/discovery.dart` 的 `LinkAdvert`。实现上：
+格式见 `packages/pi_link/lib/src/discovery.dart` 的 `LinkAdvert`。实现上：
 - 桌面端用 `bonsoir` 插件广播（`link_platform_io.dart`），状态变化时由 `LinkHost._syncAdvert` 重新广播；
 - 手机端用 `bonsoir` 浏览（`../mobile/lib/link/desktop_discovery.dart`），看到的地址作为直连提示，并让离线的已配对电脑立刻重连；
 - iOS 和 macOS 的 Info.plist 都声明了 `NSBonjourServices` 和 `NSLocalNetworkUsageDescription`。
@@ -123,7 +123,7 @@ ALPN 是 `baocode/link/2`。iroh 自带 TLS 1.3（双方以各自的 Ed25519 密
 
 **会话增量**：`open` 时先返回整个会话，之后只发从第一个变化的条目开始的部分（`start` + 之后的条目）。判断“变没变”时，先看是不是同一个对象；对象不同再比较 JSON。条目的 JSON 格式见 `lib/link/chat_codec.dart`；手机端 `lib/link/chat_codec.dart` 是同一份文件，只改了头部注释。工具输出、命令输出超过 64KB 的部分会截掉。
 
-增量还会再瘦身（`packages/bao_link/lib/src/session_mirror.dart`）：
+增量还会再瘦身（`packages/pi_link/lib/src/session_mirror.dart`）：
 - `"partial": true`：`live`、`interaction`、`choices`、`changes`、`tasks`、`earlier`、`goal` 只带变了的（变成没有时带 `null`）；
 - `"append": {"index", "path", "text"}`：第 `index` 条（`start` 前面那一条）和上次一样，只是 `path`（键和下标）处的字符串末尾多了 `text`：流式输出的回复只发新增的字，不必每次把整条再发一遍；`start` 起的条目照常整条发送。
 

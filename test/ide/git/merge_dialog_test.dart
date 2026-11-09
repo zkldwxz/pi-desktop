@@ -3,10 +3,10 @@
 // the model; Apply writes the result and marks the file resolved, asked
 // first while conflicts are left.
 
-import 'package:baocode/ide/git/commit_message.dart';
-import 'package:baocode/ide/git/ide_git_merge_dialog.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/theme/codicons.dart';
+import 'package:pi-desktop/ide/git/commit_message.dart';
+import 'package:pi-desktop/ide/git/ide_git_merge_dialog.dart';
+import 'package:pi-desktop/ide/ide_workspace.dart';
+import 'package:pi-desktop/theme/codicons.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

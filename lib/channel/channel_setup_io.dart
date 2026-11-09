@@ -20,10 +20,10 @@ Future<ChannelAttribution?> lookUpChannel(Uri url) async {
 /// Where the channels the site lists are read from instead (`…/channels.json`
 /// and their logos), to try a channel's welcome before the site has it:
 /// `site/` served locally, say.
-const channelsUrlVariable = 'BAOCODE_CHANNELS_URL';
+const channelsUrlVariable = 'PI_DESKTOP_CHANNELS_URL';
 
 /// The site's.
-const channelsBase = 'https://baocode.dev';
+const channelsBase = 'https://github.com/zkldwxz/pi-desktop';
 
 /// The channel [id]'s entry as the site lists it (site/channels.json),
 /// its logo with it; null for one not listed. Throws when the site could
@@ -53,7 +53,7 @@ Future<ChannelEntry?> channelEntry(String id) async {
 Future<Uint8List?> _get(Uri url) async {
   final client = HttpClient()
     ..connectionTimeout = _timeout
-    ..userAgent = 'BaoCode/$currentAppVersion (${Platform.operatingSystem})';
+    ..userAgent = 'pi-desktop/$currentAppVersion (${Platform.operatingSystem})';
   try {
     final request = await client.getUrl(url).timeout(_timeout);
     final response = await request.close().timeout(_timeout);

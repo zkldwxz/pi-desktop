@@ -9,13 +9,13 @@ library;
 import 'dart:async';
 import 'dart:io';
 
-import 'package:baocode/base/uri.dart' show VsUri;
-import 'package:baocode/debug/common/debug_model.dart';
-import 'package:baocode/debug/common/debug_types.dart';
-import 'package:baocode/debug/common/repl_model.dart';
-import 'package:baocode/debug/service/debug_service.dart';
-import 'package:baocode/debug/session/debug_session.dart';
-import 'package:baocode/debug/session/stream_debug_adapter.dart';
+import 'package:pi-desktop/base/uri.dart' show VsUri;
+import 'package:pi-desktop/debug/common/debug_model.dart';
+import 'package:pi-desktop/debug/common/debug_types.dart';
+import 'package:pi-desktop/debug/common/repl_model.dart';
+import 'package:pi-desktop/debug/service/debug_service.dart';
+import 'package:pi-desktop/debug/session/debug_session.dart';
+import 'package:pi-desktop/debug/session/stream_debug_adapter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/real_adapter.dart';
@@ -54,7 +54,7 @@ void main() {
 
   setUpAll(() async {
     if (skip != false) return;
-    dir = await Directory.systemTemp.createTemp('baocode-lldb-dap-');
+    dir = await Directory.systemTemp.createTemp('pi-desktop-lldb-dap-');
     program = '${dir.path}/program';
     final r = await Process.run(_clang!, ['-g', '-O0', '-o', program, _source]);
     if (r.exitCode != 0) fail('clang failed: ${r.stderr}');

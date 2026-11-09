@@ -1,18 +1,18 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_transport.dart';
-import 'package:baocode/kernel/claude_code/claude_code_translator.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/kernel_event.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/kernel/transcript.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/settings/user_settings.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_transport.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_translator.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi-desktop/kernel/kernel_event.dart';
+import 'package:pi-desktop/kernel/kernel_types.dart';
+import 'package:pi-desktop/kernel/transcript.dart';
+import 'package:pi-desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi-desktop/models/model_provider.dart';
+import 'package:pi-desktop/models/model_providers.dart';
+import 'package:pi-desktop/settings/user_settings.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../kernel_test.dart' show FakeCli;
@@ -180,7 +180,7 @@ void main() {
     kernel.dispose();
   });
 
-  test('on BaoCode\'s own core, the machine\'s Claude Code is not offered: '
+  test('on pi-desktop\'s own core, the machine\'s Claude Code is not offered: '
       'a model of none (one of its own, picked on the CLI) is the first '
       'upstream\'s', () async {
     ClaudeCore.current = () => ClaudeCore.builtin;
@@ -202,7 +202,7 @@ void main() {
     kernel.dispose();
   });
 
-  test('on BaoCode\'s own core with no upstream, nothing is picked', () async {
+  test('on pi-desktop\'s own core with no upstream, nothing is picked', () async {
     ClaudeCore.current = () => ClaudeCore.builtin;
     final (:kernel, launches: _, clis: _, environments: _) = start(
       ModelProviders.memory(),

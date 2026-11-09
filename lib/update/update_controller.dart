@@ -35,7 +35,7 @@ class UpdateController {
   /// [version]'s notes on the site's changelog (tool/build_changelog.dart
   /// makes it), the Chinese page for [languageCode] `zh`.
   static Uri changelogUrl(AppVersion version, String languageCode) => Uri.parse(
-    'https://baocode.dev/${languageCode.startsWith('zh') ? 'zh/' : ''}'
+    'https://github.com/zkldwxz/pi-desktop${languageCode.startsWith('zh') ? 'zh/' : ''}'
     'changelog#v${version.marketing}',
   );
 

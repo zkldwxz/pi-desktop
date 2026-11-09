@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_agent/testing.dart';
+import 'package:pi_agent/testing.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/claude_code/claude_environment.dart';
-import 'package:baocode/kernel/claude_code/claude_haiku.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/network/network_proxy_io.dart';
-import 'package:baocode/network/proxy_settings.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_environment.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_haiku.dart';
+import 'package:pi-desktop/models/model_provider.dart';
+import 'package:pi-desktop/models/model_providers.dart';
+import 'package:pi-desktop/network/network_proxy_io.dart';
+import 'package:pi-desktop/network/proxy_settings.dart';
 import 'package:path/path.dart' as p;
 
 void main() {
@@ -64,7 +64,7 @@ void main() {
   test('with tools, those alone, some turns, and the folders it may read', () {
     const tools = ClaudeHaikuTools(
       directory: '/work/app',
-      readable: ['/Users/me/BaoCode/Stash'],
+      readable: ['/Users/me/pi-desktop/Stash'],
       maxTurns: 16,
     );
     final arguments = claudeHaikuArguments('Be brief.', tools: tools);
@@ -78,7 +78,7 @@ void main() {
     expect(arguments.join(' '), contains('--max-turns 16'));
     expect(tools.settings, {
       'permissions': {
-        'allow': ['Read(//Users/me/BaoCode/Stash/**)'],
+        'allow': ['Read(//Users/me/pi-desktop/Stash/**)'],
       },
     });
     expect(const ClaudeHaikuTools().settings, isEmpty);
@@ -107,7 +107,7 @@ void main() {
     );
   });
 
-  group('on BaoCode\'s own core', () {
+  group('on pi-desktop\'s own core', () {
     late FakeApi api;
     late Directory root;
     final previous = ModelProviders.current;
@@ -118,7 +118,7 @@ void main() {
       final overrides = HttpOverrides.current;
       HttpOverrides.global = null;
       addTearDown(() => HttpOverrides.global = overrides);
-      root = Directory.systemTemp.createTempSync('baocode-haiku-');
+      root = Directory.systemTemp.createTempSync('pi-desktop-haiku-');
       api = await FakeApi.start(errands: (_) => Reply.text('Short answer'));
       // The machine's own setup: a key and a Haiku of its own.
       ClaudeEnvironment.use({

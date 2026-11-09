@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_editor.dart';
-import 'package:baocode/ide/ide_tab_bar.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart';
+import 'package:pi-desktop/ide/ide_editor.dart';
+import 'package:pi-desktop/ide/ide_tab_bar.dart';
+import 'package:pi-desktop/ide/lsp/lsp_protocol.dart';
 
 import 'fake_files.dart';
 

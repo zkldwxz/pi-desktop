@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/browser/extension_store.dart';
+import 'package:pi-desktop/browser/extension_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -51,7 +51,7 @@ void main() {
     );
 
     const listed =
-        'https://chromewebstore.google.com/detail/baocode/'
+        'https://chromewebstore.google.com/detail/pi-desktop/'
         'jfjagocghaaheooicmdnhcholmgdkngk';
     answer = {'version': '0.1.0', 'store': listed};
     expect('${await fetch()}', listed);

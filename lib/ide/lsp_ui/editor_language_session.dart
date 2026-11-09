@@ -8,10 +8,10 @@ import 'package:path/path.dart' as p;
 import '../../l10n/l10n.dart';
 import '../../theme/workbench_theme.dart' show WorkbenchColors, themeColors;
 
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/flutter/editor_decorations.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
-import 'package:bao_editor/monaco/vs/editor/contrib/codeAction/common/types.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/editor_decorations.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart';
+import 'package:pi_editor/monaco/vs/editor/contrib/codeAction/common/types.dart';
 
 import '../builtin_formatting.dart';
 import '../ide_commands.dart';

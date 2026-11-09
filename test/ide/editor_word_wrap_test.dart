@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
-import 'package:baocode/ide/editor_word_wrap.dart';
-import 'package:baocode/ide/ide_code_editor.dart';
-import 'package:baocode/ide/ide_notifications.dart';
-import 'package:baocode/settings/user_settings.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart';
+import 'package:pi-desktop/ide/editor_word_wrap.dart';
+import 'package:pi-desktop/ide/ide_code_editor.dart';
+import 'package:pi-desktop/ide/ide_notifications.dart';
+import 'package:pi-desktop/settings/user_settings.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

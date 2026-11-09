@@ -1,9 +1,9 @@
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/usage/claude_usage_meter.dart';
-import 'package:baocode/usage/usage_prices.dart';
-import 'package:baocode/usage/usage_quota.dart';
-import 'package:baocode/usage/usage_record.dart';
-import 'package:baocode/usage/usage_trace.dart';
+import 'package:pi-desktop/kernel/kernel_types.dart';
+import 'package:pi-desktop/usage/claude_usage_meter.dart';
+import 'package:pi-desktop/usage/usage_prices.dart';
+import 'package:pi-desktop/usage/usage_quota.dart';
+import 'package:pi-desktop/usage/usage_record.dart';
+import 'package:pi-desktop/usage/usage_trace.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -462,7 +462,7 @@ void main() {
       systemPrompt: [ContextItem('core', 3000)],
       systemTools: [ContextItem('Bash', 1000)],
       deferredTools: [ContextItem('WebFetch', 500, loaded: false)],
-      mcpTools: [ContextItem('click', 400, group: 'baocode')],
+      mcpTools: [ContextItem('click', 400, group: 'pi-desktop')],
       memoryFiles: [ContextItem('/a/CLAUDE.md', 200)],
       skills: [ContextItem('loop', 100)],
       toolUses: [ContextItem('Bash', 100, results: 900)],
@@ -505,7 +505,7 @@ void main() {
     expect(context.total, 8700);
     expect(context.detail!.shape!.tools, {
       'Bash': 1000,
-      'mcp__baocode__click': 400,
+      'mcp__pi_desktop__click': 400,
     });
     expect(context.detail!.results, {'Bash': 1800});
     // A subagent's context is its own, not counted.

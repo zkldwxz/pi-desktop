@@ -3,10 +3,10 @@
 // stronger, edited lines without; a line's pressed shows its commit in the
 // Git log.
 
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:baocode/ide/git/git_model.dart';
-import 'package:baocode/ide/ide_workspace.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi-desktop/ide/git/git_model.dart';
+import 'package:pi-desktop/ide/ide_workspace.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart';
 

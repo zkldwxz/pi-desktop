@@ -1,10 +1,10 @@
 // Where a conversation's agent works: the file it last edited, or the
 // folder its last command moved into; told only when that moves.
 
-import 'package:baocode/chat/chat_feed.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/ide/git/git_model.dart';
-import 'package:baocode/workspace/agent_work_path.dart';
+import 'package:pi-desktop/chat/chat_feed.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/ide/git/git_model.dart';
+import 'package:pi-desktop/workspace/agent_work_path.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;

@@ -14,7 +14,7 @@
 namespace log_folder {
 namespace {
 
-constexpr wchar_t kSettingsKey[] = L"Software\\BaoCode";
+constexpr wchar_t kSettingsKey[] = L"Software\\pi-desktop";
 constexpr wchar_t kFolderValue[] = L"LogsFolder";
 
 // Windows' own lock, not std::mutex: built with MSVC 14.40 or later, a
@@ -56,7 +56,7 @@ std::wstring KeptFolder() {
   return std::wstring(folder.data());
 }
 
-// %APPDATA%\baocode\logs; empty if there is no %APPDATA%.
+// %APPDATA%\pi-desktop\logs; empty if there is no %APPDATA%.
 std::wstring DefaultFolder() {
   wchar_t app_data[MAX_PATH];
   const DWORD length =
@@ -64,7 +64,7 @@ std::wstring DefaultFolder() {
   if (length == 0 || length >= MAX_PATH) {
     return std::wstring();
   }
-  return std::wstring(app_data) + L"\\baocode\\logs";
+  return std::wstring(app_data) + L"\\pi-desktop\\logs";
 }
 
 // Whether |folder| is there, made if need be — with the folders above it:
@@ -91,7 +91,7 @@ void SetFolder(const std::wstring& folder) {
 std::unique_ptr<flutter::MethodChannel<flutter::EncodableValue>> Listen(
     flutter::BinaryMessenger* messenger) {
   auto channel = std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-      messenger, "baocode/logs", &flutter::StandardMethodCodec::GetInstance());
+      messenger, "pi-desktop/logs", &flutter::StandardMethodCodec::GetInstance());
   channel->SetMethodCallHandler(
       [](const flutter::MethodCall<flutter::EncodableValue>& call,
          std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>>

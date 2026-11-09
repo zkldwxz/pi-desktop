@@ -1,16 +1,16 @@
-import 'package:bao_editor/monaco/vs/editor/common/core/position.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/position.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/ide/markdown/markdown_paste.dart';
-import 'package:baocode/ide/services/markdown_preview.dart';
-import 'package:baocode/ide/workbench/actions.dart';
-import 'package:baocode/ide/workbench/contributions.dart';
-import 'package:baocode/ide/workbench/contributions/editor_panes.dart';
-import 'package:baocode/ide/workbench/contributions/markdown.dart';
-import 'package:baocode/ide/workbench/editor_panes.dart';
-import 'package:baocode/ide/workbench/services.dart';
-import 'package:baocode/ide/workbench/storage.dart';
+import 'package:pi-desktop/ide/ide_workspace.dart';
+import 'package:pi-desktop/ide/markdown/markdown_paste.dart';
+import 'package:pi-desktop/ide/services/markdown_preview.dart';
+import 'package:pi-desktop/ide/workbench/actions.dart';
+import 'package:pi-desktop/ide/workbench/contributions.dart';
+import 'package:pi-desktop/ide/workbench/contributions/editor_panes.dart';
+import 'package:pi-desktop/ide/workbench/contributions/markdown.dart';
+import 'package:pi-desktop/ide/workbench/editor_panes.dart';
+import 'package:pi-desktop/ide/workbench/services.dart';
+import 'package:pi-desktop/ide/workbench/storage.dart';
 
 import '../fake_files.dart';
 import 'fake_host.dart';

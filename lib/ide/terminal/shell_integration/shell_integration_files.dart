@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:bao_remote/local.dart';
+import 'package:pi_remote/local.dart';
 
 import '../pty.dart';
 import 'shell_integration_injection.dart';
 
-export 'package:bao_remote/local.dart'
+export 'package:pi_remote/local.dart'
     show
         ShellIntegrationFolder,
         copyShellIntegrationFiles,

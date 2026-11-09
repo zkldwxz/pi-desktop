@@ -6,23 +6,23 @@ import 'dart:typed_data';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer_embeds.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/claude_code/mock_claude_code_transport.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/sidebar/sidebar.dart';
-import 'package:baocode/kernel/claude_code/claude_code_transport.dart';
-import 'package:baocode/workspace/agent_title.dart';
-import 'package:baocode/workspace/chat_grid.dart';
-import 'package:baocode/workspace/editor_launcher.dart';
-import 'package:baocode/workspace/preference_store.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/chat_screen.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/composer/composer_embeds.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/mock_claude_code_transport.dart';
+import 'package:pi-desktop/main.dart';
+import 'package:pi-desktop/models/model_provider.dart';
+import 'package:pi-desktop/models/model_providers.dart';
+import 'package:pi-desktop/sidebar/sidebar.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_transport.dart';
+import 'package:pi-desktop/workspace/agent_title.dart';
+import 'package:pi-desktop/workspace/chat_grid.dart';
+import 'package:pi-desktop/workspace/editor_launcher.dart';
+import 'package:pi-desktop/workspace/preference_store.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 
 /// Sessions as Claude Code keeps them: one recorded, in one project, and
 /// any [started] since (e.g. in a terminal).
@@ -97,7 +97,7 @@ Future<Workspace> pumpLoaded(
     drafts: drafts,
     titler: titler,
   );
-  await tester.pumpWidget(BaoCodeApp(workspace: workspace));
+  await tester.pumpWidget(PiDesktopApp(workspace: workspace));
   await tester.runAsync(workspace.load);
   await tester.pump();
   return workspace;

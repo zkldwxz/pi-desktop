@@ -16,11 +16,11 @@
 import 'package:flutter/foundation.dart'
     show TargetPlatform, defaultTargetPlatform;
 
-import 'package:bao_xterm/common/event.dart';
-import 'package:bao_xterm/common/lifecycle.dart';
-import 'package:bao_xterm/common/services/decoration_service.dart';
-import 'package:bao_xterm/common/services/services.dart';
-import 'package:bao_xterm/headless/terminal.dart';
+import 'package:pi_xterm/common/event.dart';
+import 'package:pi_xterm/common/lifecycle.dart';
+import 'package:pi_xterm/common/services/decoration_service.dart';
+import 'package:pi_xterm/common/services/services.dart';
+import 'package:pi_xterm/headless/terminal.dart';
 
 import 'capabilities/capabilities.dart';
 import 'decoration_addon.dart';

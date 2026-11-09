@@ -1,6 +1,6 @@
-import 'package:bao_remote/client.dart';
-import 'package:baocode/ide/ide_input.dart';
-import 'package:baocode/remote/ssh_server_form.dart';
+import 'package:pi_remote/client.dart';
+import 'package:pi-desktop/ide/ide_input.dart';
+import 'package:pi-desktop/remote/ssh_server_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -8,15 +8,15 @@ library;
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/file_service.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/ide/lsp/language_features.dart';
-import 'package:baocode/ide/lsp/lsp_manager.dart';
-import 'package:baocode/ide/lsp/lsp_process.dart';
-import 'package:baocode/ide/lsp/lsp_process_io.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart';
-import 'package:baocode/ide/lsp/lsp_server_definition.dart';
-import 'package:baocode/platform/child_process_registry.dart';
+import 'package:pi-desktop/ide/file_service.dart';
+import 'package:pi-desktop/ide/ide_workspace.dart';
+import 'package:pi-desktop/ide/lsp/language_features.dart';
+import 'package:pi-desktop/ide/lsp/lsp_manager.dart';
+import 'package:pi-desktop/ide/lsp/lsp_process.dart';
+import 'package:pi-desktop/ide/lsp/lsp_process_io.dart';
+import 'package:pi-desktop/ide/lsp/lsp_protocol.dart';
+import 'package:pi-desktop/ide/lsp/lsp_server_definition.dart';
+import 'package:pi-desktop/platform/child_process_registry.dart';
 import 'package:path/path.dart' as p;
 
 import '../../../fixtures/lsp/fake_lsp.dart';
@@ -56,7 +56,7 @@ class _PathProvider implements LspServerProvider {
 void main() {
   test('dart language-server answers through the manager', () async {
     final root = Directory.systemTemp
-        .createTempSync('baocode-lsp-smoke')
+        .createTempSync('pi-desktop-lsp-smoke')
         .resolveSymbolicLinksSync();
     addTearDown(() => Directory(root).deleteSync(recursive: true));
     LspProcesses.registry = ChildProcessRegistry(

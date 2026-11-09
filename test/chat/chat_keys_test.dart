@@ -1,25 +1,25 @@
 // The chat's keys as keybindings (see keybindings/chat_keybindings.dart):
 // a chat alone, its composer and a prompt's options.
 
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_history_view.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/composer/composer_controller.dart';
-import 'package:baocode/chat/composer/composer_picker.dart';
-import 'package:baocode/chat/composer/suggestion_menu.dart';
-import 'package:baocode/chat/panels/interaction_panel.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/keybindings/chat_keybindings.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi-desktop/chat/chat_history_view.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/chat_screen.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/composer/composer_controller.dart';
+import 'package:pi-desktop/chat/composer/composer_picker.dart';
+import 'package:pi-desktop/chat/composer/suggestion_menu.dart';
+import 'package:pi-desktop/chat/panels/interaction_panel.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/kernel_types.dart';
+import 'package:pi-desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi-desktop/keybindings/chat_keybindings.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi-desktop/keybindings/keybinding_service.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 
 Future<ChatSession> pumpChat(
   WidgetTester tester, {
@@ -54,7 +54,7 @@ String composerMessage(WidgetTester tester) =>
 void pickFiles(WidgetTester tester, List<String> paths) {
   final messenger = tester.binding.defaultBinaryMessenger;
   messenger.setMockMethodCallHandler(
-    const MethodChannel('baocode/window'),
+    const MethodChannel('pi-desktop/window'),
     (call) async => switch (call.method) {
       'pickFiles' => [
         for (final path in paths) {'path': path, 'directory': false},
@@ -64,7 +64,7 @@ void pickFiles(WidgetTester tester, List<String> paths) {
   );
   addTearDown(
     () => messenger.setMockMethodCallHandler(
-      const MethodChannel('baocode/window'),
+      const MethodChannel('pi-desktop/window'),
       null,
     ),
   );

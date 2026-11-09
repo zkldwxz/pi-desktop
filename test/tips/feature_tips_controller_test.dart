@@ -1,11 +1,11 @@
-import 'package:baocode/ide/ide_notifications.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/settings/app_settings.dart';
-import 'package:baocode/settings/user_settings.dart';
-import 'package:baocode/tips/builtin_tips.dart';
-import 'package:baocode/tips/feature_tip.dart';
-import 'package:baocode/tips/feature_tips_controller.dart';
-import 'package:baocode/update/version.dart';
+import 'package:pi-desktop/ide/ide_notifications.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/settings/app_settings.dart';
+import 'package:pi-desktop/settings/user_settings.dart';
+import 'package:pi-desktop/tips/builtin_tips.dart';
+import 'package:pi-desktop/tips/feature_tip.dart';
+import 'package:pi-desktop/tips/feature_tips_controller.dart';
+import 'package:pi-desktop/update/version.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -394,7 +394,7 @@ void main() {
         final note = notifications.notifications.single;
         expect(
           note.message,
-          'BaoCode was updated to 1.2.0. New: Title new, Title newer.',
+          'pi-desktop was updated to 1.2.0. New: Title new, Title newer.',
         );
         expect(note.primary.map((action) => action.label), [
           'Title new',

@@ -1,9 +1,9 @@
-import 'package:bao_editor/monaco/vs/editor/common/core/position.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/position.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_workspace.dart';
-import 'package:baocode/ide/lsp/lsp_protocol.dart';
-import 'package:baocode/ide/lsp_ui/lsp_convert.dart';
-import 'package:baocode/ide/services/navigation_history.dart';
+import 'package:pi-desktop/ide/ide_workspace.dart';
+import 'package:pi-desktop/ide/lsp/lsp_protocol.dart';
+import 'package:pi-desktop/ide/lsp_ui/lsp_convert.dart';
+import 'package:pi-desktop/ide/services/navigation_history.dart';
 
 import '../fake_files.dart';
 

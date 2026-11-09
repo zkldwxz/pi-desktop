@@ -4,10 +4,10 @@
 
 import 'dart:io';
 
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/vs/editor/common/diff/default_lines_diff_computer/default_lines_diff_computer.dart';
-import 'package:baocode/ide/git/git_partial.dart';
-import 'package:baocode/ide/git/git_service.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/vs/editor/common/diff/default_lines_diff_computer/default_lines_diff_computer.dart';
+import 'package:pi-desktop/ide/git/git_partial.dart';
+import 'package:pi-desktop/ide/git/git_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

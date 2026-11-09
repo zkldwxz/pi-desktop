@@ -16,7 +16,7 @@
 // builds and publishes the release (.github/workflows/release.yml).
 import 'dart:io';
 
-import 'package:baocode/update/version.dart';
+import 'package:pi-desktop/update/version.dart';
 
 import 'draft_release_notes.dart';
 

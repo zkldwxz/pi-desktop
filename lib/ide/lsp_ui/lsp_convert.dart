@@ -1,8 +1,8 @@
 import 'package:path/path.dart' as p;
 
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/vs/editor/common/core/position.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/position.dart';
 
 import '../host_paths.dart';
 import '../lsp/lsp_protocol.dart';

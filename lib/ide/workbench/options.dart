@@ -19,7 +19,7 @@ import '../terminal/terminal_tasks.dart' show TerminalTasks;
 abstract interface class WorkbenchOptions {
   /// Create Workspace...: the host's command, which asks for a workspace's
   /// name and folders.
-  static const createWorkspaceCommandId = 'baocode.workspace.create';
+  static const createWorkspaceCommandId = 'pi-desktop.workspace.create';
 
   IdeWorkspace get workspace;
   Project get project;

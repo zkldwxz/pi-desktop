@@ -1,5 +1,5 @@
-import 'package:baocode/chat/resume_after_reset.dart';
-import 'package:baocode/workspace/preference_store.dart';
+import 'package:pi-desktop/chat/resume_after_reset.dart';
+import 'package:pi-desktop/workspace/preference_store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 

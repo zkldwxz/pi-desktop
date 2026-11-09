@@ -1,4 +1,4 @@
-import 'package:bao_link/bao_link.dart';
+import 'package:pi_link/pi_link.dart';
 
 import 'link_platform_stub.dart'
     if (dart.library.io) 'link_platform_io.dart'

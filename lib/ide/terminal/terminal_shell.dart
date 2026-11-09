@@ -1,4 +1,4 @@
-export 'package:bao_remote/terminal.dart'
+export 'package:pi_remote/terminal.dart'
     show
         TerminalOs,
         TerminalShell,

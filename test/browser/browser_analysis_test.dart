@@ -1,4 +1,4 @@
-import 'package:baocode/browser/browser_analysis.dart';
+import 'package:pi-desktop/browser/browser_analysis.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

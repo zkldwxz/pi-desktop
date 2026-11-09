@@ -5,7 +5,7 @@
 //   dart run tool/make_download_qr.dart
 //
 // Each encodes that card's own link on the site — /dl/android, /dl/ios —
-// and not the file on dl.baocode.dev: those links are permanent, and
+// and not the file on the pi-desktop site: those links are permanent, and
 // site-worker/index.js points them at the release current when the code is
 // scanned, so a code written here (or photographed off the page) keeps
 // working as the phone app is released again. The site has no build step:
@@ -13,7 +13,7 @@
 // writes, so run this and commit the files when a target changes.
 import 'dart:io';
 
-import 'package:baocode/link/phone_downloads.dart';
+import 'package:pi-desktop/link/phone_downloads.dart';
 import 'package:qr/qr.dart';
 
 /// Each phone card's target, as site/download.html links it, by the card

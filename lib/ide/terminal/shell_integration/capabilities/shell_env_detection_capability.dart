@@ -9,8 +9,8 @@
 // src/vs/platform/terminal/common/capabilities/
 // shellEnvDetectionCapability.ts.
 
-import 'package:bao_xterm/common/event.dart';
-import 'package:bao_xterm/common/lifecycle.dart';
+import 'package:pi_xterm/common/event.dart';
+import 'package:pi_xterm/common/lifecycle.dart';
 
 import 'capabilities.dart';
 

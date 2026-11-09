@@ -2,7 +2,7 @@
 // before a save and as saved, kept apart from Git; looked at from the
 // explorer, a version picked opens against the file.
 
-import 'package:baocode/ide/ide_local_history.dart';
+import 'package:pi-desktop/ide/ide_local_history.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart';
 

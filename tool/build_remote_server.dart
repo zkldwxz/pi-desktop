@@ -1,5 +1,5 @@
-// Builds baocode-server, the app's side on a remote host (see
-// packages/bao_remote), for Linux, macOS and Windows on x64 and arm64. Run
+// Builds pi-desktop-server, the app's side on a remote host (see
+// packages/pi_remote), for Linux, macOS and Windows on x64 and arm64. Run
 // from anywhere in the repository:
 //
 //   dart run tool/build_remote_server.dart              into build/remote/
@@ -12,7 +12,7 @@
 //                     that build alone, and nothing else written: for
 //                     --from on the machine that builds the rest (CI)
 //   dart run tool/build_remote_server.dart --from <dir>
-//                     the builds in <dir> too (baocode-server-<platform>),
+//                     the builds in <dir> too (pi-desktop-server-<platform>),
 //                     those of other machines; may be given more than once
 //   dart run tool/build_remote_server.dart --all        fail unless all six
 //                                                       are built (CI)
@@ -23,13 +23,13 @@
 // other's with the --macos-<arch>-dart given. Without them a host of that
 // kind is refused (the app has no server for it).
 //
-// It writes baocode-server-<platform> (linux-x64, linux-arm64, darwin-x64,
+// It writes pi-desktop-server-<platform> (linux-x64, linux-arm64, darwin-x64,
 // darwin-arm64, windows-x64, windows-arm64) and VERSION, which names this
 // build: the app connects to a host and puts the server in
-// ~/.baocode-server/<VERSION>/ there unless it is already. A debug run of
+// ~/.pi-desktop-server/<VERSION>/ there unless it is already. A debug run of
 // the app finds build/remote/.
 //
-// Besides, each build gzipped (baocode-server-<platform>.gz) and
+// Besides, each build gzipped (pi-desktop-server-<platform>.gz) and
 // servers.json, which says where each is downloaded from and its size and
 // SHA-256. The installers carry VERSION and servers.json only, not the
 // builds (tool/build_macos.dart, tool/build_windows.dart): the app
@@ -52,7 +52,7 @@ const _platforms = [
 ];
 
 /// Where the gzipped builds are downloaded from: `<base>/<VERSION>/<file>`.
-const _downloadsBase = 'https://dl.baocode.dev/releases/remote';
+const _downloadsBase = 'https://github.com/zkldwxz/pi-desktop';
 
 Future<void> main(List<String> arguments) async {
   final root = File.fromUri(Platform.script).parent.parent.absolute;
@@ -63,7 +63,7 @@ Future<void> main(List<String> arguments) async {
         : '${root.path}/build/remote',
   )..createSync(recursive: true);
   final version = _readVersion(File('${root.path}/pubspec.yaml'));
-  final source = '${root.path}/packages/bao_remote/bin/baocode_server.dart';
+  final source = '${root.path}/packages/pi_remote/bin/pi_desktop_server.dart';
   String? option(String name) {
     final at = arguments.indexOf(name);
     return at >= 0 && at + 1 < arguments.length ? arguments[at + 1] : null;
@@ -88,18 +88,18 @@ Future<void> main(List<String> arguments) async {
   final built = <String>[];
   for (final platform in only ?? _platforms) {
     final [os, arch] = platform.split('-');
-    final output = '${out.path}/baocode-server-$platform';
+    final output = '${out.path}/pi-desktop-server-$platform';
     // Not left from an earlier run: servers.json names only those built.
     File(output).deleteIfExists();
     final carried = [
       for (final dir in from)
-        if (File('$dir/baocode-server-$platform') case final file
+        if (File('$dir/pi-desktop-server-$platform') case final file
             when file.existsSync())
           file,
     ].firstOrNull;
     if (carried != null) {
       _step(
-        'Taking baocode-server for ${_describe(platform)} from ${carried.parent.path}',
+        'Taking pi-desktop-server for ${_describe(platform)} from ${carried.parent.path}',
       );
       carried.copySync(output);
       digests.addAll(sha256.convert(File(output).readAsBytesSync()).bytes);
@@ -112,7 +112,7 @@ Future<void> main(List<String> arguments) async {
         ? option('--macos-$arch-dart')
         : null;
     if (dart == null) {
-      _step('Not building baocode-server for ${_describe(platform)}');
+      _step('Not building pi-desktop-server for ${_describe(platform)}');
       stdout.writeln(switch (os) {
         'darwin' when Platform.isMacOS =>
           '  Give an $arch Dart SDK\'s dart with --macos-$arch-dart.',
@@ -121,7 +121,7 @@ Future<void> main(List<String> arguments) async {
       });
       continue;
     }
-    _step('Compiling baocode-server for ${_describe(platform)}');
+    _step('Compiling pi-desktop-server for ${_describe(platform)}');
     await _run(dart, [
       'compile',
       'exe',
@@ -129,7 +129,7 @@ Future<void> main(List<String> arguments) async {
       os == 'darwin' ? 'macos' : os,
       '--target-arch',
       arch,
-      '-Dbaocode.version=$version',
+      '-Dpi-desktop.version=$version',
       '-o',
       output,
       source,
@@ -159,11 +159,11 @@ Future<void> main(List<String> arguments) async {
   _step('Compressing the builds for download');
   final files = <String, Object?>{};
   for (final platform in _platforms) {
-    final file = 'baocode-server-$platform.gz';
+    final file = 'pi-desktop-server-$platform.gz';
     File('${out.path}/$file').deleteIfExists();
     if (!built.contains(platform)) continue;
     final bytes = GZipCodec(level: 9)
-        .encode(File('${out.path}/baocode-server-$platform').readAsBytesSync());
+        .encode(File('${out.path}/pi-desktop-server-$platform').readAsBytesSync());
     File('${out.path}/$file').writeAsBytesSync(bytes);
     files[platform] = {
       'url': '$_downloadsBase/$name/$file',

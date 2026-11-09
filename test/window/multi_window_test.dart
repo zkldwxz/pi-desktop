@@ -1,19 +1,19 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/ide/ide_chat_title.dart';
-import 'package:baocode/ide/ide_welcome.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/l10n/l10n.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/search/search_palette.dart';
-import 'package:baocode/sidebar/sidebar.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/window/app_windows.dart';
-import 'package:baocode/window/window_settings.dart';
-import 'package:baocode/workbench.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/chat/chat_screen.dart';
+import 'package:pi-desktop/ide/ide_chat_title.dart';
+import 'package:pi-desktop/ide/ide_welcome.dart';
+import 'package:pi-desktop/ide/ide_workbench.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
+import 'package:pi-desktop/main.dart';
+import 'package:pi-desktop/search/search_palette.dart';
+import 'package:pi-desktop/sidebar/sidebar.dart';
+import 'package:pi-desktop/theme/codicons.dart';
+import 'package:pi-desktop/window/app_windows.dart';
+import 'package:pi-desktop/window/window_settings.dart';
+import 'package:pi-desktop/workbench.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 
 import 'fake_window_host.dart';
 
@@ -28,8 +28,8 @@ Future<(AppWindows, FakeWindowHost, Workspace)> _pumpApp(
   addTearDown(tester.view.reset);
   final messenger = tester.binding.defaultBinaryMessenger;
   for (final name in [
-    'baocode/window',
-    for (var id = 1; id < 6; id++) 'baocode/window.$id',
+    'pi-desktop/window',
+    for (var id = 1; id < 6; id++) 'pi-desktop/window.$id',
   ]) {
     messenger.setMockMethodCallHandler(
       MethodChannel(name),
@@ -52,7 +52,7 @@ Future<(AppWindows, FakeWindowHost, Workspace)> _pumpApp(
   );
   await windows.start();
   await tester.pumpWidget(
-    BaoCodeApp(workspace: workspace, windows: windows),
+    PiDesktopApp(workspace: workspace, windows: windows),
     wrapWithView: false,
   );
   await tester.pump();
@@ -92,13 +92,13 @@ void main() {
     expect(find.byType(Workbench), findsOneWidget);
     expect(find.byType(IdeWorkbench), findsNothing);
 
-    final window = await _open(tester, windows, '~/code/baocode');
+    final window = await _open(tester, windows, '~/code/pi-desktop');
     expect(find.byType(Workbench), findsNWidgets(2));
     expect(_inView(window.viewId, find.byType(IdeWorkbench)), findsOneWidget);
     expect(_inView(0, find.byType(IdeWorkbench)), findsNothing);
     expect(window.delegate, isNotNull);
     expect(window.delegate!.ideSpace, isNotNull);
-    expect(host.titles[window.viewId], 'baocode — BaoCode');
+    expect(host.titles[window.viewId], 'pi-desktop — pi-desktop');
 
     // Asking the IDE in the chat's window goes to the IDE's.
     workspace.layout = WorkspaceLayout.ide;
@@ -128,10 +128,10 @@ void main() {
     expect(title.current, same(thread));
   });
 
-  _testWindows('an agent\'s window (Open with BaoCode): its agent\'s '
+  _testWindows('an agent\'s window (Open with pi-desktop): its agent\'s '
       'conversation, a view of its own; closed, it goes', (tester) async {
     final (windows, host, workspace) = await _pumpApp(tester);
-    final opening = windows.openAgent(['~/code/baocode']);
+    final opening = windows.openAgent(['~/code/pi-desktop']);
     for (var i = 0; i < 4; i++) {
       await tester.pump();
     }
@@ -164,7 +164,7 @@ void main() {
     'the window in place of its own',
     (tester) async {
       final (windows, host, workspace) = await _pumpApp(tester);
-      final opening = windows.openAgent(['~/code/baocode']);
+      final opening = windows.openAgent(['~/code/pi-desktop']);
       for (var i = 0; i < 4; i++) {
         await tester.pump();
       }
@@ -221,7 +221,7 @@ void main() {
     tester,
   ) async {
     final (windows, host, _) = await _pumpApp(tester);
-    final window = await _open(tester, windows, '~/code/baocode');
+    final window = await _open(tester, windows, '~/code/pi-desktop');
     final closing = windows.requestClose(window);
     for (var i = 0; i < 3; i++) {
       await tester.pump();
@@ -236,7 +236,7 @@ void main() {
     tester,
   ) async {
     final (windows, _, _) = await _pumpApp(tester);
-    final window = await _open(tester, windows, '~/code/baocode');
+    final window = await _open(tester, windows, '~/code/pi-desktop');
     final before = window.delegate;
     final replacing = windows.replaceFolder(window, '~/code/cursor-docs');
     for (var i = 0; i < 3; i++) {
@@ -253,7 +253,7 @@ void main() {
     tester,
   ) async {
     final (windows, _, _) = await _pumpApp(tester);
-    final window = await _open(tester, windows, '~/code/baocode');
+    final window = await _open(tester, windows, '~/code/pi-desktop');
     windows.switchWindow(window);
     await tester.pump();
     await tester.pump();
@@ -270,7 +270,7 @@ void main() {
       'window, and back to a window of its own', (tester) async {
     var settings = const WindowSettings(ideWindows: IdeWindows.separate);
     final (windows, host, _) = await _pumpApp(tester, settings: () => settings);
-    final window = await _open(tester, windows, '~/code/baocode');
+    final window = await _open(tester, windows, '~/code/pi-desktop');
 
     settings = const WindowSettings(ideWindows: IdeWindows.mainWindow);
     windows.settingsChanged();
@@ -282,7 +282,7 @@ void main() {
     expect(window.delegate, isNull);
     expect(find.byType(Workbench), findsOneWidget);
     expect(_inView(0, find.byType(IdeWorkbench)), findsOneWidget);
-    expect(windows.chat.delegate!.ideSpace!.root, '~/code/baocode');
+    expect(windows.chat.delegate!.ideSpace!.root, '~/code/pi-desktop');
 
     settings = const WindowSettings(ideWindows: IdeWindows.separate);
     windows.settingsChanged();
@@ -292,7 +292,7 @@ void main() {
     expect(windows.multi, isTrue);
     expect(host.created, hasLength(2));
     final moved = windows.ideWindows.single;
-    expect(moved.folder, '~/code/baocode');
+    expect(moved.folder, '~/code/pi-desktop');
     expect(_inView(moved.viewId, find.byType(IdeWorkbench)), findsOneWidget);
     // The main window's IDE is gone, not only hidden.
     expect(
@@ -325,7 +325,7 @@ void main() {
     tester,
   ) async {
     final (windows, _, _) = await _pumpApp(tester);
-    final opening = windows.openAgent(['~/code/baocode']);
+    final opening = windows.openAgent(['~/code/pi-desktop']);
     for (var i = 0; i < 4; i++) {
       await tester.pump();
     }

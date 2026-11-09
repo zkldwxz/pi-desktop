@@ -1,5 +1,5 @@
-import 'package:baocode/platform/context_menu.dart';
-import 'package:baocode/settings/pages/general_page.dart';
+import 'package:pi-desktop/platform/context_menu.dart';
+import 'package:pi-desktop/settings/pages/general_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -64,7 +64,7 @@ void main() {
     await _tap(tester, 'Turn On');
     await tester.pumpAndSettle();
     expect(menu.calls, [
-      (agent: 'Open with BaoCode', ide: 'Open with Fast Ide'),
+      (agent: 'Open with pi-desktop', ide: 'Open with Fast Ide'),
     ]);
     expect(find.text('On'), findsOneWidget);
 

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:bao_remote/client.dart';
-import 'package:bao_remote/files.dart';
+import 'package:pi_remote/client.dart';
+import 'package:pi_remote/files.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// JSON-RPC over lines: requests and answers, typed errors, cancelling,

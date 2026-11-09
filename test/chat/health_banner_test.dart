@@ -1,6 +1,6 @@
-import 'package:baocode/chat/panels/health_banner.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/l10n/app_localizations.dart';
+import 'package:pi-desktop/chat/panels/health_banner.dart';
+import 'package:pi-desktop/kernel/kernel_types.dart';
+import 'package:pi-desktop/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';

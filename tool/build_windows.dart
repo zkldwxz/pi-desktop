@@ -20,7 +20,7 @@
 //                                                  put in tool/engine's
 //                                                  flutter_windows.dll (x64)
 //   dart run tool/build_windows.dart --channel      the channel build
-//                                                  (BAOCODE_CHANNEL;
+//                                                  (PI_DESKTOP_CHANNEL;
 //                                                  lib/channel/), its
 //                                                  installer named
 //                                                  -setup-channel.exe
@@ -65,25 +65,25 @@ const _installersRelative = r'build\installers';
 const _symbolsRelative = r'build\symbols';
 
 /// What has to be in the bundle for the app to start. A Release build that
-/// fails at the link step (a running baocode.exe holding the output file) still
-/// leaves a baocode.exe behind — but data\ is written by the install step that
+/// fails at the link step (a running pi-desktop.exe holding the output file) still
+/// leaves a pi-desktop.exe behind — but data\ is written by the install step that
 /// failure skipped, and the executable cannot start without it.
 const _required = [
-  'baocode.exe',
+  'pi-desktop.exe',
   'flutter_windows.dll',
   // The browsers' native messaging host and its manifest, which the
   // installer's keys point the browsers to (windows/BrowserBridge).
-  'baocode-browser-host.exe',
-  'dev.baocode.browser.json',
+  'pi-desktop-browser-host.exe',
+  'dev.pi.desktop.browser.json',
   // What writes down a fast fail (windows/wer), which the app registers.
-  'baocode_wer.dll',
+  'pi_desktop_wer.dll',
   // The VC++ runtime, carried rather than taken from System32, which may
   // be older than the build's (see windows/CMakeLists.txt).
   'msvcp140.dll',
   'vcruntime140.dll',
   'vcruntime140_1.dll',
-  // The phones' link: iroh (bao_iroh's hook/build.dart builds it).
-  'bao_iroh.dll',
+  // The phones' link: iroh (pi_iroh's hook/build.dart builds it).
+  'pi_iroh.dll',
   r'data\app.so',
   r'data\icudtl.dat',
   r'data\flutter_assets',
@@ -93,7 +93,7 @@ const _required = [
 /// OpenSSH-Win64.zip, OpenSSH-ARM64.zip for arm64), their SHA-256, and what
 /// of it goes in `openssh\`: the client, ssh-keygen (to forget a host's
 /// changed key), their library and their licenses. The app takes it over the system's ssh where that one is
-/// older than 8.4 or missing (chooseSsh in package:bao_remote).
+/// older than 8.4 or missing (chooseSsh in package:pi_remote).
 const _openSshRelease = '10.0.0.0p2-Preview';
 const _openSshBuilds = {
   'x64': (
@@ -174,7 +174,7 @@ Future<void> main(List<String> arguments) async {
       'build',
       'windows',
       '--release',
-      if (channel) '--dart-define=BAOCODE_CHANNEL=true',
+      if (channel) '--dart-define=PI_DESKTOP_CHANNEL=true',
       // Not --split-debug-info, which would also leave the app's stack
       // traces (errors.log) unnamed, as offsets.
       '--extra-gen-snapshot-options=--save-debugging-info='
@@ -254,7 +254,7 @@ Future<void> main(List<String> arguments) async {
     '/DOutDir=${installers.path}',
     '/DArch=$arch',
     if (channel) '/DEdition=-channel',
-    '${root.path}\\tool\\baocode.iss',
+    '${root.path}\\tool\\pi-desktop.iss',
   ], root.path);
 
   // None when published already (--remote-release).
@@ -274,7 +274,7 @@ Future<void> main(List<String> arguments) async {
 
   _step('Done');
   final installer = File(
-    '${installers.path}\\BaoCode-${version.marketing}-setup'
+    '${installers.path}\\pi-desktop-${version.marketing}-setup'
     '${arch == 'x64' ? '' : '-$arch'}${channel ? '-channel' : ''}.exe',
   );
   for (final file in [installer, ...servers]) {
@@ -286,7 +286,7 @@ Future<void> main(List<String> arguments) async {
     stdout
       ..writeln()
       ..writeln('The app downloads the remote server published:')
-      ..writeln('  https://dl.baocode.dev/releases/remote/$remoteVersion/');
+      ..writeln('  https://github.com/zkldwxz/pi-desktop$remoteVersion/');
   } else {
     stdout
       ..writeln()
@@ -296,7 +296,7 @@ Future<void> main(List<String> arguments) async {
       ..writeln('and package with --remote-release):')
       ..writeln(
         '  ${downloads.path}\\*  ->  '
-        'https://dl.baocode.dev/releases/remote/$remoteVersion/',
+        'https://github.com/zkldwxz/pi-desktop$remoteVersion/',
       );
   }
   stdout.writeln();
@@ -347,7 +347,7 @@ void _checkBundle(Directory directory, List<String> required) {
     '\n'
     'A Release build that failed at the link step leaves exactly this: the\n'
     'install step that writes data\\ never ran. If the build reported\n'
-    'LNK1104, a running baocode.exe is holding the output file — close it and\n'
+    'LNK1104, a running pi-desktop.exe is holding the output file — close it and\n'
     'build again.',
   );
 }

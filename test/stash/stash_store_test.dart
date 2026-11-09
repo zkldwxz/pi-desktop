@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:baocode/stash/stash_disk.dart';
-import 'package:baocode/stash/stash_note.dart';
-import 'package:baocode/stash/stash_settings.dart';
-import 'package:baocode/stash/stash_store.dart';
+import 'package:pi-desktop/stash/stash_disk.dart';
+import 'package:pi-desktop/stash/stash_note.dart';
+import 'package:pi-desktop/stash/stash_settings.dart';
+import 'package:pi-desktop/stash/stash_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

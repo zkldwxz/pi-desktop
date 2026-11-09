@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_remote/lsp.dart' show jdtlsLauncher;
+import 'package:pi_remote/lsp.dart' show jdtlsLauncher;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/lsp/install/archive.dart';
-import 'package:baocode/ide/lsp/install/install_io.dart';
-import 'package:baocode/ide/lsp/install/mason_platform.dart';
-import 'package:baocode/ide/lsp/install/mason_registry.dart';
-import 'package:baocode/ide/lsp/install/mason_server_provider.dart';
-import 'package:baocode/ide/lsp/lsp_server_definition.dart';
+import 'package:pi-desktop/ide/lsp/install/archive.dart';
+import 'package:pi-desktop/ide/lsp/install/install_io.dart';
+import 'package:pi-desktop/ide/lsp/install/mason_platform.dart';
+import 'package:pi-desktop/ide/lsp/install/mason_registry.dart';
+import 'package:pi-desktop/ide/lsp/install/mason_server_provider.dart';
+import 'package:pi-desktop/ide/lsp/lsp_server_definition.dart';
 import 'package:path/path.dart' as p;
 
 const fixtures = 'test/fixtures/lsp/mason';

@@ -7,9 +7,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/vs/editor/common/diff/range_mapping.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/vs/editor/common/diff/range_mapping.dart';
 
 import '../l10n/l10n.dart';
 import '../theme/codicons.dart';

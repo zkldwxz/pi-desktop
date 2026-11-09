@@ -3,42 +3,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/workspace/islands.dart';
-import 'package:baocode/chat/widgets/pixel_loader.dart';
-import 'package:baocode/chat/chat_screen.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/claude_code/mock_claude_code_transport.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/ide/ide_hover.dart';
-import 'package:baocode/ide/ide_commands.dart' show ideUsesMacKeys;
-import 'package:baocode/ide/ide_list.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/search/search_palette.dart';
-import 'package:baocode/chat/widgets/user_message_bubble.dart';
-import 'package:baocode/sidebar/sidebar.dart';
-import 'package:baocode/sidebar/sidebar_times.dart';
-import 'package:baocode/theme/code_font.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/theme/workbench_theme.dart';
-import 'package:baocode/workspace/chat_grid_view.dart';
-import 'package:baocode/workspace/chat_drag.dart';
-import 'package:baocode/workspace/editor_launcher.dart';
-import 'package:baocode/workspace/open_in_editor_button.dart';
-import 'package:baocode/workspace/pin_window_button.dart';
-import 'package:baocode/workspace/preference_store.dart';
-import 'package:baocode/workspace/workspace.dart';
-import 'package:baocode/chat/side_panel/side_panel_controller.dart';
+import 'package:pi-desktop/workspace/islands.dart';
+import 'package:pi-desktop/chat/widgets/pixel_loader.dart';
+import 'package:pi-desktop/chat/chat_screen.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/mock_claude_code_transport.dart';
+import 'package:pi-desktop/kernel/kernel_types.dart';
+import 'package:pi-desktop/ide/ide_hover.dart';
+import 'package:pi-desktop/ide/ide_commands.dart' show ideUsesMacKeys;
+import 'package:pi-desktop/ide/ide_list.dart';
+import 'package:pi-desktop/keybindings/keybinding_service.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi-desktop/main.dart';
+import 'package:pi-desktop/search/search_palette.dart';
+import 'package:pi-desktop/chat/widgets/user_message_bubble.dart';
+import 'package:pi-desktop/sidebar/sidebar.dart';
+import 'package:pi-desktop/sidebar/sidebar_times.dart';
+import 'package:pi-desktop/theme/code_font.dart';
+import 'package:pi-desktop/theme/codicons.dart';
+import 'package:pi-desktop/theme/workbench_theme.dart';
+import 'package:pi-desktop/workspace/chat_grid_view.dart';
+import 'package:pi-desktop/workspace/chat_drag.dart';
+import 'package:pi-desktop/workspace/editor_launcher.dart';
+import 'package:pi-desktop/workspace/open_in_editor_button.dart';
+import 'package:pi-desktop/workspace/pin_window_button.dart';
+import 'package:pi-desktop/workspace/preference_store.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
+import 'package:pi-desktop/chat/side_panel/side_panel_controller.dart';
 
 Future<Workspace> pumpApp(WidgetTester tester, {double width = 1400}) async {
   tester.view.physicalSize = Size(width, 900);
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.reset);
   final workspace = Workspace.mock();
-  await tester.pumpWidget(BaoCodeApp(workspace: workspace));
+  await tester.pumpWidget(PiDesktopApp(workspace: workspace));
   await tester.pump();
   return workspace;
 }
@@ -105,7 +105,7 @@ Future<Workspace> pumpKept(
         ClaudeCodeKernel(claude, context, start: MockClaudeCodeTransport.start),
   );
   final workspace = Workspace(kernels: [claude], preferences: preferences);
-  await tester.pumpWidget(BaoCodeApp(workspace: workspace));
+  await tester.pumpWidget(PiDesktopApp(workspace: workspace));
   await tester.runAsync(workspace.load);
   await tester.pump();
   return workspace;
@@ -180,14 +180,14 @@ void main() {
     tester,
   ) async {
     final workspace = await pumpApp(tester);
-    expect(inSidebar(find.text('baocode')), findsOneWidget);
+    expect(inSidebar(find.text('pi-desktop')), findsOneWidget);
     expect(inSidebar(find.text('cursor-docs')), findsOneWidget);
     expect(inSidebar(find.text('api-gateway')), findsOneWidget);
     // Pinned agents sit above the projects.
     expect(inSidebar(find.text('Pinned')), findsOneWidget);
     expect(
       tester.getTopLeft(inSidebar(find.text('Pinned'))).dy,
-      lessThan(tester.getTopLeft(inSidebar(find.text('baocode'))).dy),
+      lessThan(tester.getTopLeft(inSidebar(find.text('pi-desktop'))).dy),
     );
     expect(chatTitle(tester), 'Optimize virtual list scrolling');
 
@@ -232,7 +232,7 @@ void main() {
     addTearDown(mouse.removePointer);
     await mouse.addPointer(location: const Offset(900, 450));
     await tester.pump();
-    await mouse.moveTo(tester.getCenter(inSidebar(find.text('baocode'))));
+    await mouse.moveTo(tester.getCenter(inSidebar(find.text('pi-desktop'))));
     await tester.pump();
     await type('g');
     expect(inSidebar(find.text('g')), findsNothing);
@@ -250,7 +250,7 @@ void main() {
     expect(inSidebar(find.text('gw')), findsOneWidget);
     expect(highlighted(), isTrue);
     // Only the projects it matches are listed.
-    expect(inSidebar(find.text('baocode')), findsNothing);
+    expect(inSidebar(find.text('pi-desktop')), findsNothing);
     expect(inSidebar(find.text('cursor-docs')), findsNothing);
     expect(inSidebar(find.text('Pinned')), findsNothing);
 
@@ -258,7 +258,7 @@ void main() {
     await tester.pump();
     expect(inSidebar(find.text('gw')), findsNothing);
     expect(highlighted(), isFalse);
-    expect(inSidebar(find.text('baocode')), findsOneWidget);
+    expect(inSidebar(find.text('pi-desktop')), findsOneWidget);
     expect(inSidebar(find.text('Pinned')), findsOneWidget);
 
     // Deleted back to nothing, the list is as it was.
@@ -267,10 +267,10 @@ void main() {
       await tester.sendKeyEvent(LogicalKeyboardKey.backspace);
       await tester.pump();
     }
-    expect(inSidebar(find.text('baocode')), findsOneWidget);
+    expect(inSidebar(find.text('pi-desktop')), findsOneWidget);
     expect(inSidebar(find.text('g')), findsNothing);
     await type('gw');
-    expect(inSidebar(find.text('baocode')), findsNothing);
+    expect(inSidebar(find.text('pi-desktop')), findsNothing);
 
     // Enter goes into it, unfolded, its first agent focused; Enter again
     // opens that one.
@@ -291,7 +291,7 @@ void main() {
     await tester.tap(inSidebar(find.text('New Chat')));
     await tester.pump();
     final thread = workspace.selected;
-    expect(thread.project.name, 'baocode');
+    expect(thread.project.name, 'pi-desktop');
     expect(chatTitle(tester), 'New Chat');
 
     // Asking again reuses the untouched one.
@@ -468,7 +468,7 @@ void main() {
     expect(thread.pinned, isTrue);
     expect(
       tester.getTopLeft(row()).dy,
-      lessThan(tester.getTopLeft(inSidebar(find.text('baocode'))).dy),
+      lessThan(tester.getTopLeft(inSidebar(find.text('pi-desktop'))).dy),
     );
 
     await menu('Archive');
@@ -993,7 +993,7 @@ void main() {
     addTearDown(tester.view.reset);
     final workspace = Workspace.mock()
       ..keepSidePanelView({'layout': ChatLayout.chatPanelSidebar.name});
-    await tester.pumpWidget(BaoCodeApp(workspace: workspace));
+    await tester.pumpWidget(PiDesktopApp(workspace: workspace));
     await tester.pump();
     final sidebar = tester.getRect(find.byType(Sidebar));
     final chat = tester.getRect(find.byType(ChatScreen));
@@ -1238,7 +1238,7 @@ void main() {
   testWidgets('the pin keeps the window on top', (tester) async {
     final calls = <MethodCall>[];
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('baocode/window'),
+      const MethodChannel('pi-desktop/window'),
       (call) async {
         calls.add(call);
         return null;

@@ -4,9 +4,9 @@
 // selects its tip; its menu has the branch popup's actions, each the Git
 // command it runs.
 
-import 'package:baocode/ide/git/git_branch_tree.dart';
-import 'package:baocode/ide/git/git_model.dart';
-import 'package:baocode/ide/git/git_service.dart';
+import 'package:pi-desktop/ide/git/git_branch_tree.dart';
+import 'package:pi-desktop/ide/git/git_model.dart';
+import 'package:pi-desktop/ide/git/git_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';

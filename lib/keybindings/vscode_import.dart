@@ -39,7 +39,7 @@ import 'package:path/path.dart' as p;
 import '../platform/app_paths.dart';
 import '../settings/jsonc.dart';
 
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 
 import 'keymap.dart';
 

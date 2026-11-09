@@ -1,4 +1,4 @@
-import 'package:bao_remote/client.dart'
+import 'package:pi_remote/client.dart'
     show RemotePlatform, SshConnectException, SshFailure, SshLauncher;
 import 'package:flutter/material.dart';
 

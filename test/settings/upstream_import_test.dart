@@ -2,18 +2,18 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/l10n/app_localizations.dart';
-import 'package:baocode/models/featured_upstreams.dart';
-import 'package:baocode/models/model_icons.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/models/secret_store.dart';
-import 'package:baocode/models/upstream.dart';
-import 'package:baocode/models/upstream_import.dart';
-import 'package:baocode/settings/pages/featured_upstreams_strip.dart';
-import 'package:baocode/settings/pages/models_page.dart';
-import 'package:baocode/settings/pages/upstream_import_dialog.dart';
+import 'package:pi-desktop/theme/codicons.dart';
+import 'package:pi-desktop/l10n/app_localizations.dart';
+import 'package:pi-desktop/models/featured_upstreams.dart';
+import 'package:pi-desktop/models/model_icons.dart';
+import 'package:pi-desktop/models/model_provider.dart';
+import 'package:pi-desktop/models/model_providers.dart';
+import 'package:pi-desktop/models/secret_store.dart';
+import 'package:pi-desktop/models/upstream.dart';
+import 'package:pi-desktop/models/upstream_import.dart';
+import 'package:pi-desktop/settings/pages/featured_upstreams_strip.dart';
+import 'package:pi-desktop/settings/pages/models_page.dart';
+import 'package:pi-desktop/settings/pages/upstream_import_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -114,7 +114,7 @@ void main() {
       expect(find.text('alpha.example.com'), findsNothing);
 
       // Why they show, at a click, not a hover.
-      const why = 'These sites are officially listed by BaoCode';
+      const why = 'These sites are officially listed by pi-desktop';
       await gesture.moveTo(
         tester.getCenter(find.text('Why am I seeing this?')),
       );
@@ -127,7 +127,7 @@ void main() {
       expect(find.text(why), findsNothing);
       await click(find.text('Why am I seeing this?'));
       await click(find.text('List My Site Too'));
-      expect(opened.last, Uri.parse('https://baocode.dev/upstreams'));
+      expect(opened.last, Uri.parse('https://github.com/zkldwxz/pi-desktop'));
       expect(find.text(why), findsNothing);
     });
 
@@ -220,7 +220,7 @@ void main() {
     });
 
     testWidgets('Settings → Models shows the list kept at once, the new one '
-        'as baocode.dev answers, a site of theirs then leading', (
+        'as the pi-desktop site answers, a site of theirs then leading', (
       tester,
     ) async {
       tester.view.physicalSize = const Size(1000, 1400);
@@ -501,7 +501,7 @@ void main() {
     }
 
     const link =
-        'baocode://provider/import?v=1&name=Alpha&protocol=anthropic'
+        'pi-desktop://provider/import?v=1&name=Alpha&protocol=anthropic'
         '&url=https%3A%2F%2Fapi.alpha.example.com&key=sk-alpha-1234567890';
 
     testWidgets('nothing is added unless the user says yes', (tester) async {
@@ -528,7 +528,7 @@ void main() {
       );
       await tester.tap(find.text('go'));
       await tester.pumpAndSettle();
-      // As BaoCode lists the site.
+      // As pi-desktop lists the site.
       expect(find.text('Alpha API'), findsOneWidget);
       expect(find.text('Officially listed'), findsOneWidget);
       expect(find.text('Alpha API, cheaply'), findsOneWidget);
@@ -568,7 +568,7 @@ void main() {
               onPressed: () => showUpstreamImportDialog(
                 context,
                 UpstreamImport.parse(
-                  'baocode://provider/import?v=1&protocol=anthropic'
+                  'pi-desktop://provider/import?v=1&protocol=anthropic'
                   '&url=https%3A%2F%2Fapi.gamma.example.com%2Fv1&name=Gamma',
                 )!,
                 providers: providers,

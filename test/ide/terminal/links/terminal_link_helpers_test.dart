@@ -11,9 +11,9 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/terminal/links/terminal_link_helpers.dart';
-import 'package:bao_xterm/headless/public/terminal.dart';
-import 'package:bao_xterm/typings/xterm_headless.dart' hide Terminal;
+import 'package:pi-desktop/ide/terminal/links/terminal_link_helpers.dart';
+import 'package:pi_xterm/headless/public/terminal.dart';
+import 'package:pi_xterm/typings/xterm_headless.dart' hide Terminal;
 import 'package:path/path.dart' as p;
 
 IBufferRange range((int, int) start, (int, int) end) => IBufferRange(

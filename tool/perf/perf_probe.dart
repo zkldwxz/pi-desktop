@@ -107,7 +107,7 @@ class PerfProbe {
   /// more about that than about the app.
   void disturb(String why) {
     stderr.writeln(
-      'BAOCODE_PERF_LOG disturbed: $why'
+      'PI_DESKTOP_PERF_LOG disturbed: $why'
       '${_recording == null ? '' : ' (${_recording!.label}, ${_recording!._watch.elapsedMilliseconds}ms in)'}',
     );
     _recording?.disturbed.add(why);

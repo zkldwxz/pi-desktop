@@ -261,7 +261,7 @@ class _ModelsSettingsPageState extends State<ModelsSettingsPage> {
     final l10n = context.l10n;
     if (value == null) return l10n.modelsAuxiliaryAuto;
     if (value == builtinProviderId) {
-      // Not there on BaoCode's own core: automatic in its place.
+      // Not there on pi-desktop's own core: automatic in its place.
       return _providers.builtinAvailable
           ? l10n.modelsAuxiliaryBuiltin
           : l10n.modelsAuxiliaryAuto;
@@ -416,7 +416,7 @@ class _ModelsSettingsPageState extends State<ModelsSettingsPage> {
           title: l10n.modelsProviders,
           children: [
             // Claude Code as set up on this machine: the CLI's alone, not
-            // BaoCode's own core's.
+            // pi-desktop's own core's.
             if (_providers.builtinAvailable)
               _ProviderRow(
                 icon: const ProviderIcon(builtinProviderId, size: 16),
@@ -430,7 +430,7 @@ class _ModelsSettingsPageState extends State<ModelsSettingsPage> {
                     unawaited(_providers.setBuiltinHidden(!value)),
               ),
             // The one that follows magpie beside Claude Code's, as it too
-            // is set up elsewhere; then the newest at a site BaoCode lists
+            // is set up elsewhere; then the newest at a site pi-desktop lists
             // (one imported later takes the place of one before); the rest
             // in their order.
             for (final provider in [

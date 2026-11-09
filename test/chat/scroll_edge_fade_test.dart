@@ -1,8 +1,8 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/widgets/edge_fade_mask.dart';
-import 'package:baocode/chat/widgets/scroll_edge_fade.dart';
+import 'package:pi-desktop/chat/widgets/edge_fade_mask.dart';
+import 'package:pi-desktop/chat/widgets/scroll_edge_fade.dart';
 
 void main() {
   Future<ScrollController> pump(WidgetTester tester, int items) async {

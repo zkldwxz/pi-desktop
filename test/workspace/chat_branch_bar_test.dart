@@ -4,11 +4,11 @@
 // its path copied by a click, without a repository. Worktrees made and
 // switched to from it.
 
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/ide/git/git_repository.dart';
-import 'package:baocode/ide/git/git_service.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/workspace/chat_branch_bar.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/ide/git/git_repository.dart';
+import 'package:pi-desktop/ide/git/git_service.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
+import 'package:pi-desktop/workspace/chat_branch_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -302,9 +302,9 @@ void main() {
   });
 
   testWidgets('a workspace without Git shows its name only', (tester) async {
-    await _pump(tester, name: 'BaoCode', workspace: true);
-    expect(find.text('BaoCode'), findsOneWidget);
-    await tester.tap(find.text('BaoCode'));
+    await _pump(tester, name: 'pi-desktop', workspace: true);
+    expect(find.text('pi-desktop'), findsOneWidget);
+    await tester.tap(find.text('pi-desktop'));
     await tester.pumpAndSettle();
     expect(find.text('Switch Branch'), findsNothing);
   });
@@ -326,20 +326,20 @@ void main() {
     }
     await _pump(
       tester,
-      name: 'BaoCode',
+      name: 'pi-desktop',
       workspace: true,
       repositories: [('/work/monad', monad), ('/work/relay', relay)],
     );
     const label = 'monad: feature · monad-wt, relay: main';
     expect(find.text(label), findsOneWidget);
     expect(
-      find.byTooltip('BaoCode\n\nIn worktree monad-wt\n/work/monad-wt'),
+      find.byTooltip('pi-desktop\n\nIn worktree monad-wt\n/work/monad-wt'),
       findsOneWidget,
     );
     await _pump(
       tester,
       session: _Working(),
-      name: 'BaoCode',
+      name: 'pi-desktop',
       workspace: true,
       repositories: [('/work/monad', monad), ('/work/relay', relay)],
     );
@@ -358,12 +358,12 @@ void main() {
     }
     await _pump(
       tester,
-      name: 'BaoCode',
+      name: 'pi-desktop',
       workspace: true,
       repositories: [('/work/monad', monad), ('/work/relay', relay)],
     );
     expect(find.text('main*'), findsOneWidget);
-    expect(find.text('BaoCode'), findsNothing);
+    expect(find.text('pi-desktop'), findsNothing);
   });
 
   testWidgets("a workspace's folders, each with its branch", (tester) async {
@@ -375,7 +375,7 @@ void main() {
     }
     await _pump(
       tester,
-      name: 'BaoCode',
+      name: 'pi-desktop',
       workspace: true,
       repositories: [
         ('/work/monad', monad),
@@ -446,7 +446,7 @@ void main() {
     }
     await _pump(
       tester,
-      name: 'BaoCode',
+      name: 'pi-desktop',
       workspace: true,
       repositories: [('/work/monad', monad), ('/work/relay', relay)],
     );

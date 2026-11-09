@@ -5,15 +5,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/vs/base/common/color.dart' as vs;
-import 'package:bao_editor/monaco/vs/editor/common/encoded_token_attributes.dart'
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/vs/base/common/color.dart' as vs;
+import 'package:pi_editor/monaco/vs/editor/common/encoded_token_attributes.dart'
     as monaco;
-import 'package:bao_editor/monaco/vs/editor/common/services/semantic_tokens_provider_styling.dart';
-import 'package:bao_editor/monaco/vs/editor/contrib/semanticTokens/common/semantic_tokens_config.dart';
-import 'package:bao_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
-import 'package:bao_editor/monaco/vs/workbench/services/themes/common/color_theme_token_styles.dart';
-import 'package:bao_editor/textmate/textmate_manifest.dart';
+import 'package:pi_editor/monaco/vs/editor/common/services/semantic_tokens_provider_styling.dart';
+import 'package:pi_editor/monaco/vs/editor/contrib/semanticTokens/common/semantic_tokens_config.dart';
+import 'package:pi_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
+import 'package:pi_editor/monaco/vs/workbench/services/themes/common/color_theme_token_styles.dart';
+import 'package:pi_editor/textmate/textmate_manifest.dart';
 
 import '../lsp/lsp_protocol.dart';
 

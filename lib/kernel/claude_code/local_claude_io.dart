@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:bao_remote/claude.dart'
+import 'package:pi_remote/claude.dart'
     show ClaudeDownloadFailed, ClaudeNotInstalled;
-import 'package:bao_remote/local.dart'
+import 'package:pi_remote/local.dart'
     show
         AppPaths,
         ClaudeCli,
@@ -23,7 +23,7 @@ import 'claude_path_setting.dart';
 
 /// Claude Code on this machine, as VS Code's extension carries its own:
 /// the one set in Settings ([ClaudePathSetting]), else the newest of the
-/// user's builds and the one BaoCode downloaded into the data folder for
+/// user's builds and the one pi-desktop downloaded into the data folder for
 /// them (see [ClaudeRuntime]), which is downloaded the first time the
 /// user has none that runs. Its progress is [LocalClaudeInstall]'s.
 abstract final class LocalClaude {
@@ -53,7 +53,7 @@ abstract final class LocalClaude {
   static bool? _installed;
 
   /// Whether Claude Code is on this machine (the user's, the path set in
-  /// Settings, or the one BaoCode downloaded), as last looked: on the
+  /// Settings, or the one pi-desktop downloaded), as last looked: on the
   /// app's own PATH at first, until [lookForInstall] asks the login shell.
   static bool installed() =>
       _installed ??= _installedIn(Map.of(Platform.environment));
@@ -121,7 +121,7 @@ abstract final class LocalClaude {
   /// Downloads one where there is none, ahead of the session that runs it.
   static Future<void> install() => locate();
 
-  /// [executable] refused an option BaoCode starts it with: whether
+  /// [executable] refused an option pi-desktop starts it with: whether
   /// another, newer, may be run instead (see [ClaudeRuntime.rejectTooOld]).
   static Future<bool> rejectTooOld(String executable) async {
     try {

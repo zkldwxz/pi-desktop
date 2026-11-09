@@ -10,7 +10,7 @@ import 'app_platform.dart';
 /// Every text field asks as it is built, and all of them again each time the
 /// app comes back in front (EditableText's ClipboardStatusNotifier). The
 /// macOS engine answers by reading the clipboard's text on the main thread,
-/// which waits on the app that copied it: one that hangs held BaoCode with
+/// which waits on the app that copied it: one that hangs held pi-desktop with
 /// it, a page of fields (the settings) for as long (FQMFH90H). Here the
 /// question goes to the window instead, which answers from the clipboard's
 /// types (MainFlutterWindow.swift's `hasPasteboardText`).

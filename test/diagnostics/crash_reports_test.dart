@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:baocode/diagnostics/crash_reports.dart';
+import 'package:pi-desktop/diagnostics/crash_reports.dart';
 
 const _hour = Duration(hours: 1);
 
@@ -18,14 +18,14 @@ Uint8List _utf16(String text) => Uint8List.fromList([
 const _wer = '''Version=1
 EventType=APPCRASH
 Sig[0].Name=Application Name
-Sig[0].Value=baocode.exe
+Sig[0].Value=pi-desktop.exe
 Sig[3].Name=Fault Module Name
 Sig[3].Value=flutter_windows.dll
 Sig[6].Name=Exception Code
 Sig[6].Value=c0000005
 Sig[7].Name=Exception Offset
 Sig[7].Value=00000000001a2b3c
-AppPath=C:\\Users\\Ann\\AppData\\Local\\Programs\\BaoCode\\baocode.exe
+AppPath=C:\\Users\\Ann\\AppData\\Local\\Programs\\pi-desktop\\pi-desktop.exe
 ''';
 
 void main() {
@@ -46,25 +46,25 @@ void main() {
   group('listCrashReports', () {
     test("the app's, the newest first, a name in two folders once", () {
       final day = DateTime(2026, 10, 28);
-      write('reports/BaoCode-2026-10-26-100000.ips', '{}', day);
-      write('reports/BaoCode-2026-10-28-120616.ips', '{}', day.add(_hour * 3));
+      write('reports/pi-desktop-2026-10-26-100000.ips', '{}', day);
+      write('reports/pi-desktop-2026-10-28-120616.ips', '{}', day.add(_hour * 3));
       write(
-        'reports/Retired/BaoCode-2026-10-27-100000.ips',
+        'reports/Retired/pi-desktop-2026-10-27-100000.ips',
         '{}',
         day.add(_hour),
       );
-      write('reports/Retired/BaoCode-2026-10-28-120616.ips', '{}', day);
-      write('reports/BaoCodeHelper-2026-10-28-130000.ips', '{}', day);
+      write('reports/Retired/pi-desktop-2026-10-28-120616.ips', '{}', day);
+      write('reports/PiDesktopHelper-2026-10-28-130000.ips', '{}', day);
       write('reports/Safari-2026-10-28-130000.ips', '{}', day);
-      write('reports/BaoCode-2026-10-28-130000.txt', '{}', day);
+      write('reports/pi-desktop-2026-10-28-130000.txt', '{}', day);
       write(
-        'wer/AppCrash_baocode.exe_1a2b_3c4d/Report.wer',
+        'wer/AppCrash_pi-desktop.exe_1a2b_3c4d/Report.wer',
         _utf16(_wer),
         day.add(_hour * 2),
       );
       write('wer/AppCrash_other.exe_1a2b_3c4d/Report.wer', _utf16(_wer), day);
       // A folder without its report.
-      Directory(p.join(root.path, 'wer', 'AppHang_baocode.exe_5e6f'))
+      Directory(p.join(root.path, 'wer', 'AppHang_pi-desktop.exe_5e6f'))
           .createSync(recursive: true);
       final reports = p.join(root.path, 'reports');
       final listed = listCrashReports([
@@ -76,15 +76,15 @@ void main() {
       expect(
         [for (final report in listed) report.name],
         [
-          'BaoCode-2026-10-28-120616.ips',
-          'AppCrash_baocode.exe_1a2b_3c4d.wer',
-          'BaoCode-2026-10-27-100000.ips',
-          'BaoCode-2026-10-26-100000.ips',
+          'pi-desktop-2026-10-28-120616.ips',
+          'AppCrash_pi-desktop.exe_1a2b_3c4d.wer',
+          'pi-desktop-2026-10-27-100000.ips',
+          'pi-desktop-2026-10-26-100000.ips',
         ],
       );
       expect(
         listed.first.path,
-        p.join(reports, 'BaoCode-2026-10-28-120616.ips'),
+        p.join(reports, 'pi-desktop-2026-10-28-120616.ips'),
       );
       expect(listed.first.size, 2);
     });
@@ -92,17 +92,17 @@ void main() {
     test("spindump's reports, the computer's name left out", () {
       final day = DateTime(2026, 10, 28);
       write(
-        'machine/BaoCode_2026-10-28-141700_anns-MacBook.hang',
+        'machine/PiDesktop_2026-10-28-141700_anns-MacBook.hang',
         'Event: hang',
         day.add(_hour * 2),
       );
       write(
-        'machine/BaoCode_2026-10-26-214759_anns-MacBook.cpu_resource.diag',
+        'machine/PiDesktop_2026-10-26-214759_anns-MacBook.cpu_resource.diag',
         'Event: cpu usage',
         day.add(_hour),
       );
-      write('machine/BaoCode_2026-10-28-100000_anns-MacBook.spin', '', day);
-      write('machine/BaoCodeHelper_2026-10-28-100000_a.hang', '', day);
+      write('machine/PiDesktop_2026-10-28-100000_anns-MacBook.spin', '', day);
+      write('machine/PiDesktopHelper_2026-10-28-100000_a.hang', '', day);
       write('machine/Safari_2026-10-28-100000_a.hang', '', day);
       expect(
         [
@@ -110,21 +110,21 @@ void main() {
             report.name,
         ],
         [
-          'BaoCode_2026-10-28-141700.hang',
-          'BaoCode_2026-10-26-214759.cpu_resource.diag',
-          'BaoCode_2026-10-28-100000.spin',
+          'PiDesktop_2026-10-28-141700.hang',
+          'PiDesktop_2026-10-26-214759.cpu_resource.diag',
+          'PiDesktop_2026-10-28-100000.spin',
         ],
       );
       expect(
-        macReportBundleName('BaoCode-2026-10-28-120616.ips'),
-        'BaoCode-2026-10-28-120616.ips',
+        macReportBundleName('pi-desktop-2026-10-28-120616.ips'),
+        'pi-desktop-2026-10-28-120616.ips',
       );
     });
 
     test('no more than the newest few', () {
       for (var i = 0; i < maxCrashReports + 2; i++) {
         write(
-          'reports/BaoCode-2026-10-${10 + i}-000000.ips',
+          'reports/pi-desktop-2026-10-${10 + i}-000000.ips',
           '{}',
           DateTime(2026, 10, 10 + i),
         );
@@ -133,7 +133,7 @@ void main() {
       expect(listed, hasLength(maxCrashReports));
       expect(
         listed.first.name,
-        'BaoCode-2026-10-${10 + maxCrashReports + 1}-000000.ips',
+        'pi-desktop-2026-10-${10 + maxCrashReports + 1}-000000.ips',
       );
     });
   });
@@ -182,11 +182,11 @@ void main() {
       redactCrashReport(
         '{\n  "pid" : 1980,\n'
         '  "crashReporterKey" : "742F288F-5181-E91C-D926-856AE707E206",\n'
-        '  "procName" : "BaoCode"\n}',
+        '  "procName" : "pi-desktop"\n}',
       ),
       '{\n  "pid" : 1980,\n'
       '  "crashReporterKey" : "",\n'
-      '  "procName" : "BaoCode"\n}',
+      '  "procName" : "pi-desktop"\n}',
     );
   });
 
@@ -194,14 +194,14 @@ void main() {
     test("macOS': the exception, the signal, the termination", () {
       expect(
         describeCrashReport(
-          '{"app_name":"BaoCode","bug_type":"309"}\n'
+          '{"app_name":"pi-desktop","bug_type":"309"}\n'
           '{\n  "exception" : {"type":"EXC_BAD_ACCESS","signal":"SIGSEGV"},\n'
           '  "termination" : {"indicator":"Segmentation fault: 11"}\n}',
         ),
         'EXC_BAD_ACCESS (SIGSEGV), Segmentation fault: 11',
       );
       expect(
-        describeCrashReport('{"app_name":"BaoCode","bug_type":"288"}\n{}'),
+        describeCrashReport('{"app_name":"pi-desktop","bug_type":"288"}\n{}'),
         'bug type 288',
       );
     });
@@ -217,7 +217,7 @@ void main() {
       expect(
         describeCrashReport(
           'Date/Time:        2026-10-28 14:17:00.000 +0800\n'
-          'Command:          BaoCode\n'
+          'Command:          pi-desktop\n'
           'Event:            hang\n'
           'Duration:         12.34s\n',
         ),
@@ -241,14 +241,14 @@ void main() {
   test('the report written since a time, and what it says', () {
     final crash = DateTime(2026, 10, 28, 12, 47);
     write(
-      'reports/BaoCode-2026-10-28-124700.ips',
+      'reports/pi-desktop-2026-10-28-124700.ips',
       '{"bug_type":"309"}\n{"exception":{"type":"EXC_CRASH","signal":"SIGABRT"}}',
       crash,
     );
     final folders = [p.join(root.path, 'reports')];
     expect(
       crashReportSince(folders, crash.subtract(const Duration(minutes: 1))),
-      'BaoCode-2026-10-28-124700.ips: EXC_CRASH (SIGABRT)',
+      'pi-desktop-2026-10-28-124700.ips: EXC_CRASH (SIGABRT)',
     );
     expect(crashReportSince(folders, crash.add(_hour)), isNull);
   });
@@ -258,17 +258,17 @@ void main() {
     () {
       final quit = DateTime(2026, 10, 28, 14, 17);
       write(
-        'reports/BaoCode_2026-10-28-141700_ann.hang',
+        'reports/PiDesktop_2026-10-28-141700_ann.hang',
         'Event: hang\nDuration: 21.50s\n',
         quit,
       );
       write(
-        'reports/BaoCode_2026-10-28-141800_ann.cpu_resource.diag',
+        'reports/PiDesktop_2026-10-28-141800_ann.cpu_resource.diag',
         'Event: cpu usage\n',
         quit.add(const Duration(minutes: 1)),
       );
       write(
-        'reports/BaoCode_2026-10-28-141900_ann.spin',
+        'reports/PiDesktop_2026-10-28-141900_ann.spin',
         'Event: hang\n',
         quit.add(const Duration(minutes: 2)),
       );
@@ -276,7 +276,7 @@ void main() {
         crashReportSince([
           p.join(root.path, 'reports'),
         ], quit.subtract(const Duration(minutes: 1))),
-        'BaoCode_2026-10-28-141700.hang: hang, 21.50s',
+        'PiDesktop_2026-10-28-141700.hang: hang, 21.50s',
       );
     },
   );

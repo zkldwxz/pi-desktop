@@ -28,7 +28,7 @@ import '../theme/workbench_theme.dart' show themeColors;
 import '../workspace/islands.dart';
 import '../workspace/window_controls.dart';
 
-import 'package:bao_editor/monaco/vs/base/common/labels.dart';
+import 'package:pi_editor/monaco/vs/base/common/labels.dart';
 
 import 'explorer_excludes.dart';
 import 'explorer_history.dart';

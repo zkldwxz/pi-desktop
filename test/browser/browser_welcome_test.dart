@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/browser/browser_bridge.dart';
-import 'package:baocode/browser/browser_welcome.dart';
+import 'package:pi-desktop/browser/browser_bridge.dart';
+import 'package:pi-desktop/browser/browser_welcome.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -59,7 +59,7 @@ void main() {
   });
 
   testWidgets('the step turns to the browser once it connects', (tester) async {
-    final temp = Directory('/tmp').createTempSync('bao-');
+    final temp = Directory('/tmp').createTempSync('pi-');
     BrowserBridge.socketFolder = temp.path;
     BrowserBridge.home = temp.path;
     addTearDown(() {

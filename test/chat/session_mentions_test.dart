@@ -1,7 +1,7 @@
-import 'package:bao_markdown/bao_markdown.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/composer/composer_embeds.dart';
-import 'package:baocode/chat/composer/suggestion_menu.dart';
+import 'package:pi_markdown/pi_markdown.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/composer/composer_embeds.dart';
+import 'package:pi-desktop/chat/composer/suggestion_menu.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 

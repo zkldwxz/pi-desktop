@@ -1,5 +1,5 @@
-import 'package:baocode/browser/browser_tools.dart';
-import 'package:baocode/kernel/claude_code/claude_sdk_tools.dart';
+import 'package:pi-desktop/browser/browser_tools.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_sdk_tools.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

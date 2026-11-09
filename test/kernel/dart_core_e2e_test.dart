@@ -1,25 +1,25 @@
-// The app's Claude Code kernel on BaoCode's own core: the engine in its
+// The app's Claude Code kernel on pi-desktop's own core: the engine in its
 // isolate, the Messages API on this machine. What the UI is driven by,
 // end to end, with no CLI.
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_agent/testing.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_code_kernel.dart';
-import 'package:baocode/kernel/claude_code/claude_core_setting.dart';
-import 'package:baocode/kernel/claude_code/claude_environment.dart';
-import 'package:baocode/kernel/claude_code/claude_storage_io.dart';
-import 'package:baocode/kernel/kernel_event.dart';
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/kernel/kernel_registry.dart';
-import 'package:baocode/kernel/transcript.dart';
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/model_providers.dart';
-import 'package:baocode/network/network_proxy_io.dart';
-import 'package:baocode/network/proxy_settings.dart';
+import 'package:pi_agent/testing.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_kernel.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_core_setting.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_environment.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_storage_io.dart';
+import 'package:pi-desktop/kernel/kernel_event.dart';
+import 'package:pi-desktop/kernel/kernel_types.dart';
+import 'package:pi-desktop/kernel/kernel_registry.dart';
+import 'package:pi-desktop/kernel/transcript.dart';
+import 'package:pi-desktop/models/model_provider.dart';
+import 'package:pi-desktop/models/model_providers.dart';
+import 'package:pi-desktop/network/network_proxy_io.dart';
+import 'package:pi-desktop/network/proxy_settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
@@ -42,7 +42,7 @@ void main() {
     HttpOverrides.global = null;
     addTearDown(() => HttpOverrides.global = overrides);
     root = Directory.systemTemp
-        .createTempSync('baocode-core-e2e-')
+        .createTempSync('pi-desktop-core-e2e-')
         .resolveSymbolicLinksSync();
     cwd = p.join(root, 'project');
     config = p.join(root, 'config');

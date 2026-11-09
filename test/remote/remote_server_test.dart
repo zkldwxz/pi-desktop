@@ -6,15 +6,15 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:bao_remote/claude.dart' show ClaudeHistoryPage;
-import 'package:bao_remote/client.dart';
-import 'package:bao_remote/files.dart';
-import 'package:bao_remote/git.dart';
-import 'package:bao_remote/local.dart'
+import 'package:pi_remote/claude.dart' show ClaudeHistoryPage;
+import 'package:pi_remote/client.dart';
+import 'package:pi_remote/files.dart';
+import 'package:pi_remote/git.dart';
+import 'package:pi_remote/local.dart'
     show ClaudeEnvironment, CliLocator, ClaudeUnavailable, watchRecursively;
-import 'package:bao_remote/lsp.dart';
-import 'package:bao_remote/search.dart';
-import 'package:bao_remote/server.dart' show ServerClaude;
+import 'package:pi_remote/lsp.dart';
+import 'package:pi_remote/search.dart';
+import 'package:pi_remote/server.dart' show ServerClaude;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
@@ -29,7 +29,7 @@ void main() {
 
   setUp(() async {
     remote = await RemoteHarness.start();
-    project = Directory.systemTemp.createTempSync('baocode-remote-project-');
+    project = Directory.systemTemp.createTempSync('pi-desktop-remote-project-');
     root = project.resolveSymbolicLinksSync();
   });
   tearDown(() async {
@@ -403,7 +403,7 @@ void main() {
     late File fake;
 
     setUp(() {
-      home = Directory.systemTemp.createTempSync('baocode-remote-claude-');
+      home = Directory.systemTemp.createTempSync('pi-desktop-remote-claude-');
       fake = File(p.join(home.path, 'fake-claude'))
         ..writeAsStringSync(r'''#!/bin/sh
 settings=""
@@ -424,8 +424,8 @@ printf '%s\n' "$line"
         'PATH': '/usr/bin:/bin',
         'HOME': home.path,
         'ANTHROPIC_MODEL': 'from-the-shell',
-        'BAOCODE_CLAUDE_PATH': fake.path,
-        'BAOCODE_CLAUDE_DATA_PATH': p.join(home.path, '.claude'),
+        'PI_DESKTOP_CLAUDE_PATH': fake.path,
+        'PI_DESKTOP_CLAUDE_DATA_PATH': p.join(home.path, '.claude'),
       });
     });
     tearDown(() {
@@ -468,7 +468,7 @@ printf '%s\n' "$line"
       CliLocator.use({
         'PATH': '/nowhere',
         'HOME': home.path,
-        'BAOCODE_CLAUDE_PATH': p.join(home.path, 'not-there'),
+        'PI_DESKTOP_CLAUDE_PATH': p.join(home.path, 'not-there'),
       });
       await expectLater(
         client().locateClaude(),

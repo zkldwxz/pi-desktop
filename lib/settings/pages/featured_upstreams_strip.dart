@@ -30,7 +30,7 @@ import 'settings_widgets.dart';
 ///
 /// Nothing at all, not the space above it either, until the list is got,
 /// nor where none could be. What shows at once is the list kept last time;
-/// the new one, as baocode.dev answers (see [FeaturedUpstream.load]).
+/// the new one, as the pi-desktop site answers (see [FeaturedUpstream.load]).
 class FeaturedUpstreamsStrip extends StatefulWidget {
   const FeaturedUpstreamsStrip({
     super.key,
@@ -66,7 +66,7 @@ class FeaturedUpstreamsStrip extends StatefulWidget {
 
   /// The page for a site to be listed (site/upstreams.html).
   static Uri joinUrl(String languageCode) => Uri.https(
-    'baocode.dev',
+    'the pi-desktop site',
     languageCode == 'zh' ? '/zh/upstreams' : '/upstreams',
   );
 

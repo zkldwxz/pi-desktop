@@ -1,5 +1,5 @@
-# Builds the phone app: Android (APK), put on dl.baocode.dev, where
-# baocode.dev/download links to it (/dl/android); iOS, uploaded to
+# Builds the phone app: Android (APK), put on the pi-desktop site, where
+# the pi-desktop site/download links to it (/dl/android); iOS, uploaded to
 # TestFlight, and a release's given to its public testers (/dl/ios).
 # docs/release.md, 10.
 #
@@ -7,11 +7,11 @@
 #                           build and publish 0.1.0 (the version of the
 #                           phone app's pubspec.yaml, on its main branch)
 #   git tag mobile-test-foo && git push origin mobile-test-foo
-#                           build, and put the APK at dl.baocode.dev/test/…,
+#                           build, and put the APK at the pi-desktop site/test/…,
 #                           to send to testers (iOS to TestFlight all the same)
 #
-# The phone app is checked out from baocode-dev/mobile beside this one
-# (its pubspec.yaml takes bao_link and bao_editor from ../monad).
+# The phone app is checked out from pi-desktop-dev/mobile beside this one
+# (its pubspec.yaml takes pi_link and pi_editor from ../monad).
 name: Mobile
 
 on:
@@ -32,7 +32,7 @@ jobs:
   check:
     name: Check the version
     runs-on: ubuntu-latest
-    # The deploy key that reads baocode-dev/mobile is the release
+    # The deploy key that reads pi-desktop-dev/mobile is the release
     # environment's, for mobile-* tags.
     environment: release
     outputs:
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          repository: baocode-dev/mobile
+          repository: pi-desktop-dev/mobile
           ssh-key: ${{ secrets.MOBILE_DEPLOY_KEY }}
           path: mobile
       - id: version
@@ -86,7 +86,7 @@ jobs:
           path: monad
       - uses: actions/checkout@v5
         with:
-          repository: baocode-dev/mobile
+          repository: pi-desktop-dev/mobile
           ref: ${{ needs.check.outputs.commit }}
           ssh-key: ${{ secrets.MOBILE_DEPLOY_KEY }}
           path: mobile
@@ -98,17 +98,17 @@ jobs:
         with:
           channel: stable
           flutter-version: ${{ env.FLUTTER_VERSION }}
-      # bao_iroh's Rust (the link), built by its build hook for the
+      # pi_iroh's Rust (the link), built by its build hook for the
       # phone's targets where main's build of it is not in the cache.
       - id: iroh
-        uses: ./monad/.github/actions/bao-iroh-prebuilt
+        uses: ./monad/.github/actions/pi-iroh-prebuilt
         with:
           kind: android
           root: monad
       - if: steps.iroh.outputs.hit != 'true'
         uses: ./monad/.github/actions/setup-rust
         with:
-          dir: monad/packages/bao_iroh/rust
+          dir: monad/packages/pi_iroh/rust
       - name: Put the release key in a file
         env:
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
@@ -120,13 +120,13 @@ jobs:
             exit 1
           fi
           echo "$ANDROID_KEYSTORE" | base64 --decode > "$RUNNER_TEMP/release.jks"
-          echo "BAOCODE_ANDROID_KEYSTORE=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+          echo "PI_DESKTOP_ANDROID_KEYSTORE=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
       - name: Build the APKs
         working-directory: mobile
         env:
           # One key for every APK published, so that each installs over the
           # last (android/app/build.gradle.kts).
-          BAOCODE_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          PI_DESKTOP_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         run: |
           mkdir -p ../out
           # The one of all kinds, the website's; and the arm64 one alone,
@@ -134,9 +134,9 @@ jobs:
           # download). Both of the same versionCode: not --split-per-abi,
           # whose codes the next one of all kinds would not install over.
           flutter build apk --release
-          cp build/app/outputs/flutter-apk/app-release.apk "../out/BaoCode-$MARKETING-android.apk"
+          cp build/app/outputs/flutter-apk/app-release.apk "../out/pi-desktop-$MARKETING-android.apk"
           flutter build apk --release --target-platform android-arm64
-          cp build/app/outputs/flutter-apk/app-release.apk "../out/BaoCode-$MARKETING-android-arm64.apk"
+          cp build/app/outputs/flutter-apk/app-release.apk "../out/pi-desktop-$MARKETING-android-arm64.apk"
       - name: Check they are signed with the release key
         run: |
           # The release certificate's SHA-256: every APK ever published.
@@ -162,12 +162,12 @@ jobs:
         with:
           name: android
           if-no-files-found: error
-          path: out/BaoCode-*-android*.apk
+          path: out/pi-desktop-*-android*.apk
       - name: Forget the key
         if: always()
         run: rm -f "$RUNNER_TEMP/release.jks"
 
-  # iOS goes to TestFlight, not dl.baocode.dev: signed for the App Store
+  # iOS goes to TestFlight, not the pi-desktop site: signed for the App Store
   # (Apple Distribution certificate, App Store profile) and uploaded, every
   # tag, mobile-test-* too. Its build number is this workflow's run number,
   # each upload's own (TestFlight refuses one it has had).
@@ -193,7 +193,7 @@ jobs:
           path: monad
       - uses: actions/checkout@v5
         with:
-          repository: baocode-dev/mobile
+          repository: pi-desktop-dev/mobile
           ref: ${{ needs.check.outputs.commit }}
           ssh-key: ${{ secrets.MOBILE_DEPLOY_KEY }}
           path: mobile
@@ -201,17 +201,17 @@ jobs:
         with:
           channel: stable
           flutter-version: ${{ env.FLUTTER_VERSION }}
-      # bao_iroh's Rust (the link), built by its build hook for the
+      # pi_iroh's Rust (the link), built by its build hook for the
       # phone's targets where main's build of it is not in the cache.
       - id: iroh
-        uses: ./monad/.github/actions/bao-iroh-prebuilt
+        uses: ./monad/.github/actions/pi-iroh-prebuilt
         with:
           kind: ios
           root: monad
       - if: steps.iroh.outputs.hit != 'true'
         uses: ./monad/.github/actions/setup-rust
         with:
-          dir: monad/packages/bao_iroh/rust
+          dir: monad/packages/pi_iroh/rust
       - name: Put the certificate in a keychain, and the profile where Xcode finds it
         run: |
           keychain="$RUNNER_TEMP/signing.keychain-db"
@@ -267,7 +267,7 @@ jobs:
             <key>teamID</key><string>77SLP2NCVR</string>
             <key>signingStyle</key><string>manual</string>
             <key>provisioningProfiles</key>
-            <dict><key>dev.baocode.mobile</key><string>$IOS_PROFILE_NAME</string></dict>
+            <dict><key>dev.pi.desktop.mobile</key><string>$IOS_PROFILE_NAME</string></dict>
             <key>uploadSymbols</key><true/>
           </dict>
           </plist>
@@ -279,15 +279,15 @@ jobs:
           flutter build ipa --release --build-number "$GITHUB_RUN_NUMBER" \
             --export-options-plist "$RUNNER_TEMP/ExportOptions.plist"
           mkdir -p ../out
-          cp build/ios/ipa/*.ipa "../out/BaoCode-$MARKETING-ios.ipa"
+          cp build/ios/ipa/*.ipa "../out/pi-desktop-$MARKETING-ios.ipa"
       - name: Upload to TestFlight
         run: |
-          xcrun altool --upload-app --type ios --file "out/BaoCode-$MARKETING-ios.ipa" \
+          xcrun altool --upload-app --type ios --file "out/pi-desktop-$MARKETING-ios.ipa" \
             --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER"
           {
             echo "## iOS: $MARKETING ($GITHUB_RUN_NUMBER) uploaded to TestFlight"
             echo
-            echo "Apple processes it for a few minutes before testers see it (App Store Connect → BaoCode → TestFlight)."
+            echo "Apple processes it for a few minutes before testers see it (App Store Connect → pi-desktop → TestFlight)."
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Forget the certificate and the key
         if: always()
@@ -296,7 +296,7 @@ jobs:
           rm -rf "$HOME/.appstoreconnect/private_keys"
 
   share:
-    name: Put it at dl.baocode.dev/test/ for testers
+    name: Put it at the pi-desktop site/test/ for testers
     needs: [check, android, ios]
     if: needs.check.outputs.publish != 'true'
     runs-on: ubuntu-latest
@@ -330,11 +330,11 @@ jobs:
             echo "## For testers: the phone app $MARKETING, \`$GITHUB_REF_NAME\`"
             echo
           } >> "$GITHUB_STEP_SUMMARY"
-          for file in dist/BaoCode-*; do
+          for file in dist/pi-desktop-*; do
             name=$(basename "$file")
             aws s3 cp "$file" "s3://$R2_BUCKET/$dir/$name" --cache-control 'public, max-age=86400' \
               --content-type "$(content_type "$name")"
-            url="https://dl.baocode.dev/$dir/$name"
+            url="https://github.com/zkldwxz/pi-desktop$dir/$name"
             served=$(curl -fsSI "$url" | tr -d '\r' | awk 'tolower($1) == "content-length:" { print $2 }')
             [ "$served" = "$(stat -c %s "$file")" ] || { echo "::error::$url is not served as uploaded"; exit 1; }
             echo "- [$name]($url)" >> "$GITHUB_STEP_SUMMARY"
@@ -342,7 +342,7 @@ jobs:
           cat "$GITHUB_STEP_SUMMARY"
 
   publish:
-    name: Publish to dl.baocode.dev
+    name: Publish to the pi-desktop site
     needs: [check, android, ios]
     if: needs.check.outputs.publish == 'true'
     runs-on: ubuntu-latest
@@ -371,7 +371,7 @@ jobs:
               *)   echo application/octet-stream ;;
             esac
           }
-          for file in dist/BaoCode-*; do
+          for file in dist/pi-desktop-*; do
             aws s3 cp "$file" "s3://$R2_BUCKET/releases/mobile/$MARKETING/$(basename "$file")" \
               --cache-control 'public, max-age=31536000, immutable' \
               --content-type "$(content_type "$file")"
@@ -385,7 +385,7 @@ jobs:
             local file=$1 sha size
             sha=$(sha256sum "$file" | cut -d' ' -f1)
             size=$(stat -c %s "$file")
-            jq -n --arg url "https://dl.baocode.dev/releases/mobile/$MARKETING/$(basename "$file")?sha256=${sha:0:16}" \
+            jq -n --arg url "https://github.com/zkldwxz/pi-desktop$MARKETING/$(basename "$file")?sha256=${sha:0:16}" \
               --arg sha "$sha" --argjson size "$size" '{url: $url, size: $size, sha256: $sha}'
           }
           # The phone app looks here for its updates (lib/update/): the
@@ -395,12 +395,12 @@ jobs:
           # the update pressed on any older. The iPhone's in TestFlight as
           # it was (the testflight job's), until its public testers have
           # this one.
-          ios=$(curl -fsS "https://dl.baocode.dev/releases/mobile/latest.json?$GITHUB_RUN_ID" | jq -c '.ios // null' || echo null)
+          ios=$(curl -fsS "https://github.com/zkldwxz/pi-desktop$GITHUB_RUN_ID" | jq -c '.ios // null' || echo null)
           jq -n --arg version "$MARKETING" --argjson build "${VERSION##*+}" \
             --arg date "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --argjson beta "$beta" \
             --arg minBuild "$MIN_BUILD" \
-            --argjson android "$(entry dist/BaoCode-$MARKETING-android.apk)" \
-            --argjson arm64 "$(entry dist/BaoCode-$MARKETING-android-arm64.apk)" \
+            --argjson android "$(entry dist/pi-desktop-$MARKETING-android.apk)" \
+            --argjson arm64 "$(entry dist/pi-desktop-$MARKETING-android-arm64.apk)" \
             --argjson ios "${ios:-null}" \
             '{version: $version, build: $build, pubDate: $date, beta: $beta}
              + (if $minBuild == "" then {} else {minBuild: ($minBuild | tonumber)} end)
@@ -416,7 +416,7 @@ jobs:
         run: |
           aws s3 cp latest.json "s3://$R2_BUCKET/releases/mobile/latest.json" \
             --cache-control 'public, max-age=300' --content-type application/json
-          curl -fsS "https://dl.baocode.dev/releases/mobile/latest.json?$GITHUB_RUN_ID" | jq .
+          curl -fsS "https://github.com/zkldwxz/pi-desktop$GITHUB_RUN_ID" | jq .
 
   # A release's iPhone build to TestFlight's public testers (the public
   # link, /dl/ios), as internal ones have each build at once: once Apple
@@ -456,7 +456,7 @@ jobs:
           path: monad
       - uses: actions/checkout@v5
         with:
-          repository: baocode-dev/mobile
+          repository: pi-desktop-dev/mobile
           ref: ${{ needs.check.outputs.commit }}
           ssh-key: ${{ secrets.MOBILE_DEPLOY_KEY }}
           path: mobile
@@ -477,7 +477,7 @@ jobs:
           cat next.json
           aws s3 cp next.json "s3://$R2_BUCKET/releases/mobile/latest.json" \
             --cache-control 'public, max-age=300' --content-type application/json
-          curl -fsS "https://dl.baocode.dev/releases/mobile/latest.json?$GITHUB_RUN_ID" | jq -e '.ios'
+          curl -fsS "https://github.com/zkldwxz/pi-desktop$GITHUB_RUN_ID" | jq -e '.ios'
           {
             echo "## iOS: $MARKETING ($IOS_BUILD) with TestFlight's public testers"
             echo

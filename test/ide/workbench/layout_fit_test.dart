@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_columns.dart';
-import 'package:baocode/ide/ide_layout.dart';
-import 'package:baocode/ide/ide_modern_ui.dart';
-import 'package:baocode/ide/ide_workbench.dart';
-import 'package:baocode/theme/codicons.dart';
-import 'package:baocode/workspace/back_to_chat_button.dart';
+import 'package:pi-desktop/ide/ide_columns.dart';
+import 'package:pi-desktop/ide/ide_layout.dart';
+import 'package:pi-desktop/ide/ide_modern_ui.dart';
+import 'package:pi-desktop/ide/ide_workbench.dart';
+import 'package:pi-desktop/theme/codicons.dart';
+import 'package:pi-desktop/workspace/back_to_chat_button.dart';
 
 import '../../title_bar_double_click_test.dart'
     show doubleClickAt, recordWindowCalls, titleDoubleClicks;

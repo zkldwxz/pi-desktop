@@ -7,7 +7,7 @@
 import 'dart:io';
 import 'dart:math' as math;
 
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;

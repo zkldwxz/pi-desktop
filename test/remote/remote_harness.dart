@@ -5,8 +5,8 @@ library;
 import 'dart:async';
 import 'dart:io';
 
-import 'package:bao_remote/client.dart';
-import 'package:bao_remote/server.dart';
+import 'package:pi_remote/client.dart';
+import 'package:pi_remote/server.dart';
 
 /// The two ends of a connection, and the server's folder.
 class RemoteHarness {
@@ -15,7 +15,7 @@ class RemoteHarness {
   /// A server with its state in a new temporary folder, and a client
   /// talking to it (initialized).
   static Future<RemoteHarness> start() async {
-    final dataDir = Directory.systemTemp.createTempSync('baocode-remote-');
+    final dataDir = Directory.systemTemp.createTempSync('pi-desktop-remote-');
     final toServer = StreamController<String>();
     final toClient = StreamController<String>();
     final lines = <String>[];
@@ -122,7 +122,7 @@ class MemoryConnector {
   }) async {
     attempts++;
     if (failure case final failure?) throw failure;
-    onProgress?.call('Starting the BaoCode server on ${target.text}');
+    onProgress?.call('Starting the pi-desktop server on ${target.text}');
     final link = await MemoryLink.open(dataDir, replyDelay: replyDelay);
     links.add(link);
     return SshConnection.over(

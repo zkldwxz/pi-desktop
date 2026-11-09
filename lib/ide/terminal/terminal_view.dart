@@ -58,9 +58,9 @@ import 'terminal_render_theme.dart';
 import 'terminal_renderer.dart';
 import 'terminal_widget.dart';
 
-import 'package:bao_xterm/common/data/escape_sequences.dart';
-import 'package:bao_xterm/common/lifecycle.dart';
-import 'package:bao_xterm/typings/xterm.dart' show IBufferRange;
+import 'package:pi_xterm/common/data/escape_sequences.dart';
+import 'package:pi_xterm/common/lifecycle.dart';
+import 'package:pi_xterm/typings/xterm.dart' show IBufferRange;
 
 /// A terminal's screen, and the keyboard's way into it
 /// ([TerminalInstance.focusNode]).

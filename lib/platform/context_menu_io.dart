@@ -23,7 +23,7 @@ ContextMenuInstaller? platformContextMenu() {
 /// should the system not have yet.
 class MacContextMenu implements ContextMenuInstaller {
   MacContextMenu({
-    this.extensionId = 'dev.baocode.desktop.FinderExtension',
+    this.extensionId = 'dev.pi.desktop.desktop.FinderExtension',
     String? extensionPath,
     ShellCommandRunner? run,
   }) : extensionPath = extensionPath ?? _bundledExtension(),
@@ -32,7 +32,7 @@ class MacContextMenu implements ContextMenuInstaller {
   /// The extension's bundle identifier.
   final String extensionId;
 
-  /// Where it is: BaoCode.app/Contents/PlugIns/FinderExtension.appex.
+  /// Where it is: pi-desktop.app/Contents/PlugIns/FinderExtension.appex.
   final String extensionPath;
 
   final ShellCommandRunner _run;
@@ -98,10 +98,10 @@ class MacContextMenu implements ContextMenuInstaller {
 /// hive, what it says, and what it starts.
 typedef WindowsContextMenuEntry = ({String key, String label, String command});
 
-/// Explorer's: the keys the installer's task writes (see tool/baocode.iss)
+/// Explorer's: the keys the installer's task writes (see tool/pi-desktop.iss)
 /// under `HKCU\Software\Classes`, for the user alone, on a file, a folder
-/// and a folder's background: Open with BaoCode (`--baocode-agent`) and
-/// Open with Fast Ide (`--baocode-cli <path> -n <path>`), as
+/// and a folder's background: Open with pi-desktop (`--pi-desktop-agent`) and
+/// Open with Fast Ide (`--pi-desktop-cli <path> -n <path>`), as
 /// windows/runner/open_requests.cpp reads them. Windows 11 lists them
 /// under "Show more options".
 ///
@@ -118,7 +118,7 @@ class WindowsContextMenu implements ContextMenuInstaller {
   final ShellCommandRunner _run;
 
   /// The key whose command tells the menu is there.
-  static const _probeKey = r'Software\Classes\Directory\shell\BaoCode\command';
+  static const _probeKey = r'Software\Classes\Directory\shell\pi-desktop\command';
 
   /// The keys, named [labels]: a file's item takes the file (`%1`), a
   /// folder's and its background's the folder (`%V`).
@@ -131,12 +131,12 @@ class WindowsContextMenu implements ContextMenuInstaller {
         (r'Directory\Background', '%V'),
       ]) ...[
         (
-          key: 'Software\\Classes\\$kind\\shell\\BaoCode',
+          key: 'Software\\Classes\\$kind\\shell\\pi-desktop',
           label: labels.agent,
           command: '$app ${CodeArgs.windowsAgentFlag} "$target"',
         ),
         (
-          key: 'Software\\Classes\\$kind\\shell\\BaoCodeFastIde',
+          key: 'Software\\Classes\\$kind\\shell\\PiDesktopFastIde',
           label: labels.ide,
           command: '$app ${CodeArgs.windowsRequestFlag} "$target" -n "$target"',
         ),
@@ -178,10 +178,10 @@ class WindowsContextMenu implements ContextMenuInstaller {
       _run,
       r'''
 $ErrorActionPreference = 'Stop'
-foreach ($entry in (ConvertFrom-Json $env:BAOCODE_MENU)) {
+foreach ($entry in (ConvertFrom-Json $env:PI_DESKTOP_MENU)) {
   $key = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey($entry.key)
   $key.SetValue('', $entry.label)
-  $key.SetValue('Icon', $env:BAOCODE_ICON)
+  $key.SetValue('Icon', $env:PI_DESKTOP_ICON)
   $command = $key.CreateSubKey('command')
   $command.SetValue('', $entry.command)
   $command.Close()
@@ -189,11 +189,11 @@ foreach ($entry in (ConvertFrom-Json $env:BAOCODE_MENU)) {
 }
 ''',
       environment: {
-        'BAOCODE_MENU': jsonEncode([
+        'PI_DESKTOP_MENU': jsonEncode([
           for (final entry in entries(labels))
             {'key': entry.key, 'label': entry.label, 'command': entry.command},
         ]),
-        'BAOCODE_ICON': '"$executable"',
+        'PI_DESKTOP_ICON': '"$executable"',
       },
     );
     if (result.exitCode != 0) {
@@ -209,12 +209,12 @@ foreach ($entry in (ConvertFrom-Json $env:BAOCODE_MENU)) {
       _run,
       r'''
 $ErrorActionPreference = 'Stop'
-foreach ($key in (ConvertFrom-Json $env:BAOCODE_MENU)) {
+foreach ($key in (ConvertFrom-Json $env:PI_DESKTOP_MENU)) {
   [Microsoft.Win32.Registry]::CurrentUser.DeleteSubKeyTree($key, $false)
 }
 ''',
       environment: {
-        'BAOCODE_MENU': jsonEncode([
+        'PI_DESKTOP_MENU': jsonEncode([
           for (final entry in entries((agent: '', ide: ''))) entry.key,
         ]),
       },

@@ -13,7 +13,7 @@ using Microsoft::WRL::ComPtr;
 
 namespace {
 
-constexpr wchar_t kWindowClass[] = L"BAOCODE_LOGIN_WINDOW";
+constexpr wchar_t kWindowClass[] = L"PI_DESKTOP_LOGIN_WINDOW";
 
 // Its size at 100%, as the macOS app's.
 constexpr int kWidth = 480;
@@ -83,7 +83,7 @@ std::wstring TemporaryFolder() {
   wchar_t path[MAX_PATH + 1];
   const DWORD length = ::GetTempPathW(MAX_PATH + 1, path);
   std::wstring folder(path, length);
-  return folder + L"BaoCode-Login";
+  return folder + L"pi-desktop-Login";
 }
 
 }  // namespace
@@ -91,7 +91,7 @@ std::wstring TemporaryFolder() {
 LoginWindow::LoginWindow(flutter::BinaryMessenger* messenger, HWND owner)
     : owner_(owner) {
   channel_ = std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-      messenger, "baocode/login_window",
+      messenger, "pi-desktop/login_window",
       &flutter::StandardMethodCodec::GetInstance());
   channel_->SetMethodCallHandler([this](const auto& call, auto result) {
     HandleMethodCall(call, std::move(result));

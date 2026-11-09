@@ -180,7 +180,7 @@ void login_window_register(FlBinaryMessenger* messenger, GtkWindow* window) {
   owner = window;
   g_autoptr(FlStandardMethodCodec) codec = fl_standard_method_codec_new();
   g_clear_object(&channel);
-  channel = fl_method_channel_new(messenger, "baocode/login_window",
+  channel = fl_method_channel_new(messenger, "pi-desktop/login_window",
                                   FL_METHOD_CODEC(codec));
   fl_method_channel_set_method_call_handler(channel, method_call_cb, nullptr,
                                             nullptr);

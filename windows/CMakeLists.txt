@@ -1,10 +1,10 @@
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
-project(baocode LANGUAGES CXX)
+project(pi-desktop LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
-set(BINARY_NAME "baocode")
+set(BINARY_NAME "pi-desktop")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.
@@ -88,13 +88,13 @@ install(TARGETS ${BINARY_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}"
   COMPONENT Runtime)
 
 # The browsers' native messaging host and its manifest, beside the app.
-install(TARGETS baocode-browser-host RUNTIME
+install(TARGETS pi-desktop-browser-host RUNTIME
   DESTINATION "${CMAKE_INSTALL_PREFIX}" COMPONENT Runtime)
-install(FILES "BrowserBridge/dev.baocode.browser.json"
+install(FILES "BrowserBridge/dev.pi.desktop.browser.json"
   DESTINATION "${CMAKE_INSTALL_PREFIX}" COMPONENT Runtime)
 
 # The module that writes down a fast fail, beside the app that registers it.
-install(TARGETS baocode_wer RUNTIME
+install(TARGETS pi_desktop_wer RUNTIME
   DESTINATION "${CMAKE_INSTALL_PREFIX}" COMPONENT Runtime)
 
 install(FILES "${FLUTTER_ICU_DATA_FILE}" DESTINATION "${INSTALL_BUNDLE_DATA_DIR}"
@@ -113,7 +113,7 @@ endif()
 # vcruntime140.dll, vcruntime140_1.dll, …), beside the executable, where
 # Windows looks first: the one in System32 may be older than the build's —
 # a VC++ 2015 redistributable installed after a newer one downgrades it —
-# and the app, its plugins' DLLs and bao_onig.dll crashed starting there
+# and the app, its plugins' DLLs and pi_onig.dll crashed starting there
 # (0xC0000005 in msvcp140.dll). The UCRT is the system's (Windows 10 on).
 set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
 include(InstallRequiredSystemLibraries)

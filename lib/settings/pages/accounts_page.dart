@@ -155,15 +155,15 @@ Uri forgeRevokePage(ForgeAccount account) => account.base.replace(
   },
 );
 
-/// Where a token for BaoCode is made on [site], what it needs checked.
+/// Where a token for pi-desktop is made on [site], what it needs checked.
 Uri forgeNewTokenPage(ForgeKind kind, Uri site) => switch (kind) {
   ForgeKind.github => site.replace(
     path: '/settings/tokens/new',
-    queryParameters: {'scopes': 'repo,read:user', 'description': 'BaoCode'},
+    queryParameters: {'scopes': 'repo,read:user', 'description': 'pi-desktop'},
   ),
   ForgeKind.gitlab => site.replace(
     path: '/-/user_settings/personal_access_tokens',
-    queryParameters: {'name': 'BaoCode', 'scopes': 'api'},
+    queryParameters: {'name': 'pi-desktop', 'scopes': 'api'},
   ),
   ForgeKind.gitee => site.replace(path: '/profile/personal_access_tokens/new'),
 };

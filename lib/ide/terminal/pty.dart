@@ -1,10 +1,10 @@
-import 'package:bao_pty/bao_pty.dart';
+import 'package:pi_pty/pi_pty.dart';
 
 import 'pty_stub.dart' if (dart.library.io) 'pty_io.dart' as platform;
 import 'terminal_profiles.dart';
 import 'terminal_shell.dart';
 
-export 'package:bao_pty/bao_pty.dart';
+export 'package:pi_pty/pi_pty.dart';
 
 /// Starts [launch] on a pseudo terminal ([spawnPty]), recorded so that
 /// [reapPtyProcesses] ends it if the app does not; fails with

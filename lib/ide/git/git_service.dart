@@ -18,7 +18,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:bao_remote/git.dart';
+import 'package:pi_remote/git.dart';
 import 'package:path/path.dart' as p;
 
 import 'git_model.dart';
@@ -26,7 +26,7 @@ import 'git_service_stub.dart'
     if (dart.library.io) 'git_service_io.dart'
     as platform;
 
-export 'package:bao_remote/git.dart';
+export 'package:pi_remote/git.dart';
 
 /// Runs `git` with [arguments] in [workingDirectory]; with [limit], reads
 /// only that many NUL-terminated records of its output (`runGit`'s); [stdin]
@@ -617,7 +617,7 @@ class IdeGitService {
   }) async {
     final top = await _requireRoot();
     final indexPath = _check(
-      await _git(['rev-parse', '--git-path', 'baocode-commit-index']),
+      await _git(['rev-parse', '--git-path', 'pi-desktop-commit-index']),
       'Cannot commit.',
     ).stdout.trim();
     final environment = {

@@ -1,4 +1,4 @@
-import 'package:baocode/chat/side_panel/side_panel_controller.dart';
+import 'package:pi-desktop/chat/side_panel/side_panel_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// The files page's search of each project, as it was left: its files to

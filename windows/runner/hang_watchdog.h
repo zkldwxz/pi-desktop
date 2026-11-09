@@ -48,18 +48,18 @@ void LoopEnded();
 // starts, which may set a filter of its own.
 //
 // And one that no filter sees, a fast fail (abort() in flutter_windows.dll,
-// a broken stack cookie): baocode_wer.dll (windows/wer), registered with
+// a broken stack cookie): pi_desktop_wer.dll (windows/wer), registered with
 // Windows Error Reporting, writes the same from its process (a line in the
 // event log: "crashed: fast fail N (…) at module+0x…"), and Windows goes on
 // as before. Nothing of it runs until such a crash.
 void InstallCrashHandler();
 
 // Flutter named |logs| the logs folder (see log_folder.h): where
-// baocode_wer.dll writes.
+// pi_desktop_wer.dll writes.
 void LogsFolderNamed(const std::wstring& logs);
 
 // From another copy of the app, started while this one runs (Explorer's
-// Open with BaoCode, the `code` command): the copy running did not take
+// Open with pi-desktop, the `code` command): the copy running did not take
 // what it was handed, or has no window left. Its threads are written down
 // as above, from this copy, which is still able to.
 void ReportRunningCopy();

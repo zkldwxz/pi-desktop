@@ -5,7 +5,7 @@
 #include <gtk/gtk.h>
 
 // The channel build's login window (lib/channel/account/; the macOS app
-// answers the same in LoginWindow.swift), over `baocode/login_window`: the
+// answers the same in LoginWindow.swift), over `pi-desktop/login_window`: the
 // user's channel's account site in a WebKitGTK view of its own, ephemeral
 // (its cookies and storage gone once it closes).
 //

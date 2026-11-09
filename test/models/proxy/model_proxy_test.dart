@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:baocode/models/model_provider.dart';
-import 'package:baocode/models/proxy/model_proxy.dart';
+import 'package:pi-desktop/models/model_provider.dart';
+import 'package:pi-desktop/models/proxy/model_proxy.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// An upstream on this machine: answers each request with [reply], and
@@ -541,7 +541,7 @@ void main() {
       final key = promptCacheKey(
         request(jsonEncode({'device_id': 'd', 'session_id': session})),
       );
-      expect(key, matches(RegExp(r'^baocode-[0-9a-f]{32}$')));
+      expect(key, matches(RegExp(r'^pi-desktop-[0-9a-f]{32}$')));
       expect(key, isNot(contains(session)));
       // The older form names the same session.
       expect(

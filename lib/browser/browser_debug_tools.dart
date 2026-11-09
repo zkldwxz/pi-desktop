@@ -2,13 +2,13 @@ part of 'browser_tools.dart';
 
 // The agents' DevTools: a shared tab's console, network and performance,
 // and the conditions it runs in. What the console and network kept comes
-// from the first time BaoCode used the tab (see browser_records.dart).
+// from the first time pi-desktop used the tab (see browser_records.dart).
 
 final _debugTools = [
   ClaudeSdkTool(
     name: 'browser_console',
     description:
-        "A shared tab's console since BaoCode first used it: console calls, "
+        "A shared tab's console since pi-desktop first used it: console calls, "
         'uncaught exceptions, and the browser\'s own messages (blocked '
         'requests, CORS, CSP), oldest first; of its frames and workers '
         'too. Errors and warnings with where they came from, mapped to '
@@ -97,7 +97,7 @@ final _debugTools = [
   ClaudeSdkTool(
     name: 'browser_network',
     description:
-        "Lists the requests of a shared tab's page since BaoCode first used "
+        "Lists the requests of a shared tab's page since pi-desktop first used "
         'it, oldest first: id, method, status, type, size, time, URL. Read '
         'them with browser_request, or save them all, with their headers '
         'and bodies, as a HAR file (save) to go through with jq or a '
@@ -166,7 +166,7 @@ final _debugTools = [
       return [
         if (since != null && !all.any((r) => r.type == 'Document'))
           'The page\'s load is not among them: they are kept from '
-              '${since.toIso8601String().substring(11, 19)}, when BaoCode '
+              '${since.toIso8601String().substring(11, 19)}, when pi-desktop '
               'first used the tab (browser_navigate reload records it).',
         if (shown.length < requests.length)
           'The last ${shown.length} of ${requests.length}:',
@@ -328,7 +328,7 @@ final _debugTools = [
         'phone, or for another user: dark mode, reduced motion, print, '
         'another language, time zone or place, user agent; its cache off; '
         'its scripts off; as one with a vision deficiency sees it. Kept '
-        'while BaoCode uses the tab. "none" (or "") undoes each.',
+        'while pi-desktop uses the tab. "none" (or "") undoes each.',
     inputSchema: {
       'type': 'object',
       'properties': {
@@ -686,7 +686,7 @@ Future<String> _stopCoverage(BrowserTab tab) async {
   final unused = files.fold(0, (sum, f) => sum + f.unusedSize);
 
   final folder = Directory(
-    p.join(Directory.systemTemp.path, 'baocode-coverage'),
+    p.join(Directory.systemTemp.path, 'pi-desktop-coverage'),
   )..createSync(recursive: true);
   final stamp = DateTime.now().toIso8601String().replaceAll(':', '-');
   final file = File(p.join(folder.path, 'coverage-$stamp.json'));
@@ -749,7 +749,7 @@ Future<Object?> _queryObjects(
   String function,
 ) async {
   final browser = tab.browser;
-  const group = 'baocode-memory';
+  const group = 'pi-desktop-memory';
   try {
     final found = await browser.cdp(tab.tabId, 'Runtime.evaluate', {
       'expression': prototype,
@@ -1264,7 +1264,7 @@ Future<String> _saveHar(
     jsonEncode({
       'log': {
         'version': '1.2',
-        'creator': {'name': 'BaoCode', 'version': '1'},
+        'creator': {'name': 'pi-desktop', 'version': '1'},
         'pages': const [],
         'entries': entries,
       },
@@ -1444,7 +1444,7 @@ class _Trace {
     String extension = '.json',
   ]) async {
     final folder = Directory(
-      p.join(Directory.systemTemp.path, 'baocode-traces'),
+      p.join(Directory.systemTemp.path, 'pi-desktop-traces'),
     )..createSync(recursive: true);
     final stamp = DateTime.now().toIso8601String().replaceAll(':', '-');
     final file = File(p.join(folder.path, '$kind-$stamp$extension'));

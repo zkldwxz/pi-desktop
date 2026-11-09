@@ -1,6 +1,6 @@
-import 'package:baocode/chat/side_panel/file_link.dart';
-import 'package:baocode/chat/widgets/markdown_view.dart';
-import 'package:baocode/kernel/claude_code/claude_code_transport.dart';
+import 'package:pi-desktop/chat/side_panel/file_link.dart';
+import 'package:pi-desktop/chat/widgets/markdown_view.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_transport.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as p;
@@ -220,7 +220,7 @@ void main() {
 I changed [chat_screen.dart](lib/chat/chat_screen.dart#L42) and
 [the strip](lib/chat/panels/activity_strip.dart#L10-L30), and added
 [notes](<docs/release notes.md#L3>). The entry point is `lib/main.dart:12`,
-see also `pubspec.yaml` and [the site](https://baocode.dev).
+see also `pubspec.yaml` and [the site](https://github.com/zkldwxz/pi-desktop).
 
 - [workbench.dart:2530](lib/workbench.dart#L2530)
 - `flutter test` runs them

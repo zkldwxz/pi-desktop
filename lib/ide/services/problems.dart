@@ -5,8 +5,8 @@
 
 import 'dart:async';
 
-import 'package:bao_editor/monaco/vs/editor/common/core/position.dart';
-import 'package:bao_editor/monaco/vs/editor/contrib/gotoError/browser/marker_navigation.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/position.dart';
+import 'package:pi_editor/monaco/vs/editor/contrib/gotoError/browser/marker_navigation.dart';
 import 'package:flutter/services.dart';
 
 import '../ide_layout.dart';

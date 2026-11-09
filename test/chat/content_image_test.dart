@@ -2,21 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ui' as ui;
 
-import 'package:baocode/base/step_clock.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/composer/composer_embeds.dart' show FileImageChip;
-import 'package:baocode/chat/side_panel/file_link_menu.dart';
-import 'package:baocode/chat/side_panel/file_open.dart';
-import 'package:baocode/chat/widgets/chat_item_view.dart' show defaultExpanded;
-import 'package:baocode/chat/widgets/content_image.dart';
-import 'package:baocode/chat/widgets/fold_line.dart';
-import 'package:baocode/chat/widgets/image_thumbnails.dart';
-import 'package:baocode/chat/widgets/markdown_view.dart';
-import 'package:baocode/chat/widgets/step_header.dart';
-import 'package:baocode/chat/widgets/tool_call_row.dart';
-import 'package:baocode/kernel/claude_code/claude_code_translator.dart';
-import 'package:baocode/kernel/transcript.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi-desktop/base/step_clock.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/composer/composer_embeds.dart' show FileImageChip;
+import 'package:pi-desktop/chat/side_panel/file_link_menu.dart';
+import 'package:pi-desktop/chat/side_panel/file_open.dart';
+import 'package:pi-desktop/chat/widgets/chat_item_view.dart' show defaultExpanded;
+import 'package:pi-desktop/chat/widgets/content_image.dart';
+import 'package:pi-desktop/chat/widgets/fold_line.dart';
+import 'package:pi-desktop/chat/widgets/image_thumbnails.dart';
+import 'package:pi-desktop/chat/widgets/markdown_view.dart';
+import 'package:pi-desktop/chat/widgets/step_header.dart';
+import 'package:pi-desktop/chat/widgets/tool_call_row.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_code_translator.dart';
+import 'package:pi-desktop/kernel/transcript.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -95,7 +95,7 @@ void main() {
     });
 
     test('where the CLI saved it is not said: it shows', () {
-      call('s1', 'mcp__baocode__browser_screenshot', {'tabId': 1});
+      call('s1', 'mcp__pi_desktop__browser_screenshot', {'tabId': 1});
       answer('s1', [
         picture,
         {
@@ -109,7 +109,7 @@ void main() {
     });
 
     test('keeps where the CLI saved it, a file of the session', () {
-      call('s1', 'mcp__baocode__browser_screenshot', {'tabId': 1});
+      call('s1', 'mcp__pi_desktop__browser_screenshot', {'tabId': 1});
       answer('s1', [
         picture,
         {'type': 'text', 'text': '[Image: source: /u/tool-results/a.png]'},

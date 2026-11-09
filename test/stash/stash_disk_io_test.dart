@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:baocode/stash/stash_disk_io.dart';
+import 'package:pi-desktop/stash/stash_disk_io.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
 
-import 'package:bao_remote/claude.dart' show ClaudeHistoryPage;
+import 'package:pi_remote/claude.dart' show ClaudeHistoryPage;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +68,7 @@ typedef ClaudeSessionForker = Future<String> Function(
 /// plan usage, if one does.
 typedef ClaudeUsageSwitch = Future<String?> Function();
 
-/// [executable], run in [cwd], refused an option BaoCode starts Claude
+/// [executable], run in [cwd], refused an option pi-desktop starts Claude
 /// Code with: whether another, newer, may be started instead.
 typedef ClaudeTooOldHandler = Future<bool> Function(
   String cwd,
@@ -207,7 +207,7 @@ class ClaudeCodeKernel
   final ClaudeSessionForker? _forkSession;
   final ClaudeUsageSwitch _usageOffBy;
 
-  /// A build that refused an option BaoCode starts it with, run in a
+  /// A build that refused an option pi-desktop starts it with, run in a
   /// folder: whether another, newer, may be started instead (see
   /// [_launch]). None: the user is told to update it.
   final ClaudeTooOldHandler? _rejectTooOld;
@@ -353,7 +353,7 @@ class ClaudeCodeKernel
   }
 
   /// The model asked for, as the CLI names it (e.g. `opus[1m]`), or a
-  /// provider's ([modelRef]). BaoCode's own core has no model of its own:
+  /// provider's ([modelRef]). pi-desktop's own core has no model of its own:
   /// on it, one of no upstream is the first upstream's model. A provider's
   /// removed since falls back as the picker shows it: to Claude Code's own
   /// if offered there, else to the first upstream's.
@@ -1974,8 +1974,8 @@ class ClaudeCodeKernel
 
   /// The hooks it has the CLI call back, around each edit of the agent's or
   /// a subagent's, for an [EditWatch].
-  static const _beforeEdit = 'baocode-before-edit';
-  static const _afterEdit = 'baocode-after-edit';
+  static const _beforeEdit = 'pi-desktop-before-edit';
+  static const _afterEdit = 'pi-desktop-after-edit';
   static const _editTools = 'Edit|Write|MultiEdit|NotebookEdit';
 
   static final Map<String, Object?> _editHooks = {
@@ -2058,7 +2058,7 @@ class ClaudeCodeKernel
     if ((_workspace?.approvesAll ?? false) || _approval == 'dontAsk') {
       return Future.value();
     }
-    final id = 'baocode-${++_sdkAsks}';
+    final id = 'pi-desktop-${++_sdkAsks}';
     final answered = Completer<ApprovalDecision?>();
     _permissions[id] = _Permission(const {}, const [], const [], sdk: answered);
     emit(
@@ -2777,7 +2777,7 @@ class ClaudeCodeKernel
     );
   }
 
-  /// Whether the CLI refused an option BaoCode starts it with: one from
+  /// Whether the CLI refused an option pi-desktop starts it with: one from
   /// before the option was.
   static bool _tooOld(String stderr) => stderr.contains("unknown option '--");
 
@@ -2821,7 +2821,7 @@ class ClaudeCodeKernel
 
   static String _failureMessage(String stderr, {String? remote}) {
     if (_tooOld(stderr)) {
-      return 'Claude Code is older than BaoCode needs. Update it '
+      return 'Claude Code is older than pi-desktop needs. Update it '
           '(`claude update`) and try again.';
     }
     final lower = stderr.toLowerCase();
@@ -3298,7 +3298,7 @@ class ClaudeCodeKernel
     options: () {
       final providers = _providers.enabled;
       return [
-        // Shown unless turned off in Settings → Models; never on BaoCode's
+        // Shown unless turned off in Settings → Models; never on pi-desktop's
         // own core, which runs on the upstreams alone.
         if (_providers.builtinOffered)
           if (_models.isEmpty)
@@ -3349,7 +3349,7 @@ class ClaudeCodeKernel
     },
     selected: () {
       if (_custom != null) return _model;
-      // BaoCode's own core with no upstream: none to run on.
+      // pi-desktop's own core with no upstream: none to run on.
       if (!_providers.builtinAvailable) return null;
       return switch (_currentModel?.value) {
         final value? => _baseOf(value),

@@ -7,10 +7,10 @@ import 'app_paths.dart';
 
 /// Where [DataDirectory.current] was found.
 enum DataDirectorySource {
-  /// The `BAOCODE_DATA_DIR` environment variable.
+  /// The `PI_DESKTOP_DATA_DIR` environment variable.
   environment,
 
-  /// `~/.baocode/config-dir.json` ([DataDirectoryPointer]).
+  /// `~/.pi-desktop/config-dir.json` ([DataDirectoryPointer]).
   pointer,
 
   /// The platform's place for app data ([DataDirectory.defaultPath]).
@@ -56,7 +56,7 @@ class DataDirectory {
   /// user's data.
   static DataDirectory get current => _current ??= DataDirectory(
     Platform.environment.containsKey('FLUTTER_TEST')
-        ? p.join(Directory.systemTemp.path, 'baocode-test-data-$pid')
+        ? p.join(Directory.systemTemp.path, 'pi-desktop-test-data-$pid')
         : defaultPath(Platform.environment),
   );
   static set current(DataDirectory value) => _current = value;
@@ -166,14 +166,14 @@ class DataDirectory {
   /// Entries that show a folder holds the app's data.
   static const markers = ['User', 'state', 'argv.json'];
 
-  /// The platform's place for it: `%APPDATA%\baocode` on Windows,
-  /// `~/Library/Application Support/baocode` on macOS, `~/.config/baocode`
+  /// The platform's place for it: `%APPDATA%\pi-desktop` on Windows,
+  /// `~/Library/Application Support/pi-desktop` on macOS, `~/.config/pi-desktop`
   /// elsewhere.
   static String defaultPath(Map<String, String> environment) =>
       AppPaths.dataDir(environment);
 
   /// The environment variable that overrides everything else.
-  static const environmentVariable = 'BAOCODE_DATA_DIR';
+  static const environmentVariable = 'PI_DESKTOP_DATA_DIR';
 
   @override
   bool operator ==(Object other) =>
@@ -186,7 +186,7 @@ class DataDirectory {
   String toString() => 'DataDirectory($path, ${source.name})';
 }
 
-/// `~/.baocode/config-dir.json`: the folder the user moved the data to
+/// `~/.pi-desktop/config-dir.json`: the folder the user moved the data to
 /// (`dataDir`; the default when absent), and the one it was moved from
 /// (`previousDataDir`) until the app has asked what to do with what is
 /// left there.
@@ -199,7 +199,7 @@ class DataDirectoryPointer {
 
   /// Where it is, under [home].
   static String fileIn(String home) =>
-      p.join(home, '.baocode', 'config-dir.json');
+      p.join(home, '.pi-desktop', 'config-dir.json');
 
   /// What [file] says; null when there is no such file. Throws a
   /// [FormatException] when it is not a pointer (or cannot be read).
@@ -273,7 +273,7 @@ int _asides = 0;
 
 /// Why the data directory configured cannot be used.
 enum DataDirectoryProblem {
-  /// `~/.baocode/config-dir.json` cannot be read, or is not a pointer.
+  /// `~/.pi-desktop/config-dir.json` cannot be read, or is not a pointer.
   invalidPointer,
 
   /// The folder is not there (e.g. on a drive that is gone).
@@ -301,7 +301,7 @@ class DataDirectoryResolution {
   /// The platform's place for it.
   final String defaultPath;
 
-  /// `~/.baocode/config-dir.json`.
+  /// `~/.pi-desktop/config-dir.json`.
   final String pointerFile;
 
   /// Why [path] cannot be used; null when it can.
@@ -315,8 +315,8 @@ class DataDirectoryResolution {
   DataDirectory get directory => DataDirectory(path, source: source);
 }
 
-/// Where the data directory is: `BAOCODE_DATA_DIR`, else the folder
-/// `~/.baocode/config-dir.json` names (`{"dataDir": "..."}`), else the
+/// Where the data directory is: `PI_DESKTOP_DATA_DIR`, else the folder
+/// `~/.pi-desktop/config-dir.json` names (`{"dataDir": "..."}`), else the
 /// platform's default. One set by either must exist and take files; one
 /// that does not is reported, never replaced by the default unasked (a
 /// drive may just be gone for now). [environment] is the process's and
@@ -415,7 +415,7 @@ String expandDataDirectory(String path, String home) {
 
 /// Whether a file can be made (and removed) in the folder at [path].
 bool canWriteIn(String path) {
-  final probe = File(p.join(path, '.baocode-write-probe-$pid'));
+  final probe = File(p.join(path, '.pi-desktop-write-probe-$pid'));
   try {
     probe.writeAsStringSync('');
     probe.deleteSync();

@@ -2,20 +2,20 @@
 // search in place of the tree, the results come from the engine the IDE
 // searches with, and a result opens its file at its line.
 
-import 'package:baocode/ide/ide_notifications.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/chat/side_panel/file_link.dart';
-import 'package:baocode/chat/side_panel/side_panel_controller.dart';
-import 'package:baocode/chat/side_panel/side_panel_view.dart';
-import 'package:baocode/ide/file_service.dart';
-import 'package:baocode/ide/ide_explorer.dart';
-import 'package:baocode/ide/search/ide_search_view.dart';
-import 'package:baocode/ide/ide_input.dart';
-import 'package:baocode/ide/search/text_search.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/theme/app_theme.dart';
-import 'package:baocode/theme/code_font.dart';
-import 'package:baocode/theme/codicons.dart';
+import 'package:pi-desktop/ide/ide_notifications.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/chat/side_panel/file_link.dart';
+import 'package:pi-desktop/chat/side_panel/side_panel_controller.dart';
+import 'package:pi-desktop/chat/side_panel/side_panel_view.dart';
+import 'package:pi-desktop/ide/file_service.dart';
+import 'package:pi-desktop/ide/ide_explorer.dart';
+import 'package:pi-desktop/ide/search/ide_search_view.dart';
+import 'package:pi-desktop/ide/ide_input.dart';
+import 'package:pi-desktop/ide/search/text_search.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
+import 'package:pi-desktop/theme/code_font.dart';
+import 'package:pi-desktop/theme/codicons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show LogicalKeyboardKey;
 import 'package:flutter_test/flutter_test.dart';

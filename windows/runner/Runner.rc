@@ -52,8 +52,8 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems. A Debug build's has a DEV badge
-// (tool/make_dev_icons.py), to be told from an installed BaoCode.
-#ifdef BAOCODE_DEV_ICON
+// (tool/make_dev_icons.py), to be told from an installed pi-desktop.
+#ifdef PI_DESKTOP_DEV_ICON
 IDI_APP_ICON            ICON                    "resources\\app_icon_dev.ico"
 #else
 IDI_APP_ICON            ICON                    "resources\\app_icon.ico"
@@ -94,13 +94,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "BaoCode" "\0"
-            VALUE "FileDescription", "BaoCode" "\0"
+            VALUE "CompanyName", "pi-desktop" "\0"
+            VALUE "FileDescription", "pi-desktop" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "baocode" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 BaoCode. All rights reserved." "\0"
-            VALUE "OriginalFilename", "baocode.exe" "\0"
-            VALUE "ProductName", "BaoCode" "\0"
+            VALUE "InternalName", "pi-desktop" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 pi-desktop. All rights reserved." "\0"
+            VALUE "OriginalFilename", "pi-desktop.exe" "\0"
+            VALUE "ProductName", "pi-desktop" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -1,4 +1,4 @@
-import 'package:bao_remote/client.dart' show SshTarget;
+import 'package:pi_remote/client.dart' show SshTarget;
 import 'package:path/path.dart' as p;
 
 import '../ide/host_paths.dart';

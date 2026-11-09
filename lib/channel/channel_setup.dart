@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import '../platform/event_log.dart';
 import '../settings/user_settings.dart';
 
-/// Where the user came to baocode.dev from, as the site kept it in their
+/// Where the user came to the pi-desktop site from, as the site kept it in their
 /// browser: a channel's id from the address (`channel`), the site linking
 /// there (`referrer`), neither (`direct`); `none` when the browser the
 /// setup opened had nothing kept.
@@ -273,7 +273,7 @@ class GlobalChannelSetupStore implements ChannelSetupStore {
 /// null while it has none. Throws when it could not be asked (offline).
 typedef ChannelLookUp = Future<ChannelAttribution?> Function(Uri url);
 
-/// What a pasted or opened `baocode://activate` link came to.
+/// What a pasted or opened `pi-desktop://activate` link came to.
 enum ChannelLinkResult {
   accepted,
 
@@ -286,10 +286,10 @@ enum ChannelLinkResult {
 
 /// The channel build's first start: one build for every channel, which
 /// asks where its user came from of the browser they downloaded it in. It
-/// opens baocode.dev/activate with the install's id; the page sends the
+/// opens the pi-desktop site/activate with the install's id; the page sends the
 /// stats server what the site kept in that browser, and the app, asking
 /// there, is set up. Should the app not hear of it, the page hands it a
-/// `baocode://activate?…` link, opened or pasted.
+/// `pi-desktop://activate?…` link, opened or pasted.
 ///
 /// It cannot be put off: the welcome stays till it is done. Pending is
 /// kept, so that a quit, or an update to another build, does not skip it;
@@ -306,16 +306,16 @@ class ChannelSetup extends ChangeNotifier {
     this.offlineAfter = 2,
   }) : _done = again == null && store.state == doneState;
 
-  /// Made with `--dart-define=BAOCODE_CHANNEL=true`: the build the site
+  /// Made with `--dart-define=PI_DESKTOP_CHANNEL=true`: the build the site
   /// gives a visitor who came by a channel.
-  static const channelBuild = bool.fromEnvironment('BAOCODE_CHANNEL');
+  static const channelBuild = bool.fromEnvironment('PI_DESKTOP_CHANNEL');
 
   static const pendingState = 'pending';
   static const doneState = 'done';
 
-  static const pageUrl = 'https://baocode.dev/activate';
-  static const zhPageUrl = 'https://baocode.dev/zh/activate';
-  static const lookUpBase = 'https://stats.baocode.dev/v1/attribution/';
+  static const pageUrl = 'https://github.com/zkldwxz/pi-desktop';
+  static const zhPageUrl = 'https://github.com/zkldwxz/pi-desktop';
+  static const lookUpBase = 'https://github.com/zkldwxz/pi-desktop';
 
   /// The app's, while it is to be set up (main.dart sets it).
   static ChannelSetup? current;
@@ -451,14 +451,14 @@ class ChannelSetup extends ChangeNotifier {
     }
   }
 
-  /// Whether [link] is the page's (`baocode://activate…`), not another
-  /// `baocode://` link.
+  /// Whether [link] is the page's (`pi-desktop://activate…`), not another
+  /// `pi-desktop://` link.
   static bool isLink(String link) => switch (Uri.tryParse(link.trim())) {
-    Uri(scheme: 'baocode', host: 'activate') => true,
+    Uri(scheme: 'pi-desktop', host: 'activate') => true,
     _ => false,
   };
 
-  /// A `baocode://activate?i=…&s=…&c=…` link, as the page hands it over
+  /// A `pi-desktop://activate?i=…&s=…&c=…` link, as the page hands it over
   /// (opened, or pasted): set up with what it says, which the telemetry
   /// reports (the server might not have heard of it).
   ChannelLinkResult acceptLink(String link) {

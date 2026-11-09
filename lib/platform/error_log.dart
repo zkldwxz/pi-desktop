@@ -152,7 +152,7 @@ class ErrorLog {
         file.renameSync(previousPath);
       }
       _append(
-        '--- BaoCode $appVersionString · ${Platform.operatingSystem} '
+        '--- pi-desktop $appVersionString · ${Platform.operatingSystem} '
         '${Platform.operatingSystemVersion} · '
         '${_clock().toIso8601String()} ---\n',
       );

@@ -1,8 +1,8 @@
-import 'package:baocode/base/step_clock.dart';
-import 'package:baocode/chat/chat_models.dart';
-import 'package:baocode/chat/widgets/rolling_text.dart';
-import 'package:baocode/chat/widgets/turn_footer.dart';
-import 'package:baocode/l10n/l10n.dart';
+import 'package:pi-desktop/base/step_clock.dart';
+import 'package:pi-desktop/chat/chat_models.dart';
+import 'package:pi-desktop/chat/widgets/rolling_text.dart';
+import 'package:pi-desktop/chat/widgets/turn_footer.dart';
+import 'package:pi-desktop/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

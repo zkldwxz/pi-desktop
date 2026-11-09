@@ -5,16 +5,16 @@
 // contribution). `getBreakpointMessageAndIcon` is
 // `breakpointPresentation` from lib/debug/ui/debug_icons.dart.
 
-import 'package:baocode/base/uri.dart' show VsUri;
-import 'package:baocode/debug/base/event.dart';
-import 'package:baocode/debug/common/debug_model.dart';
-import 'package:baocode/debug/common/debug_storage.dart';
-import 'package:baocode/debug/common/debug_types.dart';
-import 'package:baocode/debug/service/debug_service.dart';
-import 'package:baocode/debug/session/debug_session.dart';
-import 'package:baocode/debug/ui/debug_icons.dart';
-import 'package:baocode/debug/ui/debug_strings.dart';
-import 'package:baocode/theme/codicons.dart';
+import 'package:pi-desktop/base/uri.dart' show VsUri;
+import 'package:pi-desktop/debug/base/event.dart';
+import 'package:pi-desktop/debug/common/debug_model.dart';
+import 'package:pi-desktop/debug/common/debug_storage.dart';
+import 'package:pi-desktop/debug/common/debug_types.dart';
+import 'package:pi-desktop/debug/service/debug_service.dart';
+import 'package:pi-desktop/debug/session/debug_session.dart';
+import 'package:pi-desktop/debug/ui/debug_icons.dart';
+import 'package:pi-desktop/debug/ui/debug_strings.dart';
+import 'package:pi-desktop/theme/codicons.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'mock_debug.dart';

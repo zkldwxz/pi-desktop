@@ -1,9 +1,9 @@
-import 'package:baocode/keybindings/chat_keybindings.dart';
-import 'package:baocode/keybindings/default_keybindings.dart';
-import 'package:baocode/keybindings/key_chord.dart';
-import 'package:baocode/keybindings/keybinding_service.dart';
-import 'package:baocode/keybindings/window_keybindings.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi-desktop/keybindings/chat_keybindings.dart';
+import 'package:pi-desktop/keybindings/default_keybindings.dart';
+import 'package:pi-desktop/keybindings/key_chord.dart';
+import 'package:pi-desktop/keybindings/keybinding_service.dart';
+import 'package:pi-desktop/keybindings/window_keybindings.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

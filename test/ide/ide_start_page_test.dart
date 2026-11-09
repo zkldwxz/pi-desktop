@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/ide/ide_commands.dart';
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/ide/ide_welcome.dart';
+import 'package:pi-desktop/ide/ide_commands.dart';
+import 'package:pi-desktop/ide/ide_quick_input.dart';
+import 'package:pi-desktop/ide/ide_welcome.dart';
 
 void main() {
   Future<List<String>> pump(

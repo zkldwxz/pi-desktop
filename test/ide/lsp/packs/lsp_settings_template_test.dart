@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:baocode/ide/lsp/catalog/bundled_lsp_catalog.dart';
-import 'package:baocode/ide/lsp/catalog/standard_lsp.dart';
-import 'package:baocode/ide/lsp/lsp_manager.dart';
-import 'package:baocode/ide/lsp/lsp_server_definition.dart';
-import 'package:baocode/ide/lsp/packs/language_packs.dart';
-import 'package:baocode/ide/lsp/packs/lsp_settings_template.dart';
-import 'package:baocode/ide/lsp/packs/lsp_user_settings.dart';
+import 'package:pi-desktop/ide/lsp/catalog/bundled_lsp_catalog.dart';
+import 'package:pi-desktop/ide/lsp/catalog/standard_lsp.dart';
+import 'package:pi-desktop/ide/lsp/lsp_manager.dart';
+import 'package:pi-desktop/ide/lsp/lsp_server_definition.dart';
+import 'package:pi-desktop/ide/lsp/packs/language_packs.dart';
+import 'package:pi-desktop/ide/lsp/packs/lsp_settings_template.dart';
+import 'package:pi-desktop/ide/lsp/packs/lsp_user_settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;

@@ -13,7 +13,7 @@
 // configuration listener; the product's URL protocol (`vscode:` links) is
 // [TerminalWordLinkDetector.urlProtocol], none by default.
 
-import 'package:bao_xterm/typings/xterm_headless.dart';
+import 'package:pi_xterm/typings/xterm_headless.dart';
 
 import 'links.dart';
 import 'terminal_link_helpers.dart';

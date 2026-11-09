@@ -27,7 +27,7 @@ class ComposerDraft extends ChangeNotifier {
   Object? get savedBy => _savedBy;
   Object? _savedBy;
 
-  /// Files to put in as if pasted (Explorer's Open with BaoCode), taken by
+  /// Files to put in as if pasted (Explorer's Open with pi-desktop), taken by
   /// the composer that shows the draft, or by the next to.
   List<ComposerFile> get pendingFiles => List.unmodifiable(_pendingFiles);
   final List<ComposerFile> _pendingFiles = [];

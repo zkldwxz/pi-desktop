@@ -1,4 +1,4 @@
-# Goal：Git 功能全面对齐 IntelliJ IDEA，并加上 BaoCode 自己的优化
+# Goal：Git 功能全面对齐 IntelliJ IDEA，并加上 pi-desktop 自己的优化
 
 ## 背景
 Git 日志和 IDEA 式提交面板已经上线（#328）。用户反馈 IDEA 的 Git「很方便、很好用」，要求逐项对齐，再结合 AI 工作流做我们自己的优化。

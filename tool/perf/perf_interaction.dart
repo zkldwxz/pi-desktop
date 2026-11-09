@@ -18,23 +18,23 @@ import 'dart:math';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:bao_markdown/bao_markdown.dart'
+import 'package:pi_markdown/pi_markdown.dart'
     show
         MarkdownEditor,
         MarkdownController,
         MarkdownEditorState,
         MarkdownEditing,
         RenderMdLine;
-import 'package:baocode/chat/chat_history_view.dart';
-import 'package:baocode/chat/composer/composer.dart';
-import 'package:baocode/chat/side_panel/side_panel_view.dart';
-import 'package:baocode/sidebar/sidebar.dart';
-import 'package:baocode/stash/stash_controller.dart';
-import 'package:baocode/stash/stash_editor.dart';
-import 'package:baocode/stash/stash_view.dart';
-import 'package:baocode/workspace/chat_drag.dart';
-import 'package:baocode/workspace/chat_grid.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/chat/chat_history_view.dart';
+import 'package:pi-desktop/chat/composer/composer.dart';
+import 'package:pi-desktop/chat/side_panel/side_panel_view.dart';
+import 'package:pi-desktop/sidebar/sidebar.dart';
+import 'package:pi-desktop/stash/stash_controller.dart';
+import 'package:pi-desktop/stash/stash_editor.dart';
+import 'package:pi-desktop/stash/stash_view.dart';
+import 'package:pi-desktop/workspace/chat_drag.dart';
+import 'package:pi-desktop/workspace/chat_grid.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 
 import 'perf_memory.dart';
 import 'perf_probe.dart';

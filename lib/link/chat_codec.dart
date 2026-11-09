@@ -3,7 +3,7 @@ import 'dart:convert';
 import '../chat/chat_models.dart';
 
 /// The history's items as JSON, for the phones paired with the desktop
-/// (see `package:bao_link`). The phone has this file as it is (its
+/// (see `package:pi_link`). The phone has this file as it is (its
 /// lib/link/chat_codec.dart), over its copy of chat_models.dart.
 abstract final class ChatCodec {
   /// What a tool's or a command's output keeps, at most: the phone shows it
@@ -15,7 +15,7 @@ abstract final class ChatCodec {
   /// The tag the app's messages to a bot are wrapped in: what happened to
   /// the user's agents, for it to tell of. Not the user's words: shown as
   /// a note.
-  static const botEventTag = 'bao-event';
+  static const botEventTag = 'pi-event';
 
   /// The bot's tool that sends a picture: a file's, which it answers with
   /// (the item's images), or one on the web (its input's `url`).

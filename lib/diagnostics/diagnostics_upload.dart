@@ -14,7 +14,7 @@ import 'crash_reports.dart';
 import 'diagnostics_bundle.dart';
 
 /// Where to upload instead, to try a server.
-const diagnosticsUrlVariable = 'BAOCODE_DIAGNOSTICS_URL';
+const diagnosticsUrlVariable = 'PI_DESKTOP_DIAGNOSTICS_URL';
 
 /// Why an upload did not get through.
 enum DiagnosticsFailure {
@@ -59,7 +59,7 @@ final class DiagnosticsFailed extends DiagnosticsResult {
 }
 
 /// Uploads the logs folder's files and the system's crash reports of the
-/// app ([packDiagnostics]) to stats.baocode.dev
+/// app ([packDiagnostics]) to the pi-desktop site
 /// when the user asks to (Settings → Updates → Diagnostic Logs): with
 /// the note they typed, the app's version, the system's and the display
 /// language; nothing that tells who sent it, not the usage statistics'
@@ -103,7 +103,7 @@ class DiagnosticsUploader {
     );
   }
 
-  static const defaultUrl = 'https://stats.baocode.dev/v1/diagnostics';
+  static const defaultUrl = 'https://github.com/zkldwxz/pi-desktop';
 
   /// The version of the report's `meta`.
   static const schema = 1;
@@ -158,7 +158,7 @@ class DiagnosticsUploader {
       home: home,
       windows: windows,
     );
-    final boundary = 'BaoCode${_randomToken()}';
+    final boundary = 'pi-desktop${_randomToken()}';
     final body = multipartBody(boundary, {
       'v': schema,
       'version': version,
@@ -172,7 +172,7 @@ class DiagnosticsUploader {
     }, bundle.bytes);
     final client = _sending = _client()
       ..connectionTimeout = timeout
-      ..userAgent = 'BaoCode/$version ($os)';
+      ..userAgent = 'pi-desktop/$version ($os)';
     try {
       final request = await client.postUrl(url).timeout(timeout);
       request.headers.contentType = ContentType(

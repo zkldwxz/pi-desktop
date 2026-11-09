@@ -6,16 +6,16 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:baocode/chat/chat_session.dart';
-import 'package:baocode/ide/ide_quick_input.dart';
-import 'package:baocode/kernel/agent_kernel.dart';
-import 'package:baocode/kernel/mock/mock_kernels.dart';
-import 'package:baocode/main.dart';
-import 'package:baocode/remote/open_remote.dart';
-import 'package:baocode/workspace/new_chat_folder_bar.dart';
-import 'package:baocode/workspace/workspace.dart';
+import 'package:pi-desktop/chat/chat_session.dart';
+import 'package:pi-desktop/ide/ide_quick_input.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart';
+import 'package:pi-desktop/kernel/mock/mock_kernels.dart';
+import 'package:pi-desktop/main.dart';
+import 'package:pi-desktop/remote/open_remote.dart';
+import 'package:pi-desktop/workspace/new_chat_folder_bar.dart';
+import 'package:pi-desktop/workspace/workspace.dart';
 
-const _window = MethodChannel('baocode/window');
+const _window = MethodChannel('pi-desktop/window');
 const _desktop = '/Users/me/Desktop';
 
 final _mac = TargetPlatformVariant.only(TargetPlatform.macOS);
@@ -43,7 +43,7 @@ Future<Workspace> _pumpNew(WidgetTester tester) async {
     NewChatFolderBar.pickDirectory = pick;
   });
   final workspace = Workspace.mock();
-  await tester.pumpWidget(BaoCodeApp(workspace: workspace));
+  await tester.pumpWidget(PiDesktopApp(workspace: workspace));
   workspace.create();
   await tester.pump();
   return workspace;
@@ -71,10 +71,10 @@ void main() {
     tester,
   ) async {
     final workspace = await _pumpNew(tester);
-    expect(workspace.selected.project.name, 'baocode');
+    expect(workspace.selected.project.name, 'pi-desktop');
     expect(_bar, findsOneWidget);
     expect(
-      find.descendant(of: _bar, matching: find.text('baocode')),
+      find.descendant(of: _bar, matching: find.text('pi-desktop')),
       findsOneWidget,
     );
     expect(find.text('Open from Finder'), findsOneWidget);
@@ -92,7 +92,7 @@ void main() {
     workspace.hideProject(hidden);
     await tester.pump();
 
-    await tester.tap(find.descendant(of: _bar, matching: find.text('baocode')));
+    await tester.tap(find.descendant(of: _bar, matching: find.text('pi-desktop')));
     await tester.pumpAndSettle();
     expect(find.text('cursor-docs'), findsNothing);
   }, variant: _mac);
@@ -102,7 +102,7 @@ void main() {
   ) async {
     final workspace = await _pumpNew(tester);
     final was = workspace.selected;
-    await tester.tap(find.descendant(of: _bar, matching: find.text('baocode')));
+    await tester.tap(find.descendant(of: _bar, matching: find.text('pi-desktop')));
     await tester.pumpAndSettle();
     await tester.tap(find.text('No folder'));
     await tester.pumpAndSettle();

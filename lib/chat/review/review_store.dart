@@ -1,4 +1,4 @@
-import 'package:bao_remote/review.dart';
+import 'package:pi_remote/review.dart';
 
 import '../../remote/remote_location.dart';
 import '../../remote/ssh_host.dart';
@@ -6,7 +6,7 @@ import 'review_store_stub.dart'
     if (dart.library.io) 'review_store_io.dart'
     as platform;
 
-export 'package:bao_remote/review.dart';
+export 'package:pi_remote/review.dart';
 
 /// The store for the files of the project at [root]: its machine's; null
 /// where there is none (the web, or under test). A remote project's is

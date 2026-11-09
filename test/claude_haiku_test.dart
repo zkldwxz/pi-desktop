@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:baocode/kernel/claude_code/claude_haiku.dart';
-import 'package:baocode/usage/usage_record.dart';
+import 'package:pi-desktop/kernel/claude_code/claude_haiku.dart';
+import 'package:pi-desktop/usage/usage_record.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -112,13 +112,13 @@ void main() {
       'its own headers', () {
     expect(
       withUsageSession({'A': '1'}, 's1')['ANTHROPIC_CUSTOM_HEADERS'],
-      'x-baocode-session: s1',
+      'x-pi-desktop-session: s1',
     );
     expect(
       withUsageSession({
         'ANTHROPIC_CUSTOM_HEADERS': 'X-Team: a',
       }, 's1')['ANTHROPIC_CUSTOM_HEADERS'],
-      'X-Team: a\nx-baocode-session: s1',
+      'X-Team: a\nx-pi-desktop-session: s1',
     );
   });
 }

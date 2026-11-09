@@ -1,10 +1,10 @@
-import 'package:baocode/chat/chat_session.dart' show ModelSettingChoice;
-import 'package:baocode/chat/composer/composer_picker.dart';
-import 'package:baocode/chat/floating/floating_registry.dart';
-import 'package:baocode/ide/ide_switch.dart';
-import 'package:baocode/kernel/agent_kernel.dart' show KernelChoiceKind;
-import 'package:baocode/kernel/kernel_types.dart';
-import 'package:baocode/theme/app_theme.dart';
+import 'package:pi-desktop/chat/chat_session.dart' show ModelSettingChoice;
+import 'package:pi-desktop/chat/composer/composer_picker.dart';
+import 'package:pi-desktop/chat/floating/floating_registry.dart';
+import 'package:pi-desktop/ide/ide_switch.dart';
+import 'package:pi-desktop/kernel/agent_kernel.dart' show KernelChoiceKind;
+import 'package:pi-desktop/kernel/kernel_types.dart';
+import 'package:pi-desktop/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';

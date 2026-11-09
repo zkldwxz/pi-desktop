@@ -72,7 +72,7 @@ UINT KeyOf(const std::string& name) {
 StashChannel::StashChannel(flutter::BinaryMessenger* messenger, HWND window)
     : window_(window),
       channel_(std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-          messenger, "baocode/stash",
+          messenger, "pi-desktop/stash",
           &flutter::StandardMethodCodec::GetInstance())) {
   channel_->SetMethodCallHandler(
       [this](const flutter::MethodCall<flutter::EncodableValue>& call,
