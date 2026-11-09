@@ -1,0 +1,118 @@
+# A macOS build of pi-desktop to try: a .zip and a .dmg per architecture, ad-hoc
+# signed (not notarized: open it with right-click → Open the first time).
+# Nothing is published; the files are this run's artifacts.
+#
+#   Actions → macOS build → Run workflow         (pick the architecture)
+#   git push to a build/** branch                (both architectures)
+name: macOS build
+
+on:
+  workflow_dispatch:
+    inputs:
+      arch:
+        description: Architecture (arm64 = Apple Silicon, x64 = Intel)
+        type: choice
+        options: [both, arm64, x64]
+        default: both
+  push:
+    branches: ['build/**']
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_VERSION: 3.47.5
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+      version: ${{ steps.matrix.outputs.version }}
+    steps:
+      - uses: actions/checkout@v5
+      - id: matrix
+        shell: bash
+        env:
+          ARCH: ${{ inputs.arch || 'both' }}
+        run: |
+          version=$(sed -n 's/^version:[[:space:]]*//p' pubspec.yaml)
+          echo "version=${version%%+*}" >> "$GITHUB_OUTPUT"
+          case "$ARCH" in
+            arm64) m='[{"arch":"arm64","runner":"macos-15"}]' ;;
+            x64)   m='[{"arch":"x64","runner":"macos-15-intel"}]' ;;
+            *)     m='[{"arch":"arm64","runner":"macos-15"},{"arch":"x64","runner":"macos-15-intel"}]' ;;
+          esac
+          echo "matrix=$m" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build macOS ${{ matrix.arch }}
+    needs: plan
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+      - id: iroh
+        uses: ./.github/actions/pi-iroh-prebuilt
+      - if: steps.iroh.outputs.hit != 'true'
+        uses: ./.github/actions/setup-rust
+      - name: Resolve dependencies
+        run: flutter pub get
+      - name: Build
+        run: flutter build macos --release
+      - name: Bundle the Pi runtime, sign ad hoc, archive
+        shell: bash
+        env:
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          app="build/macos/Build/Products/Release/pi-desktop.app"
+          dart run tool/bundle_pi_runtime.dart --target "$app/Contents/Resources/pi-runtime" --platform macos --arch ${{ matrix.arch }}
+          arch=${{ matrix.arch }}
+          [ "$arch" != x64 ] || arch=x86_64
+          lipo "$app/Contents/MacOS/pi-desktop" -verify_arch "$arch"
+          lipo "$app/Contents/Resources/pi-runtime/node" -verify_arch "$arch"
+          for item in "$app"/Contents/Frameworks/*.framework "$app"/Contents/Frameworks/*.dylib; do
+            [ -e "$item" ] || continue
+            codesign --force --sign - "$item"
+          done
+          python3 - "$app/Contents/Resources/pi-runtime" <<'PY'
+          import os, subprocess, sys
+          magic = {bytes.fromhex(x) for x in ('cffaedfe', 'feedfacf', 'cafebabe', 'cafebabf', 'bebafeca', 'bfbafeca')}
+          for root, dirs, files in os.walk(sys.argv[1], followlinks=False):
+              for name in files:
+                  path = os.path.join(root, name)
+                  if os.path.islink(path):
+                      continue
+                  with open(path, 'rb') as f:
+                      if f.read(4) not in magic:
+                          continue
+                  subprocess.run(['codesign', '--force', '--sign', '-', path], check=True)
+          PY
+          codesign --force --sign - "$app/Contents/MacOS/pi-desktop-browser-host"
+          codesign --force --sign - --entitlements macos/FinderExtension/FinderExtension.entitlements "$app/Contents/PlugIns/FinderExtension.appex"
+          codesign --force --sign - --entitlements macos/Runner/Release.entitlements "$app"
+          codesign --verify --deep --strict "$app"
+          "$app/Contents/Resources/pi-runtime/node" --version
+          "$app/Contents/Resources/pi-runtime/node" "$app/Contents/Resources/pi-runtime/node_modules/@earendil-works/pi-coding-agent/dist/bundle/cli.js" --version
+          mkdir -p dist
+          ditto -c -k --sequesterRsrc --keepParent "$app" "dist/pi-desktop-$VERSION-macos-${{ matrix.arch }}.zip"
+          dmg_stage=$(mktemp -d "$RUNNER_TEMP/pi-desktop-dmg.XXXXXX")
+          trap 'rm -rf "$dmg_stage"' EXIT
+          ditto "$app" "$dmg_stage/pi-desktop.app"
+          ln -s /Applications "$dmg_stage/Applications"
+          hdiutil create -quiet -format UDZO -volname 'pi-desktop' -srcfolder "$dmg_stage" "dist/pi-desktop-$VERSION-macos-${{ matrix.arch }}.dmg"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: pi-desktop-macos-${{ matrix.arch }}
+          path: dist/*
+          if-no-files-found: error
