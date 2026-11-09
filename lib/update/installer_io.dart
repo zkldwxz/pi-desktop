@@ -399,7 +399,7 @@ class MacUpdateInstaller implements UpdateInstaller {
   }
 
   Future<bool> _writable(String folder) async {
-    final probe = File(p.join(folder, '.baocode-update-$pid'));
+    final probe = File(p.join(folder, '.pi-desktop-update-$pid'));
     try {
       await probe.writeAsString('');
       await probe.delete();
@@ -438,8 +438,8 @@ if kill -0 "\$pid" 2>/dev/null; then
   echo "BaoCode is still running: not installed"
   exit 1
 fi
-new="\$target.baocode-new"
-old="\$target.baocode-old"
+new="\$target.pi-desktop-new"
+old="\$target.pi-desktop-old"
 rm -rf "\$new" "\$old"
 if /usr/bin/ditto "\$source" "\$new" && mv "\$target" "\$old"; then
   if mv "\$new" "\$target"; then

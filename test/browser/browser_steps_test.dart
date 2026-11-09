@@ -27,7 +27,7 @@ Page now:
 Main thread: busy 300 ms; scripting 200 ms, rendering 50 ms, parsing 10 ms
   No long task (50 ms or more).
 
-Trace: /tmp/baocode-traces/trace-1.json (12.0 kB; DevTools › Performance › Load profile opens it)''';
+Trace: /tmp/pi-desktop-traces/trace-1.json (12.0 kB; DevTools › Performance › Load profile opens it)''';
 
 void main() {
   group('a call of a browser tool', () {
@@ -256,7 +256,7 @@ void main() {
       ('FCP', '380 ms', 'good'),
       ('TTFB', '12 ms', 'good'),
     ]);
-    expect(report.trace, '/tmp/baocode-traces/trace-1.json');
+    expect(report.trace, '/tmp/pi-desktop-traces/trace-1.json');
     expect(report.lines.first, '  DOMContentLoaded: 300 ms, load: 900 ms');
     expect(report.lines.last, '  No long task (50 ms or more).');
   });

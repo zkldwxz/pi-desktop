@@ -5964,7 +5964,7 @@
       }
     }
   },
-  "remoteStatusTooltipResuming": "The connection to {host} is lost, and being made again: its terminals and Claude Code keep running there meanwhile. Click to reconnect now",
+  "remoteStatusTooltipResuming": "The connection to {host} is lost, and being made again: its terminals and Pi keep running there meanwhile. Click to reconnect now",
   "@remoteStatusTooltipResuming": {
     "placeholders": {
       "host": {

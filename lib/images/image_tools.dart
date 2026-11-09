@@ -404,7 +404,7 @@ class ImageHost {
   String get _root => RemoteLocation.pathOf(cwd);
 
   /// Where a remote host keeps pictures saved without a path.
-  static const remoteFolder = '/tmp/baocode-images';
+  static const remoteFolder = '/tmp/pi-desktop-images';
 
   /// Past this a reference is not read.
   static const _maxBytes = 20 << 20;

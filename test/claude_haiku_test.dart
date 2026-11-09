@@ -112,13 +112,13 @@ void main() {
       'its own headers', () {
     expect(
       withUsageSession({'A': '1'}, 's1')['ANTHROPIC_CUSTOM_HEADERS'],
-      'x-baocode-session: s1',
+      'x-pi-desktop-session: s1',
     );
     expect(
       withUsageSession({
         'ANTHROPIC_CUSTOM_HEADERS': 'X-Team: a',
       }, 's1')['ANTHROPIC_CUSTOM_HEADERS'],
-      'X-Team: a\nx-baocode-session: s1',
+      'X-Team: a\nx-pi-desktop-session: s1',
     );
   });
 }

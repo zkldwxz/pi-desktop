@@ -13158,7 +13158,7 @@ abstract class AppLocalizations {
   /// No description provided for @remoteStatusTooltipResuming.
   ///
   /// In en, this message translates to:
-  /// **'The connection to {host} is lost, and being made again: its terminals and Claude Code keep running there meanwhile. Click to reconnect now'**
+  /// **'The connection to {host} is lost, and being made again: its terminals and Pi keep running there meanwhile. Click to reconnect now'**
   String remoteStatusTooltipResuming(String host);
 
   /// No description provided for @remoteReconnect.

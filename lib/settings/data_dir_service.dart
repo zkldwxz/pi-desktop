@@ -129,7 +129,7 @@ class DataDirectoryService {
   static String _defaultHome(Map<String, String>? environment) {
     if (environment == null &&
         Platform.environment.containsKey('FLUTTER_TEST')) {
-      return p.join(Directory.systemTemp.path, 'baocode-test-home-$pid');
+      return p.join(Directory.systemTemp.path, 'pi-desktop-test-home-$pid');
     }
     return AppPaths.home(environment ?? Platform.environment);
   }

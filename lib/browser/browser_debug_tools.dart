@@ -686,7 +686,7 @@ Future<String> _stopCoverage(BrowserTab tab) async {
   final unused = files.fold(0, (sum, f) => sum + f.unusedSize);
 
   final folder = Directory(
-    p.join(Directory.systemTemp.path, 'baocode-coverage'),
+    p.join(Directory.systemTemp.path, 'pi-desktop-coverage'),
   )..createSync(recursive: true);
   final stamp = DateTime.now().toIso8601String().replaceAll(':', '-');
   final file = File(p.join(folder.path, 'coverage-$stamp.json'));
@@ -749,7 +749,7 @@ Future<Object?> _queryObjects(
   String function,
 ) async {
   final browser = tab.browser;
-  const group = 'baocode-memory';
+  const group = 'pi-desktop-memory';
   try {
     final found = await browser.cdp(tab.tabId, 'Runtime.evaluate', {
       'expression': prototype,
@@ -1444,7 +1444,7 @@ class _Trace {
     String extension = '.json',
   ]) async {
     final folder = Directory(
-      p.join(Directory.systemTemp.path, 'baocode-traces'),
+      p.join(Directory.systemTemp.path, 'pi-desktop-traces'),
     )..createSync(recursive: true);
     final stamp = DateTime.now().toIso8601String().replaceAll(':', '-');
     final file = File(p.join(folder.path, '$kind-$stamp$extension'));

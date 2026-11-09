@@ -7657,7 +7657,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String remoteStatusTooltipResuming(String host) {
-    return '与 $host 的连接已断开，正在重连；远端的终端和 Claude Code 仍在运行。点击立即重连';
+    return '与 $host 的连接已断开，正在重连；远端的终端和 Pi 仍在运行。点击立即重连';
   }
 
   @override

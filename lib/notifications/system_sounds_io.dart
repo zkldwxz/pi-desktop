@@ -86,7 +86,7 @@ Future<String> _soundFile(Uint8List bytes) async {
   final file = File(
     p.join(
       Directory.systemTemp.path,
-      'baocode-sounds',
+      'pi-desktop-sounds',
       '${bytes.length}-${hash.toRadixString(16)}.wav',
     ),
   );
