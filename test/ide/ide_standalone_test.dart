@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -74,7 +74,7 @@ void main() {
 
   testWidgets('with no folder, a file opened has the chat in its folder, '
       'the agent told of it', (tester) async {
-    final folder = Directory.systemTemp.createTempSync('baocode-loose-file');
+    final folder = Directory.systemTemp.createTempSync('pi-desktop-loose-file');
     addTearDown(() => folder.deleteSync(recursive: true));
     final file = File('${folder.path}/CN2-GIA.conf')
       ..writeAsStringSync('[general]\nudp_drop_list = 443\n');
@@ -159,7 +159,7 @@ void main() {
 
   testWidgets('a folder from the code command opens in the IDE, though the '
       'main window is the chat; the chat keeps its agent', (tester) async {
-    final folder = Directory.systemTemp.createTempSync('baocode-code-open');
+    final folder = Directory.systemTemp.createTempSync('pi-desktop-code-open');
     addTearDown(() => folder.deleteSync(recursive: true));
     var pending = <String>[folder.path];
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(_open, (

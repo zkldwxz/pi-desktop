@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:bao_sampler/bao_sampler.dart';
+import 'package:pi_sampler/pi_sampler.dart';
 import 'package:path/path.dart' as p;
 
 import '../platform/event_log.dart';
@@ -45,7 +45,7 @@ const exitSignals = [
 /// The most crash reports Linux' handler leaves in `hangs/`: the oldest go.
 const keptCrashReports = 10;
 
-/// Linux' crash handler (package:bao_sampler's [CrashHandler]): its reports
+/// Linux' crash handler (package:pi_sampler's [CrashHandler]): its reports
 /// in [logsFolder]'s `hangs/`, room left for one more.
 void installCrashHandler(String logsFolder) {
   if (!Platform.isLinux) return;

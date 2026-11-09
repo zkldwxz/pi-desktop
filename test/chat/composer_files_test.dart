@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pi_desktop/chat/chat_models.dart';
 import 'package:pi_desktop/chat/chat_screen.dart';
 import 'package:pi_desktop/chat/chat_session.dart';
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:pi_desktop/chat/composer/composer.dart';
 import 'package:pi_desktop/chat/composer/composer_controller.dart';
 import 'package:pi_desktop/chat/composer/composer_embeds.dart';

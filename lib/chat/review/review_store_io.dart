@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:bao_remote/local.dart';
+import 'package:pi_remote/local.dart';
 import 'package:path/path.dart' as p;
 
 import '../../platform/data_dir.dart';
 
-export 'package:bao_remote/local.dart' show BlobReviewStore;
+export 'package:pi_remote/local.dart' show BlobReviewStore;
 
 /// Not under `flutter test`, where no test should keep files on its own.
 bool get reviewSupported => !Platform.environment.containsKey('FLUTTER_TEST');

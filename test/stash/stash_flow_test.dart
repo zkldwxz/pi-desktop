@@ -26,7 +26,7 @@ import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pi_desktop/icons/brand_logos.dart' show BaoCodeLogo;
+import 'package:pi_desktop/icons/brand_logos.dart' show PiDesktopLogo;
 import 'package:pi_desktop/workspace/pin_window_button.dart';
 import 'package:pi_desktop/workspace/workspace.dart';
 
@@ -282,9 +282,9 @@ void main() {
     expect(inBar(find.text(l10n.stashAll)), findsNothing);
     expect(inBar(find.text(l10n.stashExpand)), findsNothing);
     expect(inBar(find.byIcon(Codicons.sparkle)), findsOneWidget);
-    // Implement in BaoCode stays, its icon at least: the stash's number
+    // Implement in pi-desktop stays, its icon at least: the stash's number
     // gives way before it.
-    expect(inBar(find.byType(BaoCodeLogo)), findsOneWidget);
+    expect(inBar(find.byType(PiDesktopLogo)), findsOneWidget);
     expect(inBar(find.text('#${note.id}')), findsNothing);
 
     // Wide, their words again.

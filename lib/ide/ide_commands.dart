@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 
 import '../keybindings/key_chord.dart';
 
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 
 import '../keybindings/keybinding_service.dart';
 

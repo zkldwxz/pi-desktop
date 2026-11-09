@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:bao_remote/local.dart';
+import 'package:pi_remote/local.dart';
 import 'package:path/path.dart' as p;
 
 import '../platform/data_dir.dart';
 import 'file_service.dart';
 import 'host_paths.dart';
 
-export 'package:bao_remote/local.dart'
+export 'package:pi_remote/local.dart'
     show readFileBytes, walkProjectFiles, watchDirectory;
 
 class LocalIdeFileService extends LocalFiles implements IdeFileService {

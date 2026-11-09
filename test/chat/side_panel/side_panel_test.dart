@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:pi_desktop/chat/composer/composer_embeds.dart';
-import 'package:bao_markdown/bao_markdown.dart';
-import 'package:bao_editor/monaco/flutter/diff_editor.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_markdown/pi_markdown.dart';
+import 'package:pi_editor/monaco/flutter/diff_editor.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
 
 import 'package:pi_desktop/ide/ide_notifications.dart';
 import 'package:pi_desktop/chat/chat_models.dart';
@@ -2417,7 +2417,7 @@ void main() {
     final (:panel, :session) = await _pumpReply(
       tester,
       '[key](../outside/key.pem), [passwd](/etc/passwd), '
-      '`/etc/hosts` and [the site](https://baocode.dev).',
+      '`/etc/hosts` and [the site](https://github.com/zkldwxz/pi-desktop).',
       texts: {'/etc/hosts': 'x', '/outside/key.pem': 'x'},
     );
     expect(_span(tester, 'key')?.recognizer, isNotNull);
@@ -2427,7 +2427,7 @@ void main() {
     expect(_span(tester, 'the site')?.recognizer, isA<TapGestureRecognizer>());
     final scope = tester.element(find.byType(MarkdownView));
     expect(
-      FileOpenScope.maybeOf(scope)!.linkRecognizer('https://baocode.dev'),
+      FileOpenScope.maybeOf(scope)!.linkRecognizer('https://github.com/zkldwxz/pi-desktop'),
       isNull,
     );
     expect(panel.shown, isFalse);

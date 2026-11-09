@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" fill="none">
+  <title>pi-desktop</title>
+  <defs>
+    <linearGradient id="body" x1="512" y1="100" x2="512" y2="924" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2E313B"/>
+      <stop offset="1" stop-color="#16171B"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="512" y1="100" x2="512" y2="924" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".22"/>
+      <stop offset=".35" stop-color="#FFFFFF" stop-opacity=".04"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity=".08"/>
+    </linearGradient>
+    <linearGradient id="pi" x1="512" y1="300" x2="512" y2="740" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#B7DDD6"/>
+      <stop offset="1" stop-color="#7FB6AC"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="512" cy="520" r="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8ABEB7" stop-opacity=".20"/>
+      <stop offset="1" stop-color="#8ABEB7" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" filterUnits="userSpaceOnUse" x="40" y="60" width="944" height="944" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000" flood-opacity=".38"/>
+    </filter>
+  </defs>
+  <!-- The body: macOS leaves the margin to the artwork -->
+  <rect x="100" y="100" width="824" height="824" rx="188" fill="url(#body)" filter="url(#shadow)"/>
+  <rect x="100" y="100" width="824" height="824" rx="188" fill="url(#glow)"/>
+  <rect x="103" y="103" width="818" height="818" rx="185" stroke="url(#rim)" stroke-width="6"/>
+  <!-- pi: a bar, a straight leg, and a leg that turns out at its foot -->
+  <g stroke="url(#pi)" stroke-width="80" stroke-linecap="round" stroke-linejoin="round" transform="translate(-34 -14)">
+    <path d="M322 372H702"/>
+    <path d="M408 372V690"/>
+    <path d="M616 372V588C616 652 642 690 700 690"/>
+  </g>
+  <!-- the cursor of a prompt -->
+  <rect x="772" y="600" width="50" height="112" rx="14" fill="#E8F3F1" opacity=".95" transform="translate(-34 -14)"/>
+</svg>

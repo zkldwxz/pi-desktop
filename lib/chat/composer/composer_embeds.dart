@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:path/path.dart' as p;
 
 import '../../kernel/kernel_types.dart' show FileSuggestion;

@@ -4,9 +4,9 @@
 // to and opened, then its files, Git and the status bar. Real WSL, real
 // server: opt in with
 //
-//   $env:BAOCODE_REMOTE_SERVER_DIR = '<a folder with VERSION and
-//       baocode-server-linux-x64>'
-//   $env:BAOCODE_WSL_DISTRO = 'Ubuntu-24.04'
+//   $env:PI_DESKTOP_REMOTE_SERVER_DIR = '<a folder with VERSION and
+//       pi-desktop-server-linux-x64>'
+//   $env:PI_DESKTOP_WSL_DISTRO = 'Ubuntu-24.04'
 //   flutter test --run-skipped -t wsl-e2e test/remote/wsl_windows_e2e_test.dart
 //
 // The host pick is drawn to build/wsl_e2e/hosts.png too, to look at.
@@ -32,7 +32,7 @@ import 'package:path/path.dart' as p;
 import 'remote_harness.dart' show until;
 
 void main() {
-  final distro = Platform.environment['BAOCODE_WSL_DISTRO'] ?? 'Ubuntu-24.04';
+  final distro = Platform.environment['PI_DESKTOP_WSL_DISTRO'] ?? 'Ubuntu-24.04';
   final host = 'wsl+$distro';
   final previous = SshHosts.instance;
   late SshHosts hosts;

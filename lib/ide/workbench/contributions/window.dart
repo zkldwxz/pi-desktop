@@ -52,7 +52,7 @@ class WindowContribution extends WorkbenchRegistrations {
           },
         ),
         WorkbenchAction(
-          id: 'baocode.ide.backToChat',
+          id: 'pi-desktop.ide.backToChat',
           category: 'View',
           title: 'Back to Chat',
           run: (_, _) => unawaited(chat.back()),

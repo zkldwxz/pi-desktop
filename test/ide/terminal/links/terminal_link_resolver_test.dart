@@ -17,7 +17,7 @@ void main() {
     late TerminalFileLinkResolver resolver;
 
     setUp(() {
-      dir = Directory.systemTemp.createTempSync('baocode_links_');
+      dir = Directory.systemTemp.createTempSync('pi_desktop_links_');
       file = p.join(dir.path, 'a.txt');
       File(file).writeAsStringSync('a');
       folder = p.join(dir.path, 'sub');

@@ -13,7 +13,7 @@ import { createSign } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 
-const BUNDLE_ID = 'dev.baocode.mobile';
+const BUNDLE_ID = 'dev.pi.desktop.mobile';
 const GROUP = 'Public beta';
 
 const { values: args } = parseArgs({

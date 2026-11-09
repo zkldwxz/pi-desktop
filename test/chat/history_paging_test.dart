@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bao_remote/claude.dart' show ClaudeHistoryPage;
+import 'package:pi_remote/claude.dart' show ClaudeHistoryPage;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

@@ -358,7 +358,7 @@ void main() {
       final ids = <int>[];
       for (final (title, project) in [
         ('Alpha', null),
-        ('Beta', '~/code/baocode'),
+        ('Beta', '~/code/pi-desktop'),
         ('Gamma', '~/code/cursor-docs'),
       ]) {
         final note = await store.create(body: '$title\n\nmore');
@@ -400,7 +400,7 @@ void main() {
 
     await tester.tap(find.text('Any project'));
     await tester.pump(const Duration(milliseconds: 300));
-    await tester.tap(find.text('baocode').last);
+    await tester.tap(find.text('pi-desktop').last);
     await tester.pump();
     await tester.tap(find.text('cursor-docs').last);
     await tester.pump(const Duration(milliseconds: 300));
@@ -593,7 +593,7 @@ void main() {
     Finder action(String tooltip) => find.byWidgetPredicate(
       (widget) => widget is IdeHover && widget.message == tooltip,
     );
-    expect(action('Implement in BaoCode'), findsOneWidget);
+    expect(action('Implement in pi-desktop'), findsOneWidget);
     expect(action('More'), findsWidgets);
     await tester.tap(action('Mark Done'));
     await tester.runAsync(() => Future<void>.delayed(Duration.zero));

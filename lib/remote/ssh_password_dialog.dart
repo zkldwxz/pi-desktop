@@ -1,4 +1,4 @@
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/client.dart';
 import 'package:flutter/widgets.dart';
 
 import '../ide/ide_dialog.dart';

@@ -15,10 +15,10 @@
 //
 // Deviations:
 // - A keybinding applies only if its command can run here ([canRun]: the
-//   command exists and is enabled), so one for a command BaoCode does not have
+//   command exists and is enabled), so one for a command pi-desktop does not have
 //   yet, or one disabled now, leaves the key to the others; upstream picks it
 //   anyway and reports the missing command.
-// - A `when` clause that reads a context key BaoCode does not know, or does not
+// - A `when` clause that reads a context key pi-desktop does not know, or does not
 //   parse, never holds (upstream treats unknown keys as undefined).
 // - `whenIsEntirelyIncluded` compares `&&` terms instead of upstream's
 //   `implies`.
@@ -27,7 +27,7 @@ import 'package:flutter/foundation.dart';
 
 import 'key_chord.dart';
 
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 
 import 'when_expression.dart';
 

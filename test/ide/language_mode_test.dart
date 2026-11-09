@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:bao_editor/monaco/flutter/language_assets.dart';
-import 'package:bao_editor/monaco/flutter/language_overrides.dart';
+import 'package:pi_editor/monaco/flutter/language_assets.dart';
+import 'package:pi_editor/monaco/flutter/language_overrides.dart';
 import 'package:pi_desktop/ide/ide_quick_input.dart';
 import 'package:pi_desktop/ide/ide_status_bar.dart';
 import 'package:pi_desktop/ide/language_mode.dart';

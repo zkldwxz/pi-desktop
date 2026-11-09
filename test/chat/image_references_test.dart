@@ -1,6 +1,6 @@
 import 'dart:ui' as ui;
 
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

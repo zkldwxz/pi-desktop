@@ -1,10 +1,10 @@
-# Builds the remote server (baocode-server, the app's side on an SSH host)
+# Builds the remote server (pi-desktop-server, the app's side on an SSH host)
 # for Linux, macOS and Windows, x64 and arm64, and runs it on each. docs/ssh-remote.md
 # (9.3) has where the builds go and how the app finds them.
 #
 #   git tag server-foo && git push origin server-foo
 #                                      build, and publish the builds at
-#                                      dl.baocode.dev/releases/remote/
+#                                      the pi-desktop site/releases/remote/
 #                                      <VERSION>/, latest.json there naming
 #                                      them: for apps packaged locally with
 #                                      --remote-release (tool/build_*.dart)
@@ -61,19 +61,19 @@ jobs:
           # The engine's packages (sky_engine), for pub.
           & "$env:RUNNER_TEMP\flutter\bin\flutter.bat" precache --windows
       - id: iroh
-        uses: ./.github/actions/bao-iroh-prebuilt
+        uses: ./.github/actions/pi-iroh-prebuilt
       - if: steps.iroh.outputs.hit != 'true'
         uses: ./.github/actions/setup-rust
       - name: Build
         run: dart run tool/build_remote_server.dart --out build/remote-windows --only windows-${{ matrix.arch }}
       - name: Run it here
         shell: pwsh
-        run: ./tool/test_remote_server_windows.ps1 build/remote-windows/baocode-server-windows-${{ matrix.arch }} ${{ matrix.arch }}
+        run: ./tool/test_remote_server_windows.ps1 build/remote-windows/pi-desktop-server-windows-${{ matrix.arch }} ${{ matrix.arch }}
       - uses: actions/upload-artifact@v6
         with:
           name: remote-windows-${{ matrix.arch }}
           if-no-files-found: error
-          path: build/remote-windows/baocode-server-windows-${{ matrix.arch }}
+          path: build/remote-windows/pi-desktop-server-windows-${{ matrix.arch }}
 
   build:
     name: Build the remote server
@@ -100,16 +100,16 @@ jobs:
             "https://storage.googleapis.com/dart-archive/channels/$channel/release/$dart/sdk/dartsdk-macos-x64-release.zip"
           unzip -q "$RUNNER_TEMP/dart-x64.zip" -d "$RUNNER_TEMP/dart-x64"
           "$RUNNER_TEMP/dart-x64/dart-sdk/bin/dart" --version
-      # `dart run tool/…` runs bao_iroh's build hook, which would build iroh
+      # `dart run tool/…` runs pi_iroh's build hook, which would build iroh
       # for this Mac where main's build of it is not in the cache.
-      - uses: ./.github/actions/bao-iroh-prebuilt
+      - uses: ./.github/actions/pi-iroh-prebuilt
       - uses: actions/download-artifact@v7
         with:
           pattern: remote-windows-*
           merge-multiple: true
           path: build/remote-windows
       # Once, for both apps: they carry its servers.json, and download the
-      # build a host needs from dl.baocode.dev (docs/ssh-remote.md, 9.3).
+      # build a host needs from the pi-desktop site (docs/ssh-remote.md, 9.3).
       - name: Build for Linux and macOS, x64 and arm64, with Windows'
         run: |
           dart run tool/build_remote_server.dart --out build/remote --all \
@@ -133,7 +133,7 @@ jobs:
           if-no-files-found: error
           path: |
             build/remote/VERSION
-            build/remote/baocode-server-linux-*
+            build/remote/pi-desktop-server-linux-*
             !build/remote/*.gz
 
   linux:
@@ -152,11 +152,11 @@ jobs:
       - name: Run it on Linux distributions, in Docker
         run: |
           # Artifacts keep no modes.
-          chmod 755 build/remote/baocode-server-linux-*
+          chmod 755 build/remote/pi-desktop-server-linux-*
           tool/test_remote_server.sh build/remote
 
   publish:
-    name: Publish to dl.baocode.dev/releases/remote/
+    name: Publish the remote server builds (needs the release environment's R2 secrets)
     needs: [build, linux]
     # Its own server-* tag only: called by Release, the release publishes.
     if: github.event_name == 'push' && startsWith(github.ref_name, 'server-')

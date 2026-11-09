@@ -12,7 +12,7 @@ void main() {
   late File file;
 
   setUp(() {
-    dir = Directory.systemTemp.createTempSync('baocode-registry');
+    dir = Directory.systemTemp.createTempSync('pi-desktop-registry');
     file = File(p.join(dir.path, 'claude-processes.json'));
   });
   tearDown(() => dir.deleteSync(recursive: true));

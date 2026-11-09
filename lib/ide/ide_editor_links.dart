@@ -1,5 +1,5 @@
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/flutter/editor_decorations.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/editor_decorations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';

@@ -1,6 +1,6 @@
 # Desktop code navigation E2E
 
-This launches the real macOS BaoCode window. It uses the production app,
+This launches the real macOS pi-desktop window. It uses the production app,
 standard language catalog, a temporary project on disk, and the real Dart SDK
 language server. It does not use `flutter_test`, a fake LSP server, or call the
 editor's navigation methods to simulate a result.
@@ -15,11 +15,11 @@ Run with an output directory and the **SDK binary**, rather than the Flutter
 `bin/dart` shell wrapper:
 
 ```sh
-navigation_out="$(mktemp -d /private/tmp/baocode-navigation-e2e.XXXXXX)"
-BAOCODE_DATA_DIR="$navigation_out/data" \
-BAOCODE_E2E_OUT="$navigation_out" \
-BAOCODE_E2E_DART=/absolute/path/to/flutter/bin/cache/dart-sdk/bin/dart \
-  build/macos/Build/Products/Debug/BaoCode.app/Contents/MacOS/BaoCode
+navigation_out="$(mktemp -d /private/tmp/pi-desktop-navigation-e2e.XXXXXX)"
+PI_DESKTOP_DATA_DIR="$navigation_out/data" \
+PI_DESKTOP_E2E_OUT="$navigation_out" \
+PI_DESKTOP_E2E_DART=/absolute/path/to/flutter/bin/cache/dart-sdk/bin/dart \
+  build/macos/Build/Products/Debug/pi-desktop.app/Contents/MacOS/pi-desktop
 ```
 
 The app creates its own workspace and data folder, brings its window forward,

@@ -1,11 +1,11 @@
-// The app's Claude Code kernel on BaoCode's own core: the engine in its
+// The app's Claude Code kernel on pi-desktop's own core: the engine in its
 // isolate, the Messages API on this machine. What the UI is driven by,
 // end to end, with no CLI.
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_agent/testing.dart';
+import 'package:pi_agent/testing.dart';
 import 'package:pi_desktop/chat/chat_models.dart';
 import 'package:pi_desktop/kernel/agent_kernel.dart';
 import 'package:pi_desktop/kernel/claude_code/claude_code_kernel.dart';
@@ -43,7 +43,7 @@ void main() {
     HttpOverrides.global = null;
     addTearDown(() => HttpOverrides.global = overrides);
     root = Directory.systemTemp
-        .createTempSync('baocode-core-e2e-')
+        .createTempSync('pi-desktop-core-e2e-')
         .resolveSymbolicLinksSync();
     cwd = p.join(root, 'project');
     config = p.join(root, 'config');

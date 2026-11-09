@@ -1,4 +1,4 @@
-// baocode_wer.dll: a runtime exception module of Windows Error Reporting's
+// pi_desktop_wer.dll: a runtime exception module of Windows Error Reporting's
 // (WerRegisterRuntimeExceptionModule), which the app registers as it starts
 // (hang_watchdog::InstallCrashHandler). Windows loads it into its own
 // process (WerFault.exe) only as the app crashes, and asks it first.

@@ -243,7 +243,7 @@ static void reveal_path(const char* path) {
                 nullptr, nullptr);
 }
 
-// baocode/window: the calls WindowControls makes when this host is a desktop.
+// pi-desktop/window: the calls WindowControls makes when this host is a desktop.
 // Menus, clipboard images and drag-out stay unimplemented (MissingPlugin);
 // the app already treats those as optional.
 static void window_method_call_cb(FlMethodChannel* channel, FlMethodCall* call,

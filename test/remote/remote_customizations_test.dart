@@ -4,7 +4,7 @@ library;
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_remote/files.dart' show IdeFileExistsException;
+import 'package:pi_remote/files.dart' show IdeFileExistsException;
 import 'package:pi_desktop/customize/customization_store.dart';
 import 'package:pi_desktop/customize/customizations.dart';
 import 'package:pi_desktop/remote/remote_customization_disk.dart';
@@ -32,8 +32,8 @@ void main() {
   }
 
   setUp(() {
-    dataDir = Directory.systemTemp.createTempSync('baocode-remote-data-');
-    temp = Directory.systemTemp.createTempSync('baocode-remote-custom-');
+    dataDir = Directory.systemTemp.createTempSync('pi-desktop-remote-data-');
+    temp = Directory.systemTemp.createTempSync('pi-desktop-remote-custom-');
     final root = temp.resolveSymbolicLinksSync();
     home = p.join(root, 'home');
     config = p.join(home, '.pi-desktop', 'pi-agent');

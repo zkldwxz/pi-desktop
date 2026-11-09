@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math' show Random;
 import 'dart:ui' as ui;
 
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -776,7 +776,7 @@ void main() {
     // editor's build, and the input turned into a grey box until the app
     // restarted.
     const suggestion =
-        r'Run release\win-unpacked\BaoCode.exe'
+        r'Run release\win-unpacked\pi-desktop.exe'
         '\n'
         r'then open "C:\Users"';
     final (:session, :cli) = await pumpScripted(tester);
@@ -790,7 +790,7 @@ void main() {
       find.descendant(
         of: find.byType(ChatComposer),
         matching: find.text(
-          r'Run release\win-unpacked\BaoCode.exe then open "C:\Users"    Tab',
+          r'Run release\win-unpacked\pi-desktop.exe then open "C:\Users"    Tab',
           findRichText: true,
         ),
       ),

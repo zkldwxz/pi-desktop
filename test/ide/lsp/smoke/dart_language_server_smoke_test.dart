@@ -56,7 +56,7 @@ class _PathProvider implements LspServerProvider {
 void main() {
   test('dart language-server answers through the manager', () async {
     final root = Directory.systemTemp
-        .createTempSync('baocode-lsp-smoke')
+        .createTempSync('pi-desktop-lsp-smoke')
         .resolveSymbolicLinksSync();
     addTearDown(() => Directory(root).deleteSync(recursive: true));
     LspProcesses.registry = ChildProcessRegistry(

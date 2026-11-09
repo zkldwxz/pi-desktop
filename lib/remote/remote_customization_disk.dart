@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/client.dart';
 import 'package:path/path.dart' as p;
 
 import '../customize/customization_disk.dart';

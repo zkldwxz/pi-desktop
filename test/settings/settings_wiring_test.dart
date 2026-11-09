@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pi_desktop/ide/ide_notifications.dart';
 import 'package:pi_desktop/keybindings/import_dialog.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 import 'package:pi_desktop/keybindings/keybindings_sync.dart';
 import 'package:pi_desktop/keybindings/default_keybindings.dart';
@@ -38,7 +38,7 @@ void main() {
   late AppSettings settings;
 
   setUp(() async {
-    data = await Directory.systemTemp.createTemp('baocode-settings-wiring');
+    data = await Directory.systemTemp.createTemp('pi-desktop-settings-wiring');
     home = await createFakeHome();
     KeybindingService.instance = KeybindingService()
       ..debugPlatform = KeybindingPlatform.mac;
@@ -171,7 +171,7 @@ void main() {
     }))!;
     expect(keymap.builtIn, isTrue);
     expect(service.keymapName, 'Atom');
-    expect(files.settings['baocode.keymap'], 'ms-vscode.atom-keybindings');
+    expect(files.settings['pi-desktop.keymap'], 'ms-vscode.atom-keybindings');
 
     Navigator.of(tester.element(dialog)).pop();
     await tester.pumpAndSettle();
@@ -270,7 +270,7 @@ void main() {
     await tester.runAsync(() async {
       await write(
         DataDirectory(data.path).settingsFile,
-        '{ "baocode.keymap": "ms-vscode.atom-keybindings" }',
+        '{ "pi-desktop.keymap": "ms-vscode.atom-keybindings" }',
       );
       await start();
     });

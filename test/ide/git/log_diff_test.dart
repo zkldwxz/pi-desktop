@@ -3,11 +3,11 @@
 // by their arrows and typed into, its settings in its gear menu, another
 // changed file gone to from its title.
 
-import 'package:bao_editor/monaco/flutter/diff_editor.dart';
-import 'package:bao_editor/monaco/flutter/diff_editor_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/flutter/viewport_layout.dart'
+import 'package:pi_editor/monaco/flutter/diff_editor.dart';
+import 'package:pi_editor/monaco/flutter/diff_editor_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/viewport_layout.dart'
     show HiddenLineRanges;
 import 'package:pi_desktop/ide/ide_code_diff.dart';
 import 'package:pi_desktop/ide/ide_diff_options.dart';

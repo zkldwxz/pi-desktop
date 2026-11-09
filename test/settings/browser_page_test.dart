@@ -13,7 +13,7 @@ void main() {
   late UserSettings settings;
 
   setUp(() async {
-    data = await Directory.systemTemp.createTemp('baocode-browser-page');
+    data = await Directory.systemTemp.createTemp('pi-desktop-browser-page');
     settings = UserSettings(p.join(data.path, 'settings.json'));
     await settings.load();
     // Turned off, the host's manifests go: a test's own, not the user's.

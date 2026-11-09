@@ -1,4 +1,4 @@
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/client.dart';
 import 'package:pi_desktop/ide/ide_input.dart';
 import 'package:pi_desktop/remote/ssh_server_form.dart';
 import 'package:flutter/material.dart';

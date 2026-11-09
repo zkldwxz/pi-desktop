@@ -8,7 +8,7 @@ import 'package:pi_desktop/ide/ide_workbench.dart';
 import 'package:pi_desktop/ide/ide_workspace.dart';
 import 'package:pi_desktop/ide/search/ide_search_view.dart';
 import 'package:pi_desktop/ide/search/text_search.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 import 'package:path/path.dart' as p;
 

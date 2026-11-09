@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_remote/local.dart' show ClaudeEnvironment;
+import 'package:pi_remote/local.dart' show ClaudeEnvironment;
 import 'package:path/path.dart' as p;
 
 import '../ide/file_service_io.dart';

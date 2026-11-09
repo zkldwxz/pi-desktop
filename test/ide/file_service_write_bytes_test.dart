@@ -15,7 +15,7 @@ void main() {
   late IdeFileService files;
 
   setUp(() {
-    project = Directory.systemTemp.createTempSync('baocode-write-bytes-');
+    project = Directory.systemTemp.createTempSync('pi-desktop-write-bytes-');
     files = IdeFileService(project.path);
   });
   tearDown(() => project.deleteSync(recursive: true));

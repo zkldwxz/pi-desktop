@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show ServicesBinding;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path/path.dart' as p;
-import 'package:bao_editor/textmate/textmate_syntax.dart';
-import 'package:bao_markdown/bao_markdown.dart'
+import 'package:pi_editor/textmate/textmate_syntax.dart';
+import 'package:pi_markdown/pi_markdown.dart'
     show MarkdownEditor, MdClipboard;
 
-import 'package:bao_editor/monaco/flutter/language_assets.dart';
+import 'package:pi_editor/monaco/flutter/language_assets.dart';
 
 import 'base/quiet_view.dart';
-import 'base/smooth_scroll.dart' show BaoScrollBehavior;
+import 'base/smooth_scroll.dart' show PiScrollBehavior;
 import 'bots/bots.dart';
 import 'browser/browser_bridge.dart';
 import 'browser/browser_tools.dart' show BrowserHistory;
@@ -333,7 +333,7 @@ Future<void> main(List<String> arguments) async {
       cacheDir: DataDirectory.current.cacheDir,
       storage: files.storage,
       // Claude Code's skills are the installed app's: a build run from the
-      // source, often on a data folder of its own (`BAOCODE_DATA_DIR`),
+      // source, often on a data folder of its own (`PI_DESKTOP_DATA_DIR`),
       // would point the user's agents at its stashes.
       installSkill: !kDebugMode,
       // The user's GitHub and GitLab accounts: their tokens in the
@@ -354,7 +354,7 @@ Future<void> main(List<String> arguments) async {
   // What shows at launch (settings.json's `workbench.mainWindow`): with
   // windows of the IDE's own, the chat's and those to open again; with
   // the IDE in the main window, its layout. Started for something (Open
-  // with BaoCode or Fast Ide, the `code` command), that alone.
+  // with pi-desktop or Fast Ide, the `code` command), that alone.
   final request = AppPlatform.isMacOS
       ? await OpenRequests.launchRequest()
       : LaunchRequest.of(arguments);
@@ -619,7 +619,7 @@ void followSettingsFiles(SettingsFiles files) {
 }
 
 /// The app's updates (lib/update/): looked for as settings.json's
-/// `update.mode` says, from baocode.dev, installed as the app quits. None
+/// `update.mode` says, from the pi-desktop site, installed as the app quits. None
 /// where the build does not update itself.
 UpdateController? _startUpdates(SettingsFiles files) {
   final platform = platformUpdates(
@@ -1007,7 +1007,7 @@ class _PiDesktopAppState extends State<PiDesktopApp>
     debugShowCheckedModeBanner: false,
     theme: buildAppTheme(),
     themeAnimationDuration: Duration.zero,
-    scrollBehavior: const BaoScrollBehavior(),
+    scrollBehavior: const PiScrollBehavior(),
     builder: (context, child) => ValueListenableBuilder<int>(
       valueListenable: CodeFont.uiScale,
       builder: (context, percent, scaled) {

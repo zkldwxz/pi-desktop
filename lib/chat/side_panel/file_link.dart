@@ -108,7 +108,7 @@ class FileLink {
   String? resolveIn(String root, {p.Context? paths, String? home}) =>
       resolvePath(path, root, paths: paths, home: home);
 
-  /// [path] absolute, as the agent's own tools take it (bao_agent's
+  /// [path] absolute, as the agent's own tools take it (pi_agent's
   /// `PermissionEngine.absolute`): `~` the [home] folder of the host,
   /// relative to [root] (where the agent works), wherever that leads, in
   /// the project or out of it. Null for nothing, `~` without a [home], or

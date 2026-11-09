@@ -14,7 +14,7 @@
 // draws them; no link detection or filter highlights in a run; blinking is
 // drawn still, sub- and superscript smaller but on the line.
 
-import 'package:bao_editor/monaco/vs/base/common/color.dart' as vs;
+import 'package:pi_editor/monaco/vs/base/common/color.dart' as vs;
 import 'package:flutter/painting.dart';
 
 import '../../ide/terminal/terminal_colors.dart' show TerminalColors, ansiColorIdentifiers;

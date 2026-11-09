@@ -27,7 +27,7 @@ void main() {
   final previous = RemoteHostSettings.instance;
 
   setUp(() async {
-    dir = Directory.systemTemp.createTempSync('baocode-ports-view-');
+    dir = Directory.systemTemp.createTempSync('pi-desktop-ports-view-');
     hosts = SshHosts(connect: MemoryConnector(dir.path).call);
     settings = RemoteHostSettings.instance = RemoteHostSettings(
       file: p.join(dir.path, 'remote-hosts.json'),

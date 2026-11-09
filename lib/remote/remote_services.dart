@@ -7,8 +7,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:bao_remote/client.dart';
-import 'package:bao_remote/terminal.dart' show generateShellIntegrationNonce;
+import 'package:pi_remote/client.dart';
+import 'package:pi_remote/terminal.dart' show generateShellIntegrationNonce;
 import 'package:path/path.dart' as p;
 
 import '../ide/file_service.dart';

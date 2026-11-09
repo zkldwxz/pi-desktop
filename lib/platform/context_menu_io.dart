@@ -98,10 +98,10 @@ class MacContextMenu implements ContextMenuInstaller {
 /// hive, what it says, and what it starts.
 typedef WindowsContextMenuEntry = ({String key, String label, String command});
 
-/// Explorer's: the keys the installer's task writes (see tool/baocode.iss)
+/// Explorer's: the keys the installer's task writes (see tool/pi-desktop.iss)
 /// under `HKCU\Software\Classes`, for the user alone, on a file, a folder
-/// and a folder's background: Open with pi-desktop (`--baocode-agent`) and
-/// Open with Fast Ide (`--baocode-cli <path> -n <path>`), as
+/// and a folder's background: Open with pi-desktop (`--pi-desktop-agent`) and
+/// Open with Fast Ide (`--pi-desktop-cli <path> -n <path>`), as
 /// windows/runner/open_requests.cpp reads them. Windows 11 lists them
 /// under "Show more options".
 ///

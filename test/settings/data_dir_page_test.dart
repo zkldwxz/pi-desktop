@@ -13,7 +13,7 @@ class _FakeService extends DataDirectoryService {
     super.environment = const {'HOME': '/home/me'},
     this.targets = const {},
   }) : super(
-         current: DataDirectory('/data/baocode', source: source),
+         current: DataDirectory('/data/pi-desktop', source: source),
          home: '/home/me',
        );
 
@@ -83,13 +83,13 @@ void main() {
     tester,
   ) async {
     final (:revealed, quits: _) = await pumpPage(tester, _FakeService());
-    expect(find.text('/data/baocode'), findsOneWidget);
+    expect(find.text('/data/pi-desktop'), findsOneWidget);
     expect(
-      find.text('Set in /home/me/.baocode/config-dir.json.'),
+      find.text('Set in /home/me/.pi-desktop/config-dir.json.'),
       findsOneWidget,
     );
     await tester.tap(find.text('Reveal in Finder'));
-    expect(revealed, ['/data/baocode']);
+    expect(revealed, ['/data/pi-desktop']);
   }, variant: TargetPlatformVariant.only(TargetPlatform.macOS));
 
   testWidgets('Change shows the folder picked; Save copies the data there, '
@@ -98,25 +98,25 @@ void main() {
     final (revealed: _, :quits) = await pumpPage(
       tester,
       service,
-      picks: ['/Volumes/D/BaoCode'],
+      picks: ['/Volumes/D/pi-desktop'],
     );
     await tester.tap(find.text('Change…'));
     await tester.pumpAndSettle();
     expect(find.text('New folder'), findsOneWidget);
-    expect(find.text('/Volumes/D/BaoCode'), findsOneWidget);
+    expect(find.text('/Volumes/D/pi-desktop'), findsOneWidget);
     expect(find.text('Change…'), findsNothing);
     expect(service.migrated, isEmpty);
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
-    expect(service.migrated, ['/Volumes/D/BaoCode']);
+    expect(service.migrated, ['/Volumes/D/pi-desktop']);
     expect(
-      find.text('Restart BaoCode to use the new data folder'),
+      find.text('Restart pi-desktop to use the new data folder'),
       findsOneWidget,
     );
     await tester.tap(find.text('Quit Now').last);
     await tester.pumpAndSettle();
     expect(quits, ['quit']);
-    expect(find.text('After a restart: /Volumes/D/BaoCode'), findsOneWidget);
+    expect(find.text('After a restart: /Volumes/D/pi-desktop'), findsOneWidget);
   });
 
   testWidgets('on Windows, Quit Now quits as the tray icon\'s Quit does '
@@ -133,7 +133,7 @@ void main() {
       MaterialApp(
         home: Material(
           child: DataDirectoryPage(
-            service: _FakeService()..pending = '/Volumes/D/BaoCode',
+            service: _FakeService()..pending = '/Volumes/D/pi-desktop',
           ),
         ),
       ),
@@ -145,13 +145,13 @@ void main() {
     expect(calls.map((call) => call.method), ['quit']);
   }, variant: TargetPlatformVariant.only(TargetPlatform.windows));
 
-  testWidgets('a folder with BaoCode data is used as it is; Later keeps '
+  testWidgets('a folder with pi-desktop data is used as it is; Later keeps '
       'running', (tester) async {
     final service = _FakeService(
       targets: {
         '/other': const DataDirectoryTarget(
           '/other',
-          contents: DataDirectoryContents.baocodeData,
+          contents: DataDirectoryContents.piDesktopData,
         ),
       },
     );
@@ -193,7 +193,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Cancel'));
     await tester.pumpAndSettle();
-    expect(find.text('/data/baocode'), findsOneWidget);
+    expect(find.text('/data/pi-desktop'), findsOneWidget);
     expect(find.text('/empty'), findsNothing);
     // A picker closed without a folder.
     await tester.tap(find.text('Change…'));
@@ -216,20 +216,20 @@ void main() {
     expect(service.migrated, [service.defaultPath]);
   });
 
-  testWidgets('set by BAOCODE_DATA_DIR: nothing to change here', (
+  testWidgets('set by PI_DESKTOP_DATA_DIR: nothing to change here', (
     tester,
   ) async {
     await pumpPage(
       tester,
       _FakeService(
         source: DataDirectorySource.environment,
-        environment: const {'HOME': '/home/me', 'BAOCODE_DATA_DIR': '/env'},
+        environment: const {'HOME': '/home/me', 'PI_DESKTOP_DATA_DIR': '/env'},
       ),
     );
     expect(button(tester, 'Change…').onPressed, isNull);
     expect(button(tester, 'Reset to Default').onPressed, isNull);
     expect(
-      find.text('Set by the BAOCODE_DATA_DIR environment variable.'),
+      find.text('Set by the PI_DESKTOP_DATA_DIR environment variable.'),
       findsOneWidget,
     );
   });
@@ -254,7 +254,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('Using 3.0 GB'), findsOneWidget);
-    expect(find.text('/data/baocode/checkpoints'), findsOneWidget);
+    expect(find.text('/data/pi-desktop/checkpoints'), findsOneWidget);
 
     await tester.ensureVisible(find.text('Clear'));
     await tester.tap(find.text('Clear'));

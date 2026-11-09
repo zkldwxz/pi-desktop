@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
 import 'package:pi_desktop/chat/chat_models.dart' show FileChange;
 import 'package:pi_desktop/chat/chat_session.dart';
 import 'package:pi_desktop/chat/review/change_review.dart';

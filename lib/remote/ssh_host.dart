@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
 
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/client.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 
@@ -112,7 +112,7 @@ class SshHost extends ChangeNotifier implements ProjectHost {
   SshHostState get state => _state;
   SshHostState _state = SshHostState.idle;
 
-  /// What connecting is at (`Installing the BaoCode server…`).
+  /// What connecting is at (`Installing the pi-desktop server…`).
   String? get progress => _progress;
   String? _progress;
 

@@ -103,7 +103,7 @@ void main() {
       clock: () => DateTime(2026, 10, 16, 12, 40),
       crashSince: (since) {
         asked = since;
-        return 'BaoCode-2026-10-16-123320.ips: EXC_BAD_ACCESS (SIGSEGV)';
+        return 'pi-desktop-2026-10-16-123320.ips: EXC_BAD_ACCESS (SIGSEGV)';
       },
     ).record('app', 'started again');
 
@@ -112,7 +112,7 @@ void main() {
       File(log().path).readAsStringSync(),
       contains(
         'ended without saying how, after 2026-10-16T12:33:19.000: crash '
-        'report BaoCode-2026-10-16-123320.ips: EXC_BAD_ACCESS (SIGSEGV)\n',
+        'report pi-desktop-2026-10-16-123320.ips: EXC_BAD_ACCESS (SIGSEGV)\n',
       ),
     );
   });

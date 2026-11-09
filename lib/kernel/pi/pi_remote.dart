@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/client.dart';
 import 'package:crypto/crypto.dart';
 
 import '../../remote/remote_location.dart';

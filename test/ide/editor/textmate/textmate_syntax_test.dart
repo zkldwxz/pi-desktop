@@ -11,11 +11,11 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/vs/editor/common/tokens/contiguous_tokens_store.dart';
-import 'package:bao_editor/monaco/vs/editor/common/tokens/line_tokens.dart';
-import 'package:bao_editor/textmate/textmate_syntax.dart';
-import 'package:bao_editor/textmate/textmate_worker.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/vs/editor/common/tokens/contiguous_tokens_store.dart';
+import 'package:pi_editor/monaco/vs/editor/common/tokens/line_tokens.dart';
+import 'package:pi_editor/textmate/textmate_syntax.dart';
+import 'package:pi_editor/textmate/textmate_worker.dart';
 import 'package:pi_desktop/theme/workbench_theme.dart';
 
 import '../../../flutter_test_config.dart' show testColorTheme;
@@ -90,7 +90,7 @@ void main() {
     final fixture = jsonDecode(
       utf8.decode(
         gzip.decode(
-          File('packages/bao_editor/test/fixtures/textmate/tokens.json.gz')
+          File('packages/pi_editor/test/fixtures/textmate/tokens.json.gz')
               .readAsBytesSync(),
         ),
       ),

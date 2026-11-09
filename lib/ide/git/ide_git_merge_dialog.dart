@@ -5,7 +5,7 @@
 // other side's, where it was applied) and a cross that ignores them. The
 // changes only one side made are applied at once; a conflict keeps the
 // common ancestor's lines until a side is applied or they are typed over,
-// or a model merges it (BaoCode's own). Apply writes the result and marks
+// or a model merges it (pi-desktop's own). Apply writes the result and marks
 // the file resolved; Accept Current or Accept Incoming takes one side's
 // file whole.
 
@@ -15,12 +15,12 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
-import 'package:bao_editor/monaco/flutter/language_configuration_assets.dart';
-import 'package:bao_editor/textmate/textmate_syntax.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart';
+import 'package:pi_editor/monaco/flutter/language_configuration_assets.dart';
+import 'package:pi_editor/textmate/textmate_syntax.dart';
 
 import '../../l10n/l10n.dart';
 import '../../theme/app_theme.dart';

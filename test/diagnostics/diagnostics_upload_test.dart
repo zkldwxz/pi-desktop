@@ -79,7 +79,7 @@ void main() {
 
     setUp(() async {
       HttpOverrides.global = _RealHttp();
-      logs = await Directory.systemTemp.createTemp('baocode-diagnostics');
+      logs = await Directory.systemTemp.createTemp('pi-desktop-diagnostics');
       File(p.join(logs.path, 'errors.log'))
           .writeAsStringSync('boom in /home/ann/a.dart\n');
       server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);

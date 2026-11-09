@@ -101,7 +101,7 @@ void main() {
     expect(opened.last, [marker, r'C:\work', '-g', 'a.dart:3']);
   });
 
-  test('Open with BaoCode goes as a request of its own, beside those of '
+  test('Open with pi-desktop goes as a request of its own, beside those of '
       'the `code` command', () async {
     const code = OpenRequests.codeRequestMarker;
     const agent = CodeArgs.agentRequestMarker;
@@ -148,7 +148,7 @@ void main() {
   });
 
   test('what the macOS app was launched for, as the window says (Finder\'s '
-      'Open with BaoCode, an agent; anything else, the IDE)', () async {
+      'Open with pi-desktop, an agent; anything else, the IDE)', () async {
     for (final (answer, request) in [
       ('agent', LaunchRequest.agent),
       ('ide', LaunchRequest.ide),

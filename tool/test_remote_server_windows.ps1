@@ -12,9 +12,9 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 
-$data = Join-Path ([IO.Path]::GetTempPath()) "baocode-server-test-$PID"
+$data = Join-Path ([IO.Path]::GetTempPath()) "pi-desktop-server-test-$PID"
 # As the app puts it on a host: an .exe.
-$exe = Join-Path ([IO.Path]::GetTempPath()) "baocode-server-test-$PID.exe"
+$exe = Join-Path ([IO.Path]::GetTempPath()) "pi-desktop-server-test-$PID.exe"
 Copy-Item -LiteralPath $Binary -Destination $exe
 try {
   $info = New-Object Diagnostics.ProcessStartInfo $exe

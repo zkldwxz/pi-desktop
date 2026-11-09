@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/client.dart';
 import 'package:crypto/crypto.dart' as crypto;
 
 import '../models/secret_store.dart';

@@ -27,13 +27,13 @@
 //   `@command:`, `@source:`, `@ext:` or `@keybinding:` filters, no sort by
 //   precedence and no search history.
 // - The command's id is always under its title. Keybindings of commands
-//   BaoCode does not have, keys that do not parse and `when` clauses that
+//   pi-desktop does not have, keys that do not parse and `when` clauses that
 //   never hold (unknown context keys, or not parsing) are marked; upstream
 //   reports those in keybindings.json only.
 // - Keys are recorded in a small modal dialog, not an overlay on the table;
 //   clicking its count of existing commands filters the table behind it. The
 //   `when` input has no suggestions.
-// - The keymap picker and the import are BaoCode's (upstream installs keymap
+// - The keymap picker and the import are pi-desktop's (upstream installs keymap
 //   extensions).
 
 import 'dart:async';
@@ -54,7 +54,7 @@ import '../../chat/widgets/scroll_edge_fade.dart';
 import '../../keybindings/default_keybindings.dart';
 import '../../keybindings/key_chord.dart';
 
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 
 import '../../keybindings/keybinding_service.dart';
 import '../../keybindings/keybindings_editing.dart';
@@ -160,7 +160,7 @@ class _Row {
   final CommandInfo? info;
   final KeybindingItem? item;
 
-  /// Whether BaoCode has the command.
+  /// Whether pi-desktop has the command.
   final bool supported;
 
   /// Whether the user's file has entries of the command (for Reset).
@@ -190,7 +190,7 @@ class _Row {
   /// [source] as the page shows it.
   final String sourceLabel;
 
-  /// `Category: Title` in the display language; empty for a command BaoCode
+  /// `Category: Title` in the display language; empty for a command pi-desktop
   /// does not have.
   final String title;
 

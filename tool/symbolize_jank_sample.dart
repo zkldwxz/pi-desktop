@@ -18,7 +18,7 @@
 //   flutter_infra_release/flutter/<engine hash>/darwin-x64-release/
 //   framework.zip, FlutterMacOS.xcframework/macos-arm64_x86_64/dSYMs/
 //   FlutterMacOS.framework.dSYM/Contents/Resources/DWARF/FlutterMacOS.
-// - Windows and Linux (package:bao_sampler's): its `app.so+0x…` or
+// - Windows and Linux (package:pi_sampler's): its `app.so+0x…` or
 //   `libapp.so+0x…` frames, with app.windows-<arch>.symbols or
 //   app.linux-<arch>.symbols, by `llvm-symbolizer` (LLVM's; on PATH, or
 //   Homebrew's llvm). A hang report's (windows/runner/hang_watchdog.cpp)
@@ -209,7 +209,7 @@ Future<List<(int, String)>> _appSymbols(String symbols, String arch) async {
   return low == 0 ? null : table[low - 1];
 }
 
-/// package:bao_sampler's (and a hang report's): `app.so+0x…`, by
+/// package:pi_sampler's (and a hang report's): `app.so+0x…`, by
 /// `llvm-symbolizer`.
 Future<(String, int, int)> _elf(String text, String symbols) async {
   final lines = const LineSplitter().convert(text);

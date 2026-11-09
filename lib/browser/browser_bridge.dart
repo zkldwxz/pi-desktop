@@ -314,7 +314,7 @@ class BrowserBridge extends ChangeNotifier {
   // browser's folder for them (those the user has), naming the app's: on
   // macOS and Linux, written again each run, the app moved or not. On
   // Windows, the installer's: the browsers' registry keys point to the
-  // manifest beside baocode.exe (windows/BrowserBridge, tool/baocode.iss),
+  // manifest beside pi-desktop.exe (windows/BrowserBridge, tool/pi-desktop.iss),
   // and stay while pi-desktop is installed; turned off, the host finds no
   // pi-desktop to connect to, and the extension says so.
 

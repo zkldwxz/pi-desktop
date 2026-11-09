@@ -39,7 +39,7 @@ void main() {
     late File args;
 
     setUp(() {
-      root = Directory.systemTemp.createTempSync('baocode-core-');
+      root = Directory.systemTemp.createTempSync('pi-desktop-core-');
       cwd = p.join(root.resolveSymbolicLinksSync(), 'project');
       Directory(cwd).createSync();
       args = File(p.join(root.path, 'args'));

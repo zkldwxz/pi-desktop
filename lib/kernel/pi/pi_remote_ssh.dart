@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_remote/client.dart' show SshLauncher, SshTarget, findSsh;
+import 'package:pi_remote/client.dart' show SshLauncher, SshTarget, findSsh;
 import 'package:crypto/crypto.dart';
 import 'package:path/path.dart' as p;
 

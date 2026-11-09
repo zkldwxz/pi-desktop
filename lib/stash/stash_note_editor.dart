@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter/widgets.dart';
 
 import 'stash_ai.dart';

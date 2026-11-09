@@ -261,7 +261,7 @@ String botInstructions(
             '说话像朋友发微信一样，简短自然，不客套。',
       )
     : (
-        name: 'Bao',
+        name: 'Pi',
         identity:
             'You are my personal assistant. You keep an eye on the agent '
             'conversations on my computer: which wait for me, which failed, '

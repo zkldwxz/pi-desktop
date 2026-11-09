@@ -1,6 +1,6 @@
 # The showcase
 
-The website's pictures and short videos of BaoCode, made by the app
+The website's pictures and short videos of pi-desktop, made by the app
 itself: no one takes them by hand, and nothing in them is anyone's real
 data. `run.dart` sets up a made-up developer's machine, builds the
 showcase app, plays its scenes and turns what they took into the files
@@ -25,7 +25,7 @@ over it changes nothing.
 ## What is made up
 
 - **The machine** (`run.dart`): a home folder per language in
-  `/Users/Shared/bao-showcase/<lang>/`, outside the user's own, so no path
+  `/Users/Shared/pi-showcase/<lang>/`, outside the user's own, so no path
   of theirs can show: a Git identity, a zsh prompt, a `bun` that prints
   the tests' results, the projects in `~/code` (hono, a real clone, fetched
   once into `build/showcase/repos/`; the others small repositories), their
@@ -43,7 +43,7 @@ over it changes nothing.
 
 ## The scenes
 
-`scenes.dart`: each a fresh `BaoCodeApp` on the same machine, driven as a
+`scenes.dart`: each a fresh `PiDesktopApp` on the same machine, driven as a
 user would (clicks on text, keys, commands), ending in pictures
 (`ShowScene.shot`) or a video (`ShowScene.record`). While a video is
 recorded the app runs four times slower and each frame is taken at its
@@ -63,7 +63,7 @@ each video, and the home page's tiles: parts of some pictures, closer
 | `models` | `models`, `model-picker`: the upstreams; the model picker |
 | `customize` | `customize`: the skills |
 | `notifications` | `notifications` |
-| `themes-light` | `themes-light`: Bao Light, search open |
+| `themes-light` | `themes-light`: Pi Light, search open |
 | `themes-dark` | `themes-dark`: Fast IDE in Kimbie Dark, the theme list open |
 | `video-agents` | `agents.mp4` |
 | `video-ide` | `ide.mp4` |

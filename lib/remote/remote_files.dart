@@ -8,7 +8,7 @@
 
 import 'dart:async';
 
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/client.dart';
 import 'package:flutter/widgets.dart';
 
 import '../ide/ide_quick_input.dart';
@@ -20,7 +20,7 @@ import 'remote_status.dart' show sshErrorText;
 import 'ssh_host.dart';
 
 /// The command browsing a remote host for a file to open.
-const openRemoteFileCommandId = 'baocode.remote.openFile';
+const openRemoteFileCommandId = 'pi-desktop.remote.openFile';
 
 /// Where the hosts to pick from come from when not given: `~/.ssh/config`;
 /// replaceable under test.

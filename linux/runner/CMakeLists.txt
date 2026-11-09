@@ -26,11 +26,11 @@ target_link_libraries(${BINARY_NAME} PRIVATE flutter)
 target_link_libraries(${BINARY_NAME} PRIVATE PkgConfig::GTK)
 
 # WebKitGTK, for the channel build's login window (login_window.cc): only in
-# the channel build (BAOCODE_CHANNEL=true in the environment, as
+# the channel build (PI_DESKTOP_CHANNEL=true in the environment, as
 # tool/package_linux_deb.sh --channel's package depends on it), which needs
 # libwebkit2gtk-4.1-dev to build. The standard build does without it, and
 # without the library on the system.
-if("$ENV{BAOCODE_CHANNEL}" STREQUAL "true")
+if("$ENV{PI_DESKTOP_CHANNEL}" STREQUAL "true")
   pkg_check_modules(WEBKIT REQUIRED IMPORTED_TARGET webkit2gtk-4.1>=2.40)
   target_link_libraries(${BINARY_NAME} PRIVATE PkgConfig::WEBKIT)
   target_compile_definitions(${BINARY_NAME} PRIVATE HAVE_WEBKIT)

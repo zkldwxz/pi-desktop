@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart';
 import 'package:pi_desktop/chat/chat_models.dart';
 import 'package:pi_desktop/chat/composer/composer_files.dart';
 import 'package:pi_desktop/ide/file_service.dart';

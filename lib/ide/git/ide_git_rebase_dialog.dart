@@ -3,7 +3,7 @@
 // reworded, stopped at to be edited, squashed or fixed up into the one
 // below it, or dropped; put in another order by dragging them or with
 // Alt+Up and Alt+Down. The message of the commit selected is under the
-// list: edited, the commit is reworded. BaoCode's own: Clean Up with AI,
+// list: edited, the commit is reworded. pi-desktop's own: Clean Up with AI,
 // the model's plan (what to fix up, squash, reword) put in the list for
 // the user to look over before the rebase starts.
 

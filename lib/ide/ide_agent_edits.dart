@@ -3,13 +3,13 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import 'package:bao_editor/monaco/flutter/diff_editor.dart';
-import 'package:bao_editor/monaco/flutter/diff_editor_model.dart';
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
-import 'package:bao_editor/monaco/vs/editor/common/diff/range_mapping.dart';
+import 'package:pi_editor/monaco/flutter/diff_editor.dart';
+import 'package:pi_editor/monaco/flutter/diff_editor_model.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart';
+import 'package:pi_editor/monaco/vs/editor/common/diff/range_mapping.dart';
 
 import '../chat/chat_models.dart' show FileChangeKind;
 import '../chat/chat_session.dart';

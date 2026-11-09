@@ -52,7 +52,7 @@ class TrayState {
 }
 
 /// The system's side of notifying: what the native window does over
-/// `baocode/attention` (macos/Runner/Attention.swift,
+/// `pi-desktop/attention` (macos/Runner/Attention.swift,
 /// windows/runner/attention.cpp).
 abstract interface class AttentionHost {
   /// A notification of the system's, without a sound; [id] is the agent's,

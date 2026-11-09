@@ -106,7 +106,7 @@ jobs:
           pub-cache: true
       - run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev clang ninja-build
       - id: iroh
-        uses: ./.github/actions/bao-iroh-prebuilt
+        uses: ./.github/actions/pi-iroh-prebuilt
       - if: steps.iroh.outputs.hit != 'true'
         uses: ./.github/actions/setup-rust
       - run: flutter pub get

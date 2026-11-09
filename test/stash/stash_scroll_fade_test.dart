@@ -4,7 +4,7 @@ import 'package:pi_desktop/stash/stash_disk.dart';
 import 'package:pi_desktop/stash/stash_editor.dart';
 import 'package:pi_desktop/stash/stash_store.dart';
 import 'package:flutter/material.dart';
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

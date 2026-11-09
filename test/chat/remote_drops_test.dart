@@ -3,7 +3,7 @@ library;
 
 import 'dart:io';
 
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:pi_desktop/chat/chat_session.dart';
 import 'package:pi_desktop/chat/composer/composer.dart';
 import 'package:pi_desktop/chat/composer/composer_embeds.dart';
@@ -21,7 +21,7 @@ void main() {
   late Directory temp;
 
   setUp(() {
-    temp = Directory.systemTemp.createTempSync('baocode_drops_');
+    temp = Directory.systemTemp.createTempSync('pi_desktop_drops_');
   });
   tearDown(() => temp.deleteSync(recursive: true));
 

@@ -80,7 +80,7 @@ class PerfContent {
     'lib/chat/widgets/markdown_view.dart',
     'lib/ide/ide_editor.dart',
     'lib/kernel/transcript.dart',
-    'packages/bao_editor/lib/monaco/flutter/editor_surface.dart',
+    'packages/pi_editor/lib/monaco/flutter/editor_surface.dart',
     'lib/workspace/workspace.dart',
     'test/chat/history_scroll_test.dart',
   ];

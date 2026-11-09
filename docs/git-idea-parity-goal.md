@@ -1,11 +1,11 @@
-# Goal：Git 功能全面对齐 IntelliJ IDEA，并加上 BaoCode 自己的优化
+# Goal：Git 功能全面对齐 IntelliJ IDEA，并加上 pi-desktop 自己的优化
 
 ## 背景
 Git 日志和 IDEA 式提交面板已经上线（#328）。用户反馈 IDEA 的 Git「很方便、很好用」，要求逐项对齐，再结合 AI 工作流做我们自己的优化。
 本文是对照清单和推进顺序。状态：✅ 已有　🟡 部分有　❌ 没有。每做完一项就在这里改状态。
 
 ## 原则
-- 交互照 IDEA（键位、命名、默认值），界面用 Bao 自家组件，不用 Flutter 自带 UI。
+- 交互照 IDEA（键位、命名、默认值），界面用 pi-desktop 自家组件，不用 Flutter 自带 UI。
 - 聊天侧边栏和 IDE 共用同一套组件；能在一处做的就不要弹模态框。
 - 所有 Git 操作都走 `IdeGitService`，这样本机和 SSH 远程都能用；进行中的操作要能看到，也能取消。
 

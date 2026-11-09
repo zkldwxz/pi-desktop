@@ -23,7 +23,7 @@ import FlutterMacOS
 /// [keptSamples] stay in the folder. The computer asleep or the app stopped
 /// in a debugger is no hang; a debug build is not watched.
 ///
-/// Its channel is `baocode/logs` (the Windows app's too, see windows/runner/
+/// Its channel is `pi-desktop/logs` (the Windows app's too, see windows/runner/
 /// log_folder.h): `setFolder` (path) the logs folder, from Flutter as it
 /// starts. Nothing is written before that.
 final class HangWatchdog {
@@ -74,7 +74,7 @@ final class HangWatchdog {
   private var samples = 0
 
   /// Starts watching, once, and answers Flutter over [messenger]'s
-  /// `baocode/logs`. From the main thread.
+  /// `pi-desktop/logs`. From the main thread.
   func start(messenger: FlutterBinaryMessenger) {
     let channel = FlutterMethodChannel(name: "pi-desktop/logs", binaryMessenger: messenger)
     self.channel = channel
@@ -97,7 +97,7 @@ final class HangWatchdog {
     if started { return }
     started = true
     let thread = Thread { [weak self] in self?.watch() }
-    thread.name = "dev.baocode.hang-watchdog"
+    thread.name = "dev.pi.desktop.hang-watchdog"
     thread.qualityOfService = .utility
     thread.start()
     #endif

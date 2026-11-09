@@ -14,7 +14,7 @@ import 'package:path/path.dart' as p;
 void main() {
   late Directory temp;
 
-  setUp(() => temp = Directory.systemTemp.createTempSync('baocode-si-test'));
+  setUp(() => temp = Directory.systemTemp.createTempSync('pi-desktop-si-test'));
   tearDown(() => temp.deleteSync(recursive: true));
 
   test('the scripts are VS Code 6a598d4a\'s, headers and all', () {
@@ -66,7 +66,7 @@ void main() {
       final folder = ShellIntegrationFolder(temp);
       final root = folder.path;
       expect(p.dirname(root), temp.path);
-      expect(p.basename(root), startsWith('baocode-shell-integration-'));
+      expect(p.basename(root), startsWith('pi-desktop-shell-integration-'));
       if (!Platform.isWindows) {
         // No one else can write in it (0700 on macOS, 0755 on Linux).
         expect(Directory(root).statSync().mode & 0x12, 0);

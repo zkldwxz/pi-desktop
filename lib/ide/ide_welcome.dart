@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 import 'dart:math' as math;
 
-import 'package:bao_editor/monaco/vs/base/common/labels.dart' show tildify;
+import 'package:pi_editor/monaco/vs/base/common/labels.dart' show tildify;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
@@ -178,14 +178,14 @@ class _StartTileState extends State<_StartTile> {
 
   static IconData _icon(String id) => switch (id) {
     'workbench.action.files.openFolder' => Codicons.folderOpened,
-    'baocode.remote.openFolder' => Codicons.remote,
+    'pi-desktop.remote.openFolder' => Codicons.remote,
     'git.clone' => Codicons.repoClone,
-    'baocode.workspace.create' => Codicons.folderLibrary,
+    'pi-desktop.workspace.create' => Codicons.folderLibrary,
     'workbench.action.files.openFile' => Codicons.goToFile,
     'workbench.action.files.newUntitledFile' => Codicons.newFile,
     'workbench.action.openRecent' => Codicons.history,
     'workbench.action.newWindow' => Codicons.emptyWindow,
-    'baocode.window.showChat' => Codicons.commentDiscussion,
+    'pi-desktop.window.showChat' => Codicons.commentDiscussion,
     _ => Codicons.play,
   };
 

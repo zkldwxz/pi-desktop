@@ -20,7 +20,7 @@ void main() {
     late int electionExit;
 
     setUp(() {
-      root = Directory.systemTemp.createTempSync('baocode-finder');
+      root = Directory.systemTemp.createTempSync('pi-desktop-finder');
       extension = p.join(root.path, 'FinderExtension.appex');
       Directory(extension).createSync();
       ran = [];
@@ -108,7 +108,7 @@ void main() {
   });
 
   group('Windows (Explorer\'s registry keys)', () {
-    const exe = r'C:\Program Files\pi-desktop\baocode.exe';
+    const exe = r'C:\Program Files\pi-desktop\pi-desktop.exe';
     late List<Map<String, String>?> environments;
     late String where;
 

@@ -86,7 +86,7 @@ void main() {
   testWidgets("a long subject is cut short before the branch's name; its "
       'hover has the whole commit', (tester) async {
     const subject =
-        'Merge pull request #341 from baocode-dev/feat/git-parity with a '
+        'Merge pull request #341 from pi-desktop-dev/feat/git-parity with a '
         'subject long enough to be cut short in any table';
     await pump(tester, 900, 'v1.0', subject: subject);
     expect(find.text('topic'), findsWidgets);

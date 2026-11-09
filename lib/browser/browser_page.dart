@@ -354,7 +354,7 @@ List<String> _troubles(BrowserTab tab, DateTime since) {
     ].take(6),
     for (final dialog in records.dialogs(tab))
       if (!dialog.time.isBefore(since))
-        '${dialog.describe()}${dialog.answer == 'dismissed' && dialog.by == 'BaoCode' ? ' To accept it: browser_dialog accept, then again.' : ''}',
+        '${dialog.describe()}${dialog.answer == 'dismissed' && dialog.by == 'pi-desktop' ? ' To accept it: browser_dialog accept, then again.' : ''}',
     for (final download in records.downloads(tab))
       if (!download.time.isBefore(since))
         'Download: ${download.name} (${_clip(download.url, 120)}): '
@@ -367,12 +367,12 @@ List<String> _troubles(BrowserTab tab, DateTime since) {
 const _pageScript = r'''
 if (!window.__bao || window.__bao.v !== 3) (() => {
   let next = 0;
-  for (const e of document.querySelectorAll('[data-bao-ref]')) next = Math.max(next, Number(e.getAttribute('data-bao-ref')) || 0);
+  for (const e of document.querySelectorAll('[data-pi-ref]')) next = Math.max(next, Number(e.getAttribute('data-pi-ref')) || 0);
   const B = window.__bao = { v: 3, next, changed: Date.now() };
   try {
     new MutationObserver((records) => {
       for (const r of records) {
-        if (r.type !== 'attributes' || r.attributeName !== 'data-bao-ref') { B.changed = Date.now(); return; }
+        if (r.type !== 'attributes' || r.attributeName !== 'data-pi-ref') { B.changed = Date.now(); return; }
       }
     }).observe(document, { subtree: true, childList: true, attributes: true, characterData: true });
   } catch (e) {}
@@ -435,8 +435,8 @@ if (!window.__bao || window.__bao.v !== 3) (() => {
     return norm(t);
   };
   const ref = (e) => {
-    let r = e.getAttribute('data-bao-ref');
-    if (!r) { r = String(++B.next); e.setAttribute('data-bao-ref', r); }
+    let r = e.getAttribute('data-pi-ref');
+    if (!r) { r = String(++B.next); e.setAttribute('data-pi-ref', r); }
     return Number(r);
   };
   const describe = (e) => {
@@ -533,7 +533,7 @@ if (!window.__bao || window.__bao.v !== 3) (() => {
   };
   B.find = (spec) => {
     if (spec.ref != null) {
-      const e = document.querySelector(`[data-bao-ref="${Number(spec.ref)}"]`);
+      const e = document.querySelector(`[data-pi-ref="${Number(spec.ref)}"]`);
       return e && e.isConnected
         ? { found: describe(e) }
         : { error: `No element [${spec.ref}] on the page now: it went, or the page changed. Look again (browser_snapshot), or aim by text.` };
@@ -616,7 +616,7 @@ if (!window.__bao || window.__bao.v !== 3) (() => {
   // Where to click [ref]: its middle, brought on screen; unless something
   // covers it (a dialog, a banner), said with what closes that.
   B.point = (r) => {
-    const e = document.querySelector(`[data-bao-ref="${Number(r)}"]`);
+    const e = document.querySelector(`[data-pi-ref="${Number(r)}"]`);
     if (!e) return { error: `No element [${r}] on the page now.` };
     const b = e.getBoundingClientRect();
     if (b.top < 0 || b.left < 0 || b.bottom > innerHeight || b.right > innerWidth) {
@@ -654,7 +654,7 @@ if (!window.__bao || window.__bao.v !== 3) (() => {
     'datetime-local': '2026-11-05T14:30', month: '2026-11', week: '2026-W45', range: 'a number',
   };
   B.choose = (r, text) => {
-    const e = document.querySelector('[data-bao-ref="' + r + '"]');
+    const e = document.querySelector('[data-pi-ref="' + r + '"]');
     if (!e || e.tagName !== 'INPUT' || !(e.type in CHOSEN)) return null;
     let v = String(text).trim();
     if (e.type === 'color') {

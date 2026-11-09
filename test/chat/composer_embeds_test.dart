@@ -3,7 +3,7 @@
 // atoms: what it sends is word for word what that sent, and a copy of one
 // pastes back as the thing, and elsewhere as its text.
 
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:pi_desktop/chat/chat_models.dart';
 import 'package:pi_desktop/chat/chat_session.dart';
 import 'package:pi_desktop/chat/composer/composer.dart';

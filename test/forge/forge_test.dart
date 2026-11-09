@@ -106,13 +106,13 @@ void main() {
   group('ForgeRef', () {
     test('GitHub and GitLab issues and pull requests, from their pages', () {
       final issue = ForgeRef.parse(
-        'https://github.com/baocode-dev/baocode/issues/92#issuecomment-1',
+        'https://github.com/zkldwxz/pi-desktop/issues/92#issuecomment-1',
       )!;
       expect(issue.repo.kind, ForgeKind.github);
-      expect(issue.repo.path, 'baocode-dev/baocode');
+      expect(issue.repo.path, 'pi-desktop-dev/pi-desktop');
       expect(issue.kind, ForgeItemKind.issue);
       expect(issue.number, 92);
-      expect(issue.fullTag, 'baocode-dev/baocode#92');
+      expect(issue.fullTag, 'pi-desktop-dev/pi-desktop#92');
 
       final pull = ForgeRef.parse('https://github.com/o/r/pull/7/files')!;
       expect(pull.kind, ForgeItemKind.pull);
@@ -153,11 +153,11 @@ void main() {
 
     test('a repository from its Git remote', () {
       expect(
-        ForgeRepo.fromRemote('git@github.com:baocode-dev/baocode.git'),
+        ForgeRepo.fromRemote('git@github.com:pi-desktop-dev/pi-desktop.git'),
         const ForgeRepo(
           kind: ForgeKind.github,
           host: 'github.com',
-          path: 'baocode-dev/baocode',
+          path: 'pi-desktop-dev/pi-desktop',
         ),
       );
       expect(
@@ -193,7 +193,7 @@ void main() {
 
     test('Gitee issues (their numbers letters) and pull requests', () {
       final issue = ForgeRef.parse(
-        'https://gitee.com/baocode/app/issues/I8ABCD?from=project-issue',
+        'https://gitee.com/pi-desktop/app/issues/I8ABCD?from=project-issue',
       )!;
       expect(issue.repo.kind, ForgeKind.gitee);
       expect(issue.repo.path, 'pi-desktop/app');
@@ -202,12 +202,12 @@ void main() {
       expect(issue.fullTag, 'pi-desktop/app#I8ABCD');
       expect(
         issue.url.toString(),
-        'https://gitee.com/baocode/app/issues/I8ABCD',
+        'https://gitee.com/pi-desktop/app/issues/I8ABCD',
       );
       // Its case matters.
       expect(
         issue,
-        isNot(ForgeRef.parse('https://gitee.com/baocode/app/issues/i8abcd')),
+        isNot(ForgeRef.parse('https://gitee.com/pi-desktop/app/issues/i8abcd')),
       );
 
       final pull = ForgeRef.parse('https://gitee.com/o/r/pulls/12/files')!;
@@ -218,7 +218,7 @@ void main() {
 
       expect(ForgeRef.parse('https://gitee.com/o/r/tree/master'), isNull);
       expect(
-        ForgeRepo.fromRemote('git@gitee.com:baocode/app.git'),
+        ForgeRepo.fromRemote('git@gitee.com:pi-desktop/app.git'),
         const ForgeRepo(
           kind: ForgeKind.gitee,
           host: 'gitee.com',

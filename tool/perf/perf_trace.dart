@@ -32,7 +32,7 @@ class PerfTrace {
         : info;
     final uri = info.serverWebSocketUri;
     if (uri == null) {
-      stderr.writeln('BAOCODE_PERF_LOG no VM service: no traces');
+      stderr.writeln('PI_DESKTOP_PERF_LOG no VM service: no traces');
       return null;
     }
     final service = await vmServiceConnectUri(uri.toString());
@@ -63,13 +63,13 @@ class PerfTrace {
   }
 }
 
-/// With BAOCODE_PERF_HEAP set, what the Dart heaps hold after each phase,
+/// With PI_DESKTOP_PERF_HEAP set, what the Dart heaps hold after each phase,
 /// logged: each isolate's heap and external memory (what Dart objects hold
 /// outside the heap: images, the engine's paragraphs and pictures), and the
 /// main isolate's classes holding most, after a full GC.
 abstract final class PerfHeap {
   static final bool enabled = Platform.environment.containsKey(
-    'BAOCODE_PERF_HEAP',
+    'PI_DESKTOP_PERF_HEAP',
   );
   static VmService? _service;
 
@@ -97,9 +97,9 @@ abstract final class PerfHeap {
           'top: ${[for (final m in members.take(20)) '${m.classRef?.name}${m.classRef?.library?.uri == null ? '' : ''} ${_mb(m.bytesCurrent)} (${m.instancesCurrent})'].join(', ')}',
         );
       }
-      stderr.writeln('BAOCODE_PERF_LOG heap $label: ${lines.join(' | ')}');
+      stderr.writeln('PI_DESKTOP_PERF_LOG heap $label: ${lines.join(' | ')}');
     } on Object catch (error) {
-      stderr.writeln('BAOCODE_PERF_LOG heap: $error');
+      stderr.writeln('PI_DESKTOP_PERF_LOG heap: $error');
     }
   }
 

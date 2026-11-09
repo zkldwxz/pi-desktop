@@ -5,7 +5,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart' show ChangeNotifier, Icons;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_remote/claude.dart'
+import 'package:pi_remote/claude.dart'
     show ClaudeHistoryPage, ClaudeNotInstalled;
 import 'package:pi_desktop/chat/chat_models.dart';
 import 'package:pi_desktop/chat/widgets/agent_step.dart' show AgentStep;
@@ -418,7 +418,7 @@ void main() {
         containsPair('question', 'Do you prefer red or blue?'),
       );
 
-      // Only in its words (BaoCode's own core's, a result not kept).
+      // Only in its words (pi-desktop's own core's, a result not kept).
       expect(
         questionAnswers(
           null,
@@ -1879,7 +1879,7 @@ void main() {
         'request_id': 'm1',
         'request': {
           'subtype': 'mcp_message',
-          'server_name': 'baocode',
+          'server_name': 'pi-desktop',
           'message': {
             'jsonrpc': '2.0',
             'id': 5,
@@ -4315,7 +4315,7 @@ void main() {
       );
       await pumpEventQueue();
       expect(kernel.health.status, KernelHealthStatus.failed);
-      expect(kernel.health.message, contains('older than BaoCode needs'));
+      expect(kernel.health.message, contains('older than pi-desktop needs'));
       expect(kernel.health.detail, contains('--prompt-suggestions'));
       expect(
         kernel.health.detail,
@@ -4383,7 +4383,7 @@ void main() {
       await pumpEventQueue();
       expect(starts, 1);
       expect(kernel.health.status, KernelHealthStatus.failed);
-      expect(kernel.health.message, contains('older than BaoCode needs'));
+      expect(kernel.health.message, contains('older than pi-desktop needs'));
       expect(kernel.health.detail, contains('/usr/local/bin/claude'));
       kernel.dispose();
     });
@@ -5752,22 +5752,22 @@ void main() {
       return settings.isEmpty ? null : settings;
     }
 
-    test('is the setting\'s, BaoCode when unset or unknown', () {
-      expect(CommitAttribution.parse(null), CommitAttribution.baocode);
+    test('is the setting\'s, pi-desktop when unset or unknown', () {
+      expect(CommitAttribution.parse(null), CommitAttribution.piDesktop);
       expect(CommitAttribution.parse('none'), CommitAttribution.none);
       expect(CommitAttribution.parse('agent'), CommitAttribution.agent);
-      expect(CommitAttribution.parse('claude'), CommitAttribution.baocode);
-      expect(CommitAttribution.parse(1), CommitAttribution.baocode);
+      expect(CommitAttribution.parse('claude'), CommitAttribution.piDesktop);
+      expect(CommitAttribution.parse(1), CommitAttribution.piDesktop);
     });
 
     test('is passed as Claude Code\'s attribution setting, but for the '
         'agent\'s own', () {
       ClaudeLaunch launch(CommitAttribution attribution) =>
           ClaudeLaunch(cwd: '/p', attribution: attribution);
-      expect(flagSettings(launch(CommitAttribution.baocode)), {
+      expect(flagSettings(launch(CommitAttribution.piDesktop)), {
         'attribution': {
-          'commit': 'Co-Authored-By: BaoCode <noreply@baocode.dev>',
-          'pr': '🤖 Generated with [BaoCode](https://baocode.dev)',
+          'commit': 'Co-Authored-By: pi-desktop <noreply@github.com>',
+          'pr': '🤖 Generated with [pi-desktop](https://github.com/zkldwxz/pi-desktop)',
         },
       });
       expect(flagSettings(launch(CommitAttribution.none)), {
@@ -5823,9 +5823,9 @@ void main() {
   group('claude locator', () {
     tearDown(() => CliLocator.use(null));
 
-    test('BAOCODE_CLAUDE_PATH in the environment is not read: the build '
+    test('PI_DESKTOP_CLAUDE_PATH in the environment is not read: the build '
         'to run is a setting now', () async {
-      final root = await Directory.systemTemp.createTemp('baocode-locator-');
+      final root = await Directory.systemTemp.createTemp('pi-desktop-locator-');
       addTearDown(() => root.delete(recursive: true));
       final variant = File('${root.path}/claude-variant')
         ..writeAsStringSync('#!/bin/sh\n');
@@ -5833,7 +5833,7 @@ void main() {
         ..createSync(recursive: true)
         ..writeAsStringSync('#!/bin/sh\n');
       CliLocator.use({
-        'BAOCODE_CLAUDE_PATH': variant.path,
+        'PI_DESKTOP_CLAUDE_PATH': variant.path,
         'PATH': '${root.path}/bin',
       });
 
@@ -5848,7 +5848,7 @@ void main() {
     group('on the PATH', () {
       late Directory root;
       setUp(() async {
-        root = await Directory.systemTemp.createTemp('baocode-locator-');
+        root = await Directory.systemTemp.createTemp('pi-desktop-locator-');
         for (final dir in ['first', 'second']) {
           Directory('${root.path}/$dir').createSync();
         }
@@ -5914,7 +5914,7 @@ void main() {
     test(
       'none that runs: not installed, naming the ones that do not',
       () async {
-        final root = await Directory.systemTemp.createTemp('baocode-locator-');
+        final root = await Directory.systemTemp.createTemp('pi-desktop-locator-');
         addTearDown(() => root.delete(recursive: true));
         addTearDown(() => CliLocator.candidatesOverride = null);
         final broken = File('${root.path}/claude')
@@ -5936,7 +5936,7 @@ void main() {
     );
 
     test('Volta\'s shim is passed over for its package\'s build', () async {
-      final root = await Directory.systemTemp.createTemp('baocode-locator-');
+      final root = await Directory.systemTemp.createTemp('pi-desktop-locator-');
       addTearDown(() => root.delete(recursive: true));
       final volta = '${root.path}/Volta';
       final bin = '$volta/bin';
@@ -5956,7 +5956,7 @@ void main() {
     });
 
     test('a program is told from a script left in its place', () async {
-      final root = await Directory.systemTemp.createTemp('baocode-locator-');
+      final root = await Directory.systemTemp.createTemp('pi-desktop-locator-');
       addTearDown(() => root.delete(recursive: true));
       File file(String name, List<int> bytes) =>
           File('${root.path}/$name')..writeAsBytesSync(bytes);
@@ -6043,7 +6043,7 @@ void main() {
   group('the shell environment', () {
     late Directory root;
     setUp(() async {
-      root = await Directory.systemTemp.createTemp('baocode-shell-');
+      root = await Directory.systemTemp.createTemp('pi-desktop-shell-');
       ClaudeEnvironment.use(null);
     });
     tearDown(() async {
@@ -6120,7 +6120,7 @@ exec /usr/bin/env "\$@"
 
   group('Claude Code storage', () {
     test('reads the sessions where the login shell keeps them', () async {
-      final root = await Directory.systemTemp.createTemp('baocode-storage-');
+      final root = await Directory.systemTemp.createTemp('pi-desktop-storage-');
       addTearDown(() => root.delete(recursive: true));
       addTearDown(() => ClaudeEnvironment.use(null));
       final config = '${root.path}/config';
@@ -6145,7 +6145,7 @@ exec /usr/bin/env "\$@"
 
     test('a session is titled as the user named it, else as Claude Code '
         'did, else after its first message', () async {
-      final root = await Directory.systemTemp.createTemp('baocode-storage-');
+      final root = await Directory.systemTemp.createTemp('pi-desktop-storage-');
       addTearDown(() => root.delete(recursive: true));
       final config = '${root.path}/config';
       final cwd = '${root.path}/project';
@@ -6192,7 +6192,7 @@ exec /usr/bin/env "\$@"
 
     test('a session is dated by its last message, and titled past the '
         'placeholders its images are sent with', () async {
-      final root = await Directory.systemTemp.createTemp('baocode-storage-');
+      final root = await Directory.systemTemp.createTemp('pi-desktop-storage-');
       addTearDown(() => root.delete(recursive: true));
       final config = '${root.path}/config';
       final cwd = '${root.path}/project';
@@ -6248,7 +6248,7 @@ exec /usr/bin/env "\$@"
 
     test('a session is listed past the notes sent ahead of what was typed, '
         'and by a command typed with what it is to do', () async {
-      final root = await Directory.systemTemp.createTemp('baocode-storage-');
+      final root = await Directory.systemTemp.createTemp('pi-desktop-storage-');
       addTearDown(() => root.delete(recursive: true));
       final config = '${root.path}/config';
       final cwd = '${root.path}/project';
@@ -6336,7 +6336,7 @@ exec /usr/bin/env "\$@"
 
     test('a session file is read again only once it changes, and the cache '
         'keeps only the files still there', () async {
-      final root = await Directory.systemTemp.createTemp('baocode-storage-');
+      final root = await Directory.systemTemp.createTemp('pi-desktop-storage-');
       addTearDown(() => root.delete(recursive: true));
       final config = '${root.path}/config';
       final cwd = '${root.path}/project';
@@ -6382,7 +6382,7 @@ exec /usr/bin/env "\$@"
 
     test('a session file appended to is read on from where it was read, '
         'its titles and last message taken from what came', () async {
-      final root = await Directory.systemTemp.createTemp('baocode-storage-');
+      final root = await Directory.systemTemp.createTemp('pi-desktop-storage-');
       addTearDown(() => root.delete(recursive: true));
       final config = '${root.path}/config';
       final cwd = '${root.path}/project';
@@ -6459,7 +6459,7 @@ exec /usr/bin/env "\$@"
     test(
       'the app\'s data path wins, and the CLI is told to keep state there',
       () async {
-        final root = await Directory.systemTemp.createTemp('baocode-storage-');
+        final root = await Directory.systemTemp.createTemp('pi-desktop-storage-');
         addTearDown(() => root.delete(recursive: true));
         addTearDown(() => ClaudeEnvironment.use(null));
         final mine = '${root.path}/mine';
@@ -6477,7 +6477,7 @@ exec /usr/bin/env "\$@"
             })}\n',
           );
         final environment = {
-          'BAOCODE_CLAUDE_DATA_PATH': mine,
+          'PI_DESKTOP_CLAUDE_DATA_PATH': mine,
           'CLAUDE_CONFIG_DIR': theirs,
         };
         ClaudeEnvironment.use(environment);
@@ -6494,7 +6494,7 @@ exec /usr/bin/env "\$@"
     test(
       'deleting a session removes all of it, and only it, idempotently',
       () async {
-        final root = await Directory.systemTemp.createTemp('baocode-storage-');
+        final root = await Directory.systemTemp.createTemp('pi-desktop-storage-');
         addTearDown(() => root.delete(recursive: true));
         final config = '${root.path}/config';
         final temp = '${root.path}/tmp';
@@ -6531,7 +6531,7 @@ exec /usr/bin/env "\$@"
     );
 
     test('a fork copies the conversation up to a message, apart', () async {
-      final root = await Directory.systemTemp.createTemp('baocode-storage-');
+      final root = await Directory.systemTemp.createTemp('pi-desktop-storage-');
       addTearDown(() => root.delete(recursive: true));
       final config = '${root.path}/config';
       const id = 'aaaaaaaa-1111-4111-8111-111111111111';
@@ -6588,7 +6588,7 @@ exec /usr/bin/env "\$@"
 
     test('a folder\'s sessions move to another\'s, with what is kept beside '
         'them and its memory; a folder dashed alike keeps its own', () async {
-      final root = await Directory.systemTemp.createTemp('baocode-move-');
+      final root = await Directory.systemTemp.createTemp('pi-desktop-move-');
       addTearDown(() => root.delete(recursive: true));
       final config = '${root.path}/config';
       final from = '${root.path}/old/app';

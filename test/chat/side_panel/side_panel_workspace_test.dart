@@ -2,7 +2,7 @@
 // IDE's: each folder a root of the files page, a repository of the changes
 // page's to pick from; the files the agent names found in its folders.
 
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
 import 'package:pi_desktop/ide/ide_notifications.dart';
 import 'package:pi_desktop/theme/code_font.dart';
 import 'package:pi_desktop/chat/chat_session.dart';

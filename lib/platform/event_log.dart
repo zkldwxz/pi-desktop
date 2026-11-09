@@ -47,7 +47,7 @@ class EventLog {
   final DateTime Function() _clock;
 
   /// The category of a run's last line: how it ended. The native side
-  /// writes it too (windows/runner/log_folder.h, packages/bao_sampler's
+  /// writes it too (windows/runner/log_folder.h, packages/pi_sampler's
   /// crash handler), in the same form.
   static const exitCategory = 'exit';
 

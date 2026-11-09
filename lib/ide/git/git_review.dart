@@ -1,4 +1,4 @@
-// BaoCode's own commit check, in the place of JetBrains IDEs' before-commit
+// pi-desktop's own commit check, in the place of JetBrains IDEs' before-commit
 // inspections: the model reads what the commit takes and lists what looks
 // wrong in it (a bug, a secret, debugging left in), each at its file and
 // line, before it goes.

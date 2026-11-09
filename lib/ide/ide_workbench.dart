@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bao_editor/monaco/vs/editor/common/core/position.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/position.dart';
 import 'package:flutter/material.dart';
 
 import '../base/mouse_navigation.dart';
@@ -96,7 +96,7 @@ class IdeWorkbench extends StatefulWidget implements WorkbenchOptions {
     this.backLabel,
     this.editorBuilder,
     this.nativeEditorEnabled = const bool.fromEnvironment(
-      'BAOCODE_NATIVE_EDITOR',
+      'PI_DESKTOP_NATIVE_EDITOR',
       defaultValue: true,
     ),
     this.commands = const [],

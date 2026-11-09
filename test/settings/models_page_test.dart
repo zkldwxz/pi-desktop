@@ -208,7 +208,7 @@ void main() {
     await tester.pump();
   }
 
-  testWidgets('on BaoCode\'s own core there is no built-in provider: '
+  testWidgets('on pi-desktop\'s own core there is no built-in provider: '
       'neither listed nor offered as the default', (tester) async {
     ClaudeCore.current = () => ClaudeCore.builtin;
     // Picked on the CLI: Claude Code's own default, and its Haiku.
@@ -1126,7 +1126,7 @@ void main() {
 
     setUp(() {
       directory = Directory.systemTemp.createTempSync(
-        'baocode-account-import-',
+        'pi-desktop-account-import-',
       );
     });
 

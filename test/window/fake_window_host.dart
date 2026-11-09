@@ -30,7 +30,7 @@ class FakeView extends TestFlutterView {
   void updateSemantics(SemanticsUpdate update) {}
 }
 
-/// The system's windows, as `baocode/windows` would answer: what was asked
+/// The system's windows, as `pi-desktop/windows` would answer: what was asked
 /// is kept to look at.
 class FakeWindowHost extends WindowHost {
   FakeWindowHost(this.implicit, {this.available = true});

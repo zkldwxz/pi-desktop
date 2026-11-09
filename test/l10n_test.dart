@@ -7,14 +7,14 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:pi_desktop/chat/composer/kernel_option_text.dart';
 import 'package:pi_desktop/chat/widgets/activity_row.dart';
-import 'package:bao_editor/monaco/flutter/editor_keybindings.dart';
+import 'package:pi_editor/monaco/flutter/editor_keybindings.dart';
 import 'package:pi_desktop/ide/ide_commands.dart';
 import 'package:pi_desktop/ide/ide_quick_open.dart';
 import 'package:pi_desktop/kernel/agent_kernel.dart';
 import 'package:pi_desktop/kernel/claude_code/claude_code_kernel.dart';
 import 'package:pi_desktop/kernel/mock/mock_kernels.dart';
 import 'package:pi_desktop/keybindings/default_keybindings.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 import 'package:pi_desktop/keybindings/keybindings_editing.dart';
 import 'package:pi_desktop/l10n/app_localizations_zh.dart';

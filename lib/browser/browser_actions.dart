@@ -422,7 +422,7 @@ Future<String> _upload(
     );
   }
   final element = await _find(browser, tabId, target);
-  final selector = '[data-bao-ref="${element['ref']}"]';
+  final selector = '[data-pi-ref="${element['ref']}"]';
   final names = files.map(p.basename).join(', ');
   final result = await browser.cdp(tabId, 'Runtime.evaluate', {
     'expression': 'document.querySelector(\'$selector\')',
@@ -765,7 +765,7 @@ Future<String> _type(
       await BrowserTools._evaluate(
         browser,
         tabId,
-        'document.querySelector(\'[data-bao-ref="${element['ref']}"]\')?.focus()',
+        'document.querySelector(\'[data-pi-ref="${element['ref']}"]\')?.focus()',
       );
       focused = await _bao(browser, tabId, 'focused()') as Map?;
     }
@@ -800,7 +800,7 @@ Future<String> _scroll(
     await BrowserTools._evaluate(
       browser,
       tabId,
-      'document.querySelector(\'[data-bao-ref="${element['ref']}"]\')'
+      'document.querySelector(\'[data-pi-ref="${element['ref']}"]\')'
       '?.scrollIntoView({block: "center", behavior: "instant"})',
     );
     return 'Scrolled to ${_elementName(element)}.';

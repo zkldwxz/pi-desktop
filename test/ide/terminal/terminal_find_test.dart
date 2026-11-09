@@ -6,13 +6,13 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pi_desktop/ide/terminal/terminal_find.dart';
-import 'package:bao_xterm/addons/addon_search/typings/addon_search.dart';
-import 'package:bao_xterm/common/async.dart';
-import 'package:bao_xterm/common/services/services.dart'
+import 'package:pi_xterm/addons/addon_search/typings/addon_search.dart';
+import 'package:pi_xterm/common/async.dart';
+import 'package:pi_xterm/common/services/services.dart'
     show IInternalDecoration;
-import 'package:bao_xterm/typings/xterm.dart' show ITerminalOptions;
+import 'package:pi_xterm/typings/xterm.dart' show ITerminalOptions;
 
-import 'package:bao_xterm/testing/search_test_terminal.dart';
+import 'package:pi_xterm/testing/search_test_terminal.dart';
 
 final ISearchDecorationOptions _colors = ISearchDecorationOptions(
   matchBackground: '#20404e',

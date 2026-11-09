@@ -3,11 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pi_desktop/ide/terminal/terminal_clipboard.dart';
 import 'package:pi_desktop/ide/terminal/terminal_mouse.dart';
 import 'package:pi_desktop/ide/terminal/terminal_selection.dart';
-import 'package:bao_xterm/common/buffer/buffer_line.dart';
-import 'package:bao_xterm/common/buffer/types.dart';
-import 'package:bao_xterm/common/types.dart';
+import 'package:pi_xterm/common/buffer/buffer_line.dart';
+import 'package:pi_xterm/common/buffer/types.dart';
+import 'package:pi_xterm/common/types.dart';
 
-import 'package:bao_xterm/testing/test_utils.dart';
+import 'package:pi_xterm/testing/test_utils.dart';
 
 class _DataCoreService extends MockCoreService {
   final List<String> data = [];

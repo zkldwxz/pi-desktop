@@ -230,7 +230,7 @@ bool HasExtension(const std::wstring& path, std::wstring_view extension) {
 }
 
 // Where the PATH has the program |name|, as the terminal's lookup has it
-// (see _locate in packages/bao_pty/lib/src/pty_windows.dart): with each of
+// (see _locate in packages/pi_pty/lib/src/pty_windows.dart): with each of
 // the PATHEXT's extensions first, then as it is — VS Code's folder has a
 // `code` for Unix shells beside the `code.cmd`. Empty when it is not there,
 // or |name| is a path.

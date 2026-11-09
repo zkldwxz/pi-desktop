@@ -6,7 +6,7 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'dart:typed_data';
 
-import 'package:bao_remote/local.dart' show runGit;
+import 'package:pi_remote/local.dart' show runGit;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pi_desktop/ide/git/git_model.dart';
 import 'package:pi_desktop/ide/git/git_repository.dart';
@@ -39,7 +39,7 @@ void main() {
   }
 
   setUp(() async {
-    temp = await Directory.systemTemp.createTemp('baocode_git_');
+    temp = await Directory.systemTemp.createTemp('pi_desktop_git_');
     root = p.normalize((await temp.resolveSymbolicLinks()));
     // Not `init -b` (Git 2.28+): the tests run on older Gits too (#311).
     await git(['init', '-q']);
@@ -205,7 +205,7 @@ void main() {
   }, skip: hasGit ? false : 'Git is not installed');
 
   test('outside a repository there is no status', () async {
-    final outside = await Directory.systemTemp.createTemp('baocode_nogit_');
+    final outside = await Directory.systemTemp.createTemp('pi_desktop_nogit_');
     addTearDown(() => outside.delete(recursive: true));
     final service = IdeGitService(outside.path);
     expect(await service.status(), isNull);

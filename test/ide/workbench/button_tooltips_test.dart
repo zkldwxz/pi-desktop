@@ -8,7 +8,7 @@ import 'package:pi_desktop/ide/ide_panes.dart';
 import 'package:pi_desktop/ide/ide_tab_bar.dart';
 import 'package:pi_desktop/ide/ide_workbench.dart';
 import 'package:pi_desktop/ide/terminal/terminal_view.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 
 import '../lsp_ui/fake_language_features.dart';

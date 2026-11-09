@@ -7,7 +7,7 @@ import 'package:path/path.dart' as p;
 
 import 'fake_files.dart';
 
-/// The explorer with hidden files and folders (BaoCode's own
+/// The explorer with hidden files and folders (pi-desktop's own
 /// `explorer.exclude`; see [IdeExplorerExcludes]).
 void main() {
   const files = {

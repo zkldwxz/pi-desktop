@@ -1,4 +1,4 @@
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:pi_desktop/chat/chat_models.dart';
 import 'package:pi_desktop/chat/composer/composer_embeds.dart';
 import 'package:pi_desktop/chat/composer/suggestion_menu.dart';

@@ -101,7 +101,7 @@ void main() {
     });
 
     test('makes a key, unlimited and never ending', () async {
-      final made = await adapter.create('BaoCode');
+      final made = await adapter.create('pi-desktop');
       expect(made.id, '8');
       final create = site.sent.firstWhere(
         (s) => s.method == 'POST' && s.url.path == '/api/token/',
@@ -169,11 +169,11 @@ void main() {
     test(
       'makes a key in an Anthropic group, with an idempotency key',
       () async {
-        await adapter.create('BaoCode');
+        await adapter.create('pi-desktop');
         final create = site.sent.firstWhere(
           (s) => s.method == 'POST' && s.url.path == '/api/v1/keys',
         );
-        expect(create.json, {'name': 'BaoCode', 'group_id': 5});
+        expect(create.json, {'name': 'pi-desktop', 'group_id': 5});
         expect(create.headers['Idempotency-Key'], hasLength(32));
       },
     );

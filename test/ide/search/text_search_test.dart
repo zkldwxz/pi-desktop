@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_remote/local.dart' show GitIgnore;
+import 'package:pi_remote/local.dart' show GitIgnore;
 import 'package:pi_desktop/ide/search/text_search.dart';
 import 'package:path/path.dart' as p;
 

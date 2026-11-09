@@ -8,7 +8,7 @@
 //   {"id": "ms-vscode.atom-keybindings", "name": "Atom", "version": "3.3.0",
 //    "keybindings": [{"key": "ctrl+1", "command": "...", ...}, ...]}
 //
-// The one in use is the `baocode.keymap` setting, by id.
+// The one in use is the `pi-desktop.keymap` setting, by id.
 
 import 'dart:convert';
 import 'dart:io';
@@ -19,7 +19,7 @@ import 'package:path/path.dart' as p;
 
 import '../settings/jsonc.dart';
 
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 
 /// A keymap: [entries] under an extension's [id].
 @immutable

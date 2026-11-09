@@ -4,7 +4,7 @@
 // removing a breakpoint.
 //
 // This is the only debug file outside lib/debug/; it is deliberately thin:
-// everything it shows is [EditorDecoration]s (packages/bao_editor's
+// everything it shows is [EditorDecoration]s (packages/pi_editor's
 // Monaco-shaped API: glyph margin icons, whole-line backgrounds, injected
 // `after` text) and the geometry EditorSurfaceView gives, so it can be
 // rebased on the editor's own breakpoint support later.
@@ -15,7 +15,7 @@
 
 import 'dart:async';
 
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
 
 import '../base/uri.dart' show VsUri;
 

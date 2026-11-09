@@ -9,7 +9,7 @@ import 'package:path/path.dart' as p;
 void main() {
   late Directory dir;
 
-  setUp(() => dir = Directory.systemTemp.createTempSync('baocode-turns-'));
+  setUp(() => dir = Directory.systemTemp.createTempSync('pi-desktop-turns-'));
   tearDown(() => dir.deleteSync(recursive: true));
 
   test('kept and read back, by session and turn', () async {

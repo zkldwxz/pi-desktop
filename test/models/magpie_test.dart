@@ -266,7 +266,7 @@ void main() {
     });
 
     test(
-      'joined: an upstream with magpie\'s models, under BaoCode\'s key',
+      'joined: an upstream with magpie\'s models, under pi-desktop\'s key',
       () async {
         final store = ModelProviders.memory();
         final follow = MagpieFollow(providers: store);

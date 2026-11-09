@@ -7,7 +7,7 @@ import 'package:pi_desktop/ide/ide_quick_input.dart';
 import 'package:pi_desktop/ide/ide_workbench.dart';
 import 'package:pi_desktop/ide/terminal/terminal_instance.dart';
 import 'package:pi_desktop/ide/terminal/terminal_view.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 
 import '../terminal/fake_pty.dart';

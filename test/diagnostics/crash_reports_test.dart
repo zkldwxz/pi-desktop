@@ -182,11 +182,11 @@ void main() {
       redactCrashReport(
         '{\n  "pid" : 1980,\n'
         '  "crashReporterKey" : "742F288F-5181-E91C-D926-856AE707E206",\n'
-        '  "procName" : "BaoCode"\n}',
+        '  "procName" : "pi-desktop"\n}',
       ),
       '{\n  "pid" : 1980,\n'
       '  "crashReporterKey" : "",\n'
-      '  "procName" : "BaoCode"\n}',
+      '  "procName" : "pi-desktop"\n}',
     );
   });
 
@@ -194,14 +194,14 @@ void main() {
     test("macOS': the exception, the signal, the termination", () {
       expect(
         describeCrashReport(
-          '{"app_name":"BaoCode","bug_type":"309"}\n'
+          '{"app_name":"pi-desktop","bug_type":"309"}\n'
           '{\n  "exception" : {"type":"EXC_BAD_ACCESS","signal":"SIGSEGV"},\n'
           '  "termination" : {"indicator":"Segmentation fault: 11"}\n}',
         ),
         'EXC_BAD_ACCESS (SIGSEGV), Segmentation fault: 11',
       );
       expect(
-        describeCrashReport('{"app_name":"BaoCode","bug_type":"288"}\n{}'),
+        describeCrashReport('{"app_name":"pi-desktop","bug_type":"288"}\n{}'),
         'bug type 288',
       );
     });
@@ -217,7 +217,7 @@ void main() {
       expect(
         describeCrashReport(
           'Date/Time:        2026-10-28 14:17:00.000 +0800\n'
-          'Command:          BaoCode\n'
+          'Command:          pi-desktop\n'
           'Event:            hang\n'
           'Duration:         12.34s\n',
         ),

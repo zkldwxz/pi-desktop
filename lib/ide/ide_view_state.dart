@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/widgets.dart';
 
-import 'package:bao_editor/monaco/flutter/editor_view_state.dart';
+import 'package:pi_editor/monaco/flutter/editor_view_state.dart';
 
 /// Where a tab's editor was left, given back when the tab shows again, is
 /// opened again, or the app runs again: VS Code's editor view state

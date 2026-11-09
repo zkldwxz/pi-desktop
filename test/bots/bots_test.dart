@@ -413,9 +413,9 @@ void main() {
         isNot(contains('/bots/left-behind')),
       );
       // Named by none of what it is told.
-      thread.session.send(const ComposerMessage(text: '<bao-event>x'));
+      thread.session.send(const ComposerMessage(text: '<pi-event>x'));
       workspace.notifyListeners();
-      expect(thread.title, isNot(contains('bao-event')));
+      expect(thread.title, isNot(contains('pi-event')));
       expect(workspace.agentSetup!(app), isNull);
     });
 

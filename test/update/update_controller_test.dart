@@ -137,7 +137,7 @@ void main() {
     test('a download that fails its checks is told, not installed', () async {
       make(manifest: manifestOf('1.2.0'));
       backend.downloadError = const UpdateVerificationException(
-        'The download is not signed by BaoCode',
+        'The download is not signed by pi-desktop',
       );
       await controller.checkNow(notifications, l10n);
       notifications.clearAll();

@@ -1,6 +1,6 @@
 # Contributing to pi-desktop
 
-pi-desktop is a fork of [BaoCode](https://github.com/baocode-dev/baocode) using the Pi coding agent. Use the [fork repository](https://github.com/zkldwxz/pi-desktop) for fork-specific changes.
+pi-desktop is a fork of [pi-desktop](https://github.com/zkldwxz/pi-desktop) using the Pi coding agent. Use the [fork repository](https://github.com/zkldwxz/pi-desktop) for fork-specific changes.
 
 ## Develop
 
@@ -25,4 +25,4 @@ A macOS build requires full Xcode and its SDKs. The package scripts are `dart ru
 
 ## License and attribution
 
-The application is distributed under [GPL-3.0-only](LICENSE), inherited from BaoCode. Contributions to it must be compatible with that license. The `bao_editor`, `bao_xterm`, and `bao_pty` packages retain their MIT licenses; consult the license and notices for the files you change. Pi and other third-party components retain their own licenses. Preserve applicable copyright, license, and attribution notices when modifying or redistributing code.
+The application is distributed under [GPL-3.0-only](LICENSE), inherited from pi-desktop. Contributions to it must be compatible with that license. The `pi_editor`, `pi_xterm`, and `pi_pty` packages retain their MIT licenses; consult the license and notices for the files you change. Pi and other third-party components retain their own licenses. Preserve applicable copyright, license, and attribution notices when modifying or redistributing code.

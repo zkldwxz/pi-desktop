@@ -25,7 +25,7 @@ abstract interface class LoginWindow {
 }
 
 /// The runner's (macOS: LoginWindow.swift; Windows: login_window.cpp;
-/// Linux: login_window.cc), over `baocode/login_window`.
+/// Linux: login_window.cc), over `pi-desktop/login_window`.
 class ChannelLoginWindow implements LoginWindow {
   ChannelLoginWindow({MethodChannel? channel})
     : _channel = channel ?? const MethodChannel('pi-desktop/login_window') {

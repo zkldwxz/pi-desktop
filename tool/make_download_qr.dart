@@ -5,7 +5,7 @@
 //   dart run tool/make_download_qr.dart
 //
 // Each encodes that card's own link on the site — /dl/android, /dl/ios —
-// and not the file on dl.baocode.dev: those links are permanent, and
+// and not the file on the pi-desktop site: those links are permanent, and
 // site-worker/index.js points them at the release current when the code is
 // scanned, so a code written here (or photographed off the page) keeps
 // working as the phone app is released again. The site has no build step:

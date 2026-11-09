@@ -1,4 +1,4 @@
-import 'package:bao_remote/review.dart';
+import 'package:pi_remote/review.dart';
 
 /// No files of its own in the browser.
 Future<ReviewStore?> openReviewStore() async => null;

@@ -97,7 +97,7 @@ jobs:
           channel: stable
           flutter-version: ${{ env.FLUTTER_VERSION }}
       - id: iroh
-        uses: ./.github/actions/bao-iroh-prebuilt
+        uses: ./.github/actions/pi-iroh-prebuilt
       - if: steps.iroh.outputs.hit != 'true'
         uses: ./.github/actions/setup-rust
       - name: Resolve dependencies

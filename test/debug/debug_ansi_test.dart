@@ -2,7 +2,7 @@
 // src/vs/workbench/contrib/debug/test/browser/debugANSIHandling.test.ts
 // (1.135.0) checks it: the runs and their classes and colors.
 
-import 'package:bao_editor/monaco/vs/base/common/color.dart' as vs;
+import 'package:pi_editor/monaco/vs/base/common/color.dart' as vs;
 import 'package:pi_desktop/debug/ui/debug_ansi.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';

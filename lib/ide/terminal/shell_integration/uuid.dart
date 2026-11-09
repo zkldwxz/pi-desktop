@@ -1,1 +1,1 @@
-export 'package:bao_remote/terminal.dart' show generateUuid;
+export 'package:pi_remote/terminal.dart' show generateUuid;

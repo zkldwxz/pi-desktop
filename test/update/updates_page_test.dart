@@ -47,7 +47,7 @@ void main() {
   late UserSettings settings;
 
   setUp(() async {
-    data = await Directory.systemTemp.createTemp('baocode-updates-page');
+    data = await Directory.systemTemp.createTemp('pi-desktop-updates-page');
     settings = UserSettings(p.join(data.path, 'settings.json'));
     await settings.load();
   });

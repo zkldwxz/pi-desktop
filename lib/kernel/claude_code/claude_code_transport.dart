@@ -4,7 +4,7 @@ import '../../models/launch_environment.dart';
 import '../commit_attribution.dart';
 import '../extension_switches.dart';
 
-export 'package:bao_remote/claude.dart'
+export 'package:pi_remote/claude.dart'
     show ClaudeFolderGone, ClaudeNoModel, ClaudeUnavailable;
 
 /// Claude Code's side of the adapter (the Adaptee): the messages of
@@ -213,9 +213,9 @@ class ClaudeLaunch {
   );
 
   Map<String, String>? get _attribution => switch (attribution) {
-    CommitAttribution.baocode => const {
-      'commit': CommitAttribution.baoCodeCommit,
-      'pr': CommitAttribution.baoCodePullRequest,
+    CommitAttribution.piDesktop => const {
+      'commit': CommitAttribution.piDesktopCommit,
+      'pr': CommitAttribution.piDesktopPullRequest,
     },
     CommitAttribution.agent => null,
     CommitAttribution.none => const {'commit': '', 'pr': ''},

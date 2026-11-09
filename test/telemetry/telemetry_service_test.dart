@@ -32,7 +32,7 @@ void main() {
     expect(platformTelemetry(environment: {}, buildUrl: ''), isNull);
     expect(
       platformTelemetry(
-        environment: {'BAOCODE_TELEMETRY_URL': 'https://old.test'},
+        environment: {'PI_DESKTOP_TELEMETRY_URL': 'https://old.test'},
         buildUrl: '',
       ),
       isNull,

@@ -240,7 +240,7 @@ class ShowTransport implements ClaudeCodeTransport {
   void _setGoal(String condition) {
     _goal = condition;
     final config =
-        Platform.environment['BAOCODE_SHOWCASE_HOME'] ??
+        Platform.environment['PI_DESKTOP_SHOWCASE_HOME'] ??
         Platform.environment['HOME']!;
     final file = File(
       '$config/.claude/projects/'

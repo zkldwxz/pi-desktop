@@ -55,7 +55,7 @@ class RenderFileDropRegion extends RenderProxyBoxWithHitTestBehavior {
 }
 
 /// The system's drag and drop of files onto the window, as the window
-/// reports it over `baocode/drop` (MainFlutterWindow.swift,
+/// reports it over `pi-desktop/drop` (MainFlutterWindow.swift,
 /// windows/runner/drop_target.cpp):
 ///
 ///   dragUpdate {x, y, files?}  the pointer is at x, y; files the first
@@ -67,8 +67,8 @@ class RenderFileDropRegion extends RenderProxyBoxWithHitTestBehavior {
 ///   drop {x, y, files}         let go at x, y. Answers whether a region
 ///                              took them.
 ///
-/// Each of the app's windows has its own: the main one's `baocode/drop`,
-/// another's `baocode/drop.<viewId>`.
+/// Each of the app's windows has its own: the main one's `pi-desktop/drop`,
+/// another's `pi-desktop/drop.<viewId>`.
 abstract final class FileDrops {
   static const channel = MethodChannel('pi-desktop/drop');
 

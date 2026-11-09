@@ -1,9 +1,9 @@
 // The browser bridge end to end, in a real browser: a Chromium (Chrome for
 // Testing; branded Chrome no longer loads extensions from the command
-// line) with BaoCode's extension, its native messaging host (the debug
+// line) with pi-desktop's extension, its native messaging host (the debug
 // app's), and the agents' tools. Run by hand:
 //
-//   BAO_BROWSER_LIVE="/path/to/Google Chrome for Testing" \
+//   PI_BROWSER_LIVE="/path/to/Google Chrome for Testing" \
 //     flutter test test/browser/browser_bridge_live_test.dart
 //
 // Its socket is its own: the user's browsers, with the extension too, never
@@ -20,23 +20,23 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
 void main() {
-  final chrome = Platform.environment['BAO_BROWSER_LIVE'];
+  final chrome = Platform.environment['PI_BROWSER_LIVE'];
   final host = p.absolute(
-    'build/macos/Build/Products/Debug/BaoCode.app/Contents/MacOS/'
-    'baocode-browser-host',
+    'build/macos/Build/Products/Debug/pi-desktop.app/Contents/MacOS/'
+    'pi-desktop-browser-host',
   );
 
   test(
     'an agent opens, reads, clicks, types and shoots a page through the extension',
     () async {
-      final profile = Directory.systemTemp.createTempSync('bao-browser-');
+      final profile = Directory.systemTemp.createTempSync('pi-browser-');
       final hosts = Directory(p.join(profile.path, 'NativeMessagingHosts'))
         ..createSync();
       File(p.join(hosts.path, '${BrowserBridge.hostName}.json'))
           .writeAsStringSync(
             jsonEncode({
               'name': BrowserBridge.hostName,
-              'description': 'BaoCode',
+              'description': 'pi-desktop',
               'path': host,
               'type': 'stdio',
               'allowed_origins': [
@@ -98,7 +98,7 @@ void main() {
   like.addEventListener('click', () => { like.textContent = 'Liked'; });
   console.log('hello', {n: 1});
   console.warn('careful');
-  fetch('/api', {method: 'POST', body: JSON.stringify({q: 'baocode'})});
+  fetch('/api', {method: 'POST', body: JSON.stringify({q: 'pi-desktop'})});
   fetch('/missing');
   setTimeout(() => { const end = performance.now() + 120; while (performance.now() < end); }, 0);
   setTimeout(() => { throw new Error('boom'); }, 10);
@@ -110,12 +110,12 @@ void main() {
       final page = 'http://127.0.0.1:${server.port}/';
 
       // Short: a socket's path has a hundred bytes or so.
-      final sockets = Directory('/tmp').createTempSync('bao-');
+      final sockets = Directory('/tmp').createTempSync('pi-');
       addTearDown(() => sockets.deleteSync(recursive: true));
       BrowserBridge.socketFolder = sockets.path;
       final bridge = BrowserBridge.instance;
       await bridge.start();
-      expect(bridge.otherApp, isFalse, reason: 'a BaoCode has the socket');
+      expect(bridge.otherApp, isFalse, reason: 'a pi-desktop has the socket');
       BrowserTools.register();
 
       final browser = await Process.start(
@@ -311,7 +311,7 @@ void main() {
         'tabId': tabId,
         'id': api![1],
       });
-      expect(request.first['text'], contains('{"q":"baocode"}'));
+      expect(request.first['text'], contains('{"q":"pi-desktop"}'));
       expect(request.first['text'], contains('"echo"'));
       final document = RegExp(
         r'^(\S+) GET 200 Document',
@@ -333,7 +333,7 @@ void main() {
           (jsonDecode(File(har).readAsStringSync())['log']['entries'] as List)
               .cast<Map>();
       final post = entries.firstWhere((e) => e['request']['method'] == 'POST');
-      expect(post['request']['postData']['text'], '{"q":"baocode"}');
+      expect(post['request']['postData']['text'], '{"q":"pi-desktop"}');
       expect(post['response']['content']['text'], contains('"echo"'));
       final image = await call('browser_network', {
         'tabId': tabId,
@@ -415,7 +415,7 @@ void main() {
       expect(seen.where((b) => b['type'] == 'image'), isNotEmpty);
       expect(BrowserWatching.current.value, isNull);
 
-      // What lets BaoCode grow without a new extension: the browser's APIs
+      // What lets pi-desktop grow without a new extension: the browser's APIs
       // within the tabs shared, frames' sessions, tabs the shared open.
       final connection = bridge.browsers.single;
       expect(
@@ -504,7 +504,7 @@ void main() {
       await connection.call('tabs.remove', [popTab]);
       await call('browser_close', {'tabId': tabId});
     },
-    skip: chrome == null ? 'BAO_BROWSER_LIVE not set' : false,
+    skip: chrome == null ? 'PI_BROWSER_LIVE not set' : false,
     timeout: const Timeout(Duration(minutes: 2)),
   );
 }

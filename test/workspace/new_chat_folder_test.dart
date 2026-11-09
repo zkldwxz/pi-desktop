@@ -71,10 +71,10 @@ void main() {
     tester,
   ) async {
     final workspace = await _pumpNew(tester);
-    expect(workspace.selected.project.name, 'baocode');
+    expect(workspace.selected.project.name, 'pi-desktop');
     expect(_bar, findsOneWidget);
     expect(
-      find.descendant(of: _bar, matching: find.text('baocode')),
+      find.descendant(of: _bar, matching: find.text('pi-desktop')),
       findsOneWidget,
     );
     expect(find.text('Open from Finder'), findsOneWidget);
@@ -92,7 +92,7 @@ void main() {
     workspace.hideProject(hidden);
     await tester.pump();
 
-    await tester.tap(find.descendant(of: _bar, matching: find.text('baocode')));
+    await tester.tap(find.descendant(of: _bar, matching: find.text('pi-desktop')));
     await tester.pumpAndSettle();
     expect(find.text('cursor-docs'), findsNothing);
   }, variant: _mac);
@@ -102,7 +102,7 @@ void main() {
   ) async {
     final workspace = await _pumpNew(tester);
     final was = workspace.selected;
-    await tester.tap(find.descendant(of: _bar, matching: find.text('baocode')));
+    await tester.tap(find.descendant(of: _bar, matching: find.text('pi-desktop')));
     await tester.pumpAndSettle();
     await tester.tap(find.text('No folder'));
     await tester.pumpAndSettle();

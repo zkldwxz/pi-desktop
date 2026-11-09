@@ -1,4 +1,4 @@
-// The upstreams Settings → Models lists, got from baocode.dev: kept with
+// The upstreams Settings → Models lists, got from the pi-desktop site: kept with
 // their logos, and what was kept when it does not answer.
 
 import 'dart:convert';
@@ -54,7 +54,7 @@ void main() {
   });
 
   test('a site listed shows at once, its logo downloaded beside the list; '
-      'kept for when baocode.dev does not answer', () async {
+      'kept for when the pi-desktop site does not answer', () async {
     list = jsonEncode({
       'upstreams': [
         {'id': 'a', 'name': 'A', 'url': 'https://a.dev', 'logo': 'a.png'},

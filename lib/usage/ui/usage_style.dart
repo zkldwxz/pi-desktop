@@ -8,7 +8,7 @@ import '../usage_record.dart';
 /// The usage charts' colors: a categorical order checked for color vision
 /// (the dataviz validator: lightness band, chroma, adjacent CVD ΔE ≥ 8,
 /// normal ΔE ≥ 15, 3:1 on the surface), a step each for the dark and the
-/// light themes, warm as the Bao themes are.
+/// light themes, warm as the Pi themes are.
 abstract final class UsagePalette {
   static const _dark = [
     Color(0xFF2E9E72), // green

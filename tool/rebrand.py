@@ -22,22 +22,38 @@ from pathlib import Path
 PRODUCT = 'pi-desktop'
 REPO = 'github.com/zkldwxz/pi-desktop'
 
-# Paths (relative, with /) left exactly as they are.
+# Files whose text is left exactly as it is (they are still moved with the
+# folders that are renamed around them).
 EXEMPT = [
     r'(^|/)\.git/',
     r'(^|/)(LICENSE|LICENCE|NOTICE|COPYING)[^/]*$',
     r'^README[^/]*\.md$',
     r'^release-notes/',
-    r'^site/',
-    r'^site-worker/',
-    r'^wrangler\.jsonc$',
     r'^docs/upstream-sync\.md$',
     r'^tool/(rebrand|upstream_sync|check_branding)\.(py|sh)$',
     r'^\.github/workflows/upstream-sync\.yml$',
     r'(^|/)(build|node_modules|\.dart_tool)/',
     r'(^|/)third_party/',
+    # These keep the upstream's names on purpose: they prove that the upstream's
+    # data folder, variables and update signatures are not accepted here.
+    r'^test/diagnostics/diagnostics_upload_test\.dart$',
+    r'^test/platform/data_dir_test\.dart$',
+    r'^test/update/(pi_desktop|baocode)_update_config_test\.dart$',
 ]
 EXEMPT_RE = [re.compile(p) for p in EXEMPT]
+
+# What stays where it is, whole: the website is its own piece of work.
+IN_PLACE = [
+    r'^site/',
+    r'^site-worker/',
+    r'^wrangler\.jsonc$',
+    r'^release-notes/',
+    r'^README[^/]*\.md$',
+    r'^docs/upstream-sync\.md$',
+    r'^tool/(rebrand|upstream_sync|check_branding)\.(py|sh)$',
+    r'^\.github/workflows/upstream-sync\.yml$',
+]
+IN_PLACE_RE = [re.compile(p) for p in IN_PLACE]
 
 BINARY_SUFFIXES = {
     '.png', '.jpg', '.jpeg', '.gif', '.ico', '.icns', '.webp', '.ttf', '.otf',
@@ -77,16 +93,27 @@ FIRST_NAME_RULE = 6  # TEXT_RULES[6:] are the rules of paths too
 PATH_RULES = TEXT_RE[FIRST_NAME_RULE:]
 
 # Rules for one kind of file, after the above.
+RELAYS = """// pi-desktop has no relays of its own yet. These addresses never resolve
+// (`.invalid`), so no connection goes through anyone else's servers; put real
+// ones here once there are some.
+const defaultLinkRelays = [
+  'https://relay-us1.pi-desktop.invalid',
+  'https://relay-hk1.pi-desktop.invalid',
+  'https://relay-jp1.pi-desktop.invalid',
+];"""
 FILE_RULES = [
-    # No relays of ours: the phone link keeps to direct connections.
     (r'(^|/)relays\.dart$',
      re.compile(r"const defaultLinkRelays = \[[^\]]*\];", re.S),
-     'const defaultLinkRelays = <String>[];'),
+     RELAYS),
 ]
 
 
 def exempt(rel: str) -> bool:
-    return any(p.search(rel) for p in EXEMPT_RE)
+    return any(p.search(rel) for p in EXEMPT_RE + IN_PLACE_RE)
+
+
+def in_place(rel: str) -> bool:
+    return any(p.search(rel) for p in IN_PLACE_RE)
 
 
 def rebrand_text(text: str, rel: str = '') -> str:
@@ -123,11 +150,11 @@ def main() -> int:
             files.append(path.relative_to(root).as_posix())
     changed = renamed = 0
     for rel in sorted(files):
-        if exempt(rel):
+        if in_place(rel) or re.search(r'(^|/)(\.git|build|node_modules|\.dart_tool)/', rel):
             continue
         path = root / rel
         target = rebrand_path(rel)
-        if Path(rel).suffix.lower() not in BINARY_SUFFIXES:
+        if not exempt(rel) and Path(rel).suffix.lower() not in BINARY_SUFFIXES:
             try:
                 text = path.read_text(encoding='utf-8')
             except (UnicodeDecodeError, OSError):

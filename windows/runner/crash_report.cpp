@@ -297,7 +297,7 @@ void Write(const std::wstring& folder, HANDLE process, DWORD process_id,
     return;
   }
 #ifdef FLUTTER_VERSION
-  std::fprintf(out, "BaoCode %s\n", FLUTTER_VERSION);
+  std::fprintf(out, "pi-desktop %s\n", FLUTTER_VERSION);
 #endif
   std::fprintf(out, "Process %lu: %s\n", process_id, reason);
   // In-process dump writing can itself block on the hung process. Keep a

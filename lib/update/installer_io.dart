@@ -135,7 +135,7 @@ class IoUpdateProcesses implements UpdateProcesses {
 
 // --- Windows -----------------------------------------------------------------
 
-/// Runs the new version's Inno Setup installer (tool/baocode.iss) as the
+/// Runs the new version's Inno Setup installer (tool/pi-desktop.iss) as the
 /// app quits: silently, over this install (its folder, and per machine or
 /// per user as it is), and it opens the app again (`/RELAUNCH`).
 ///
@@ -152,7 +152,7 @@ class WindowsUpdateInstaller implements UpdateInstaller {
     this.processes = const IoUpdateProcesses(),
   });
 
-  /// baocode.exe, where it is installed.
+  /// pi-desktop.exe, where it is installed.
   final String executable;
   final int pid;
   final Map<String, String> environment;
@@ -195,7 +195,7 @@ class WindowsUpdateInstaller implements UpdateInstaller {
     final uninstaller = File(p.join(p.dirname(executable), 'unins000.exe'));
     if (!await uninstaller.exists()) {
       throw const ManualUpdateRequired(
-        'BaoCode was not installed by its installer',
+        'pi-desktop was not installed by its installer',
       );
     }
     final arguments = windowsInstallerArguments(
@@ -209,7 +209,7 @@ class WindowsUpdateInstaller implements UpdateInstaller {
 }
 
 /// The key Setup registers the app's uninstaller under, in HKLM or HKCU:
-/// tool/baocode.iss's AppId, which never changes.
+/// tool/pi-desktop.iss's AppId, which never changes.
 const windowsUninstallKey =
     r'Software\Microsoft\Windows\CurrentVersion\Uninstall\'
     '{0e68886f-e925-4f6d-9928-5999aecf5449}_is1';
@@ -234,7 +234,7 @@ bool windowsPerMachineInstall(
 /// one there is, into [directory] (the app's folder, whatever Setup
 /// remembers), once process [pid] (the app) is gone (`/WAITPID`), what
 /// still holds the app's files closed, the app opened after (`/RELAUNCH`),
-/// written to [log]. `/WAITPID` and `/RELAUNCH` are tool/baocode.iss's
+/// written to [log]. `/WAITPID` and `/RELAUNCH` are tool/pi-desktop.iss's
 /// own.
 List<String> windowsInstallerArguments({
   required bool perMachine,
@@ -290,11 +290,11 @@ class MacUpdateInstaller implements UpdateInstaller {
   Future<PreparedUpdate> prepare(String file, UpdateRelease release) async {
     final app = appBundle;
     if (p.extension(app) != '.app') {
-      throw const ManualUpdateRequired('BaoCode is not in an app bundle');
+      throw const ManualUpdateRequired('pi-desktop is not in an app bundle');
     }
     if (app.contains('/AppTranslocation/')) {
       throw const ManualUpdateRequired(
-        'macOS runs BaoCode from a temporary place: move it to Applications',
+        'macOS runs pi-desktop from a temporary place: move it to Applications',
       );
     }
     if (!await _writable(p.dirname(app))) {
@@ -422,7 +422,7 @@ String macUpdateScript({
 }) =>
     '''
 #!/bin/bash
-# Installs a BaoCode update once the app has quit, then opens it again
+# Installs a pi-desktop update once the app has quit, then opens it again
 # (lib/update/installer_io.dart).
 pid=$pid
 target=${_shQuote(target)}
@@ -435,7 +435,7 @@ for _ in \$(seq 1 1200); do
   sleep 0.1
 done
 if kill -0 "\$pid" 2>/dev/null; then
-  echo "BaoCode is still running: not installed"
+  echo "pi-desktop is still running: not installed"
   exit 1
 fi
 new="\$target.pi-desktop-new"
@@ -460,7 +460,7 @@ rm -f "\$0"
 // --- Linux -------------------------------------------------------------------
 
 /// Where the package (tool/package_linux_deb.sh) installs the app.
-const linuxInstallDirectory = '/opt/baocode';
+const linuxInstallDirectory = '/opt/pi-desktop';
 
 /// The Linux build an app updates to: the one for the processor.
 @visibleForTesting
@@ -483,7 +483,7 @@ class LinuxUpdateInstaller implements UpdateInstaller {
     this.pkexec = '/usr/bin/pkexec',
   });
 
-  /// `/opt/baocode/baocode`, where the package put it.
+  /// `/opt/pi-desktop/pi-desktop`, where the package put it.
   final String executable;
   final int pid;
 
@@ -502,7 +502,7 @@ class LinuxUpdateInstaller implements UpdateInstaller {
   Future<PreparedUpdate> prepare(String file, UpdateRelease release) async {
     if (p.dirname(executable) != linuxInstallDirectory || !await _packaged()) {
       throw const ManualUpdateRequired(
-        'BaoCode was not installed by its package',
+        'pi-desktop was not installed by its package',
       );
     }
     if (!await File(pkexec).exists()) {
@@ -528,7 +528,7 @@ class LinuxUpdateInstaller implements UpdateInstaller {
       final result = await processes.run('dpkg-query', [
         '-W',
         r'-f=${Status}',
-        'baocode',
+        'pi-desktop',
       ]);
       return result.exitCode == 0 &&
           '${result.stdout}'.contains('install ok installed');
@@ -552,7 +552,7 @@ String linuxUpdateScript({
 }) =>
     '''
 #!/bin/bash
-# Installs a BaoCode update, then opens it again once the app has quit
+# Installs a pi-desktop update, then opens it again once the app has quit
 # (lib/update/installer_io.dart).
 pid=$pid
 package=${_shQuote(package)}

@@ -1,4 +1,4 @@
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart'
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart'
     show KeybindingPlatform;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';

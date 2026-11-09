@@ -16,7 +16,7 @@ void main() {
   late File file;
 
   setUp(() {
-    dir = Directory.systemTemp.createTempSync('baocode-processes');
+    dir = Directory.systemTemp.createTempSync('pi-desktop-processes');
     file = File(p.join(dir.path, 'claude-processes.json'));
     // Never the user's own list, nor their processes.
     ProcessTransport.registry = ClaudeProcessRegistry(

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../../theme/codicons.dart';
 import '../../theme/workbench_theme.dart';
 
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/flutter/editor_decorations.dart';
-import 'package:bao_editor/monaco/vs/editor/common/core/range.dart';
-import 'package:bao_editor/monaco/vs/editor/contrib/gotoError/browser/marker_navigation.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/editor_decorations.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/range.dart';
+import 'package:pi_editor/monaco/vs/editor/contrib/gotoError/browser/marker_navigation.dart';
 
 import '../lsp/lsp_protocol.dart';
 import 'lsp_convert.dart';

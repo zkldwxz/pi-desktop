@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
-public static class BaoRestartManagerSmoke {
+public static class PiRestartManagerSmoke {
   [StructLayout(LayoutKind.Sequential)]
   public struct UniqueProcess {
     public uint Pid;
@@ -108,4 +108,4 @@ public static class BaoRestartManagerSmoke {
 }
 "@
 
-[BaoRestartManagerSmoke]::Run($ProcessId, -not $NoForce, $ListOnly, $Resources)
+[PiRestartManagerSmoke]::Run($ProcessId, -not $NoForce, $ListOnly, $Resources)

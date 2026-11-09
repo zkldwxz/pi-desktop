@@ -1,4 +1,4 @@
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/client.dart';
 import 'package:pi_desktop/ide/ide_input.dart';
 import 'package:pi_desktop/models/secret_store.dart';
 import 'package:pi_desktop/remote/ssh_password_dialog.dart';

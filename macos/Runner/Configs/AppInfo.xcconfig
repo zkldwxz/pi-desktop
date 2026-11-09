@@ -11,7 +11,7 @@ PRODUCT_NAME = pi-desktop
 PRODUCT_BUNDLE_IDENTIFIER = dev.pi.desktop
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 BaoCode. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 pi-desktop. All rights reserved.
 
 // This machine's own settings, if it has them (not checked in): a debug
 // build signed with a developer's certificate, say, for macOS to keep the

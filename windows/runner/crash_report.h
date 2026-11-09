@@ -7,7 +7,7 @@
 
 // The reports in the logs folder's hangs\ (see hang_watchdog.h), written of
 // a process from any process: the app's of itself (a hang, a crash its
-// filter sees) and of the copy running, and baocode_wer.dll's (windows/wer)
+// filter sees) and of the copy running, and pi_desktop_wer.dll's (windows/wer)
 // from Windows Error Reporting's of an app that ended without its filter
 // seeing (a fast fail, abort()'s). A text report (each thread's name and
 // the calls on its stack, as module+offset) and a minidump beside it.
@@ -19,7 +19,7 @@ struct Crash {
   DWORD thread;
 };
 
-// What the app tells baocode_wer.dll (windows/wer) of itself, as Windows
+// What the app tells pi_desktop_wer.dll (windows/wer) of itself, as Windows
 // Error Reporting's context for it: read from the app's memory as it ends.
 struct FastFailContext {
   // sizeof(FastFailContext), the same build's.

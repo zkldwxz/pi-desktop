@@ -4,18 +4,18 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 
-import 'package:bao_editor/monaco/flutter/diff_editor_model.dart'
+import 'package:pi_editor/monaco/flutter/diff_editor_model.dart'
     show DiffEditorColors;
-import 'package:bao_editor/monaco/flutter/editor_code_lens.dart';
-import 'package:bao_editor/monaco/flutter/editor_inline_suggest.dart';
-import 'package:bao_editor/monaco/flutter/editor_keybindings.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
-import 'package:bao_editor/monaco/flutter/language_configuration_assets.dart';
-import 'package:bao_editor/monaco/flutter/language_overrides.dart';
-import 'package:bao_editor/monaco/vs/editor/common/languages/language_configuration_registry.dart'
+import 'package:pi_editor/monaco/flutter/editor_code_lens.dart';
+import 'package:pi_editor/monaco/flutter/editor_inline_suggest.dart';
+import 'package:pi_editor/monaco/flutter/editor_keybindings.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart';
+import 'package:pi_editor/monaco/flutter/language_configuration_assets.dart';
+import 'package:pi_editor/monaco/flutter/language_overrides.dart';
+import 'package:pi_editor/monaco/vs/editor/common/languages/language_configuration_registry.dart'
     show plainTextLanguageConfiguration;
-import 'package:bao_editor/textmate/textmate_syntax.dart';
+import 'package:pi_editor/textmate/textmate_syntax.dart';
 
 import '../keybindings/keybinding_service.dart';
 import '../l10n/command_titles.dart';

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:bao_markdown/bao_markdown.dart' show MarkdownEditor;
+import 'package:pi_markdown/pi_markdown.dart' show MarkdownEditor;
 
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart';
 
 import 'package:pi_desktop/chat/chat_screen.dart';
 import 'package:pi_desktop/chat/side_panel/side_panel_view.dart';
@@ -147,7 +147,7 @@ EditorSurfaceController _editor(WidgetTester tester) => tester
 
 String _editorText(WidgetTester tester) => _editor(tester).document.text;
 
-/// A markdown customization's preview's editor (bao_markdown's).
+/// A markdown customization's preview's editor (pi_markdown's).
 MarkdownEditor _markdown(WidgetTester tester) =>
     tester.widget<MarkdownEditor>(_inView(find.byType(MarkdownEditor)));
 

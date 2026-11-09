@@ -7,16 +7,16 @@
 //
 // Its settings come from the environment (or --dart-define, for
 // `flutter run`):
-// - BAOCODE_PERF_SCENARIOS: names or prefixes, comma-separated
+// - PI_DESKTOP_PERF_SCENARIOS: names or prefixes, comma-separated
 //   ("chat.stream,ide."); all by default.
-// - BAOCODE_PERF_OUT: the file the results go to, as JSON; else stdout.
-// - BAOCODE_PERF_TRACE: a folder for each phase's timeline (slower);
-//   BAOCODE_PERF_TRACE_DETAIL, with layouts and paints in it.
-// - BAOCODE_PERF_SHOTS: a folder for a picture of the window after each
+// - PI_DESKTOP_PERF_OUT: the file the results go to, as JSON; else stdout.
+// - PI_DESKTOP_PERF_TRACE: a folder for each phase's timeline (slower);
+//   PI_DESKTOP_PERF_TRACE_DETAIL, with layouts and paints in it.
+// - PI_DESKTOP_PERF_SHOTS: a folder for a picture of the window after each
 //   phase.
-// - BAOCODE_PERF_REPO: the repository, for the TypeScript file the IDE
+// - PI_DESKTOP_PERF_REPO: the repository, for the TypeScript file the IDE
 //   opens (else a generated one).
-// - BAOCODE_PERF_SIZE: the window's size the app is laid out in,
+// - PI_DESKTOP_PERF_SIZE: the window's size the app is laid out in,
 //   "1024x760" (the main window's default) unless set.
 //
 // It keeps nothing: its data folder and project are temporary.
@@ -31,7 +31,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:bao_editor/monaco/flutter/language_assets.dart';
+import 'package:pi_editor/monaco/flutter/language_assets.dart';
 import 'package:pi_desktop/diagnostics/app_event_watch.dart';
 import 'package:pi_desktop/diagnostics/frame_watch.dart';
 import 'package:pi_desktop/diagnostics/hang_watch.dart';
@@ -57,17 +57,17 @@ import 'perf_trace.dart';
 import 'perf_transport.dart';
 
 const _defines = {
-  'BAOCODE_PERF_SCENARIOS': String.fromEnvironment('BAOCODE_PERF_SCENARIOS'),
-  'BAOCODE_PERF_OUT': String.fromEnvironment('BAOCODE_PERF_OUT'),
-  'BAOCODE_PERF_TRACE': String.fromEnvironment('BAOCODE_PERF_TRACE'),
-  'BAOCODE_PERF_TRACE_DETAIL': String.fromEnvironment(
-    'BAOCODE_PERF_TRACE_DETAIL',
+  'PI_DESKTOP_PERF_SCENARIOS': String.fromEnvironment('PI_DESKTOP_PERF_SCENARIOS'),
+  'PI_DESKTOP_PERF_OUT': String.fromEnvironment('PI_DESKTOP_PERF_OUT'),
+  'PI_DESKTOP_PERF_TRACE': String.fromEnvironment('PI_DESKTOP_PERF_TRACE'),
+  'PI_DESKTOP_PERF_TRACE_DETAIL': String.fromEnvironment(
+    'PI_DESKTOP_PERF_TRACE_DETAIL',
   ),
-  'BAOCODE_PERF_SHOTS': String.fromEnvironment('BAOCODE_PERF_SHOTS'),
-  'BAOCODE_PERF_REPO': String.fromEnvironment('BAOCODE_PERF_REPO'),
-  'BAOCODE_PERF_SIZE': String.fromEnvironment('BAOCODE_PERF_SIZE'),
-  'BAOCODE_PERF_SKIA_CACHE_MB': String.fromEnvironment(
-    'BAOCODE_PERF_SKIA_CACHE_MB',
+  'PI_DESKTOP_PERF_SHOTS': String.fromEnvironment('PI_DESKTOP_PERF_SHOTS'),
+  'PI_DESKTOP_PERF_REPO': String.fromEnvironment('PI_DESKTOP_PERF_REPO'),
+  'PI_DESKTOP_PERF_SIZE': String.fromEnvironment('PI_DESKTOP_PERF_SIZE'),
+  'PI_DESKTOP_PERF_SKIA_CACHE_MB': String.fromEnvironment(
+    'PI_DESKTOP_PERF_SKIA_CACHE_MB',
   ),
 };
 
@@ -94,8 +94,8 @@ Future<void> main() async {
 }
 
 Future<void> _run() async {
-  final temp = Directory.systemTemp.createTempSync('baocode-perf-');
-  final wanted = _setting('BAOCODE_PERF_SCENARIOS')
+  final temp = Directory.systemTemp.createTempSync('pi-desktop-perf-');
+  final wanted = _setting('PI_DESKTOP_PERF_SCENARIOS')
       ?.split(',')
       .map((s) => s.trim())
       .where((s) => s.isNotEmpty)
@@ -115,19 +115,19 @@ Future<void> _run() async {
   _setUpApp(temp.path);
   // The semantics tree on throughout, as an accessibility client reading
   // the window would have it.
-  if (Platform.environment['BAOCODE_PERF_SEMANTICS'] != null) {
+  if (Platform.environment['PI_DESKTOP_PERF_SEMANTICS'] != null) {
     SemanticsBinding.instance.ensureSemantics();
   }
   final project = _makeProject('${temp.path}/project');
   final size = _size();
   PerfProbe.instance.install();
   final input = PerfInput();
-  final traceDir = _setting('BAOCODE_PERF_TRACE');
+  final traceDir = _setting('PI_DESKTOP_PERF_TRACE');
   final trace = traceDir == null
       ? null
       : await PerfTrace.connect(
           traceDir,
-          detail: _setting('BAOCODE_PERF_TRACE_DETAIL') != null,
+          detail: _setting('PI_DESKTOP_PERF_TRACE_DETAIL') != null,
         );
   await WorkbenchThemeService.instance.initialize();
   await _bringWindowFront();
@@ -182,13 +182,13 @@ Future<void> _run() async {
     'scenarios': results,
   };
   final json = const JsonEncoder.withIndent('  ').convert(report);
-  if (_setting('BAOCODE_PERF_OUT') case final out?) {
+  if (_setting('PI_DESKTOP_PERF_OUT') case final out?) {
     File(out)
       ..parent.createSync(recursive: true)
       ..writeAsStringSync(json);
-    stdout.writeln('BAOCODE_PERF_RESULT $out');
+    stdout.writeln('PI_DESKTOP_PERF_RESULT $out');
   } else {
-    stdout.writeln('BAOCODE_PERF_RESULT $json');
+    stdout.writeln('PI_DESKTOP_PERF_RESULT $json');
   }
   try {
     temp.deleteSync(recursive: true);
@@ -215,7 +215,7 @@ class _KeptMessenger implements BinaryMessenger {
   final BinaryMessenger _messenger;
 
   static const _kept = {
-    'baocode/window': {
+    'pi-desktop/window': {
       'growWindow',
       'setAlwaysOnTop',
       'setAppearance',
@@ -309,17 +309,17 @@ void _resume() =>
 /// own and the perf agents. Settings, which would fetch the upstreams
 /// listed, never shows.
 void _setUpApp(String temp) {
-  // As the app's main() has them; BAOCODE_PERF_SKIA_CACHE_MB tries another.
-  if (int.tryParse(_setting('BAOCODE_PERF_SKIA_CACHE_MB') ?? '')
+  // As the app's main() has them; PI_DESKTOP_PERF_SKIA_CACHE_MB tries another.
+  if (int.tryParse(_setting('PI_DESKTOP_PERF_SKIA_CACHE_MB') ?? '')
       case final mb?) {
     MemoryBudget.skiaCacheBytes = mb << 20;
   }
   MemoryBudget.apply();
   DataDirectory.current = DataDirectory('$temp/data');
   // Its watchers too, their cost measured with the rest: the event log
-  // in BAOCODE_PERF_EVENTS, to read, and slow from BAOCODE_PERF_SLOW_MS.
+  // in PI_DESKTOP_PERF_EVENTS, to read, and slow from PI_DESKTOP_PERF_SLOW_MS.
   EventLog.current = EventLog(
-    Platform.environment['BAOCODE_PERF_EVENTS'] ??
+    Platform.environment['PI_DESKTOP_PERF_EVENTS'] ??
         DataDirectory.current.logsDir,
   );
   // The macOS app's hang watchdog writes there too (hang.ui); the Windows
@@ -331,7 +331,7 @@ void _setUpApp(String temp) {
   FrameWatch.start(
     slow: Duration(
       milliseconds:
-          int.tryParse(Platform.environment['BAOCODE_PERF_SLOW_MS'] ?? '') ??
+          int.tryParse(Platform.environment['PI_DESKTOP_PERF_SLOW_MS'] ?? '') ??
           250,
     ),
   );
@@ -347,9 +347,9 @@ PerfProject _makeProject(String root) {
   final project = PerfProject(root);
   final content = PerfContent(7);
   Directory('$root/src').createSync(recursive: true);
-  final sample = switch (_setting('BAOCODE_PERF_REPO')) {
+  final sample = switch (_setting('PI_DESKTOP_PERF_REPO')) {
     final repo? => File(
-      '$repo/packages/bao_editor/test/fixtures/textmate/samples/bench/textModel.ts',
+      '$repo/packages/pi_editor/test/fixtures/textmate/samples/bench/textModel.ts',
     ),
     null => null,
   };
@@ -390,7 +390,7 @@ PerfProject _makeProject(String root) {
 
 Size _size() {
   final match = RegExp(r'^(\d+)x(\d+)$')
-      .firstMatch(_setting('BAOCODE_PERF_SIZE') ?? '');
+      .firstMatch(_setting('PI_DESKTOP_PERF_SIZE') ?? '');
   return match == null
       ? const Size(1024, 760)
       : Size(double.parse(match[1]!), double.parse(match[2]!));
@@ -401,7 +401,7 @@ Future<void> _bringWindowFront() async {
   if (!Platform.isMacOS) return;
   final view = WidgetsBinding.instance.platformDispatcher.implicitView;
   try {
-    await const MethodChannel('baocode/windows')
+    await const MethodChannel('pi-desktop/windows')
         .invokeMethod('focus', view?.viewId ?? 0);
   } on Object catch (error) {
     PerfContext.log('could not bring the window to the front: $error');
@@ -456,7 +456,7 @@ Future<Map<String, Object>> _runScenario(
     project: project,
     input: input,
     trace: trace,
-    shots: _setting('BAOCODE_PERF_SHOTS'),
+    shots: _setting('PI_DESKTOP_PERF_SHOTS'),
     shotKey: shotKey,
   );
   final result = <String, Object>{'description': scenario.description};

@@ -1,4 +1,4 @@
-// BaoCode's own: in a file's diff in the commit panel, the changes an
+// pi-desktop's own: in a file's diff in the commit panel, the changes an
 // agent made marked with what its turn was asked; the user's own not.
 
 import 'package:pi_desktop/ide/git/git_partial.dart';

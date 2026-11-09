@@ -274,7 +274,7 @@ String openCodeSession(String? session) {
     final bytes = [for (var i = 0; i < 16; i++) random.nextInt(256)];
     return 'ses_${bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join()}';
   }
-  final digest = sha256.convert(utf8.encode('baocode:opencode:$session'));
+  final digest = sha256.convert(utf8.encode('pi-desktop:opencode:$session'));
   return 'ses_${'$digest'.substring(0, 32)}';
 }
 

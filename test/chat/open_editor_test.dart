@@ -1,4 +1,4 @@
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
 import 'package:pi_desktop/chat/chat_session.dart';
 import 'package:pi_desktop/chat/open_editor.dart';
 import 'package:pi_desktop/kernel/agent_kernel.dart';

@@ -9,7 +9,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
 import 'package:pi_desktop/chat/chat_history_view.dart';
 import 'package:pi_desktop/chat/chat_session.dart';
 import 'package:pi_desktop/chat/edit_detail.dart';
@@ -123,7 +123,7 @@ class PerfContext {
   static ui.PointerDataPacketCallback? desktopPointers;
 
   static void log(String message) =>
-      stderr.writeln('BAOCODE_PERF_LOG $message');
+      stderr.writeln('PI_DESKTOP_PERF_LOG $message');
 
   /// Measures [body] as the phase [name].
   Future<void> phase(
@@ -814,17 +814,17 @@ export const rateLimiter = (options: RateLimitOptions): MiddlewareHandler => {
   ),
   PerfScenario(
     'real.history',
-    'A real session, a Claude Code transcript (BAOCODE_PERF_TRANSCRIPT; '
-        'BAOCODE_PERF_TRANSCRIPT_TURNS, its first turns only), loaded turn '
+    'A real session, a Claude Code transcript (PI_DESKTOP_PERF_TRANSCRIPT; '
+        'PI_DESKTOP_PERF_TRANSCRIPT_TURNS, its first turns only), loaded turn '
         'by turn, the wheel spun through it, an answer streamed below it.',
     (c) async {
-      final path = Platform.environment['BAOCODE_PERF_TRANSCRIPT'];
-      c.check(path != null, 'BAOCODE_PERF_TRANSCRIPT names a transcript');
+      final path = Platform.environment['PI_DESKTOP_PERF_TRANSCRIPT'];
+      c.check(path != null, 'PI_DESKTOP_PERF_TRANSCRIPT names a transcript');
       if (path == null) return;
       final turns = readTranscript(
         path,
         limit: int.tryParse(
-          Platform.environment['BAOCODE_PERF_TRANSCRIPT_TURNS'] ?? '',
+          Platform.environment['PI_DESKTOP_PERF_TRANSCRIPT_TURNS'] ?? '',
         ),
       );
       await c.settle();

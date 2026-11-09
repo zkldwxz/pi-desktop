@@ -2202,7 +2202,7 @@ class _Agent {
 
 /// What the user answered to questions asked (AskUserQuestion), each
 /// answer by its question's text: from the call's result ([structured]'s
-/// `answers`, the CLI's and BaoCode's own core's alike), else read from
+/// `answers`, the CLI's and pi-desktop's own core's alike), else read from
 /// what it said to the model (`"question"="answer", …`).
 Map<String, String> questionAnswers(Object? structured, String text) {
   if (structured is Map && structured.isNotEmpty) {

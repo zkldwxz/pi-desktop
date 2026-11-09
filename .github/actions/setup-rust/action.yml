@@ -1,12 +1,12 @@
-# rustup, and the toolchain packages/bao_iroh/rust/rust-toolchain.toml
-# names, with the targets it lists: what bao_iroh's build hook (its Rust,
+# rustup, and the toolchain packages/pi_iroh/rust/rust-toolchain.toml
+# names, with the targets it lists: what pi_iroh's build hook (its Rust,
 # iroh) builds with, in the apps' builds and in `flutter test`.
 name: Set up Rust
-description: rustup and bao_iroh's Rust toolchain
+description: rustup and pi_iroh's Rust toolchain
 inputs:
   dir:
-    description: The folder of bao_iroh's Rust crate
-    default: packages/bao_iroh/rust
+    description: The folder of pi_iroh's Rust crate
+    default: packages/pi_iroh/rust
 runs:
   using: composite
   steps:

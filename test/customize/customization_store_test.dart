@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_remote/files.dart' show IdeFileExistsException;
+import 'package:pi_remote/files.dart' show IdeFileExistsException;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 

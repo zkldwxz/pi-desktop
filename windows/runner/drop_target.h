@@ -22,7 +22,7 @@ flutter::EncodableList FileEntries(const std::vector<std::wstring>& paths);
 
 // Takes the files other apps drag onto the window (Explorer, an editor…) for
 // Flutter, which shows where they would go and puts them there, over the
-// `baocode/drop` channel (an IDE window's: `baocode/drop.<its view's id>`;
+// `pi-desktop/drop` channel (an IDE window's: `pi-desktop/drop.<its view's id>`;
 // as MainFlutterWindow.swift's FileDropView does):
 //
 //   dragUpdate {x, y, files?}  the pointer is at x, y (Flutter's pixels, from

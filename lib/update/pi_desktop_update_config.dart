@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'update_manifest.dart';
 
 /// Configuration must be supplied for each pi-desktop release. There is no
-/// fallback to BaoCode's feed or signing key.
+/// fallback to pi-desktop's feed or signing key.
 class PiDesktopUpdateConfig {
   const PiDesktopUpdateConfig._(this.manifestUrl, this.publicKey, this.policy);
 

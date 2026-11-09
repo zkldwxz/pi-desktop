@@ -1460,7 +1460,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menuContextPanel => 'Context Panel';
 
   @override
-  String get menuAboutBaoCode => 'About pi-desktop';
+  String get menuAboutPiDesktop => 'About pi-desktop';
 
   @override
   String get windowShowSidebar => 'Show sidebar';
@@ -9056,7 +9056,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mobileRelayCustomDescription =>
-      'The address of a relay you run yourself (baocode-relay).';
+      'The address of a relay you run yourself (pi-desktop-relay).';
 
   @override
   String get mobileRelayMode => 'How';
@@ -10662,14 +10662,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get channelSetupLead =>
-      'Finish your first-time setup on baocode.dev. It takes about 10 seconds.';
+      'Finish your first-time setup on the pi-desktop site. It takes about 10 seconds.';
 
   @override
   String get channelSetupStepTitle => 'Finish setup in your browser';
 
   @override
   String get channelSetupStep =>
-      'pi-desktop opens baocode.dev in your browser. Once the page says it\'s done, pi-desktop continues on its own.';
+      'pi-desktop opens the pi-desktop site in your browser. Once the page says it\'s done, pi-desktop continues on its own.';
 
   @override
   String get channelSetupWaitingTitle => 'Waiting for your browser…';
@@ -10690,7 +10690,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get channelSetupOffline =>
-      'Can\'t reach baocode.dev. You need to be online to finish setup.';
+      'Can\'t reach the pi-desktop site. You need to be online to finish setup.';
 
   @override
   String get channelSetupRetry => 'Retry';
@@ -10746,7 +10746,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get channelSetupFinding => 'Just a moment.';
 
   @override
-  String get channelSetupSiteOfflineTitle => 'Can\'t reach baocode.dev';
+  String get channelSetupSiteOfflineTitle => 'Can\'t reach the pi-desktop site';
 
   @override
   String get channelSetupSiteOffline =>
@@ -10757,7 +10757,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get channelSetupUnavailable =>
-      'The channel this installer came from doesn\'t have accounts set up yet. If you downloaded it through another channel, confirm where you came from in your browser; otherwise contact whoever gave you the installer, or download the standard edition from baocode.dev.';
+      'The channel this installer came from doesn\'t have accounts set up yet. If you downloaded it through another channel, confirm where you came from in your browser; otherwise contact whoever gave you the installer, or download the standard edition from the pi-desktop site.';
 
   @override
   String get channelSetupConfirmAgain => 'Confirm in Browser';

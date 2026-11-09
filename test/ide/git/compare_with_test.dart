@@ -2,7 +2,7 @@
 // a branch or tag, a revision of it, or the clipboard, in a diff tab; and
 // from the explorer's, two files or two folders.
 
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
 import 'package:pi_desktop/ide/ide_code_diff.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';

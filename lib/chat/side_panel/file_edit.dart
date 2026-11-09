@@ -1,4 +1,4 @@
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../ide/file_service.dart';

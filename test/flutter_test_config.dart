@@ -3,13 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/monaco/flutter/language_assets.dart';
-import 'package:bao_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
-import 'package:bao_editor/monaco/vs/workbench/services/themes/common/workbench_theme_service.dart';
-import 'package:bao_editor/textmate/textmate_manifest.dart'
+import 'package:pi_editor/monaco/flutter/language_assets.dart';
+import 'package:pi_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
+import 'package:pi_editor/monaco/vs/workbench/services/themes/common/workbench_theme_service.dart';
+import 'package:pi_editor/textmate/textmate_manifest.dart'
     show textMateAssetRoot;
-import 'package:bao_editor/textmate/textmate_syntax.dart';
-import 'package:bao_editor/textmate/textmate_worker.dart';
+import 'package:pi_editor/textmate/textmate_syntax.dart';
+import 'package:pi_editor/textmate/textmate_worker.dart';
 import 'package:pi_desktop/chat/user_message_style.dart';
 import 'package:pi_desktop/customize/customize_view.dart';
 import 'package:pi_desktop/ide/ide_diff_options.dart';
@@ -35,9 +35,9 @@ import 'semantics_tree.dart';
 /// for, not the app's default. The `code` command and
 /// the context menu are stand-ins, never installed: none looks at the
 /// machine's own. No MCP server is started to see whether it answers, and
-/// the upstreams Settings → Models lists are not got from baocode.dev.
+/// the upstreams Settings → Models lists are not got from the pi-desktop site.
 /// Sessions are the CLI's, with Claude Code as set up on the machine to
-/// pick, which the kernel's tests were written for: those of BaoCode's
+/// pick, which the kernel's tests were written for: those of pi-desktop's
 /// own core say so. Diffs show as they do by default.
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   checkDesktopSemantics();
@@ -96,7 +96,7 @@ class _NoContextMenu implements ContextMenuInstaller {
 
 /// The theme tests start in: upstream's default dark theme, which their
 /// colors were written for, not the app's ([ThemeSettingDefaults]). Not
-/// listed (the Bao themes include its file), so no setting picks it.
+/// listed (the Pi themes include its file), so no setting picks it.
 const testColorTheme = 'Dark 2026';
 
 /// [testColorTheme]'s storage data, read from the assets on disk.

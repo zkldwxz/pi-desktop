@@ -15,7 +15,7 @@ import 'package:pi_desktop/ide/ide_hover.dart';
 import 'package:pi_desktop/ide/ide_commands.dart' show ideUsesMacKeys;
 import 'package:pi_desktop/ide/ide_list.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/main.dart';
 import 'package:pi_desktop/search/search_palette.dart';
 import 'package:pi_desktop/chat/widgets/user_message_bubble.dart';
@@ -180,14 +180,14 @@ void main() {
     tester,
   ) async {
     final workspace = await pumpApp(tester);
-    expect(inSidebar(find.text('baocode')), findsOneWidget);
+    expect(inSidebar(find.text('pi-desktop')), findsOneWidget);
     expect(inSidebar(find.text('cursor-docs')), findsOneWidget);
     expect(inSidebar(find.text('api-gateway')), findsOneWidget);
     // Pinned agents sit above the projects.
     expect(inSidebar(find.text('Pinned')), findsOneWidget);
     expect(
       tester.getTopLeft(inSidebar(find.text('Pinned'))).dy,
-      lessThan(tester.getTopLeft(inSidebar(find.text('baocode'))).dy),
+      lessThan(tester.getTopLeft(inSidebar(find.text('pi-desktop'))).dy),
     );
     expect(chatTitle(tester), 'Optimize virtual list scrolling');
 
@@ -232,7 +232,7 @@ void main() {
     addTearDown(mouse.removePointer);
     await mouse.addPointer(location: const Offset(900, 450));
     await tester.pump();
-    await mouse.moveTo(tester.getCenter(inSidebar(find.text('baocode'))));
+    await mouse.moveTo(tester.getCenter(inSidebar(find.text('pi-desktop'))));
     await tester.pump();
     await type('g');
     expect(inSidebar(find.text('g')), findsNothing);
@@ -250,7 +250,7 @@ void main() {
     expect(inSidebar(find.text('gw')), findsOneWidget);
     expect(highlighted(), isTrue);
     // Only the projects it matches are listed.
-    expect(inSidebar(find.text('baocode')), findsNothing);
+    expect(inSidebar(find.text('pi-desktop')), findsNothing);
     expect(inSidebar(find.text('cursor-docs')), findsNothing);
     expect(inSidebar(find.text('Pinned')), findsNothing);
 
@@ -258,7 +258,7 @@ void main() {
     await tester.pump();
     expect(inSidebar(find.text('gw')), findsNothing);
     expect(highlighted(), isFalse);
-    expect(inSidebar(find.text('baocode')), findsOneWidget);
+    expect(inSidebar(find.text('pi-desktop')), findsOneWidget);
     expect(inSidebar(find.text('Pinned')), findsOneWidget);
 
     // Deleted back to nothing, the list is as it was.
@@ -267,10 +267,10 @@ void main() {
       await tester.sendKeyEvent(LogicalKeyboardKey.backspace);
       await tester.pump();
     }
-    expect(inSidebar(find.text('baocode')), findsOneWidget);
+    expect(inSidebar(find.text('pi-desktop')), findsOneWidget);
     expect(inSidebar(find.text('g')), findsNothing);
     await type('gw');
-    expect(inSidebar(find.text('baocode')), findsNothing);
+    expect(inSidebar(find.text('pi-desktop')), findsNothing);
 
     // Enter goes into it, unfolded, its first agent focused; Enter again
     // opens that one.
@@ -291,7 +291,7 @@ void main() {
     await tester.tap(inSidebar(find.text('New Chat')));
     await tester.pump();
     final thread = workspace.selected;
-    expect(thread.project.name, 'baocode');
+    expect(thread.project.name, 'pi-desktop');
     expect(chatTitle(tester), 'New Chat');
 
     // Asking again reuses the untouched one.
@@ -468,7 +468,7 @@ void main() {
     expect(thread.pinned, isTrue);
     expect(
       tester.getTopLeft(row()).dy,
-      lessThan(tester.getTopLeft(inSidebar(find.text('baocode'))).dy),
+      lessThan(tester.getTopLeft(inSidebar(find.text('pi-desktop'))).dy),
     );
 
     await menu('Archive');

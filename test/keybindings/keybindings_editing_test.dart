@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pi_desktop/keybindings/key_chord.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 import 'package:pi_desktop/keybindings/keybindings_editing.dart';
 import 'package:pi_desktop/settings/jsonc.dart';
@@ -59,7 +59,7 @@ void main() {
   KeySequence keys(String text) => KeySequence.parse(text)!;
 
   setUp(() {
-    temp = Directory.systemTemp.createTempSync('baocode-keybindings-editing');
+    temp = Directory.systemTemp.createTempSync('pi-desktop-keybindings-editing');
     path = p.join(temp.path, 'User', 'keybindings.json');
     Directory(p.dirname(path)).createSync(recursive: true);
     file = JsoncFile(path);

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:ui' as ui;
 
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:pi_desktop/ide/markdown/markdown_preview.dart';
 import 'package:pi_desktop/ide/markdown/markdown_task_box.dart';
 import 'package:pi_desktop/theme/app_theme.dart';

@@ -43,7 +43,7 @@ class MemoryTelemetryStore implements TelemetryStore {
 /// back, and on which versions: once a UTC day the app is in front, the
 /// day is reported with a random install id, the app's version, the
 /// system and processor it runs on, and its edition: the channel build's
-/// or not, and where its user came to baocode.dev from, as its setup was
+/// or not, and where its user came to the pi-desktop site from, as its setup was
 /// told (lib/channel/). Nothing about the user, their machine, their
 /// projects or what they do in the app.
 ///

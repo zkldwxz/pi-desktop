@@ -4,12 +4,12 @@ import FlutterMacOS
 import Vision
 
 /// A window that is a view of the app's one engine: the app's own windows
-/// (BaoWindow) and the stash's panel, which is not one of them.
+/// (PiWindow) and the stash's panel, which is not one of them.
 protocol FlutterHostWindow: NSWindow {
   var viewId: Int64 { get }
 }
 
-extension BaoWindow: FlutterHostWindow {}
+extension PiWindow: FlutterHostWindow {}
 
 /// The stash's panel (see lib/stash/, docs/stash.md): a view of the app's
 /// engine in a panel shown in front of every app, on every Space, without
@@ -24,7 +24,7 @@ final class StashPanel: NSPanel, FlutterHostWindow {
 
   /// Where its place and size are kept (the user defaults'), for the next
   /// launch.
-  private static let frameName = "BaoCodeStashPanel"
+  private static let frameName = "PiDesktopStashPanel"
 
   /// The app's one panel, once made.
   private(set) static weak var current: StashPanel?
@@ -64,7 +64,7 @@ final class StashPanel: NSPanel, FlutterHostWindow {
     isOpaque = false
     backgroundColor = .clear
     hasShadow = true
-    appearance = NSAppearance(named: BaoWindow.keptDarkAppearance ? .darkAqua : .aqua)
+    appearance = NSAppearance(named: PiWindow.keptDarkAppearance ? .darkAqua : .aqua)
     flutter.backgroundColor = .clear
     // The main window's material under it, as the conversation has it
     // there (AppColors.conversationSurface tints it).
@@ -119,7 +119,7 @@ final class StashPanel: NSPanel, FlutterHostWindow {
     }
     syncScale()
     // Light or dark as the color theme is now, as the app's windows are.
-    appearance = NSAppearance(named: BaoWindow.keptDarkAppearance ? .darkAqua : .aqua)
+    appearance = NSAppearance(named: PiWindow.keptDarkAppearance ? .darkAqua : .aqua)
     makeKeyAndOrderFront(nil)
     orderFrontRegardless()
   }
@@ -129,7 +129,7 @@ final class StashPanel: NSPanel, FlutterHostWindow {
   override func performKeyEquivalent(with event: NSEvent) -> Bool {
     let flags = event.modifierFlags.intersection([.command, .shift, .option, .control])
     if flags == .command, let key = event.charactersIgnoringModifiers?.lowercased() {
-      let commands = ["w": "baocode.stash.close", "s": "baocode.stash.save", "n": "baocode.stash.new"]
+      let commands = ["w": "pi-desktop.stash.close", "s": "pi-desktop.stash.save", "n": "pi-desktop.stash.new"]
       if let command = commands[key] {
         menuCommand(command)
         return true
@@ -151,7 +151,7 @@ final class StashPanel: NSPanel, FlutterHostWindow {
 
   /// Escape, as a panel's: Flutter decides (it saves first).
   override func cancelOperation(_ sender: Any?) {
-    menuCommand("baocode.stash.close")
+    menuCommand("pi-desktop.stash.close")
   }
 
   private func syncScale() {
@@ -171,25 +171,25 @@ final class StashPanel: NSPanel, FlutterHostWindow {
     drops?.stop()
   }
 
-  // The Edit menu's commands, as BaoWindow's.
-  @objc func baocodeUndo(_ sender: Any?) { editCommand("undo") }
-  @objc func baocodeRedo(_ sender: Any?) { editCommand("redo") }
-  @objc func baocodeCut(_ sender: Any?) { editCommand("cut") }
-  @objc func baocodeCopy(_ sender: Any?) { editCommand("copy") }
-  @objc func baocodePaste(_ sender: Any?) { editCommand("paste") }
-  @objc func baocodeSelectAll(_ sender: Any?) { editCommand("selectAll") }
+  // The Edit menu's commands, as PiWindow's.
+  @objc func piDesktopUndo(_ sender: Any?) { editCommand("undo") }
+  @objc func piDesktopRedo(_ sender: Any?) { editCommand("redo") }
+  @objc func piDesktopCut(_ sender: Any?) { editCommand("cut") }
+  @objc func piDesktopCopy(_ sender: Any?) { editCommand("copy") }
+  @objc func piDesktopPaste(_ sender: Any?) { editCommand("paste") }
+  @objc func piDesktopSelectAll(_ sender: Any?) { editCommand("selectAll") }
 
   private func editCommand(_ command: String) {
     channel?.invokeMethod("editCommand", arguments: command)
   }
 
   /// What the panel's view asks of its window: the clipboard's pictures
-  /// and files, files to pick, a context menu; the rest as BaoWindow
+  /// and files, files to pick, a context menu; the rest as PiWindow
   /// answers it, where it applies to a panel.
   private func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
     case "readPasteboardImages":
-      result(BaoWindow.pasteboardImages())
+      result(PiWindow.pasteboardImages())
     case "readPasteboardFiles":
       result(FileDropView.files(on: NSPasteboard.general))
     case "readImageFile":
@@ -197,14 +197,14 @@ final class StashPanel: NSPanel, FlutterHostWindow {
         result(nil)
         return
       }
-      result(BaoWindow.image(at: URL(fileURLWithPath: path)))
+      result(PiWindow.image(at: URL(fileURLWithPath: path)))
     case "canPaste":
       result(NSPasteboard.general.canReadObject(
         forClasses: [NSString.self, NSURL.self, NSImage.self], options: nil))
     case "writePasteboardMarkdown":
-      result(BaoWindow.writePasteboardMarkdown(call.arguments as? [String: Any] ?? [:]))
+      result(PiWindow.writePasteboardMarkdown(call.arguments as? [String: Any] ?? [:]))
     case "readPasteboardMarkdown":
-      result(BaoWindow.readPasteboardMarkdown())
+      result(PiWindow.readPasteboardMarkdown())
     case "writePasteboardImage":
       guard let arguments = call.arguments as? [String: Any],
             let bytes = arguments["bytes"] as? FlutterStandardTypedData
@@ -212,7 +212,7 @@ final class StashPanel: NSPanel, FlutterHostWindow {
         result(false)
         return
       }
-      result(BaoWindow.writePasteboardImage(
+      result(PiWindow.writePasteboardImage(
         bytes.data, png: arguments["type"] as? String == "image/png"))
     case "pickFiles":
       let panel = NSOpenPanel()
@@ -383,8 +383,8 @@ final class StashHotkey {
 
 // MARK: - The channel
 
-/// `baocode/stash` (see lib/stash/stash_host.dart): the shortcut, and the
-/// text in pictures. Pressed, it tells whether that was in BaoCode itself
+/// `pi-desktop/stash` (see lib/stash/stash_host.dart): the shortcut, and the
+/// text in pictures. Pressed, it tells whether that was in pi-desktop itself
 /// (`self`) and whether the panel was what the keyboard was in (`panel`).
 final class StashChannel {
   static var shared: StashChannel?

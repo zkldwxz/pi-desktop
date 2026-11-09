@@ -5,8 +5,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/textmate/textmate_syntax.dart';
-import 'package:bao_editor/textmate/textmate_worker.dart';
+import 'package:pi_editor/textmate/textmate_syntax.dart';
+import 'package:pi_editor/textmate/textmate_worker.dart';
 import 'package:pi_desktop/ide/lsp/lsp_protocol.dart';
 import 'package:pi_desktop/ide/lsp_ui/language_widgets.dart';
 import 'package:pi_desktop/theme/workbench_theme.dart';

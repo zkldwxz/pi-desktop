@@ -1,4 +1,4 @@
-// A stash's text is markdown, edited as it is written (see bao_markdown):
+// A stash's text is markdown, edited as it is written (see pi_markdown):
 // the file keeps what was typed, line for line.
 //
 // What markdown has no mark for is written as the HTML markdown allows
@@ -8,7 +8,7 @@
 // shows as a card; one to a path (`[name](12/report.pdf)`) as a file's
 // tag.
 
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 
 /// Whether [href] is a file here rather than a page: a path, absolute or
 /// in the stash folder (`12/report.pdf`).

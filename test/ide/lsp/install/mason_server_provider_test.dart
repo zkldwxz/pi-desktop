@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_remote/lsp.dart' show jdtlsLauncher;
+import 'package:pi_remote/lsp.dart' show jdtlsLauncher;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pi_desktop/ide/lsp/install/archive.dart';
 import 'package:pi_desktop/ide/lsp/install/install_io.dart';

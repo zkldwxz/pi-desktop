@@ -42,7 +42,7 @@ std::wstring SaveTemporaryWav(const std::vector<uint8_t>& bytes) {
     return L"";
   }
   wchar_t temporary[MAX_PATH + 1] = {};
-  if (::GetTempFileNameW(directory, L"Bao", 0, temporary) == 0) {
+  if (::GetTempFileNameW(directory, L"Pi", 0, temporary) == 0) {
     return L"";
   }
   const HANDLE file = ::CreateFileW(temporary, GENERIC_WRITE, 0, nullptr,
@@ -692,7 +692,7 @@ void Attention::PlaySoundFile(const std::wstring& path, bool temporary) {
                    [](wchar_t c) { return static_cast<wchar_t>(std::towlower(c)); });
   }
   const std::wstring alias =
-      L"baocode_sound_" + std::to_wstring(++next_sound_id_);
+      L"pi_desktop_sound_" + std::to_wstring(++next_sound_id_);
   const std::wstring type = extension == L".wav" ? L"waveaudio" : L"mpegvideo";
   const std::wstring open =
       L"open \"" + path + L"\" type " + type + L" alias " + alias;

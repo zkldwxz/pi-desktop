@@ -5,7 +5,7 @@ import FinderSync
 /// sidebar (and the toolbar button, once added to the toolbar): Open with
 /// pi-desktop, a new agent in a window of its own, and Open with Fast Ide, a
 /// new IDE window, as the Windows installer adds them to Explorer's (see
-/// tool/baocode.iss). Turned on and off in the app's settings, or System
+/// tool/pi-desktop.iss). Turned on and off in the app's settings, or System
 /// Settings' extensions (see lib/platform/context_menu_io.dart).
 ///
 /// The extension is sandboxed, as app extensions are: it hands the paths

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:bao_remote/src/review/line_diff.dart';
+import 'package:pi_remote/src/review/line_diff.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 List<int> _bytes(String text) => utf8.encode(text);

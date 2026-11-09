@@ -24,7 +24,7 @@ void main() {
   late HttpServer web;
 
   setUp(() async {
-    dir = Directory.systemTemp.createTempSync('baocode-ports-');
+    dir = Directory.systemTemp.createTempSync('pi-desktop-ports-');
     connector = MemoryConnector(dir.path);
     hosts = SshHosts(connect: connector.call);
     settings = RemoteHostSettings(file: p.join(dir.path, 'remote-hosts.json'));

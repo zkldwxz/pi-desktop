@@ -121,7 +121,7 @@ class _Debugging {
   void _banner(bool shown) => unawaited(
     tab.browser
         .cdp(tab.tabId, 'Overlay.setPausedInDebuggerMessage', {
-          if (shown) 'message': 'Paused in debugger (BaoCode)',
+          if (shown) 'message': 'Paused in debugger (pi-desktop)',
         })
         .then<void>((_) {}, onError: (_) {}),
   );

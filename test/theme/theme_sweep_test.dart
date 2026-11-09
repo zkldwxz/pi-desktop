@@ -4,9 +4,9 @@ import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
-import 'package:bao_editor/textmate/textmate_manifest.dart';
-import 'package:bao_editor/textmate/textmate_syntax.dart'
+import 'package:pi_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
+import 'package:pi_editor/textmate/textmate_manifest.dart';
+import 'package:pi_editor/textmate/textmate_syntax.dart'
     show textMateWorkerLauncher;
 import 'package:pi_desktop/workspace/islands.dart';
 import 'package:pi_desktop/ide/lsp_ui/problems_panel.dart';
@@ -37,8 +37,8 @@ Future<List<ColorThemeData>> _themes() async {
 }
 
 /// Where to write what each theme paints, to look at (e.g.
-/// `BAOCODE_THEME_SNAPSHOTS=/tmp/themes flutter test test/theme/`).
-final _snapshots = Platform.environment['BAOCODE_THEME_SNAPSHOTS'];
+/// `PI_DESKTOP_THEME_SNAPSHOTS=/tmp/themes flutter test test/theme/`).
+final _snapshots = Platform.environment['PI_DESKTOP_THEME_SNAPSHOTS'];
 
 Future<void> _snapshot(WidgetTester tester, String name) async {
   final directory = _snapshots;

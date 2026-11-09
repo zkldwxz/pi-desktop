@@ -22,7 +22,7 @@ void main() {
   late List<Object?> detections;
 
   setUp(() async {
-    temp = await Directory.systemTemp.createTemp('baocode-terminal-profiles');
+    temp = await Directory.systemTemp.createTemp('pi-desktop-terminal-profiles');
     settings = UserSettings(
       p.join(temp.path, 'User', 'settings.json'),
       debounce: Duration.zero,

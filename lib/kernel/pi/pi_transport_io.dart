@@ -93,7 +93,7 @@ Future<PiTransport> startPi(PiLaunch launch) async {
     'NO_COLOR': '1',
   };
   // The inner coding agent has its own release lifecycle; the desktop ships a
-  // pinned copy. Inherit neither a different agent dir nor BaoCode's core setup.
+  // pinned copy. Inherit neither a different agent dir nor pi-desktop's core setup.
   environment.remove('CLAUDECODE');
   final process = await Process.start(
     invocation.executable,

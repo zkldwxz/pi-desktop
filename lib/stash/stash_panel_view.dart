@@ -10,7 +10,7 @@ import '../base/smooth_scroll.dart';
 import '../chat/composer/file_drop.dart';
 import '../chat/widgets/hover_builder.dart';
 import '../chat/widgets/scroll_edge_fade.dart';
-import '../icons/brand_logos.dart' show BaoCodeLogo;
+import '../icons/brand_logos.dart' show PiDesktopLogo;
 import '../ide/ide_dialog.dart';
 import '../ide/ide_hover.dart';
 import '../ide/ide_input.dart';
@@ -158,8 +158,8 @@ class _StashPanelViewState extends State<StashPanelView> {
     await _controller.clarify(id);
   }
 
-  /// Carries the stash out in BaoCode (see [implementStash]): its project
-  /// and how asked here, the agent made shown in BaoCode's window, the
+  /// Carries the stash out in pi-desktop (see [implementStash]): its project
+  /// and how asked here, the agent made shown in pi-desktop's window, the
   /// panel out of its way.
   Future<void> _implement(int id, Rect anchor) async {
     await _flush();
@@ -179,11 +179,11 @@ class _StashPanelViewState extends State<StashPanelView> {
   /// menu), Esc among them.
   void _menuCommand(String command) {
     switch (command) {
-      case 'baocode.stash.close' || 'workbench.action.closeWindow':
+      case 'pi-desktop.stash.close' || 'workbench.action.closeWindow':
         _close();
-      case 'baocode.stash.save':
+      case 'pi-desktop.stash.save':
         unawaited(_save());
-      case 'baocode.stash.new':
+      case 'pi-desktop.stash.new':
         _new();
     }
   }
@@ -397,7 +397,7 @@ class _TopBar extends StatelessWidget {
   /// nothing written.
   final Widget Function(bool compact)? clarify;
 
-  /// Carries it out in BaoCode, its menus under [Rect]; none while there
+  /// Carries it out in pi-desktop, its menus under [Rect]; none while there
   /// is nothing written (its pill there, faint).
   final void Function(Rect anchor)? implement;
 
@@ -446,7 +446,7 @@ class _TopBar extends StatelessWidget {
     final implement = this.implement;
     Widget implementPill({required bool compact}) => Builder(
       builder: (context) => _PillButton(
-        leading: const BaoCodeLogo(size: 13),
+        leading: const PiDesktopLogo(size: 13),
         label: compact ? null : l10n.stashImplementShort,
         tooltip: implement == null
             ? l10n.stashImplementEmpty

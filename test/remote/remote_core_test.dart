@@ -1,5 +1,5 @@
-import 'package:bao_remote/claude.dart';
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/claude.dart';
+import 'package:pi_remote/client.dart';
 import 'package:pi_desktop/remote/remote_claude.dart';
 import 'package:pi_desktop/remote/ssh_host.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,7 +10,7 @@ class _Process implements RemoteProcess {
 }
 
 /// What runs Claude Code on a remote host, as its server saved in the app
-/// says: the CLI where the host has one, else BaoCode's own core.
+/// says: the CLI where the host has one, else pi-desktop's own core.
 void main() {
   final previous = SshHosts.instance;
   late SshHosts hosts;

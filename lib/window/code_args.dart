@@ -93,7 +93,7 @@ class CodeArgs {
   /// as a request ([requestMarker]; see open_requests.cpp).
   static const windowsRequestFlag = '--pi-desktop-cli';
 
-  /// The marker of Open with BaoCode (Explorer's context menu, which the
+  /// The marker of Open with pi-desktop (Explorer's context menu, which the
   /// Windows installer or the settings add; Finder's, the macOS app's
   /// Finder extension, see AppDelegate.swift), the paths next: each in a
   /// new agent, in the chat's window (see AppWindows.openAgent).
@@ -312,7 +312,7 @@ enum LaunchRequest {
   /// Started as itself: the windows of the last run.
   none,
 
-  /// Open with BaoCode ([CodeArgs.windowsAgentFlag]): the chat's window.
+  /// Open with pi-desktop ([CodeArgs.windowsAgentFlag]): the chat's window.
   agent,
 
   /// Paths to open in the IDE (Open with Fast Ide, the `code` command,

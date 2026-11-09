@@ -1,4 +1,4 @@
-import 'package:bao_remote/local.dart';
+import 'package:pi_remote/local.dart';
 import 'package:path/path.dart' as p;
 
 import '../../platform/data_dir.dart';
@@ -9,7 +9,7 @@ import '../agent_kernel.dart';
 class ClaudeStorage implements SessionCatalog, MovesSessions {
   const ClaudeStorage({this.configDir, this.tempDir, this.cacheFile});
 
-  /// Where Claude Code keeps its state; by default `BAOCODE_CLAUDE_DATA_PATH`
+  /// Where Claude Code keeps its state; by default `PI_DESKTOP_CLAUDE_DATA_PATH`
   /// as the login shell has it, else `CLAUDE_CONFIG_DIR`, else
   /// `<home>/.claude`.
   final String? configDir;

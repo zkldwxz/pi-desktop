@@ -1,4 +1,4 @@
-import 'package:bao_remote/claude.dart' show ClaudeHistoryPage;
+import 'package:pi_remote/claude.dart' show ClaudeHistoryPage;
 
 import '../agent_kernel.dart';
 

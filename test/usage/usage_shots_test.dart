@@ -73,7 +73,7 @@ final _shape = UsageShape(
     'mcp__github__create_pull_request': 760,
     'mcp__github__search_code': 540,
   },
-  mcpNotes: {'baocode': 310, 'claude.ai Claude Docs': 1460},
+  mcpNotes: {'pi-desktop': 310, 'claude.ai Claude Docs': 1460},
   skills: {
     'dataviz': 380,
     'code-review': 290,
@@ -809,17 +809,17 @@ final _panelUsage = ContextUsage(
     'mcpTools': [
       {
         'name': 'mcp__pi_desktop__browser_open',
-        'serverName': 'baocode',
+        'serverName': 'pi-desktop',
         'tokens': 420,
       },
       {
         'name': 'mcp__pi_desktop__browser_click',
-        'serverName': 'baocode',
+        'serverName': 'pi-desktop',
         'tokens': 380,
       },
       {
         'name': 'mcp__pi_desktop__browser_screenshot',
-        'serverName': 'baocode',
+        'serverName': 'pi-desktop',
         'tokens': 900,
         'isLoaded': false,
       },

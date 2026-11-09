@@ -1,7 +1,7 @@
 import 'dart:ui' show Color;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
+import 'package:pi_editor/monaco/vs/workbench/services/themes/common/color_theme_data.dart';
 import 'package:pi_desktop/ide/git/git_checkout.dart';
 import 'package:pi_desktop/ide/git/git_model.dart';
 import 'package:pi_desktop/theme/workbench_theme.dart';

@@ -16,11 +16,11 @@
 
 import 'terminal_selection.dart';
 
-import 'package:bao_xterm/addons/addon_search/typings/addon_search.dart';
-import 'package:bao_xterm/common/event.dart';
-import 'package:bao_xterm/common/services/decoration_service.dart';
-import 'package:bao_xterm/headless/public/terminal.dart';
-import 'package:bao_xterm/typings/xterm.dart'
+import 'package:pi_xterm/addons/addon_search/typings/addon_search.dart';
+import 'package:pi_xterm/common/event.dart';
+import 'package:pi_xterm/common/services/decoration_service.dart';
+import 'package:pi_xterm/headless/public/terminal.dart';
+import 'package:pi_xterm/typings/xterm.dart'
     show IBufferCellPosition, IBufferRange, IDecoration, IDecorationOptions;
 
 class TerminalXterm extends Terminal implements ISearchTerminal {

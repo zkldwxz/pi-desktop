@@ -6,8 +6,8 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/vs/editor/common/core/range.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/range.dart';
 import 'package:pi_desktop/ide/file_service.dart';
 import 'package:pi_desktop/ide/ide_workspace.dart';
 import 'package:pi_desktop/ide/lsp/language_features.dart';
@@ -31,7 +31,7 @@ void main() {
 
   setUp(() {
     root = Directory.systemTemp
-        .createTempSync('baocode-lsp')
+        .createTempSync('pi-desktop-lsp')
         .resolveSymbolicLinksSync();
     ClaudeEnvironment.use(Platform.environment);
     LspProcesses.registry = ChildProcessRegistry(

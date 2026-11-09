@@ -30,7 +30,7 @@ import '../l10n/l10n.dart';
 import '../theme/codicons.dart';
 import '../theme/workbench_theme.dart' show themeColors;
 
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 
 import 'vscode_import.dart';
 
@@ -45,7 +45,7 @@ typedef ImportKeymap = Future<KeymapImportResult> Function(
   KeymapExtension extension,
 );
 
-/// Makes keymap [id] the one in use (the `baocode.keymap` setting).
+/// Makes keymap [id] the one in use (the `pi-desktop.keymap` setting).
 typedef SelectKeymap = FutureOr<void> Function(String id);
 
 /// Shows [KeybindingsImportDialog]; completes when it is closed.

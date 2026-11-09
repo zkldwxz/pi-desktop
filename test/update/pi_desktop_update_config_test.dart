@@ -82,7 +82,7 @@ void main() {
     for (final url in [
       'https://cdn.updates.example/file',
       'https://updates.example:444/file',
-      'https://baocode.dev/file',
+      'https://github.com/zkldwxz/pi-desktop',
       'https://user@updates.example/file',
       'http://updates.example/file',
     ]) {
@@ -132,7 +132,7 @@ void main() {
     }
   });
 
-  test('BaoCode signatures cannot authorize pi-desktop releases', () {
+  test('an older app\'s signatures cannot authorize pi-desktop releases', () {
     final bao = UpdateSignature.payload(
       version: '1.2.3',
       platform: 'linux-x64',

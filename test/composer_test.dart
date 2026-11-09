@@ -9,7 +9,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:pi_desktop/chat/widgets/activity_row.dart';
 import 'package:pi_desktop/sidebar/sidebar.dart';
 import 'package:pi_desktop/workspace/workspace.dart';
@@ -644,7 +644,7 @@ void main() {
     expect(controller.shownText, '\uFFFC ');
   });
 
-  testWidgets('files put in the draft from outside (Open with BaoCode) go '
+  testWidgets('files put in the draft from outside (Open with pi-desktop) go '
       'in as if pasted: before the composer shows, and while it does', (
     tester,
   ) async {

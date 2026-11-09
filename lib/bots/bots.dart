@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
 
-import 'package:bao_link/bao_link.dart' show LinkBotNotice;
+import 'package:pi_link/pi_link.dart' show LinkBotNotice;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;

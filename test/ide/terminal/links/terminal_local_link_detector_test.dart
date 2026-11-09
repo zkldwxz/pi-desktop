@@ -19,8 +19,8 @@ import 'package:pi_desktop/ide/terminal/links/links.dart';
 import 'package:pi_desktop/ide/terminal/links/terminal_link_parsing.dart';
 import 'package:pi_desktop/ide/terminal/links/terminal_link_resolver.dart';
 import 'package:pi_desktop/ide/terminal/links/terminal_local_link_detector.dart';
-import 'package:bao_xterm/headless/public/terminal.dart';
-import 'package:bao_xterm/typings/xterm_headless.dart' hide Terminal;
+import 'package:pi_xterm/headless/public/terminal.dart';
+import 'package:pi_xterm/typings/xterm_headless.dart' hide Terminal;
 
 import 'link_test_utils.dart';
 

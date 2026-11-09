@@ -26,7 +26,7 @@ import 'story.dart';
 
 /// Where the made-up machines are: outside the user's home, so that no
 /// path of theirs shows in a picture.
-const _machines = '/Users/Shared/bao-showcase';
+const _machines = '/Users/Shared/pi-showcase';
 
 /// The well-known repositories the projects are, cloned once.
 const _repositories = {'hono': 'https://github.com/honojs/hono.git'};
@@ -63,7 +63,7 @@ Future<void> main(List<String> args) async {
   await _cloneRepositories(p.join(cache, 'repos'));
   // Built in a copy of the sources, run from a copy of its own: the perf
   // app builds into the same place, maybe at the same time.
-  final bundle = p.join(cache, 'app', 'BaoCode.app');
+  final bundle = p.join(cache, 'app', 'pi-desktop.app');
   final sources = p.join(cache, 'src');
   if (build) {
     await _run('rsync', [
@@ -80,11 +80,11 @@ Future<void> main(List<String> args) async {
     Directory(p.dirname(bundle)).createSync(recursive: true);
     await _run('cp', [
       '-cR',
-      p.join(sources, 'build/macos/Build/Products/Profile/BaoCode.app'),
+      p.join(sources, 'build/macos/Build/Products/Profile/pi-desktop.app'),
       bundle,
     ]);
   }
-  final app = p.join(bundle, 'Contents', 'MacOS', 'BaoCode');
+  final app = p.join(bundle, 'Contents', 'MacOS', 'pi-desktop');
   var failed = false;
   for (final locale in locales) {
     Story.locale = locale;
@@ -316,7 +316,7 @@ $description
   // has them.
   final emoji = p.join(
     Platform.environment['HOME']!,
-    'Library/Application Support/baocode/cache/emoji',
+    'Library/Application Support/pi-desktop/cache/emoji',
   );
   if (Directory(emoji).existsSync()) {
     Directory(p.join(data, 'cache')).createSync(recursive: true);
@@ -327,7 +327,7 @@ $description
   write(
     p.join(data, 'User', 'settings.json'),
     const JsonEncoder.withIndent('  ').convert({
-      'workbench.colorTheme': 'Bao Dark',
+      'workbench.colorTheme': 'Pi Dark',
       'update.mode': 'none',
       'telemetry.telemetryLevel': 'off',
       // No tip or ask (a star on GitHub) over a scene.
@@ -416,17 +416,17 @@ Future<int> _runApp(
     ..._launchEnvironment(app),
     'HOME': home,
     'SHELL': '/bin/zsh',
-    'BAOCODE_SHOWCASE_HOME': home,
-    'BAOCODE_SHOWCASE_DATA': data,
-    'BAOCODE_SHOWCASE_OUT': out,
-    'BAOCODE_SHOWCASE_LOCALE': locale,
-    if (scenes.isNotEmpty) 'BAOCODE_SHOWCASE_SCENES': scenes.join(','),
-    if (!video) 'BAOCODE_SHOWCASE_VIDEO': '0',
+    'PI_DESKTOP_SHOWCASE_HOME': home,
+    'PI_DESKTOP_SHOWCASE_DATA': data,
+    'PI_DESKTOP_SHOWCASE_OUT': out,
+    'PI_DESKTOP_SHOWCASE_LOCALE': locale,
+    if (scenes.isNotEmpty) 'PI_DESKTOP_SHOWCASE_SCENES': scenes.join(','),
+    if (!video) 'PI_DESKTOP_SHOWCASE_VIDEO': '0',
   };
   final process = await Process.start(app, const [], environment: environment);
   void line(String text) {
     sink.writeln(text);
-    const tag = 'BAOCODE_SHOWCASE_LOG ';
+    const tag = 'PI_DESKTOP_SHOWCASE_LOG ';
     final at = text.indexOf(tag);
     if (at >= 0) print('[$locale] ${text.substring(at + tag.length)}');
   }

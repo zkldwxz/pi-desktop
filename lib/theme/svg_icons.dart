@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 /// says where it is from), as [IconData] for where an icon is one: [AppIcon]
 /// draws them, [Icon] does not.
 abstract final class SvgIcons {
-  static const fontFamily = 'bao-svg';
+  static const fontFamily = 'pi-svg';
 
   /// Usage: a conversation's, and Settings → Usage (Lucide's chart-pie).
   static const usage = IconData(0xe000, fontFamily: fontFamily);

@@ -18,7 +18,7 @@ import 'dart:math';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:bao_markdown/bao_markdown.dart'
+import 'package:pi_markdown/pi_markdown.dart'
     show
         MarkdownEditor,
         MarkdownController,

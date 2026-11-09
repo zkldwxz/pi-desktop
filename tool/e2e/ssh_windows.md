@@ -19,15 +19,15 @@ Environment:
 
 | Variable | |
 |---|---|
-| `BAOCODE_DATA_DIR` | the data folder copy (`User/settings.json` with a model provider) |
-| `BAOCODE_REMOTE_SERVER_DIR` | `VERSION` and `baocode-server-windows-x64` |
-| `BAOCODE_E2E_OUT` | where screenshots and results go |
-| `BAOCODE_E2E_HOST` | the host, as a project names it (`user@host`, or a saved server's name) |
-| `BAOCODE_E2E_ROOT` | the repository there (`C:\…`) |
-| `BAOCODE_E2E_PHASE` | `main`, `restart` (after `main`, same data folder), `windows` or `lsp` |
-| `BAOCODE_E2E_MODEL` | the agent's model, e.g. `@provider-3/glm-5.3` (an OpenCode one) |
-| `BAOCODE_E2E_CHROME`, `BAOCODE_E2E_EXTENSION` | a Chrome wrapper loading the unpacked extension (see the browser live tests), and `browser_extension/` |
-| `BAOCODE_E2E_SSH_HOST`, `BAOCODE_E2E_SSH_USER`, `BAOCODE_E2E_KEY` | `windows`: the saved server's address, user and key |
+| `PI_DESKTOP_DATA_DIR` | the data folder copy (`User/settings.json` with a model provider) |
+| `PI_DESKTOP_REMOTE_SERVER_DIR` | `VERSION` and `pi-desktop-server-windows-x64` |
+| `PI_DESKTOP_E2E_OUT` | where screenshots and results go |
+| `PI_DESKTOP_E2E_HOST` | the host, as a project names it (`user@host`, or a saved server's name) |
+| `PI_DESKTOP_E2E_ROOT` | the repository there (`C:\…`) |
+| `PI_DESKTOP_E2E_PHASE` | `main`, `restart` (after `main`, same data folder), `windows` or `lsp` |
+| `PI_DESKTOP_E2E_MODEL` | the agent's model, e.g. `@provider-3/glm-5.3` (an OpenCode one) |
+| `PI_DESKTOP_E2E_CHROME`, `PI_DESKTOP_E2E_EXTENSION` | a Chrome wrapper loading the unpacked extension (see the browser live tests), and `browser_extension/` |
+| `PI_DESKTOP_E2E_SSH_HOST`, `PI_DESKTOP_E2E_SSH_USER`, `PI_DESKTOP_E2E_KEY` | `windows`: the saved server's address, user and key |
 
 The repository needs `src/a.txt` (with `hello world` in it) and an untracked
 file holding `needle`.

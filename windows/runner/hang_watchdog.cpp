@@ -52,7 +52,7 @@ std::wstring ReportFolder() {
   return crash_report::ReportFolder(log_folder::Path());
 }
 
-// What baocode_wer.dll is told of the app (see RegisterFastFailModule).
+// What pi_desktop_wer.dll is told of the app (see RegisterFastFailModule).
 crash_report::FastFailContext g_fast_fail = {};
 
 // |logs| as g_fast_fail's, cut short if need be.
@@ -60,13 +60,13 @@ void SetFastFailLogs(const std::wstring& logs) {
   ::wcsncpy_s(g_fast_fail.logs, logs.c_str(), _TRUNCATE);
 }
 
-// baocode_wer.dll (windows/wer), beside the executable, registered with
+// pi_desktop_wer.dll (windows/wer), beside the executable, registered with
 // Windows Error Reporting for this process: a fast fail (abort() in a
 // module with its own C runtime, flutter_windows.dll's) ends the process
 // without the crash filter, and Windows Error Reporting's process has the
 // module write it down instead. Listed for the user as such a module
 // (RuntimeExceptionHelperModules) first, as Windows requires; the
-// installer removes the value as it uninstalls (tool/baocode.iss).
+// installer removes the value as it uninstalls (tool/pi-desktop.iss).
 void RegisterFastFailModule() {
   wchar_t executable[MAX_PATH] = {};
   const DWORD length = ::GetModuleFileNameW(nullptr, executable, MAX_PATH);
@@ -75,7 +75,7 @@ void RegisterFastFailModule() {
   }
   std::wstring module = executable;
   module = module.substr(0, module.find_last_of(L'\\') + 1) +
-           L"baocode_wer.dll";
+           L"pi_desktop_wer.dll";
   if (::GetFileAttributesW(module.c_str()) == INVALID_FILE_ATTRIBUTES) {
     return;
   }

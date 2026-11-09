@@ -107,7 +107,7 @@ void main() {
       workspace: Workspace.mock(),
       accounts: accounts,
       remotes: (folder) async => switch (folder) {
-        '~/code/baocode' => ['git@github.com:o/r.git'],
+        '~/code/pi-desktop' => ['git@github.com:o/r.git'],
         _ => const [],
       },
     );
@@ -184,17 +184,17 @@ void main() {
     () async {
       final repos = await forge.repositories();
       expect(repos.single.repo.path, 'o/r');
-      expect(repos.single.project.path, '~/code/baocode');
+      expect(repos.single.project.path, '~/code/pi-desktop');
       final item = ForgeItem(
         ref: ForgeRef.parse(issueUrl)!,
         title: 'Uploads fail [503]',
         state: ForgeState.open,
         body: 'They fail on 503.',
       );
-      final notes = await forge.import([item], project: '~/code/baocode');
+      final notes = await forge.import([item], project: '~/code/pi-desktop');
       final note = notes.single;
       expect(note.title, 'Uploads fail [503]');
-      expect(note.project, '~/code/baocode');
+      expect(note.project, '~/code/pi-desktop');
       expect(note.body, 'They fail on 503.');
       expect(note.issue, issueUrl);
       expect(note.issues.single.url, issueUrl);
@@ -248,7 +248,7 @@ void main() {
       );
       final uploads = forge.stashOf(issueUrl)!;
       expect(uploads.body, 'On 503.');
-      expect(uploads.project, '~/code/baocode');
+      expect(uploads.project, '~/code/pi-desktop');
 
       await forge.sync();
       expect(store.notes, hasLength(2));
@@ -289,7 +289,7 @@ void main() {
         workspace: Workspace.mock(),
         accounts: accounts,
         remotes: (folder) async => switch (folder) {
-          '~/code/baocode' => ['git@github.com:o/r.git'],
+          '~/code/pi-desktop' => ['git@github.com:o/r.git'],
           _ => const [],
         },
         issueSync: () => StashIssueSync.mine,
@@ -312,7 +312,7 @@ void main() {
           workspace: Workspace.mock(),
           accounts: accounts,
           remotes: (folder) async => switch (folder) {
-            '~/code/baocode' => ['git@github.com:o/r.git'],
+            '~/code/pi-desktop' => ['git@github.com:o/r.git'],
             '~/code/cursor-docs' => ['git@gitlab.com:g/docs.git'],
             _ => const [],
           },
@@ -732,7 +732,7 @@ void main() {
 
   test('published: its pictures put where the issue shows them, its other '
       'files their names', () async {
-    final note = await store.create(body: 'x', project: '~/code/baocode');
+    final note = await store.create(body: 'x', project: '~/code/pi-desktop');
     final picture = await store.disk.writeAsset(
       note.id,
       'shot.png',
@@ -751,13 +751,13 @@ void main() {
             '[docs](https://example.com/d).';
     });
     expect(StashForge.localPictures(store.byId(note.id)!.body), 1);
-    expect(await forge.reposOf('~/code/baocode'), [
+    expect(await forge.reposOf('~/code/pi-desktop'), [
       ForgeRepo(kind: ForgeKind.github, host: 'github.com', path: 'o/r'),
     ]);
     http
       ..on(
         'GET',
-        'https://api.github.com/repos/o/r/branches/baocode-stash-assets',
+        'https://api.github.com/repos/o/r/branches/pi-desktop-stash-assets',
         (_) => {},
       )
       ..on('POST', 'https://api.github.com/repos/o/r/issues', (request) {
@@ -782,7 +782,7 @@ void main() {
     final body = (post.json! as Map)['body'] as String;
     expect(
       body,
-      contains('![](https://github.com/o/r/blob/baocode-stash-assets/stash/'),
+      contains('![](https://github.com/o/r/blob/pi-desktop-stash-assets/stash/'),
     );
     expect(body, contains('See the log and [docs](https://example.com/d).'));
     final published = store.byId(note.id)!;

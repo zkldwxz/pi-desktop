@@ -1,6 +1,6 @@
 // Keeps the keybindings in effect ([KeybindingService]) in step with the
 // files they come from: the user's `keybindings.json`, and the keymap the
-// `baocode.keymap` setting in `settings.json` selects (as VS Code's
+// `pi-desktop.keymap` setting in `settings.json` selects (as VS Code's
 // `UserKeybindings` follows its file, and a keymap extension, once
 // installed, is in effect until uninstalled).
 
@@ -9,7 +9,7 @@ import 'dart:async';
 import '../settings/jsonc_file.dart';
 import '../settings/user_settings.dart';
 
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 
 import 'keybinding_service.dart';
 import 'keymap.dart';
@@ -24,7 +24,7 @@ class KeybindingsSync {
   }) : service = service ?? KeybindingService.instance;
 
   /// The setting that holds the selected keymap's id.
-  static const keymapSetting = 'baocode.keymap';
+  static const keymapSetting = 'pi-desktop.keymap';
 
   /// `User/keybindings.json`.
   final JsoncFile keybindings;

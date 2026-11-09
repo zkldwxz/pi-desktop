@@ -1,4 +1,4 @@
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
 import 'package:flutter/services.dart' show TextSelection;
 
 /// The file in front in the editor beside a conversation (the IDE's, the

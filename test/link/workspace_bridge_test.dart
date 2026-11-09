@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_link/bao_link.dart';
-import 'package:bao_remote/claude.dart' show ClaudeHistoryPage;
+import 'package:pi_link/pi_link.dart';
+import 'package:pi_remote/claude.dart' show ClaudeHistoryPage;
 import 'package:pi_desktop/chat/chat_session.dart'
     show ComposerMessage, UserPlace;
 import 'package:pi_desktop/chat/chat_models.dart';

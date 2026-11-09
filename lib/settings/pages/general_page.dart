@@ -32,7 +32,7 @@ import 'settings_widgets.dart';
 /// come back and close (`window.*`), when a message sent while the agent
 /// works is taken up (`chat.queuedMessages`), whether the composer has its
 /// Polish button, and whether the turn under way shows time, speed and tokens.
-/// the `code` shell command, and Open with BaoCode in Finder's or
+/// the `code` shell command, and Open with pi-desktop in Finder's or
 /// Explorer's context menu. A choice is written at once; the default is not
 /// written.
 class GeneralSettingsPage extends StatelessWidget {
@@ -56,7 +56,7 @@ class GeneralSettingsPage extends StatelessWidget {
   static String attributionName(BuildContext context, CommitAttribution value) {
     final l10n = context.l10n;
     return switch (value) {
-      CommitAttribution.baocode => 'BaoCode',
+      CommitAttribution.piDesktop => 'pi-desktop',
       CommitAttribution.agent => l10n.generalSettingsAttributionAgent,
       CommitAttribution.none => l10n.generalSettingsAttributionNone,
     };
@@ -533,7 +533,7 @@ class _ShellCommandSettingState extends State<_ShellCommandSetting> {
   }
 }
 
-/// Whether Open with BaoCode and Open with Fast Ide are in the system's
+/// Whether Open with pi-desktop and Open with Fast Ide are in the system's
 /// context menu (see ContextMenu), and the buttons to turn them on or off
 /// (and, on macOS, System Settings' extensions); what failed, under them.
 class _ContextMenuSetting extends StatefulWidget {

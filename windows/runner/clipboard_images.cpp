@@ -500,7 +500,7 @@ namespace {
 
 // The format of the editors' copies, the app's own.
 UINT MarkdownFormat() {
-  static const UINT format = ::RegisterClipboardFormatW(L"BaoCode Markdown");
+  static const UINT format = ::RegisterClipboardFormatW(L"pi-desktop Markdown");
   return format;
 }
 

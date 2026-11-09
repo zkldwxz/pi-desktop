@@ -19,11 +19,11 @@
 
 import 'dart:convert';
 
-import 'package:bao_xterm/common/event.dart';
-import 'package:bao_xterm/common/lifecycle.dart';
-import 'package:bao_xterm/common/public/parser_api.dart';
-import 'package:bao_xterm/common/services/services.dart';
-import 'package:bao_xterm/headless/terminal.dart';
+import 'package:pi_xterm/common/event.dart';
+import 'package:pi_xterm/common/lifecycle.dart';
+import 'package:pi_xterm/common/public/parser_api.dart';
+import 'package:pi_xterm/common/services/services.dart';
+import 'package:pi_xterm/headless/terminal.dart';
 
 import 'capabilities/buffer_mark_capability.dart';
 import 'capabilities/capabilities.dart';

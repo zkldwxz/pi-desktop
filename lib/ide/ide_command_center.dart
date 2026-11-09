@@ -23,7 +23,7 @@ class IdeCommandCenter extends StatelessWidget {
   /// What the search box reads: the project's name.
   final String label;
 
-  /// `Search baocode (⌘P)`: upstream's `CommandCenterCenterViewItem
+  /// `Search pi-desktop (⌘P)`: upstream's `CommandCenterCenterViewItem
   /// .getTooltip` (commandCenterControl.ts), but the window title after it.
   final String tooltip;
   final VoidCallback onSearch;

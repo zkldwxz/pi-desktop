@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +12,7 @@ import 'package:pi_desktop/chat/chat_screen.dart';
 import 'package:pi_desktop/chat/chat_session.dart';
 import 'package:pi_desktop/ide/ide_quick_input.dart';
 import 'package:pi_desktop/ide/ide_workbench.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 
 import '../git/fake_git.dart';

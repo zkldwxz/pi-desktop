@@ -7,8 +7,8 @@ import UniformTypeIdentifiers
 /// it (see AppWindows.swift), each a view of the one engine. A see-through
 /// title bar over Flutter's own, the sidebar's material under it, files
 /// dragged onto it, and the window controls Flutter asks for over its
-/// channel: `baocode/window` (the main one's) or `baocode/window.<viewId>`.
-class BaoWindow: NSWindow {
+/// channel: `pi-desktop/window` (the main one's) or `pi-desktop/window.<viewId>`.
+class PiWindow: NSWindow {
   /// Opens wider than the 720 at which the sidebar docks beside the
   /// chat (below it, it is a drawer): room for the sidebar and the full
   /// chat column.
@@ -211,7 +211,7 @@ class BaoWindow: NSWindow {
   /// Keeps the Flutter view's scale the window's. Flutter takes the pixel
   /// ratio from the view's layer (`contentsScale`) but the size in pixels
   /// from the window: a window opened while the app was not in front
-  /// (Finder's Open with BaoCode) can show with its layer still at 1x on a
+  /// (Finder's Open with pi-desktop) can show with its layer still at 1x on a
   /// 2x screen, everything drawn half size until the window is dragged.
   @objc func syncScale() {
     guard let flutter = flutterViewController,
@@ -432,8 +432,8 @@ class BaoWindow: NSWindow {
     }
   }
 
-  static let darkAppearanceKey = "BaoCodeDarkAppearance"
-  static let windowBlurKey = "BaoCodeWindowBlur"
+  static let darkAppearanceKey = "PiDesktopDarkAppearance"
+  static let windowBlurKey = "PiDesktopWindowBlur"
 
   /// Whether the windows were last blurred underneath; not the first time.
   static var keptWindowBlur: Bool {
@@ -521,12 +521,12 @@ class BaoWindow: NSWindow {
   // They come here too when a shortcut Flutter did not take matches them:
   // to the key window, whose channel takes them.
 
-  @objc func baocodeUndo(_ sender: Any?) { editCommand("undo") }
-  @objc func baocodeRedo(_ sender: Any?) { editCommand("redo") }
-  @objc func baocodeCut(_ sender: Any?) { editCommand("cut") }
-  @objc func baocodeCopy(_ sender: Any?) { editCommand("copy") }
-  @objc func baocodePaste(_ sender: Any?) { editCommand("paste") }
-  @objc func baocodeSelectAll(_ sender: Any?) { editCommand("selectAll") }
+  @objc func piDesktopUndo(_ sender: Any?) { editCommand("undo") }
+  @objc func piDesktopRedo(_ sender: Any?) { editCommand("redo") }
+  @objc func piDesktopCut(_ sender: Any?) { editCommand("cut") }
+  @objc func piDesktopCopy(_ sender: Any?) { editCommand("copy") }
+  @objc func piDesktopPaste(_ sender: Any?) { editCommand("paste") }
+  @objc func piDesktopSelectAll(_ sender: Any?) { editCommand("selectAll") }
 
   private func editCommand(_ command: String) {
     channel?.invokeMethod("editCommand", arguments: command)
@@ -534,7 +534,7 @@ class BaoWindow: NSWindow {
 
   // The app menu's Preferences… (⌘,): the app's settings, which ⌘, opens
   // too while Flutter takes the key (it comes here when Flutter did not).
-  @objc func baocodePreferences(_ sender: Any?) {
+  @objc func piDesktopPreferences(_ sender: Any?) {
     menuCommand("workbench.action.openSettings")
   }
 
@@ -582,7 +582,7 @@ class BaoWindow: NSWindow {
 
   /// What an editor copied, beside its text: its markdown, the composer's
   /// tags and all (see lib/platform/native_md_clipboard.dart).
-  static let markdownType = NSPasteboard.PasteboardType("dev.baocode.markdown")
+  static let markdownType = NSPasteboard.PasteboardType("dev.pi.desktop.markdown")
 
   /// Puts `text` on the clipboard for other apps, and beside it `copy`
   /// (an editor's, as JSON, kept as it is) for the app's editors.
@@ -633,10 +633,10 @@ class BaoWindow: NSWindow {
 /// The main window: the chat's, the engine's implicit view (MainMenu.xib).
 /// It also answers for the app what is the app's, not a window's: the color
 /// theme's appearance, the File menu.
-class MainFlutterWindow: BaoWindow {
+class MainFlutterWindow: PiWindow {
   /// Where its place and size are kept (the user defaults'), for the next
   /// launch.
-  private static let frameName = "BaoCodeMainWindow"
+  private static let frameName = "PiDesktopMainWindow"
 
   override func awakeFromNib() {
     let flutterViewController = FlutterViewController()
@@ -712,7 +712,7 @@ class MainFlutterWindow: BaoWindow {
       // none. Kept for the next start.
       let blurred = call.arguments as? Bool ?? false
       UserDefaults.standard.set(blurred, forKey: Self.windowBlurKey)
-      for case let window as BaoWindow in NSApp.windows {
+      for case let window as PiWindow in NSApp.windows {
         window.setBlurred(blurred)
       }
       result(nil)
@@ -768,7 +768,7 @@ class MainFlutterWindow: BaoWindow {
   /// it back (see Attention); without one, it quits as ⌘Q does, asking
   /// first: the window is the app's only one, and closed it would quit
   /// anyway, past the question. With the IDE's windows beside it, the app
-  /// decides (see BaoWindow).
+  /// decides (see PiWindow).
   override func windowShouldClose(_ sender: NSWindow) -> Bool {
     if AppWindows.shared?.started ?? false {
       return super.windowShouldClose(sender)
@@ -913,7 +913,7 @@ final class FileDropView: NSView {
     }
     // Files an app writes once they are let go: into a folder of their own.
     let folder = FileManager.default.temporaryDirectory
-      .appendingPathComponent("baocode-drops", isDirectory: true)
+      .appendingPathComponent("pi-desktop-drops", isDirectory: true)
       .appendingPathComponent(UUID().uuidString, isDirectory: true)
     try? FileManager.default.createDirectory(
       at: folder, withIntermediateDirectories: true)
@@ -1229,8 +1229,8 @@ private class FileMenu: NSObject {
       panel.menuCommand(command)
       return
     }
-    let window = NSApp.keyWindow as? BaoWindow
-      ?? NSApp.mainWindow as? BaoWindow
+    let window = NSApp.keyWindow as? PiWindow
+      ?? NSApp.mainWindow as? PiWindow
       ?? AppWindows.shared?.main
     window?.menuCommand(command)
   }

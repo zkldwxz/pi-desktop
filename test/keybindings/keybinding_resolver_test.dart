@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pi_desktop/keybindings/default_keybindings.dart';
 import 'package:pi_desktop/keybindings/key_chord.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/keybindings/keybinding_resolver.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 import 'package:pi_desktop/keybindings/keymap.dart';
@@ -324,10 +324,10 @@ void main() {
 
     test('registers the keybindings of commands the catalog lacks', () {
       service.registerExtraDefaults(const [
-        KeybindingEntry(command: 'baocode.extra', key: 'cmd+k cmd+x'),
+        KeybindingEntry(command: 'pi-desktop.extra', key: 'cmd+k cmd+x'),
       ]);
-      expect(service.isSupported('baocode.extra'), isTrue);
-      expect(service.labelFor('baocode.extra'), '⌘K ⌘X');
+      expect(service.isSupported('pi-desktop.extra'), isTrue);
+      expect(service.labelFor('pi-desktop.extra'), '⌘K ⌘X');
     });
 
     test('resolves a key event, by its character too', () {

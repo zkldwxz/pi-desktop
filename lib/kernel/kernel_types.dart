@@ -499,7 +499,7 @@ class KernelHealth {
   /// said in the user's language rather than [message].
   final String? missingFolder;
 
-  /// Whether what it lacks is a model to run on (BaoCode's own core with
+  /// Whether what it lacks is a model to run on (pi-desktop's own core with
   /// no upstream turned on): offered setting one up rather than a retry.
   final bool noModel;
 }

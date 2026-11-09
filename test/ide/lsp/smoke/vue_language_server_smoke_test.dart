@@ -50,10 +50,10 @@ class _ModulesProvider implements LspServerProvider {
 /// the script into what it imports.
 ///
 /// Needs a folder with `npm install @vue/language-server
-/// typescript-language-server typescript vue` in `BAOCODE_VUE_SMOKE`; the
+/// typescript-language-server typescript vue` in `PI_DESKTOP_VUE_SMOKE`; the
 /// project is made inside it, so its `node_modules` resolve.
 void main() {
-  final modules = Platform.environment['BAOCODE_VUE_SMOKE'];
+  final modules = Platform.environment['PI_DESKTOP_VUE_SMOKE'];
 
   test(
     'vue: template props, events and imports go to their definitions',
@@ -223,6 +223,6 @@ void main() {
       print('vuels completion in <Child>: ${fromVue.take(6)}');
       expect(fromVue.any((label) => label.contains('caption')), isTrue);
     },
-    skip: modules == null ? 'BAOCODE_VUE_SMOKE is not set' : false,
+    skip: modules == null ? 'PI_DESKTOP_VUE_SMOKE is not set' : false,
   );
 }

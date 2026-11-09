@@ -1,5 +1,5 @@
 // A markdown file's preview, edited as it shows: the text is the document's
-// (bao_markdown's editor), a block's marks shown where the caret is, what
+// (pi_markdown's editor), a block's marks shown where the caret is, what
 // they make everywhere else.
 //
 // It edits the document's model itself, so the tab's dirty mark, undo,
@@ -8,8 +8,8 @@
 
 import 'dart:async';
 
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

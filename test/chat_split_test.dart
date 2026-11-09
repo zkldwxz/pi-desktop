@@ -655,9 +655,9 @@ void main() {
         (widget) => widget is HoverScrollText && widget.text == name,
       ),
     );
-    expect(project(first, 'baocode'), findsNothing);
+    expect(project(first, 'pi-desktop'), findsNothing);
     await dropAgent(tester, second, near(gridRect(tester), PaneSide.right));
-    expect(project(first, 'baocode'), findsOneWidget);
+    expect(project(first, 'pi-desktop'), findsOneWidget);
     expect(project(second, 'api-gateway'), findsOneWidget);
   });
 

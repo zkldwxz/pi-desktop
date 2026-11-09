@@ -10,8 +10,8 @@ import '../../theme/codicons.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/workbench_theme.dart';
 
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/vs/base/common/filters.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/vs/base/common/filters.dart';
 
 import '../ide_hover.dart';
 import '../ide_input.dart';

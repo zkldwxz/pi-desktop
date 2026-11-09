@@ -16,8 +16,8 @@
 // as upstream's `ITerminalCapabilityImplMap` makes it. The xterm types are
 // the ported core's: markers are the internal `IMarker`.
 
-import 'package:bao_xterm/common/buffer/types.dart' show IMarker;
-import 'package:bao_xterm/common/event.dart';
+import 'package:pi_xterm/common/buffer/types.dart' show IMarker;
+import 'package:pi_xterm/common/event.dart';
 
 import 'command_detection/prompt_input_model.dart';
 import 'command_detection/terminal_command.dart';

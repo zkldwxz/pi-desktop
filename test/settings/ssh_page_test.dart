@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/client.dart';
 import 'package:pi_desktop/ide/ide_input.dart';
 import 'package:pi_desktop/l10n/l10n.dart';
 import 'package:pi_desktop/models/secret_store.dart';
@@ -26,7 +26,7 @@ void main() {
   late RemoteHostSettings settings;
 
   setUp(() {
-    dir = Directory.systemTemp.createTempSync('baocode-ssh-page-');
+    dir = Directory.systemTemp.createTempSync('pi-desktop-ssh-page-');
     settings = RemoteHostSettings.instance = RemoteHostSettings(
       file: p.join(dir.path, 'remote-hosts.json'),
     );

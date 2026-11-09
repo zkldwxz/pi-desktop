@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bao_editor/monaco/flutter/wheel_glide.dart';
+import 'package:pi_editor/monaco/flutter/wheel_glide.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -9,8 +9,8 @@ import 'package:flutter/scheduler.dart';
 /// The app's scrolling: Material's, but on macOS with no bounce at the
 /// ends ([EdgeStopScrollPhysics]). The editors, which keep their own
 /// offsets, fling by the same physics (`TrackpadFling`).
-class BaoScrollBehavior extends MaterialScrollBehavior {
-  const BaoScrollBehavior();
+class PiScrollBehavior extends MaterialScrollBehavior {
+  const PiScrollBehavior();
 
   @override
   ScrollPhysics getScrollPhysics(BuildContext context) =>

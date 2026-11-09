@@ -97,7 +97,7 @@ class ShowScene {
   final SettingsFiles settings;
 
   static void log(String message) =>
-      stderr.writeln('BAOCODE_SHOWCASE_LOG $message');
+      stderr.writeln('PI_DESKTOP_SHOWCASE_LOG $message');
 
   String code(String project) => p.join(home, 'code', project);
 
@@ -654,7 +654,7 @@ Future<void> _notifications(ShowScene scene) async {
   await scene.shot('notifications');
 }
 
-/// The main window in Bao Light, the search palette open on what the
+/// The main window in Pi Light, the search palette open on what the
 /// agents talked of.
 Future<void> _themesLight(ShowScene scene) async {
   scene.decorate();
@@ -782,8 +782,8 @@ Future<void> _videoThemes(ShowScene scene) async {
     await scene.settle(const Duration(milliseconds: 800));
     ide.runCommand('workbench.action.selectTheme');
     await scene.settle(const Duration(milliseconds: 900));
-    // From Bao Dark down through the dark ones (Dark Modern, Dark+,
-    // Kimbie Dark, Monokai Dimmed), quickly back up to Bao Light, then
+    // From Pi Dark down through the dark ones (Dark Modern, Dark+,
+    // Kimbie Dark, Monokai Dimmed), quickly back up to Pi Light, then
     // down the light ones.
     Future<void> step(LogicalKeyboardKey key, int times, int ms) async {
       for (var i = 0; i < times; i++) {

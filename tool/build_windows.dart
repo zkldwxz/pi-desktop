@@ -75,14 +75,14 @@ const _required = [
   'pi-desktop-browser-host.exe',
   'dev.pi.desktop.browser.json',
   // What writes down a fast fail (windows/wer), which the app registers.
-  'baocode_wer.dll',
+  'pi_desktop_wer.dll',
   // The VC++ runtime, carried rather than taken from System32, which may
   // be older than the build's (see windows/CMakeLists.txt).
   'msvcp140.dll',
   'vcruntime140.dll',
   'vcruntime140_1.dll',
-  // The phones' link: iroh (bao_iroh's hook/build.dart builds it).
-  'bao_iroh.dll',
+  // The phones' link: iroh (pi_iroh's hook/build.dart builds it).
+  'pi_iroh.dll',
   r'data\app.so',
   r'data\icudtl.dat',
   r'data\flutter_assets',
@@ -92,7 +92,7 @@ const _required = [
 /// OpenSSH-Win64.zip, OpenSSH-ARM64.zip for arm64), their SHA-256, and what
 /// of it goes in `openssh\`: the client, ssh-keygen (to forget a host's
 /// changed key), their library and their licenses. The app takes it over the system's ssh where that one is
-/// older than 8.4 or missing (chooseSsh in package:bao_remote).
+/// older than 8.4 or missing (chooseSsh in package:pi_remote).
 const _openSshRelease = '10.0.0.0p2-Preview';
 const _openSshBuilds = {
   'x64': (
@@ -262,7 +262,7 @@ Future<void> main(List<String> arguments) async {
       'windows-x64',
       'windows-arm64',
     ]) {
-      final name = 'baocode-server-$platform';
+      final name = 'pi-desktop-server-$platform';
       final file = File('${remote.path}\\$name');
       if (file.existsSync()) {
         file.copySync('${bundleRemote.path}\\$name');
@@ -316,7 +316,7 @@ Future<void> main(List<String> arguments) async {
     '/DOutDir=${installers.path}',
     '/DArch=$arch',
     if (channel) '/DEdition=-channel',
-    '${root.path}\\tool\\baocode.iss',
+    '${root.path}\\tool\\pi-desktop.iss',
   ], root.path);
 
   // None when published already (--remote-release).

@@ -14,7 +14,7 @@ import 'package:pi_desktop/ide/ide_hover.dart';
 import 'package:pi_desktop/kernel/kernel_types.dart';
 import 'package:pi_desktop/kernel/mock/mock_kernels.dart';
 import 'package:pi_desktop/keybindings/chat_keybindings.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 import 'package:pi_desktop/main.dart';
 import 'package:pi_desktop/theme/app_theme.dart';

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
 import 'package:pi_desktop/ide/editor_minimap_setting.dart';
 import 'package:pi_desktop/ide/ide_commands.dart';
 import 'package:pi_desktop/ide/ide_tab_bar.dart';

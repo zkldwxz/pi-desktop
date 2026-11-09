@@ -16,7 +16,7 @@
 
 import 'dart:async';
 
-import 'package:bao_xterm/typings/xterm_headless.dart';
+import 'package:pi_xterm/typings/xterm_headless.dart';
 
 import 'terminal_link_parsing.dart';
 

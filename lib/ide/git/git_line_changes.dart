@@ -9,11 +9,11 @@ import 'dart:ui' show Color;
 
 import 'package:flutter/foundation.dart';
 
-import 'package:bao_editor/monaco/flutter/diff_editor_model.dart';
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_decorations.dart';
-import 'package:bao_editor/monaco/vs/editor/common/diff/range_mapping.dart';
+import 'package:pi_editor/monaco/flutter/diff_editor_model.dart';
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_decorations.dart';
+import 'package:pi_editor/monaco/vs/editor/common/diff/range_mapping.dart';
 
 import 'git_model.dart';
 import 'git_repository.dart';

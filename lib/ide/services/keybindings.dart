@@ -12,7 +12,7 @@
 
 import 'dart:async';
 
-import 'package:bao_editor/monaco/flutter/editor_keybindings.dart'
+import 'package:pi_editor/monaco/flutter/editor_keybindings.dart'
     show editorChordPrefix;
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';

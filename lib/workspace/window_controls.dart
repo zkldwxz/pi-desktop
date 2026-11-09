@@ -22,7 +22,7 @@ enum WindowButton { minimize, maximize, close }
 /// MainFlutterWindow.swift and windows/runner/window_channel.cpp).
 ///
 /// Each of the app's windows has its own channel: the main one's is
-/// `baocode/window`, another's `baocode/window.<viewId>` (see
+/// `pi-desktop/window`, another's `pi-desktop/window.<viewId>` (see
 /// lib/window/). What is asked without saying of which window (a dialog,
 /// a menu) is the window in front's, [activeViewId].
 abstract final class WindowControls {
@@ -59,7 +59,7 @@ abstract final class WindowControls {
 
   /// Whether the app runs in a window to command: the desktop app, not a
   /// browser tab. Linux included (linux/runner); its file dialogs are the
-  /// GTK ones on `baocode/window`.
+  /// GTK ones on `pi-desktop/window`.
   static bool get isDesktop => AppPlatform.isDesktop;
 
   /// Whether the window is the app's own to draw: Windows, where the header

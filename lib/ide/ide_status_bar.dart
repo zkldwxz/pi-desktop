@@ -8,12 +8,12 @@ import '../theme/icon_registry.dart';
 import '../theme/workbench_theme.dart' show themeColors;
 import '../workspace/islands.dart';
 
-import 'package:bao_editor/monaco/flutter/document_snapshot.dart';
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart'
+import 'package:pi_editor/monaco/flutter/document_snapshot.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart'
     show EditorOffsetEdit;
-import 'package:bao_editor/monaco/flutter/language_assets.dart';
-import 'package:bao_editor/monaco/flutter/language_overrides.dart';
-import 'package:bao_editor/textmate/textmate_manifest.dart';
+import 'package:pi_editor/monaco/flutter/language_assets.dart';
+import 'package:pi_editor/monaco/flutter/language_overrides.dart';
+import 'package:pi_editor/textmate/textmate_manifest.dart';
 
 import 'host_paths.dart';
 import 'ide_editor.dart';

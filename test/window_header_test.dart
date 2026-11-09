@@ -789,7 +789,7 @@ void main() {
         theme: buildAppTheme(),
         home: Builder(
           builder: (context) => TextButton(
-            onPressed: () => showAboutBaoCode(context),
+            onPressed: () => showAboutPiDesktop(context),
             child: const Text('About'),
           ),
         ),

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bao_link/bao_link.dart';
+import 'package:pi_link/pi_link.dart';
 import 'package:pi_desktop/link/link_platform.dart';
 
 /// The machine, in memory: its node is on [network], where phones' nodes

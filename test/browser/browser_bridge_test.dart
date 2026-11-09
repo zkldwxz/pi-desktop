@@ -17,7 +17,7 @@ void main() {
   setUp(() {
     // Short: a socket's path has a hundred bytes or so.
     final temp = (Platform.isWindows ? Directory.systemTemp : Directory('/tmp'))
-        .createTempSync('bao-');
+        .createTempSync('pi-');
     addTearDown(() => temp.deleteSync(recursive: true));
     BrowserBridge.socketFolder = temp.path;
     home = Directory(p.join(temp.path, 'home'));

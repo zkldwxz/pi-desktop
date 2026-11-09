@@ -18,7 +18,7 @@ void main() {
   late String current;
 
   setUp(() {
-    root = Directory.systemTemp.createTempSync('baocode-move');
+    root = Directory.systemTemp.createTempSync('pi-desktop-move');
     home = p.join(root.path, 'home');
     current = p.join(root.path, 'current');
     Directory(home).createSync();
@@ -39,7 +39,7 @@ void main() {
       ('icons/index.json', '[]'),
       ('pastes/0a1b2c.txt', 'a long log'),
       ('workspaces/w1/web.code-workspace', '{"folders": []}'),
-      ('logs/errors.log', '--- BaoCode 1.0.1 ---\n'),
+      ('logs/errors.log', '--- pi-desktop 1.0.1 ---\n'),
       ('extensions/extensions.json', '[]'),
       // The browser plugin's profile (see lib/browser/).
       ('browser/profile/Default/Cookies', 'chromium'),
@@ -90,7 +90,7 @@ void main() {
       p.relative(entity.path, from: path),
   ]..sort();
 
-  File pointer() => File(p.join(home, '.baocode', 'config-dir.json'));
+  File pointer() => File(p.join(home, '.pi-desktop', 'config-dir.json'));
 
   /// [path]'s permission bits, as `stat` writes them on this platform
   /// (BSD's `-f %Lp`, GNU's `-c %a`).
@@ -102,7 +102,7 @@ void main() {
 
   group('check', () {
     test(
-      'an empty folder, one with BaoCode data, one with other files',
+      'an empty folder, one with pi-desktop data, one with other files',
       () async {
         expect(
           (await service().check(folder('empty', files: ['.DS_Store'])))
@@ -111,14 +111,14 @@ void main() {
         );
         expect(
           (await service().check(
-            folder('baocode', files: ['User/settings.json']),
+            folder('pi-desktop', files: ['User/settings.json']),
           )).contents,
-          DataDirectoryContents.baocodeData,
+          DataDirectoryContents.piDesktopData,
         );
         expect(
           (await service().check(folder('argv', files: ['argv.json'])))
               .contents,
-          DataDirectoryContents.baocodeData,
+          DataDirectoryContents.piDesktopData,
         );
         expect(
           (await service().check(folder('other', files: ['notes.txt'])))
@@ -153,7 +153,7 @@ void main() {
       final target = await service().check(readOnly);
       expect(target.error, contains('cannot be written'));
       // Made when asked (the default place may not be there yet).
-      final made = p.join(root.path, 'made', 'baocode');
+      final made = p.join(root.path, 'made', 'pi-desktop');
       expect((await service().check(made, create: true)).ok, isTrue);
       expect(Directory(made).existsSync(), isTrue);
     });
@@ -353,7 +353,7 @@ void main() {
     });
   });
 
-  test('a folder with BaoCode data is used as it is', () async {
+  test('a folder with pi-desktop data is used as it is', () async {
     final target = folder('target', files: ['User/settings.json']);
     await service().useAsIs(target);
     expect(tree(target), ['User', 'User/settings.json']);

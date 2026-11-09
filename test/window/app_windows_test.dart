@@ -459,11 +459,11 @@ void main() {
       final harness = _Harness(tester);
       await harness.start();
       final thread = (await harness.windows.openAgent([
-        '~/code/baocode/lib/main.dart',
+        '~/code/pi-desktop/lib/main.dart',
       ]))!;
-      expect(thread.project.path, '~/code/baocode');
+      expect(thread.project.path, '~/code/pi-desktop');
       expect(thread.session.draft.pendingFiles, const [
-        ComposerFile('~/code/baocode/lib/main.dart'),
+        ComposerFile('~/code/pi-desktop/lib/main.dart'),
       ]);
 
       final loose = (await harness.windows.openAgent(['/tmp/notes/a.md']))!;
@@ -554,7 +554,7 @@ void main() {
     });
   });
 
-  testWidgets('Open with Fast Ide (`--baocode-cli <path> -n <path>`): a file '
+  testWidgets('Open with Fast Ide (`--pi-desktop-cli <path> -n <path>`): a file '
       'in a new window, its folder\'s open or not', (tester) async {
     final harness = _Harness(tester);
     await harness.start();

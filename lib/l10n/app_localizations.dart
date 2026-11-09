@@ -2870,11 +2870,11 @@ abstract class AppLocalizations {
   /// **'Context Panel'**
   String get menuContextPanel;
 
-  /// No description provided for @menuAboutBaoCode.
+  /// No description provided for @menuAboutPiDesktop.
   ///
   /// In en, this message translates to:
   /// **'About pi-desktop'**
-  String get menuAboutBaoCode;
+  String get menuAboutPiDesktop;
 
   /// Tooltip.
   ///
@@ -14682,7 +14682,7 @@ abstract class AppLocalizations {
   /// No description provided for @mobileRelayCustomDescription.
   ///
   /// In en, this message translates to:
-  /// **'The address of a relay you run yourself (baocode-relay).'**
+  /// **'The address of a relay you run yourself (pi-desktop-relay).'**
   String get mobileRelayCustomDescription;
 
   /// No description provided for @mobileRelayMode.
@@ -17434,7 +17434,7 @@ abstract class AppLocalizations {
   /// No description provided for @channelSetupLead.
   ///
   /// In en, this message translates to:
-  /// **'Finish your first-time setup on baocode.dev. It takes about 10 seconds.'**
+  /// **'Finish your first-time setup on the pi-desktop site. It takes about 10 seconds.'**
   String get channelSetupLead;
 
   /// No description provided for @channelSetupStepTitle.
@@ -17446,7 +17446,7 @@ abstract class AppLocalizations {
   /// No description provided for @channelSetupStep.
   ///
   /// In en, this message translates to:
-  /// **'pi-desktop opens baocode.dev in your browser. Once the page says it\'s done, pi-desktop continues on its own.'**
+  /// **'pi-desktop opens the pi-desktop site in your browser. Once the page says it\'s done, pi-desktop continues on its own.'**
   String get channelSetupStep;
 
   /// No description provided for @channelSetupWaitingTitle.
@@ -17482,7 +17482,7 @@ abstract class AppLocalizations {
   /// No description provided for @channelSetupOffline.
   ///
   /// In en, this message translates to:
-  /// **'Can\'t reach baocode.dev. You need to be online to finish setup.'**
+  /// **'Can\'t reach the pi-desktop site. You need to be online to finish setup.'**
   String get channelSetupOffline;
 
   /// No description provided for @channelSetupRetry.
@@ -17584,7 +17584,7 @@ abstract class AppLocalizations {
   /// No description provided for @channelSetupSiteOfflineTitle.
   ///
   /// In en, this message translates to:
-  /// **'Can\'t reach baocode.dev'**
+  /// **'Can\'t reach the pi-desktop site'**
   String get channelSetupSiteOfflineTitle;
 
   /// No description provided for @channelSetupSiteOffline.
@@ -17602,7 +17602,7 @@ abstract class AppLocalizations {
   /// No description provided for @channelSetupUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'The channel this installer came from doesn\'t have accounts set up yet. If you downloaded it through another channel, confirm where you came from in your browser; otherwise contact whoever gave you the installer, or download the standard edition from baocode.dev.'**
+  /// **'The channel this installer came from doesn\'t have accounts set up yet. If you downloaded it through another channel, confirm where you came from in your browser; otherwise contact whoever gave you the installer, or download the standard edition from the pi-desktop site.'**
   String get channelSetupUnavailable;
 
   /// No description provided for @channelSetupConfirmAgain.

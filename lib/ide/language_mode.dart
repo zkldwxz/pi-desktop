@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bao_editor/monaco/flutter/language_overrides.dart';
+import 'package:pi_editor/monaco/flutter/language_overrides.dart';
 import 'package:flutter/widgets.dart';
 
 import '../l10n/l10n.dart';

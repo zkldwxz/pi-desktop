@@ -4,7 +4,7 @@
 // images, code and links are each a marker it is told to keep, put back as
 // they were; a reply that loses or makes up one is not taken.
 
-import 'package:bao_markdown/bao_markdown.dart' show MdAtoms;
+import 'package:pi_markdown/pi_markdown.dart' show MdAtoms;
 import 'package:flutter/foundation.dart';
 
 import 'composer_embeds.dart';

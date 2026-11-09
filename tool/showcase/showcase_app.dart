@@ -7,21 +7,21 @@
 // home folder first; see tool/showcase/README.md.
 //
 // Its settings come from the environment:
-// - BAOCODE_SHOWCASE_HOME: the made-up home folder (also the process's
+// - PI_DESKTOP_SHOWCASE_HOME: the made-up home folder (also the process's
 //   HOME, for Git and the shell).
-// - BAOCODE_SHOWCASE_DATA: the app's data folder.
-// - BAOCODE_SHOWCASE_OUT: where the pictures and videos go.
-// - BAOCODE_SHOWCASE_LOCALE: `en` or `zh`.
-// - BAOCODE_SHOWCASE_SCENES: the scenes to run, comma-separated; all by
+// - PI_DESKTOP_SHOWCASE_DATA: the app's data folder.
+// - PI_DESKTOP_SHOWCASE_OUT: where the pictures and videos go.
+// - PI_DESKTOP_SHOWCASE_LOCALE: `en` or `zh`.
+// - PI_DESKTOP_SHOWCASE_SCENES: the scenes to run, comma-separated; all by
 //   default.
-// - BAOCODE_SHOWCASE_VIDEO: `0` for pictures only.
+// - PI_DESKTOP_SHOWCASE_VIDEO: `0` for pictures only.
 
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui' show ViewFocusState;
 
-import 'package:bao_editor/monaco/flutter/language_assets.dart';
-import 'package:bao_remote/local.dart' show ClaudeEnvironment;
+import 'package:pi_editor/monaco/flutter/language_assets.dart';
+import 'package:pi_remote/local.dart' show ClaudeEnvironment;
 import 'package:pi_desktop/customize/customization_store.dart';
 import 'package:pi_desktop/icons/emoji_sheet.dart';
 import 'package:pi_desktop/ide/lsp/packs/language_packs.dart';
@@ -77,18 +77,18 @@ Future<void> main() async {
 }
 
 Future<void> _run() async {
-  final home = _env('BAOCODE_SHOWCASE_HOME');
-  final out = _env('BAOCODE_SHOWCASE_OUT');
-  Story.locale = _env('BAOCODE_SHOWCASE_LOCALE', 'en');
-  final wanted = Platform.environment['BAOCODE_SHOWCASE_SCENES']
+  final home = _env('PI_DESKTOP_SHOWCASE_HOME');
+  final out = _env('PI_DESKTOP_SHOWCASE_OUT');
+  Story.locale = _env('PI_DESKTOP_SHOWCASE_LOCALE', 'en');
+  final wanted = Platform.environment['PI_DESKTOP_SHOWCASE_SCENES']
       ?.split(',')
       .map((s) => s.trim())
       .where((s) => s.isNotEmpty)
       .toSet();
-  final video = Platform.environment['BAOCODE_SHOWCASE_VIDEO'] != '0';
+  final video = Platform.environment['PI_DESKTOP_SHOWCASE_VIDEO'] != '0';
 
   MemoryBudget.apply();
-  DataDirectory.current = DataDirectory(_env('BAOCODE_SHOWCASE_DATA'));
+  DataDirectory.current = DataDirectory(_env('PI_DESKTOP_SHOWCASE_DATA'));
   // Claude Code's folder, Git and the shell are the made-up home's.
   ClaudeEnvironment.use({
     ...Platform.environment,
@@ -195,7 +195,7 @@ Future<void> _run() async {
 }
 
 /// No request leaves the machine: the pictures are of what the showcase
-/// made up, not of what a server answers (the upstreams baocode.dev lists,
+/// made up, not of what a server answers (the upstreams the pi-desktop site lists,
 /// say), and the app asks no one anything for them. Only the app's own
 /// servers on this machine answer (its model proxy, say); each request
 /// refused is in the log.
@@ -229,7 +229,7 @@ class _KeptMessenger implements BinaryMessenger {
   final BinaryMessenger _messenger;
 
   static const _kept = {
-    'baocode/window': {
+    'pi-desktop/window': {
       'growWindow',
       'setAlwaysOnTop',
       'setAppearance',
@@ -294,7 +294,7 @@ void _isolateFromTheDesktop() {
 Future<void> _bringWindowFront() async {
   final view = WidgetsBinding.instance.platformDispatcher.implicitView;
   try {
-    await const MethodChannel('baocode/windows')
+    await const MethodChannel('pi-desktop/windows')
         .invokeMethod('focus', view?.viewId ?? 0);
   } on Object catch (error) {
     ShowScene.log('could not bring the window to the front: $error');

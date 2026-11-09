@@ -23,7 +23,7 @@
 // 2026-dark.json with what it includes (dark_modern.json, dark_plus.json,
 // dark_vs.json); and from xterm.js c58ea36 src/browser/Types.ts
 // (`DEFAULT_ANSI_COLORS`) and src/browser/services/ThemeService.ts (MIT, see
-// packages/bao_xterm/lib/LICENSE.txt).
+// packages/pi_xterm/lib/LICENSE.txt).
 //
 // VS Code hands colors on as CSS (`Color.toString()`, [cssColor]): `#rrggbb`
 // when opaque, else `rgba()` with the alpha to two decimals, which can be
@@ -46,14 +46,14 @@ import 'dart:ui' show Color;
 
 import 'package:flutter/foundation.dart';
 
-import 'package:bao_editor/monaco/vs/platform/theme/common/theme.dart'
+import 'package:pi_editor/monaco/vs/platform/theme/common/theme.dart'
     show ColorScheme;
 
-import 'package:bao_xterm/addons/addon_search/typings/addon_search.dart'
+import 'package:pi_xterm/addons/addon_search/typings/addon_search.dart'
     show ISearchDecorationOptions;
-import 'package:bao_xterm/common/color.dart' as xterm;
-import 'package:bao_xterm/common/types.dart' show IColor;
-import 'package:bao_xterm/typings/xterm.dart' show ITheme;
+import 'package:pi_xterm/common/color.dart' as xterm;
+import 'package:pi_xterm/common/types.dart' show IColor;
+import 'package:pi_xterm/typings/xterm.dart' show ITheme;
 
 /// The terminals' colors. The workbench sets it to
 /// [TerminalColorTheme.resolve] of the new color theme when it changes

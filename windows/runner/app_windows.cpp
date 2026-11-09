@@ -51,7 +51,7 @@ constexpr unsigned int kStashMinWidth = 380;
 constexpr unsigned int kStashMinHeight = 220;
 
 // Where the main window's word on showing at launch is kept.
-constexpr wchar_t kSettingsKey[] = L"Software\\BaoCode";
+constexpr wchar_t kSettingsKey[] = L"Software\\pi-desktop";
 constexpr wchar_t kMainShownValue[] = L"MainShownAtLaunch";
 // Where the stash's panel was left, and how big (a RECT, in physical
 // pixels of the virtual screen).

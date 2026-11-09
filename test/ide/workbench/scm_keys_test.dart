@@ -5,7 +5,7 @@ import 'package:pi_desktop/ide/git/ide_git_commit_panel.dart';
 import 'package:pi_desktop/ide/ide_list.dart';
 import 'package:pi_desktop/ide/ide_workbench.dart';
 import 'package:pi_desktop/ide/ide_workspace.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 
 import '../git/fake_git.dart';

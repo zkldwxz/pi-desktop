@@ -34,7 +34,7 @@ void main() {
   );
 
   setUp(() {
-    dir = Directory.systemTemp.createTempSync('baocode-local-tools-');
+    dir = Directory.systemTemp.createTempSync('pi-desktop-local-tools-');
     final made = Directory(p.join(dir.path, 'project'))..createSync();
     project = made.resolveSymbolicLinksSync();
     hosts = SshHosts.instance = SshHosts(

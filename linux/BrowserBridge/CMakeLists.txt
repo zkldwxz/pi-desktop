@@ -3,7 +3,7 @@ project(browser_bridge LANGUAGES C)
 
 # pi-desktop-browser-host, the browsers' native messaging host: macOS's
 # (macos/BrowserBridge/host.c), built here too. It goes beside pi-desktop,
-# where BrowserBridge.hostExecutable finds it, and the manifests BaoCode
+# where BrowserBridge.hostExecutable finds it, and the manifests pi-desktop
 # writes in each browser's folder name it there.
 find_package(Threads REQUIRED)
 add_executable(pi-desktop-browser-host

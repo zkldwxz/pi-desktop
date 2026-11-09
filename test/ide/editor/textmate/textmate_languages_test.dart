@@ -4,9 +4,9 @@
 // language servers keep their own ids whatever highlights the file.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/monaco/flutter/language_assets.dart';
-import 'package:bao_editor/textmate/textmate_syntax.dart';
-import 'package:bao_editor/textmate/textmate_worker.dart';
+import 'package:pi_editor/monaco/flutter/language_assets.dart';
+import 'package:pi_editor/textmate/textmate_syntax.dart';
+import 'package:pi_editor/textmate/textmate_worker.dart';
 import 'package:pi_desktop/ide/lsp/catalog/bundled_lsp_catalog.dart';
 import 'package:pi_desktop/ide/lsp/packs/language_packs.dart';
 import 'package:pi_desktop/theme/workbench_theme.dart';

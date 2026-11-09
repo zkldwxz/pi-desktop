@@ -184,12 +184,12 @@ void main() {
     config.addListener(() => changes++);
     expect(config.formatOnSave, isFalse);
     expect(
-      command('baocode.ide.toggleFormatOnSave').label,
+      command('pi-desktop.ide.toggleFormatOnSave').label,
       'Turn On Format on Save',
     );
     config.formatOnSave = true;
     expect(
-      command('baocode.ide.toggleFormatOnSave').label,
+      command('pi-desktop.ide.toggleFormatOnSave').label,
       'Turn Off Format on Save',
     );
     // Without a repository, no blame to toggle.
@@ -210,7 +210,7 @@ void main() {
     services.get<ChatService>().ask('why?');
     expect(sent, ['why?']);
     expect(workspace.layout.chat, isTrue);
-    command('baocode.ide.backToChat').run();
+    command('pi-desktop.ide.backToChat').run();
     await tester.pump();
     expect(backs, 1);
 

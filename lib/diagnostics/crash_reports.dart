@@ -10,7 +10,7 @@ import 'package:path/path.dart' as p;
 /// quit by force while it hung), `.spin` (a hang it came out of) and
 /// `.cpu_resource.diag` (the CPU kept busy for minutes); Windows Error Reporting's `Report.wer` of an
 /// `AppCrash_pi-desktop.exe_…` or `AppHang_…` folder. Linux keeps none the
-/// app can read: its own (see packages/bao_sampler's crash handler) are
+/// app can read: its own (see packages/pi_sampler's crash handler) are
 /// in the logs folder's `hangs/`.
 class CrashReport {
   const CrashReport(this.name, this.path, this.modified, this.size);

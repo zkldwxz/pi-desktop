@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/monaco/flutter/diff_editor.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/diff_editor.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
 import 'package:pi_desktop/ide/git/ide_git_commit_panel.dart';
 import 'package:pi_desktop/ide/git/git_repository.dart';
 import 'package:pi_desktop/ide/ide_list.dart';

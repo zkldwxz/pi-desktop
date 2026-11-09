@@ -59,7 +59,7 @@ void main() {
   });
 
   testWidgets('the step turns to the browser once it connects', (tester) async {
-    final temp = Directory('/tmp').createTempSync('bao-');
+    final temp = Directory('/tmp').createTempSync('pi-');
     BrowserBridge.socketFolder = temp.path;
     BrowserBridge.home = temp.path;
     addTearDown(() {

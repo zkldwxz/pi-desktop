@@ -15,7 +15,7 @@ import 'package:path/path.dart' as p;
 void main() {
   late Directory root;
 
-  setUp(() => root = Directory.systemTemp.createTempSync('baocode-shell'));
+  setUp(() => root = Directory.systemTemp.createTempSync('pi-desktop-shell'));
   tearDown(() {
     // Undo a read-only folder's mode, so it can go.
     for (final entity in root.listSync(recursive: true, followLinks: false)) {
@@ -323,7 +323,7 @@ void main() {
 
     WindowsShellCommand command() => WindowsShellCommand(
       binDirectory: bin,
-      executable: r'C:\Program Files\pi-desktop %1\baocode.exe',
+      executable: r'C:\Program Files\pi-desktop %1\pi-desktop.exe',
       environment: environment,
       run: (executable, arguments, {environment}) =>
           fail('no process to run: $executable'),
@@ -342,7 +342,7 @@ void main() {
         'REM pi-desktop shell command\r\n'
         'for %%a in (${CodeArgs.queryOptions.join(' ')}) do '
         'if /i "%~1"=="%%a" goto query\r\n'
-        'start "" "C:\\Program Files\\pi-desktop %%1\\baocode.exe" '
+        'start "" "C:\\Program Files\\pi-desktop %%1\\pi-desktop.exe" '
         '--pi-desktop-cli "%CD%\\." %*\r\n'
         'exit /b 0\r\n'
         ':query\r\n'

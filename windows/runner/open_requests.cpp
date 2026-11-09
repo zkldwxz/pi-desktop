@@ -103,7 +103,7 @@ void NormalizeLinkRequest(std::vector<std::string>& arguments) {
     if (c >= 'A' && c <= 'Z') c += 'a' - 'A';
     if (c != scheme[i]) return;
   }
-  arguments[1].replace(0, length, "baocode:");
+  arguments[1].replace(0, length, "pi-desktop:");
 }
 
 bool IsRequest(const std::vector<std::string>& paths) {
@@ -207,7 +207,7 @@ std::vector<std::string> OpenPathsFromCommandLine() {
     ::LocalFree(arguments);
     return paths;
   }
-  // From Open with BaoCode, its flag first: the paths, as below, go to an
+  // From Open with pi-desktop, its flag first: the paths, as below, go to an
   // agent.
   const bool agent =
       count > 1 && Utf8FromUtf16(arguments[1]) == kAgentRequestFlag;

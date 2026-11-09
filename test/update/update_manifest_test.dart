@@ -7,7 +7,7 @@ import 'package:pi_desktop/update/version.dart';
 final _signature = base64.encode(List.filled(64, 7));
 
 Map<String, Object?> _asset({
-  String url = 'https://updates.example/releases/1.2.0/BaoCode-1.2.0-setup.exe',
+  String url = 'https://updates.example/releases/1.2.0/pi-desktop-1.2.0-setup.exe',
   Object? size = 1000,
   Object? sha256,
   Object? signature,
@@ -33,7 +33,7 @@ String _manifest({
       {
         'windows-x64': _asset(),
         'macos-arm64': _asset(
-          url: 'https://updates.example/releases/1.2.0/BaoCode-1.2.0-mac.zip',
+          url: 'https://updates.example/releases/1.2.0/pi-desktop-1.2.0-mac.zip',
         ),
       },
 });
@@ -67,7 +67,7 @@ void main() {
       final asset = manifest.assetFor('windows-x64')!;
       expect(asset.size, 1000);
       expect(asset.sha256, 'a' * 64);
-      expect(asset.fileName, 'BaoCode-1.2.0-setup.exe');
+      expect(asset.fileName, 'pi-desktop-1.2.0-setup.exe');
       expect(manifest.platforms, containsAll(['windows-x64', 'macos-arm64']));
     });
 
@@ -82,7 +82,7 @@ void main() {
               'windows-x64': _asset(
                 url:
                     'https://updates.example/releases/1.2.0/'
-                    'BaoCode-1.2.0-setup.exe?sha256=0123456789abcdef',
+                    'pi-desktop-1.2.0-setup.exe?sha256=0123456789abcdef',
               ),
             },
           ),
@@ -92,7 +92,7 @@ void main() {
         },
       });
       final asset = _parse(text).assetFor('windows-x64')!;
-      expect(asset.fileName, 'BaoCode-1.2.0-setup.exe');
+      expect(asset.fileName, 'pi-desktop-1.2.0-setup.exe');
       expect(asset.url.query, 'sha256=0123456789abcdef');
     });
 
@@ -127,7 +127,7 @@ void main() {
           platforms: {
             'windows-x64': _asset(size: null),
             'macos-arm64': _asset(
-              url: 'https://updates.example/releases/1.2.0/BaoCode-1.2.0-mac.zip',
+              url: 'https://updates.example/releases/1.2.0/pi-desktop-1.2.0-mac.zip',
             ),
           },
         ),
@@ -162,7 +162,7 @@ void main() {
       );
       expect(policy.allows(Uri.parse('https://updates.example/file')), isTrue);
       for (final url in [
-        'https://baocode.dev/file',
+        'https://github.com/zkldwxz/pi-desktop',
         'https://cdn.updates.example/file',
         'https://user@updates.example/file',
         'http://updates.example/file',

@@ -10,7 +10,7 @@ class AppDelegate: FlutterAppDelegate {
     super.init()
     #if DEBUG
     // The Dock finds an app's icon by its bundle identifier: a debug build
-    // run beside the installed BaoCode, the same identifier, would show the
+    // run beside the installed pi-desktop, the same identifier, would show the
     // installed one's. Set on the app itself, the DEV BUILD one shows.
     NotificationCenter.default.addObserver(
       forName: NSApplication.didFinishLaunchingNotification, object: nil, queue: .main
@@ -129,7 +129,7 @@ class AppDelegate: FlutterAppDelegate {
 }
 
 /// The paths the system asks the app to open, for Flutter, over
-/// `baocode/open` (see open_requests.dart): kept until Flutter takes them
+/// `pi-desktop/open` (see open_requests.dart): kept until Flutter takes them
 /// (`takePending`, which also says it is ready for each as it comes), sent
 /// as they come after that (`open`). The app's own, not the window's: the
 /// system can ask before the window has its channel.
@@ -144,7 +144,7 @@ final class OpenRequests {
   private var channel: FlutterMethodChannel?
 
   /// What the app was launched for (`launchRequest`): `agent` for Open
-  /// with BaoCode, `ide` for anything else to open, by the first that came
+  /// with pi-desktop, `ide` for anything else to open, by the first that came
   /// before Flutter asked; nil for none.
   private var launchRequest: String?
   private var launchAsked = false
@@ -156,7 +156,7 @@ final class OpenRequests {
   /// Whether the app was launched to open something (see `launchRequest`).
   var launchedForRequest: Bool { launchRequest != nil }
 
-  /// Answers Flutter over [messenger]'s `baocode/open` (see
+  /// Answers Flutter over [messenger]'s `pi-desktop/open` (see
   /// MainFlutterWindow.swift).
   func attach(to messenger: FlutterBinaryMessenger) {
     let channel = FlutterMethodChannel(name: "pi-desktop/open", binaryMessenger: messenger)
@@ -210,7 +210,7 @@ final class OpenRequests {
     }
   }
 
-  /// The marker of a `baocode://` link Flutter reads itself (code_args.dart's
+  /// The marker of a `pi-desktop://` link Flutter reads itself (code_args.dart's
   /// importRequestMarker): a site's import of an upstream, the channel
   /// build's setup, a file to open in the IDE.
   static let importMarker = "\u{0}import"
@@ -221,7 +221,7 @@ final class OpenRequests {
     request.first == importMarker && !isFileLink(request)
   }
 
-  /// Whether [request] is a `baocode://file/…` link (see FileLink in
+  /// Whether [request] is a `pi-desktop://file/…` link (see FileLink in
   /// code_args.dart, which reads it).
   static func isFileLink(_ request: [String]) -> Bool {
     guard request.first == importMarker, request.count > 1,
@@ -233,12 +233,12 @@ final class OpenRequests {
   /// What a `pi-desktop://` URL asks. The Finder extension's (see
   /// FinderExtension/FinderSync.swift), as the request Explorer's menu
   /// makes on Windows (see open_requests.cpp and code_args.dart): `agent`,
-  /// Open with BaoCode, a new agent with the paths (its marker, then them);
+  /// Open with pi-desktop, a new agent with the paths (its marker, then them);
   /// `ide`, Open with Fast Ide, the paths in a new window as `code -n`
   /// opens them (the `code` command's marker, a folder to start from, `-n`,
-  /// then them). A site's (baocode.dev/import): `provider/import`, an
+  /// then them). A site's (the pi-desktop site/import): `provider/import`, an
   /// upstream to add, the link as it came after its marker, which Flutter
-  /// reads (upstream_import.dart); so too baocode.dev/activate's,
+  /// reads (upstream_import.dart); so too the pi-desktop site/activate's,
   /// `activate`, the channel build's setup (channel_setup.dart). A page's
   /// or a tool's, as VS Code's `vscode://file/…`: `file`, a file to open in
   /// the IDE at a line, the link after the same marker (FileLink in
@@ -247,8 +247,8 @@ final class OpenRequests {
     guard url.scheme?.lowercased() == "pi-desktop",
       var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
     else { return nil }
-    // Dart's existing link parsers still use the internal baocode scheme.
-    components.scheme = "baocode"
+    // Dart's existing link parsers still use the internal pi-desktop scheme.
+    components.scheme = "pi-desktop"
     guard let internalLink = components.string else { return nil }
     if components.host?.lowercased() == "file" {
       return [importMarker, internalLink]

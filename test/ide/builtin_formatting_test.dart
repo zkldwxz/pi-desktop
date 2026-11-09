@@ -1,6 +1,6 @@
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart';
 import 'package:pi_desktop/ide/builtin_formatting.dart';
 import 'package:pi_desktop/ide/ide_code_editor.dart';
 import 'package:pi_desktop/ide/ide_notifications.dart';

@@ -1,7 +1,7 @@
 // The chat's keys as keybindings (see keybindings/chat_keybindings.dart):
 // a chat alone, its composer and a prompt's options.
 
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,7 +17,7 @@ import 'package:pi_desktop/kernel/agent_kernel.dart';
 import 'package:pi_desktop/kernel/kernel_types.dart';
 import 'package:pi_desktop/kernel/mock/mock_kernels.dart';
 import 'package:pi_desktop/keybindings/chat_keybindings.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 import 'package:pi_desktop/theme/app_theme.dart';
 

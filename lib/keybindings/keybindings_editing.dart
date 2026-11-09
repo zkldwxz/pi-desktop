@@ -39,7 +39,7 @@ import '../settings/jsonc.dart';
 import '../settings/jsonc_file.dart';
 import 'key_chord.dart';
 
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 
 import 'keybinding_resolver.dart';
 import 'when_expression.dart';

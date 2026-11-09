@@ -23,7 +23,7 @@ import 'kernel_test.dart' show shown;
 /// A new git repository to run in. Removed after the test, pass or fail,
 /// with what Claude Code kept of it: its sessions, and task output.
 Future<String> tempProject() async {
-  final dir = await Directory.systemTemp.createTemp('baocode-e2e-');
+  final dir = await Directory.systemTemp.createTemp('pi-desktop-e2e-');
   final cwd = dir.resolveSymbolicLinksSync();
   await Process.run('git', ['init', '-q'], workingDirectory: cwd);
   final dashed = cwd.replaceAll(RegExp('[^a-zA-Z0-9]'), '-');

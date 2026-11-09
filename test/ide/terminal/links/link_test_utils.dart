@@ -19,7 +19,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pi_desktop/ide/terminal/links/links.dart';
 import 'package:pi_desktop/ide/terminal/links/terminal_link_parsing.dart';
 import 'package:pi_desktop/ide/terminal/links/terminal_link_resolver.dart';
-import 'package:bao_xterm/typings/xterm_headless.dart';
+import 'package:pi_xterm/typings/xterm_headless.dart';
 
 Future<void> assertLinkHelper(
   String text,

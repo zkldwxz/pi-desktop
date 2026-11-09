@@ -91,7 +91,7 @@ class TitleBarPart extends StatelessWidget {
                   IdeHover(
                     message: keys.titleWithKeybinding(
                       options.backLabel ?? l10n.workspaceBackToChat,
-                      'baocode.ide.backToChat',
+                      'pi-desktop.ide.backToChat',
                     ),
                     child: BackToChatButton(
                       label: options.backLabel,

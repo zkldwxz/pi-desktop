@@ -51,7 +51,7 @@
 // Flutter signed it have to be sealed too, or the
 // signature is broken and the app refuses the update (lib/update/
 // installer_io.dart checks it). Ad hoc, it opens on this machine; Gatekeeper
-// refuses it on anyone else's ("BaoCode is damaged and can't be opened").
+// refuses it on anyone else's ("pi-desktop is damaged and can't be opened").
 // Signed but not notarised, it is refused too, with another message.
 import 'dart:convert';
 import 'dart:io';
@@ -91,14 +91,14 @@ const _required = [
   'Contents/Frameworks/FlutterMacOS.framework',
   'Contents/Frameworks/App.framework',
   'Contents/Frameworks/App.framework/Resources/flutter_assets',
-  // The terminal's native half (bao_pty's hook/build.dart builds it).
-  'Contents/Frameworks/bao_pty.framework',
-  // The phones' link: iroh (bao_iroh's hook/build.dart builds it).
-  'Contents/Frameworks/bao_iroh.framework',
+  // The terminal's native half (pi_pty's hook/build.dart builds it).
+  'Contents/Frameworks/pi_pty.framework',
+  // The phones' link: iroh (pi_iroh's hook/build.dart builds it).
+  'Contents/Frameworks/pi_iroh.framework',
   // Finder's context menu (macos/FinderExtension), which Settings → General
   // turns on.
   'Contents/PlugIns/FinderExtension.appex',
-  // What Chrome runs for BaoCode's extension (macos/BrowserBridge).
+  // What Chrome runs for pi-desktop's extension (macos/BrowserBridge).
   'Contents/MacOS/$_browserHost',
   // The server remote projects run on their host (Linux and macOS, x64 and
   // arm64; tool/build_remote_server.dart): which build, and where it is
@@ -541,10 +541,10 @@ class _Signing {
 
 /// Prepare both targets when the native hook has no prebuilt library for one.
 Future<void> _prepareRustTargets(Directory root) async {
-  final rust = Directory('${root.path}/packages/bao_iroh/rust');
+  final rust = Directory('${root.path}/packages/pi_iroh/rust');
   for (final triple in ['aarch64-apple-darwin', 'x86_64-apple-darwin']) {
     final prebuilt = File(
-      '${root.path}/packages/bao_iroh/build/prebuilt/$triple/libbao_iroh.dylib',
+      '${root.path}/packages/pi_iroh/build/prebuilt/$triple/libpi_iroh.dylib',
     );
     if (!prebuilt.existsSync()) {
       _step('Preparing Rust target $triple');
@@ -576,7 +576,7 @@ String _bundleRemote(
             .whereType<File>()
             .where(
               (file) =>
-                  RegExp(r'^baocode-server-(linux|darwin|windows)-(arm64|x64)$')
+                  RegExp(r'^pi-desktop-server-(linux|darwin|windows)-(arm64|x64)$')
                       .hasMatch(file.uri.pathSegments.last),
             )
             .toList()

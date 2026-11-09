@@ -102,7 +102,7 @@ Future<String> _soundFile(Uint8List bytes) async {
 Future<void> notifyLinux(String title, String body) async {
   try {
     await Process.start('notify-send', [
-      '--app-name=BaoCode',
+      '--app-name=pi-desktop',
       title,
       body,
     ], mode: ProcessStartMode.detached);

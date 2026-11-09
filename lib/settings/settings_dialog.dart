@@ -54,7 +54,7 @@ enum SettingsCategory {
     SettingsSection.usage,
     SettingsSection.network,
     SettingsSection.ssh,
-    SettingsSection.mobile,
+    // Settings → Mobile is not listed: there is no phone app of ours to pair.
     SettingsSection.browser,
     SettingsSection.notifications,
     SettingsSection.stash,

@@ -6,7 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 
 import '../../kernel/agent_kernel.dart';
 import '../../kernel/kernel_types.dart';
@@ -63,7 +63,7 @@ class _Trigger {
       other != null && other.kind == kind && other.start == start;
 }
 
-/// The chat input: an editor of plain text (bao_markdown's, see
+/// The chat input: an editor of plain text (pi_markdown's, see
 /// [ComposerController]) with tags in it.
 ///
 /// The dock's composer sends to [session]. With [onSubmit] it edits instead

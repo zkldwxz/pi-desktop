@@ -162,7 +162,7 @@ class EditorPart extends StatelessWidget {
                                 for (final id in const [
                                   'workbench.action.files.openFolder',
                                   'git.clone',
-                                  'baocode.remote.openFolder',
+                                  'pi-desktop.remote.openFolder',
                                   WorkbenchOptions.createWorkspaceCommandId,
                                   'workbench.action.files.openFile',
                                   'workbench.action.files.newUntitledFile',

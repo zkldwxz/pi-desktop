@@ -1,4 +1,4 @@
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
 import 'package:pi_desktop/chat/edit_detail.dart';
 import 'package:pi_desktop/chat/reply_scroll.dart';
 import 'package:pi_desktop/chat/user_message_style.dart';

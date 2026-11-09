@@ -4,8 +4,8 @@
 // its lines, to roll back, copy, step from or see in a diff; Alt+F5 goes
 // from change to change, Alt+F3 shows them.
 
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/monaco/vs/editor/common/diff/range_mapping.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/vs/editor/common/diff/range_mapping.dart';
 import 'package:pi_desktop/ide/git/git_line_changes.dart';
 import 'package:pi_desktop/ide/ide_line_change_popup.dart';
 import 'package:pi_desktop/ide/ide_workspace.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
 import 'package:pi_desktop/ide/ide_breadcrumbs.dart';
 import 'package:pi_desktop/ide/ide_quick_input.dart';
 import 'package:pi_desktop/ide/lsp/language_features.dart';

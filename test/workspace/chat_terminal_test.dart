@@ -5,7 +5,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/chat/chat_screen.dart';
 import 'package:pi_desktop/ide/ide_hover.dart';
 import 'package:pi_desktop/ide/terminal/terminal_instance.dart';

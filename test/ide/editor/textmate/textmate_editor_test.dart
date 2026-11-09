@@ -4,9 +4,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
-import 'package:bao_editor/textmate/textmate_syntax.dart';
-import 'package:bao_editor/textmate/textmate_worker.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/textmate/textmate_syntax.dart';
+import 'package:pi_editor/textmate/textmate_worker.dart';
 import 'package:pi_desktop/ide/file_service.dart';
 import 'package:pi_desktop/ide/ide_editor.dart';
 import 'package:pi_desktop/ide/ide_workspace.dart';

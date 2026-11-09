@@ -1,14 +1,14 @@
 // The chat window's keys as keybindings (see keybindings/chat_keybindings.dart):
 // its agents and panes, from anywhere in the window.
 
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pi_desktop/chat/chat_screen.dart';
 import 'package:pi_desktop/ide/ide_quick_input.dart';
 import 'package:pi_desktop/keybindings/chat_keybindings.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 import 'package:pi_desktop/main.dart';
 import 'package:pi_desktop/search/search_palette.dart';

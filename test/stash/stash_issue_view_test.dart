@@ -43,7 +43,7 @@ void main() {
       workspace: Workspace.mock(),
       accounts: accounts,
       remotes: (folder) async => switch (folder) {
-        '~/code/baocode' => ['git@github.com:o/r.git'],
+        '~/code/pi-desktop' => ['git@github.com:o/r.git'],
         _ => const [],
       },
     );
@@ -74,7 +74,7 @@ void main() {
     final note = (await tester.runAsync(
       () => store.create(
         body: 'Crashes, see /Users/leo/app/log.txt',
-        project: '~/code/baocode',
+        project: '~/code/pi-desktop',
       ),
     ))!;
     await tester.runAsync(
@@ -107,7 +107,7 @@ void main() {
 
   testWidgets('kept local, it is not offered again', (tester) async {
     final note = (await tester.runAsync(
-      () => store.create(body: 'Just mine', project: '~/code/baocode'),
+      () => store.create(body: 'Just mine', project: '~/code/pi-desktop'),
     ))!;
     await tester.pumpWidget(app(note.id));
     await tester.runAsync(() => Future<void>.delayed(Duration.zero));
@@ -145,7 +145,7 @@ void main() {
       body: 'On 503.',
     );
     final note = (await tester.runAsync(
-      () => forge.import([item], project: '~/code/baocode'),
+      () => forge.import([item], project: '~/code/pi-desktop'),
     ))!.single;
     await tester.pumpWidget(app(note.id));
     await tester.pump();
@@ -200,7 +200,7 @@ void main() {
       final notes = await forge.import([
         item(3, 'Uploads fail'),
         item(4, 'Uploads fail again'),
-      ], project: '~/code/baocode');
+      ], project: '~/code/pi-desktop');
       return store.merge([for (final note in notes) note.id]);
     }))!;
     await tester.pumpWidget(section(kept.id));
@@ -230,7 +230,7 @@ void main() {
     final note = (await tester.runAsync(
       () => forge.import([
         item(3, 'Uploads fail', comments: 1),
-      ], project: '~/code/baocode'),
+      ], project: '~/code/pi-desktop'),
     ))!.single;
     await tester.pumpWidget(section(note.id));
     await tester.pump();

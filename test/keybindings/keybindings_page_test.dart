@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pi_desktop/ide/ide_hover.dart';
 import 'package:pi_desktop/ide/ide_input.dart';
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 import 'package:pi_desktop/keybindings/keybinding_service.dart';
 import 'package:pi_desktop/keybindings/keybindings_editing.dart';
 import 'package:pi_desktop/settings/jsonc.dart';

@@ -1,4 +1,4 @@
-import 'package:bao_link/bao_link.dart';
+import 'package:pi_link/pi_link.dart';
 import 'package:pi_desktop/link/link_host.dart';
 import 'package:pi_desktop/link/phone_downloads.dart';
 import 'package:pi_desktop/link/qr_view.dart';
@@ -39,10 +39,7 @@ void main() {
         .map((code) => code.data);
     // The download page's links (site/download.html), which lead to the
     // release current when scanned.
-    expect(codes, [
-      'https://baocode.dev/dl/android',
-      'https://baocode.dev/dl/ios',
-    ]);
+    expect(codes, [phoneDownloadUrl('android'), phoneDownloadUrl('ios')]);
     expect(find.text('Android'), findsOneWidget);
     expect(find.text('iPhone and iPad'), findsOneWidget);
     // Shown before the switch to let phones in: the app comes first.
@@ -76,7 +73,7 @@ void main() {
     expect(host.enabled, isTrue);
     expect(_pairCode, findsOneWidget);
     expect(
-      find.text('On, reachable through relay-us1.baocode.dev'),
+      find.text('On, reachable through relay-us1.pi-desktop.invalid'),
       findsOneWidget,
     );
 
@@ -290,7 +287,7 @@ void main() {
       'https://relay.example.com',
     );
 
-    // One of BaoCode's again: the address gone.
+    // One of pi-desktop's again: the address gone.
     await pick('Custom', us1);
     expect(host.relays, [defaultLinkRelays.first]);
     expect(find.byType(TextField), findsNothing);

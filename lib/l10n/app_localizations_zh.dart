@@ -1423,7 +1423,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get menuContextPanel => '上下文面板';
 
   @override
-  String get menuAboutBaoCode => '关于 pi-desktop';
+  String get menuAboutPiDesktop => '关于 pi-desktop';
 
   @override
   String get windowShowSidebar => '显示侧边栏';
@@ -8547,7 +8547,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get mobileRelayCustomAddress => '自定义地址';
 
   @override
-  String get mobileRelayCustomDescription => '你自己部署的中继（baocode-relay）的地址。';
+  String get mobileRelayCustomDescription => '你自己部署的中继（pi-desktop-relay）的地址。';
 
   @override
   String get mobileRelayMode => '方式';
@@ -10098,7 +10098,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get channelSetupStep =>
-      'pi-desktop 会在浏览器里打开 baocode.dev，网页显示完成后，这里会自动继续。';
+      'pi-desktop 会在浏览器里打开 the pi-desktop site，网页显示完成后，这里会自动继续。';
 
   @override
   String get channelSetupWaitingTitle => '正在等待浏览器完成…';
@@ -10116,7 +10116,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get channelSetupAddressCopied => '已复制';
 
   @override
-  String get channelSetupOffline => '连不上 baocode.dev，需要联网才能完成设置。';
+  String get channelSetupOffline => '连不上 the pi-desktop site，需要联网才能完成设置。';
 
   @override
   String get channelSetupRetry => '重试';
@@ -10168,7 +10168,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get channelSetupFinding => '马上就好。';
 
   @override
-  String get channelSetupSiteOfflineTitle => '连不上 baocode.dev';
+  String get channelSetupSiteOfflineTitle => '连不上 the pi-desktop site';
 
   @override
   String get channelSetupSiteOffline => '需要联网读取渠道信息，请检查网络后重试。';
@@ -10178,7 +10178,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get channelSetupUnavailable =>
-      '这份安装包对应的渠道还没有开通账号服务。如果你是从别的渠道下载的，去浏览器确认一下来源；否则请联系提供安装包的一方，或到 baocode.dev 下载普通版。';
+      '这份安装包对应的渠道还没有开通账号服务。如果你是从别的渠道下载的，去浏览器确认一下来源；否则请联系提供安装包的一方，或到 the pi-desktop site 下载普通版。';
 
   @override
   String get channelSetupConfirmAgain => '去浏览器确认';

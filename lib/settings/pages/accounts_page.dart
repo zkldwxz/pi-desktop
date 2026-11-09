@@ -155,7 +155,7 @@ Uri forgeRevokePage(ForgeAccount account) => account.base.replace(
   },
 );
 
-/// Where a token for BaoCode is made on [site], what it needs checked.
+/// Where a token for pi-desktop is made on [site], what it needs checked.
 Uri forgeNewTokenPage(ForgeKind kind, Uri site) => switch (kind) {
   ForgeKind.github => site.replace(
     path: '/settings/tokens/new',

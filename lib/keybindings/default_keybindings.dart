@@ -1,14 +1,14 @@
-// The keybindings BaoCode comes with, written as VS Code's Default Keyboard
+// The keybindings pi-desktop comes with, written as VS Code's Default Keyboard
 // Shortcuts (JSON) writes them, and the commands a keybinding may run.
 //
 // The keys are upstream's defaults for the same commands (VS Code
-// 6a598d4a13031703d483d103c1d934a36ad27971), but where BaoCode differs: ⌘J
+// 6a598d4a13031703d483d103c1d934a36ad27971), but where pi-desktop differs: ⌘J
 // toggles the chat (upstream: the panel), and ⌃9 / Alt+9 opens the last
 // editor as well as the ninth.
 
 import 'package:flutter/foundation.dart';
 
-import 'package:bao_editor/monaco/flutter/editor_keybindings.dart';
+import 'package:pi_editor/monaco/flutter/editor_keybindings.dart';
 
 import '../ide/editor_minimap_setting.dart';
 import '../ide/editor_word_wrap.dart';
@@ -17,7 +17,7 @@ import '../ide/explorer_history.dart'
 import 'chat_keybindings.dart';
 import 'key_chord.dart';
 
-import 'package:bao_editor/monaco/flutter/keybinding_entry.dart';
+import 'package:pi_editor/monaco/flutter/keybinding_entry.dart';
 
 import 'window_keybindings.dart';
 import 'workbench_keybindings.dart';
@@ -30,7 +30,7 @@ const openKeybindingsCommandId = 'workbench.action.openGlobalKeybindings';
 
 /// Open Language Server Settings (JSON): the user's `lsp.json` in the IDE,
 /// made with its examples where there is none.
-const openLspSettingsCommandId = 'baocode.openLspSettings';
+const openLspSettingsCommandId = 'pi-desktop.openLspSettings';
 
 /// Shell Command: Install / Uninstall the `code` command in PATH.
 const installShellCommandId = 'workbench.action.installCommandLine';
@@ -44,27 +44,27 @@ const toggleAutoSaveCommandId = 'workbench.action.toggleAutoSave';
 const checkForUpdatesCommandId = 'update.checkForUpdate';
 
 /// Show Setup Guide: the setup checklist back (see FeatureTipsController).
-const showSetupGuideCommandId = 'baocode.tips.showSetupGuide';
+const showSetupGuideCommandId = 'pi-desktop.tips.showSetupGuide';
 
 /// Reset Feature Tips: forgets what was done with the tips, the checklist
 /// and their notifications showing again as at a first launch.
-const resetFeatureTipsCommandId = 'baocode.tips.reset';
+const resetFeatureTipsCommandId = 'pi-desktop.tips.reset';
 
-/// Star BaoCode on GitHub: the ask StarPrompt makes after the first
+/// Star pi-desktop on GitHub: the ask StarPrompt makes after the first
 /// conversations, any time.
-const starOnGitHubCommandId = 'baocode.starOnGitHub';
+const starOnGitHubCommandId = 'pi-desktop.starOnGitHub';
 
 /// Connect Your Browser…: what the agents do with the user's browser, and
 /// its extension to get (showBrowserWelcome), as after the update.
-const browserWelcomeCommandId = 'baocode.browser.welcome';
+const browserWelcomeCommandId = 'pi-desktop.browser.welcome';
 
 /// Meet Stash…: what Stash is, and the shortcut that notes a stash down
 /// (showStashWelcome), as the first time its page shows.
-const stashWelcomeCommandId = 'baocode.stash.welcome';
+const stashWelcomeCommandId = 'pi-desktop.stash.welcome';
 
 /// Set Up a Model…: what an upstream is, and adding one (showModelWelcome),
 /// as when a session first has no model to run on.
-const modelWelcomeCommandId = 'baocode.models.welcome';
+const modelWelcomeCommandId = 'pi-desktop.models.welcome';
 
 /// A command a keybinding may run, as the Keyboard Shortcuts page lists it.
 @immutable
@@ -79,7 +79,7 @@ class CommandInfo {
   String get label => category == null ? title : '$category: $title';
 }
 
-/// Every command BaoCode has, by id: those a keybinding can run. One not
+/// Every command pi-desktop has, by id: those a keybinding can run. One not
 /// here (another editor's, in an imported `keybindings.json`) is kept but
 /// shown as not supported.
 final Map<String, CommandInfo> commandCatalog = {
@@ -423,17 +423,17 @@ final Map<String, CommandInfo> commandCatalog = {
       category: 'Preferences',
     ),
     const CommandInfo(
-      'baocode.ide.toggleFormatOnSave',
+      'pi-desktop.ide.toggleFormatOnSave',
       'Toggle Format on Save',
       category: 'Preferences',
     ),
     const CommandInfo(
-      'baocode.ide.retryLanguageServices',
+      'pi-desktop.ide.retryLanguageServices',
       'Retry Language Services',
       category: 'Developer',
     ),
     const CommandInfo(
-      'baocode.ide.backToChat',
+      'pi-desktop.ide.backToChat',
       'Back to Chat',
       category: 'View',
     ),

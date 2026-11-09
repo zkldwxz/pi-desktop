@@ -31,7 +31,7 @@ import 'window_settings.dart';
 
 /// The kinds of window: the chat's, the app's main one (there is one);
 /// the IDE's, one per folder (or none: its welcome); an agent's, its
-/// conversation alone (Explorer's Open with BaoCode, a new one each time);
+/// conversation alone (Explorer's Open with pi-desktop, a new one each time);
 /// and the stash's panel (see lib/stash/), none of the app's windows to the
 /// system: not listed, never in front of the others as they are.
 enum AppWindowKind { chat, ide, agent, stash }
@@ -151,7 +151,7 @@ class AppWindow {
     (_, null) => l10n.windowWelcomeTitle,
   };
 
-  /// The title the system shows: `folder — BaoCode`.
+  /// The title the system shows: `folder — pi-desktop`.
   String title(AppLocalizations l10n) => '${label(l10n)} — pi-desktop';
 
   /// The folder's name; a remote one's with its host, as VS Code shows
@@ -198,7 +198,7 @@ class _KeptWindow {
 /// the same in all; each window has its own navigator, dialogs and focus.
 ///
 /// Where the system cannot open more windows (the web, a host without the
-/// `baocode/windows` channel), or `window.ideWindows` says so, the IDE
+/// `pi-desktop/windows` channel), or `window.ideWindows` says so, the IDE
 /// shows in the main window, as it did before: [multi] is false and the
 /// IDE's entries go to its workbench. The setting changed, the IDE moves
 /// at once (see [settingsChanged]).
@@ -422,7 +422,7 @@ class AppWindows extends ChangeNotifier implements WindowHostEvents {
   /// With the IDE in the main window, only it shows; the IDE's window last
   /// in front, if any were left, gives it its folder.
   ///
-  /// Started for a [request] (Explorer's Open with BaoCode or Fast Ide, the
+  /// Started for a [request] (Explorer's Open with pi-desktop or Fast Ide, the
   /// `code` command), it opens to that alone, at once, in a window of its
   /// own: the agent's (see [openAgent]), else what the request opens;
   /// nothing of the last run, the chat's window hidden.
@@ -805,7 +805,7 @@ class AppWindows extends ChangeNotifier implements WindowHostEvents {
 
   /// What the system asks to open: a request of the `code` command (on
   /// Windows, its arguments; on macOS, the file its script left), Open
-  /// with BaoCode's ([openAgent]), or paths (Finder's Open With, the Dock's
+  /// with pi-desktop's ([openAgent]), or paths (Finder's Open With, the Dock's
   /// icon, the File menu's Open Recent), as `code` would open them.
   Future<void> openRequested(List<String> paths) async {
     if (paths.firstOrNull == CodeArgs.agentRequestMarker) {
@@ -835,7 +835,7 @@ class AppWindows extends ChangeNotifier implements WindowHostEvents {
   /// conversation alone.
   static const agentWidth = 520.0;
 
-  /// Explorer's Open with BaoCode: a new agent, ready to type to, in a new
+  /// Explorer's Open with pi-desktop: a new agent, ready to type to, in a new
   /// window of its own each time ([agentWidth] wide; without windows, in
   /// the chat's). A folder is its project (opened as one if it was not); a
   /// file goes in the composer as if pasted, the agent in the project it is

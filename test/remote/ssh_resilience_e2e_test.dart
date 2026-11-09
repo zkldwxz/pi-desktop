@@ -1,5 +1,5 @@
 // A bad network between the app and a host, for real: the system's ssh to
-// an sshd container (bao-e2e-flaky, tool/ssh_e2e.sh), through a proxy here
+// an sshd container (pi-e2e-flaky, tool/ssh_e2e.sh), through a proxy here
 // that cuts, silences, refuses and slows the connection (FaultProxy), and
 // the container's own netem losing packets. What runs there has to go on,
 // and nothing asked or said be lost or come twice.
@@ -13,7 +13,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:bao_remote/client.dart';
+import 'package:pi_remote/client.dart';
 import 'package:pi_desktop/remote/remote_binaries.dart';
 import 'package:pi_desktop/remote/ssh_host.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,7 +21,7 @@ import 'package:path/path.dart' as p;
 
 import 'fault_proxy.dart';
 
-const _container = 'bao-e2e-flaky';
+const _container = 'pi-e2e-flaky';
 const _port = 2224;
 
 Future<String> docker(List<String> arguments) async {
@@ -76,17 +76,17 @@ Future<(RemoteProcess, List<String>)> counter(
 }
 
 void main() {
-  final setup = Platform.environment['BAOCODE_SSH_E2E'];
+  final setup = Platform.environment['PI_DESKTOP_SSH_E2E'];
   if (setup == null) {
     test(
       'ssh resilience end to end',
       () {},
-      skip: 'BAOCODE_SSH_E2E is not set',
+      skip: 'PI_DESKTOP_SSH_E2E is not set',
     );
     return;
   }
   final key = p.join(setup, 'testkey');
-  final address = Platform.environment['BAOCODE_SSH_E2E_HOST'] ?? '127.0.0.1';
+  final address = Platform.environment['PI_DESKTOP_SSH_E2E_HOST'] ?? '127.0.0.1';
   const timeout = Timeout(Duration(minutes: 3));
 
   late Directory dir;
@@ -130,10 +130,10 @@ void main() {
   }
 
   setUp(() async {
-    dir = await Directory.systemTemp.createTemp('bao-flaky-');
+    dir = await Directory.systemTemp.createTemp('pi-flaky-');
     proxy = await FaultProxy.start(address, _port);
     reconnected = [];
-    await docker(['exec', _container, 'pkill', '-f', 'baocode-server']);
+    await docker(['exec', _container, 'pkill', '-f', 'pi-desktop-server']);
     // What an earlier run wrote there.
     await docker([
       'exec',
@@ -161,13 +161,13 @@ void main() {
       'eth0',
       'root',
     ]);
-    await docker(['exec', _container, 'pkill', '-f', 'baocode-server']);
+    await docker(['exec', _container, 'pkill', '-f', 'pi-desktop-server']);
     await docker([
       'exec',
       _container,
       'rm',
       '-rf',
-      '/home/tester/.baocode-server/run',
+      '/home/tester/.pi-desktop-server/run',
     ]);
     await dir.delete(recursive: true);
   });
@@ -208,7 +208,7 @@ void main() {
     expect([
       for (final file in await listed.timeout(const Duration(seconds: 30)))
         file.name,
-    ], contains('.baocode-server'));
+    ], contains('.pi-desktop-server'));
     await until(() => host.state == SshHostState.connected);
     expect(identical(host.client, client), isTrue);
     expect(reconnected, isEmpty);
@@ -332,7 +332,7 @@ void main() {
       _container,
       'pkill',
       '-f',
-      'baocode-server --daemon',
+      'pi-desktop-server --daemon',
     ]);
     expect(
       await process.exitCode.timeout(const Duration(seconds: 30)),
@@ -376,7 +376,7 @@ void main() {
       _container,
       'sh',
       '-c',
-      'ls /home/tester/.baocode-server/run 2>/dev/null | grep -v log | wc -l',
+      'ls /home/tester/.pi-desktop-server/run 2>/dev/null | grep -v log | wc -l',
     ]);
     expect(sockets, '0');
   }, timeout: timeout);

@@ -127,7 +127,7 @@ void main() {
       expect(find.text(why), findsNothing);
       await click(find.text('Why am I seeing this?'));
       await click(find.text('List My Site Too'));
-      expect(opened.last, Uri.parse('https://baocode.dev/upstreams'));
+      expect(opened.last, Uri.parse('https://github.com/zkldwxz/pi-desktop'));
       expect(find.text(why), findsNothing);
     });
 
@@ -220,7 +220,7 @@ void main() {
     });
 
     testWidgets('Settings → Models shows the list kept at once, the new one '
-        'as baocode.dev answers, a site of theirs then leading', (
+        'as the pi-desktop site answers, a site of theirs then leading', (
       tester,
     ) async {
       tester.view.physicalSize = const Size(1000, 1400);
@@ -528,7 +528,7 @@ void main() {
       );
       await tester.tap(find.text('go'));
       await tester.pumpAndSettle();
-      // As BaoCode lists the site.
+      // As pi-desktop lists the site.
       expect(find.text('Alpha API'), findsOneWidget);
       expect(find.text('Officially listed'), findsOneWidget);
       expect(find.text('Alpha API, cheaply'), findsOneWidget);

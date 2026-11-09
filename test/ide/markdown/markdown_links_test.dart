@@ -1,4 +1,4 @@
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:pi_desktop/ide/markdown/markdown_preview.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;

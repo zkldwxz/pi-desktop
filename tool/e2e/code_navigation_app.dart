@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:bao_editor/monaco/flutter/editor_surface.dart';
+import 'package:pi_editor/monaco/flutter/editor_surface.dart';
 import 'package:pi_desktop/ide/ide_editor.dart';
 import 'package:pi_desktop/ide/ide_workbench.dart';
 import 'package:pi_desktop/ide/lsp/catalog/standard_lsp.dart';
@@ -28,16 +28,16 @@ import '../perf/perf_input.dart';
 
 const _main =
     "import 'greeter.dart';\n\nvoid main() {\n"
-    "  final message = greet('BaoCode');\n  print(message);\n}\n";
+    "  final message = greet('pi-desktop');\n  print(message);\n}\n";
 const _greeter = "String greet(String name) {\n  return 'Hello, \$name!';\n}\n";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final directory = Platform.environment['BAOCODE_E2E_OUT'];
-  final dart = Platform.environment['BAOCODE_E2E_DART'];
+  final directory = Platform.environment['PI_DESKTOP_E2E_OUT'];
+  final dart = Platform.environment['PI_DESKTOP_E2E_DART'];
   if (directory == null || dart == null || !File(dart).existsSync()) {
     stderr.writeln(
-      'Set BAOCODE_E2E_OUT and BAOCODE_E2E_DART (the SDK binary).',
+      'Set PI_DESKTOP_E2E_OUT and PI_DESKTOP_E2E_DART (the SDK binary).',
     );
     exit(2);
   }
@@ -62,8 +62,8 @@ Future<void> main() async {
   final launcher = File(p.join(out.path, 'dart-language-server'))
     ..writeAsStringSync(
       '#!/bin/sh\n'
-      'while [ ! -f "\$BAOCODE_E2E_RELEASE" ]; do sleep 0.05; done\n'
-      'exec "\$BAOCODE_E2E_DART" "\$@"\n',
+      'while [ ! -f "\$PI_DESKTOP_E2E_RELEASE" ]; do sleep 0.05; done\n'
+      'exec "\$PI_DESKTOP_E2E_DART" "\$@"\n',
     );
   final chmod = await Process.run('chmod', ['700', launcher.path]);
   if (chmod.exitCode != 0) throw StateError('chmod: ${chmod.stderr}');
@@ -76,8 +76,8 @@ Future<void> main() async {
           'command': launcher.path,
           'args': ['language-server', '--protocol=lsp'],
           'environment': {
-            'BAOCODE_E2E_DART': dart,
-            'BAOCODE_E2E_RELEASE': release.path,
+            'PI_DESKTOP_E2E_DART': dart,
+            'PI_DESKTOP_E2E_RELEASE': release.path,
           },
         },
       },
@@ -122,7 +122,7 @@ Future<void> main() async {
       ),
     );
     await _until(() => _find<IdeWorkbench>() != null, 'Fast IDE window');
-    await const MethodChannel('baocode/windows').invokeMethod(
+    await const MethodChannel('pi-desktop/windows').invokeMethod(
       'focus',
       WidgetsBinding.instance.platformDispatcher.implicitView!.viewId,
     );
@@ -298,7 +298,7 @@ Future<void> main() async {
     for (final manager in managers) {
       await manager.shutdown();
     }
-    stdout.writeln('BAOCODE_E2E_RESULT ${p.join(out.path, 'result.json')}');
+    stdout.writeln('PI_DESKTOP_E2E_RESULT ${p.join(out.path, 'result.json')}');
   }
   exit(failed ? 1 : 0);
 }

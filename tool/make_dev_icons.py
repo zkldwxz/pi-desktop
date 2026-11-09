@@ -1,5 +1,5 @@
 # Writes the debug build's app icons: the release ones with a red DEV BUILD
-# ribbon across the bottom right corner, so a `flutter run` BaoCode is told from an
+# ribbon across the bottom right corner, so a `flutter run` pi-desktop is told from an
 # installed one at a glance, on the dock, the taskbar and in the app
 # switcher.
 #
@@ -9,7 +9,7 @@
 # macOS: macos/Runner/Assets.xcassets/AppIcon-Dev.appiconset, from AppIcon's
 # (the Debug configuration's ASSETCATALOG_COMPILER_APPICON_NAME). Windows:
 # windows/runner/resources/app_icon_dev.ico, from app_icon.ico (Runner.rc
-# takes it when BAOCODE_DEV_ICON is defined, as it is for Debug). Run it
+# takes it when PI_DESKTOP_DEV_ICON is defined, as it is for Debug). Run it
 # again after the release icons change.
 import io
 import json

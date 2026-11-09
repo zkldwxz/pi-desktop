@@ -80,7 +80,7 @@ void main() {
       workspace: Workspace.mock(),
       accounts: accounts,
       remotes: (folder) async => switch (folder) {
-        '~/code/baocode' => ['git@github.com:o/r.git'],
+        '~/code/pi-desktop' => ['git@github.com:o/r.git'],
         _ => const [],
       },
     );
@@ -202,7 +202,7 @@ void main() {
             onPressed: () async => imported = await showStashImportDialog(
               context,
               forge: forge,
-              project: '~/code/baocode',
+              project: '~/code/pi-desktop',
             ),
             child: const Text('import'),
           ),
@@ -213,7 +213,7 @@ void main() {
     for (var i = 0; i < 5; i++) {
       await tester.pump();
     }
-    expect(find.text('o/r · baocode'), findsOneWidget);
+    expect(find.text('o/r · pi-desktop'), findsOneWidget);
     expect(find.text('Dark mode'), findsOneWidget);
     // In Stash #1 already.
     expect(find.text('o/r#3 · @ann · in Stash #1'), findsOneWidget);
@@ -233,7 +233,7 @@ void main() {
     }
     final note = imported!.single;
     expect(note.title, 'Dark mode');
-    expect(note.project, '~/code/baocode');
+    expect(note.project, '~/code/pi-desktop');
     expect(note.issues.single.url, 'https://github.com/o/r/issues/4');
     expect(store.notes, hasLength(2));
     expect(sent(), isEmpty);

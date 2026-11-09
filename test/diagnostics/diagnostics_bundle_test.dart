@@ -38,7 +38,7 @@ void main() {
   late Directory logs;
 
   setUp(() async {
-    logs = await Directory.systemTemp.createTemp('baocode-diagnostics');
+    logs = await Directory.systemTemp.createTemp('pi-desktop-diagnostics');
   });
 
   tearDown(() => logs.delete(recursive: true));
@@ -155,8 +155,8 @@ void main() {
 
     test("in JSON's escaped slashes, as macOS' crash reports have them", () {
       expect(
-        redactHome(r'"procPath" : "\/Users\/ann\/a\/BaoCode"', '/Users/ann'),
-        r'"procPath" : "~\/a\/BaoCode"',
+        redactHome(r'"procPath" : "\/Users\/ann\/a\/pi-desktop"', '/Users/ann'),
+        r'"procPath" : "~\/a\/pi-desktop"',
       );
     });
 
@@ -245,7 +245,7 @@ void main() {
       write('errors.log', 'boom\n');
       write(
         'reports/pi-desktop-2026-10-28-120616.ips',
-        '{"procPath" : "\\/Users\\/ann\\/BaoCode.app",'
+        '{"procPath" : "\\/Users\\/ann\\/pi-desktop.app",'
             ' "crashReporterKey" : "742F288F"}',
       );
       final bundle = packDiagnosticsSync(
@@ -261,7 +261,7 @@ void main() {
       ]);
       expect(
         utf8.decode(files['crashes/pi-desktop-2026-10-28-120616.ips']!),
-        '{"procPath" : "~\\/BaoCode.app", "crashReporterKey" : ""}',
+        '{"procPath" : "~\\/pi-desktop.app", "crashReporterKey" : ""}',
       );
       expect(
         bundle.files.last.size,

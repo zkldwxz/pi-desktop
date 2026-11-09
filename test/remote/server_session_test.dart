@@ -9,8 +9,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bao_remote/client.dart';
-import 'package:bao_remote/server.dart' show RemoteServer, ServerSession;
+import 'package:pi_remote/client.dart';
+import 'package:pi_remote/server.dart' show RemoteServer, ServerSession;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
@@ -20,14 +20,14 @@ void main() {
 
   setUpAll(() async {
     dir = await Directory.systemTemp.createTemp('bao session ');
-    server = p.join(dir.path, 'baocode_server.dill');
+    server = p.join(dir.path, 'pi_desktop_server.dill');
     final built = await Process.run('dart', [
       'compile',
       'kernel',
       '-o',
       server,
-      'bin/baocode_server.dart',
-    ], workingDirectory: 'packages/bao_remote');
+      'bin/pi_desktop_server.dart',
+    ], workingDirectory: 'packages/pi_remote');
     expect(built.exitCode, 0, reason: '${built.stdout}${built.stderr}');
   });
 

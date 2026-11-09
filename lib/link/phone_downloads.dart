@@ -6,7 +6,7 @@
 library;
 
 /// The site they are on.
-const phoneDownloadSite = 'https://baocode.dev';
+const phoneDownloadSite = 'https://github.com/zkldwxz/pi-desktop';
 
 /// Each phone's link on [phoneDownloadSite], by the download page's card:
 /// Android's APK, iOS's TestFlight beta.

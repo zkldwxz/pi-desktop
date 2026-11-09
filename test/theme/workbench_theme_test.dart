@@ -28,7 +28,7 @@ void main() {
     );
     final ids = [for (final theme in themes.colorThemes) theme.id];
     expect(ids, containsAll(['Pi Dark', 'Pi Light', 'Dark Modern']));
-    // Not listed: the Bao themes' bases and the themes they replace.
+    // Not listed: the Pi themes' bases and the themes they replace.
     for (final gone in [
       'Dark 2026',
       'Light 2026',
@@ -196,7 +196,7 @@ void main() {
     },
   );
 
-  test('a kept theme since removed gives way to the Bao theme of its '
+  test('a kept theme since removed gives way to the Pi theme of its '
       'scheme', () async {
     // What an earlier build kept for Quiet Light, then its default.
     const data =

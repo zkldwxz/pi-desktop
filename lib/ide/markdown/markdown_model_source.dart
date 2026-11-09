@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:bao_editor/monaco/flutter/editor_document_model.dart';
-import 'package:bao_markdown/bao_markdown.dart';
+import 'package:pi_editor/monaco/flutter/editor_document_model.dart';
+import 'package:pi_markdown/pi_markdown.dart';
 import 'package:flutter/services.dart';
 
 /// A markdown document's model as a [MarkdownController]'s text: the

@@ -21,9 +21,9 @@ import 'package:pi_desktop/ide/terminal/shell_integration/decoration_addon.dart'
 import 'package:pi_desktop/ide/terminal/shell_integration/decoration_styles.dart';
 import 'package:pi_desktop/ide/terminal/shell_integration/shell_integration_addon.dart';
 import 'package:pi_desktop/ide/terminal/terminal_colors.dart';
-import 'package:bao_xterm/common/buffer/types.dart';
-import 'package:bao_xterm/common/services/decoration_service.dart';
-import 'package:bao_xterm/headless/terminal.dart';
+import 'package:pi_xterm/common/buffer/types.dart';
+import 'package:pi_xterm/common/services/decoration_service.dart';
+import 'package:pi_xterm/headless/terminal.dart';
 import 'package:pi_desktop/theme/codicons.dart';
 
 import '../terminal_color_themes.dart';

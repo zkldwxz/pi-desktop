@@ -51,7 +51,7 @@ enum StashNews {
   };
 }
 
-/// Where in BaoCode a stash was jotted down (its shortcut pressed there,
+/// Where in pi-desktop a stash was jotted down (its shortcut pressed there,
 /// or an agent writing it): the project, its branch and the conversation.
 @immutable
 class StashSource {
@@ -103,7 +103,7 @@ class StashSource {
 }
 
 /// A conversation a stash is carried out in: one a message sent in named
-/// it (`[Stash #12]`), as BaoCode last saw it (see `StashThreads`).
+/// it (`[Stash #12]`), as pi-desktop last saw it (see `StashThreads`).
 @immutable
 class StashThreadLink {
   const StashThreadLink({

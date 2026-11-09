@@ -22,8 +22,8 @@ void main() {
   late SshHosts hosts;
 
   setUp(() {
-    dataDir = Directory.systemTemp.createTempSync('baocode-remote-data-');
-    home = Directory.systemTemp.createTempSync('baocode-remote-home-');
+    dataDir = Directory.systemTemp.createTempSync('pi-desktop-remote-data-');
+    home = Directory.systemTemp.createTempSync('pi-desktop-remote-home-');
     hosts = SshHosts(connect: MemoryConnector(dataDir.path).call);
   });
   tearDown(() async {

@@ -49,7 +49,7 @@ void main() {
     expect(ExtensionStore.manifest?.hasAuthority ?? false, isFalse);
 
     const listed =
-        'https://chromewebstore.google.com/detail/baocode/'
+        'https://chromewebstore.google.com/detail/pi-desktop/'
         'lhdkmdjhjipndmialanjbblnmfhkehpc';
     answer = {'version': '0.1.0', 'store': listed};
     expect('${await fetch()}', listed);

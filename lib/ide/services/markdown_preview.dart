@@ -7,9 +7,9 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:bao_editor/monaco/flutter/editor_surface_controller.dart'
+import 'package:pi_editor/monaco/flutter/editor_surface_controller.dart'
     show EditorSurfaceController;
-import 'package:bao_editor/monaco/vs/editor/common/core/position.dart';
+import 'package:pi_editor/monaco/vs/editor/common/core/position.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as p;
 

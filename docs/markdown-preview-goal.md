@@ -1,7 +1,7 @@
-# Goal：BaoCode 的 Markdown 预览、按块编辑和粘贴文件
+# Goal：pi-desktop 的 Markdown 预览、按块编辑和粘贴文件
 
 ## 背景
-BaoCode 是 Flutter 桌面应用（macOS / Windows），给 Claude Code 做 UI，并自带 IDE。
+pi-desktop 是 Flutter 桌面应用（macOS / Windows），给 Claude Code 做 UI，并自带 IDE。
 现在打开 `.md` 只能看到 Monaco 里的源码，读起来很不方便。聊天里已经有一个 Markdown 渲染器 `MarkdownView`（lib/chat/widgets/markdown_view.dart，基于 `markdown` 包），但它是为聊天写的：
 - 图片只显示成 `[alt]` 占位
 - 字号紧凑
@@ -37,7 +37,7 @@ BaoCode 是 Flutter 桌面应用（macOS / Windows），给 Claude Code 做 UI�
    - 读：图片用 `IdeHostFiles.readBytes`，本机项目用 `readFileBytes`，参考 lib/ide/ide_image_preview.dart 的做法。
    - 写：给 `IdeFileService` 加 `writeBytes(String path, Uint8List bytes)`，路径已存在时抛 `IdeFileExistsException`。
      - 本机：在 lib/ide/file_service_io.dart 里实现。
-     - 远程：在 packages/bao_remote 的协议（src/protocol.dart）里加 `fs/writeBytes`（字节用 base64），并实现 server 分发和 client 调用，再接到 lib/remote/remote_services.dart。
+     - 远程：在 packages/pi_remote 的协议（src/protocol.dart）里加 `fs/writeBytes`（字节用 base64），并实现 server 分发和 client 调用，再接到 lib/remote/remote_services.dart。
    - 路径计算用项目对应的 `path.Context`，远程项目一律用 `p.posix`。
 
 ## 预览
@@ -102,7 +102,7 @@ BaoCode 是 Flutter 桌面应用（macOS / Windows），给 Claude Code 做 UI�
 **撤销**：⌘Z 只撤销插入的文本，已经写到磁盘的文件保留（和 VS Code 一样）。
 
 **接入点**：
-- 给 packages/bao_editor 加一个粘贴钩子（例如 `onPaste: Future<bool> Function()`，返回 true 表示已经处理，不再粘贴文本）。
+- 给 packages/pi_editor 加一个粘贴钩子（例如 `onPaste: Future<bool> Function()`，返回 true 表示已经处理，不再粘贴文本）。
 - 钩子接到 `editor_surface.dart` 的 `_paste`，包括菜单「编辑 > 粘贴」和右键菜单，这几个入口都要经过它。非 Markdown 文档行为不变。
 - 拖文件进 Markdown 编辑器（`FileDropRegion`，lib/chat/composer/file_drop.dart）也走同一套逻辑。插入位置在源码模式下是光标处，在预览里是当前块之后。
 
@@ -157,7 +157,7 @@ BaoCode 是 Flutter 桌面应用（macOS / Windows），给 Claude Code 做 UI�
 - 工作区是共享的，别人正在同时修改这份 checkout。**在新的 git worktree 和分支上开发**，不要碰、不要提交、不要 stash 或 reset 主工作区里别人的改动。
 - 代码风格和周边保持一致：注释密度、`///` 文档注释的写法、命名、`*_io.dart` / `*_stub.dart` 的分层方式。
 - 在自己的分支上分步提交，commit message 末尾加：
-  `Co-Authored-By: BaoCode <noreply@baocode.dev>`
+  `Co-Authored-By: pi-desktop <noreply@github.com>`
 
 ## 合并进 main（完成并通过测试后）
 main 的工作区里有别人未提交的改动，`git merge` 会拒绝，**不要 stash、不要 reset --hard**：

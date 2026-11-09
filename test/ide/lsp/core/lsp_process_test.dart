@@ -21,7 +21,7 @@ void main() {
   late File file;
 
   setUp(() {
-    dir = Directory.systemTemp.createTempSync('baocode-lsp-processes');
+    dir = Directory.systemTemp.createTempSync('pi-desktop-lsp-processes');
     file = File(p.join(dir.path, 'lsp-processes.json'));
     ClaudeEnvironment.use(Platform.environment);
     LspProcesses.registry = ChildProcessRegistry(file: file);

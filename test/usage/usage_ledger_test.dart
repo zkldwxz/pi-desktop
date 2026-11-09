@@ -101,7 +101,7 @@ void main() {
           'text':
               'Rules.\n\n# MCP Server Instructions\n\nThe following MCP '
               'servers have provided instructions:\n\n## claude.ai Docs\n'
-              '${'Use the docs. ' * 40}\n\n## baocode\nDo not scrape.\n\n'
+              '${'Use the docs. ' * 40}\n\n## pi-desktop\nDo not scrape.\n\n'
               '# Environment\nYou run on macOS.',
         },
       ],
@@ -169,7 +169,7 @@ void main() {
       greaterThan(shape.memory['/b/rules.md']!),
     );
     expect(shape.skills.keys, ['dataviz', 'plugin:deploy']);
-    expect(shape.mcpNotes.keys, ['claude.ai Docs', 'baocode']);
+    expect(shape.mcpNotes.keys, ['claude.ai Docs', 'pi-desktop']);
     expect(shape.tools.keys, [
       'CronCreate',
       'mcp__github__search',
