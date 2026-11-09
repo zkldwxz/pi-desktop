@@ -117,7 +117,14 @@ jobs:
         env:
           VERSION: ${{ needs.check.outputs.version }}
         run: |
-          app="build/macos/Build/Products/Release/pi-desktop.app"
+          built="build/macos/Build/Products/Release/pi-desktop.app"
+          # flutter build makes a universal app (arm64 and x86_64: twice the
+          # size); this one is for one architecture only.
+          lipo_arch=${{ matrix.arch }}
+          [ "$lipo_arch" != x64 ] || lipo_arch=x86_64
+          app="$RUNNER_TEMP/thin/pi-desktop.app"
+          mkdir -p "$RUNNER_TEMP/thin"
+          ditto --arch "$lipo_arch" "$built" "$app"
           # The server SSH projects run on their host: built here for Linux (x64,
           # arm64) and this Mac, carried gzipped (lib/remote/remote_binaries.dart).
           dart run tool/build_remote_server.dart --out build/remote
