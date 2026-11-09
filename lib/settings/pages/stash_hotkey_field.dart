@@ -200,10 +200,7 @@ class StashHotkeyCard extends StatelessWidget {
     if (settings == null) return;
     unawaited(
       settings
-          .update(
-            StashSettings.hotkeyKey,
-            spec.isEmpty ? null : spec,
-          )
+          .update(StashSettings.hotkeyKey, spec.isEmpty ? null : spec)
           .catchError((Object error) {
             debugPrint('${StashSettings.hotkeyKey} not kept: $error');
           }),

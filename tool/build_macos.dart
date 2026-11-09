@@ -93,8 +93,6 @@ const _required = [
   'Contents/Frameworks/App.framework/Resources/flutter_assets',
   // The terminal's native half (pi_pty's hook/build.dart builds it).
   'Contents/Frameworks/pi_pty.framework',
-  // The phones' link: iroh (pi_iroh's hook/build.dart builds it).
-  'Contents/Frameworks/pi_iroh.framework',
   // Finder's context menu (macos/FinderExtension), which Settings → General
   // turns on.
   'Contents/PlugIns/FinderExtension.appex',
@@ -142,7 +140,6 @@ Future<void> main(List<String> arguments) async {
   final version = _readVersion(File('${root.path}/pubspec.yaml'));
 
   if (!skipBuild) {
-    await _prepareRustTargets(root);
     _step('Building the Release app${channel ? ' (the channel build)' : ''}');
     await _run('flutter', [
       'build',
@@ -535,20 +532,6 @@ class _Signing {
         '(attempt ${attempt + 1} of ${waits.length + 1})',
       );
       await Future<void>.delayed(Duration(seconds: wait));
-    }
-  }
-}
-
-/// Prepare both targets when the native hook has no prebuilt library for one.
-Future<void> _prepareRustTargets(Directory root) async {
-  final rust = Directory('${root.path}/packages/pi_iroh/rust');
-  for (final triple in ['aarch64-apple-darwin', 'x86_64-apple-darwin']) {
-    final prebuilt = File(
-      '${root.path}/packages/pi_iroh/build/prebuilt/$triple/libpi_iroh.dylib',
-    );
-    if (!prebuilt.existsSync()) {
-      _step('Preparing Rust target $triple');
-      await _run('rustup', ['target', 'add', triple], rust.path);
     }
   }
 }

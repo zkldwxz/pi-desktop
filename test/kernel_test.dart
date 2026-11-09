@@ -33,7 +33,6 @@ import 'package:pi_desktop/kernel/kernel_types.dart';
 import 'package:pi_desktop/kernel/mock/mock_kernels.dart';
 import 'package:pi_desktop/kernel/queued_messages.dart';
 import 'package:pi_desktop/kernel/transcript.dart';
-import 'package:pi_desktop/link/chat_codec.dart' show ChatCodec;
 import 'package:pi_desktop/usage/usage_ledger.dart';
 import 'package:pi_desktop/usage/usage_prices.dart';
 
@@ -1028,10 +1027,6 @@ void main() {
         [for (final m in messages) (m.fromAgent, m.text)],
         [('Count entries', 'B is done.'), ('zz9', 'Hi')],
       );
-      // As the phone gets it.
-      final decoded =
-          ChatCodec.decode(ChatCodec.encode(messages.first)) as UserMessageItem;
-      expect(decoded.fromAgent, 'Count entries');
     });
 
     test("a Windows path's file shows by its name", () {

@@ -27,8 +27,6 @@ workspace:
   - packages/pi_agent
   - packages/pi_conpty
   - packages/pi_editor
-  - packages/pi_iroh
-  - packages/pi_link
   - packages/pi_markdown
   - packages/pi_pty
   - packages/pi_remote
@@ -46,8 +44,6 @@ dependencies:
     path: packages/pi_agent
   pi_editor:
     path: packages/pi_editor
-  pi_link:
-    path: packages/pi_link
   pi_pty:
     path: packages/pi_pty
   pi_remote:

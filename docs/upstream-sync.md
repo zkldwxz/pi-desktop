@@ -50,7 +50,8 @@ tool/upstream_sync.sh --check    # 合并后：品牌检查、flutter analyze、
 - **Skill / 工具名**：Stash、Usage 的 skill 写进 Pi 的 agent 目录，工具名是 `mcp__pi_desktop__*`（`ClaudeSdkTools.server = 'pi_desktop'`）。
 - **主题与图标**：默认 `Pi Dark` / `Pi Light`（`packages/pi_editor/assets/textmate/themes/theme-pi/`）；图标源文件 `assets/branding/app_icon.svg`、`logo.svg`。
 - **版本与发布**：`pubspec.yaml`、`lib/update/version.dart`、`.github/workflows/`、`docs/release.md` 是我们自己的。
-- **没有我们自己的服务**：手机链接的中继、推荐上游列表、渠道账号、统计上报、更新源、远端服务器下载站。这些代码还在，但默认指向不存在的地址或需要显式配置。
+- **删掉的功能**：手机链接（`lib/link/`、`packages/pi_link`、`packages/pi_iroh` 的 Rust 库）、Bots（`lib/bots/`）和设置里的“手机”页，以及它们的测试、`pi_iroh.yml`、`pi-iroh-prebuilt`/`setup-rust` 两个 action。上游改这些文件时合并会报“我们删了、它改了”的冲突：直接保留删除（`git rm`）。上游若有别的地方开始依赖它们，再单独处理。
+- **没有我们自己的服务**：推荐上游列表、渠道账号、统计上报、更新源。这些代码还在，但默认指向不存在的地址或需要显式配置。远程服务器不再内置：CI 把它们发布成 GitHub Release `server-<版本>`，应用只带 `servers.json`，连 SSH 时下载。
 
 ## 解决冲突的规则
 

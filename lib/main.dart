@@ -7,14 +7,12 @@ import 'package:flutter/services.dart' show ServicesBinding;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path/path.dart' as p;
 import 'package:pi_editor/textmate/textmate_syntax.dart';
-import 'package:pi_markdown/pi_markdown.dart'
-    show MarkdownEditor, MdClipboard;
+import 'package:pi_markdown/pi_markdown.dart' show MarkdownEditor, MdClipboard;
 
 import 'package:pi_editor/monaco/flutter/language_assets.dart';
 
 import 'base/quiet_view.dart';
 import 'base/smooth_scroll.dart' show PiScrollBehavior;
-import 'bots/bots.dart';
 import 'browser/browser_bridge.dart';
 import 'browser/browser_tools.dart' show BrowserHistory;
 import 'chat/composer/composer_files.dart' show ComposerFile, pastedAsPicture;
@@ -64,7 +62,6 @@ import 'kernel/prompt_suggestions.dart';
 import 'chat/composer/composer_polish.dart' show ComposerPolishSetting;
 import 'kernel/queued_messages.dart';
 import 'keybindings/keybindings_sync.dart';
-import 'link/link_host.dart';
 import 'keybindings/keymap.dart';
 import 'keybindings/vscode_import.dart';
 import 'l10n/l10n.dart';
@@ -247,38 +244,6 @@ Future<void> main(List<String> arguments) async {
   final customizations = CustomizationStore(
     configDir: PiStorage.agentDirectory,
   );
-  // The phones paired with this computer (Settings → Mobile): listening
-  // for them, if they are allowed to connect.
-  // The user's bots: agents that chat as a person does, with the phones.
-  final bots = kIsWeb
-      ? null
-      : Bots(
-          workspace: workspace,
-          store: PreferenceStore.file(
-            p.join(DataDirectory.current.botsDir, 'bots.json'),
-          ),
-          chinese:
-              (locale.locale ?? AppLocale.systemLocale()).languageCode == 'zh',
-        );
-  unawaited(bots?.start());
-  final link = kIsWeb
-      ? null
-      : LinkHost(
-          workspace: workspace,
-          customizations: customizations,
-          bots: bots,
-        );
-  if (bots != null && link != null) {
-    // The bots are the phones': with none paired, told of nothing.
-    var paired = false;
-    bots.hasPhone = () => link.phones.isNotEmpty;
-    link.addListener(() {
-      if (link.phones.isNotEmpty == paired) return;
-      paired = !paired;
-      bots.phonesChanged();
-    });
-  }
-  unawaited(link?.load());
   // The first frame is in the kept theme, restored from storage as VS Code
   // does before the workbench shows; its file is read after. The setting
   // is settings.json's `workbench.colorTheme`, the theme's colors the
@@ -408,9 +373,9 @@ Future<void> main(List<String> arguments) async {
       updates: _startUpdates(files),
       diagnostics: DiagnosticsUploader.platform(),
       workspace: workspace,
-      link: link,
+      customizations: customizations,
     );
-    _startTelemetry(files, link);
+    _startTelemetry(files);
   }
   // The theme extensions (lib/extensions/): color and file icon themes
   // from Open VSX or a .vsix, `workbench.iconTheme` followed as
@@ -452,6 +417,8 @@ Future<void> main(List<String> arguments) async {
     // The default profile and the user's profiles are settings.json's.
     terminalBackend: TerminalBackend(settings: files?.settings),
     conversations: PiConversationSearch(),
+    // Pi's plugins, MCP servers, skills, rules and commands, from the sidebar.
+    customizations: customizations,
   );
   // With windows, each is a view of its own (see [PiDesktopApp.build]).
   if (windows.started) {
@@ -714,7 +681,7 @@ void _openChannelGate(SettingsFiles files) {
 
 /// The app's usage data (lib/telemetry/): once a UTC day it is in front.
 /// None in a debug build.
-void _startTelemetry(SettingsFiles files, LinkHost? link) {
+void _startTelemetry(SettingsFiles files) {
   final platform = platformTelemetry();
   if (platform == null) return;
   // The setup's, read back as it was set.
@@ -734,8 +701,6 @@ void _startTelemetry(SettingsFiles files, LinkHost? link) {
     inFront: inFront,
     edition: () => ChannelSetup.editionOf(channel),
     attribution: () => channel.attribution?.toJson(),
-    linkPaths: () => link?.pathCounts.pending,
-    linkPathsSent: link?.pathCountsSent,
   )..start();
   // Back in front: a new day, if it is one. For the app's whole run.
   AppLifecycleListener(onResume: telemetry.markActive);
@@ -857,7 +822,6 @@ class _PiDesktopAppState extends State<PiDesktopApp>
         stopLspProcesses(),
         ?widget.themeExtensions?.dispose(),
         stopPtyProcesses(),
-        ?_settings.link?.stopAdvertising(),
       ]);
       // The remote hosts' servers end, and all they run with them.
       await SshHosts.instance.closeAll();
