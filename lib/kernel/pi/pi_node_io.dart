@@ -66,6 +66,28 @@ String? piNodeChecksum(String sums, String file) {
   return RegExp(r'^[a-f0-9]{64}$').hasMatch(digest) ? digest : null;
 }
 
+/// Lets Pi's children find the same Node.js and its npm/npx commands.
+Map<String, String> piNodeEnvironment(
+  String node,
+  Map<String, String> environment,
+) {
+  final directory = p.dirname(node);
+  if (directory == '.') return {...environment};
+  final key = Platform.isWindows
+      ? environment.keys.firstWhere(
+          (key) => key.toLowerCase() == 'path',
+          orElse: () => 'PATH',
+        )
+      : 'PATH';
+  return {
+    ...environment,
+    key: [
+      p.absolute(directory),
+      if (environment[key] case final path? when path.isNotEmpty) path,
+    ].join(Platform.isWindows ? ';' : ':'),
+  };
+}
+
 String? _system;
 
 /// The Node.js the app downloaded, if it is there.

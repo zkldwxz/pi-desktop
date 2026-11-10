@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-
 import 'pi_cli.dart' show PiCommandResult;
+import 'pi_node_io.dart' show piNodeEnvironment;
 import 'pi_runtime_install.dart';
 import 'pi_runtime_paths_io.dart';
 import 'pi_runtime_updates_io.dart' show managedPiCli;
@@ -36,9 +36,11 @@ Future<({String executable, List<String> prefix})> piCliCommand() async {
 
 /// The environment Pi runs in: pi-desktop's own agent folder, and none of
 /// the update checks that would reach for the network on their own.
-Map<String, String> piEnvironment(Map<String, String> extra) => {
-  ...Platform.environment,
-  ...extra,
+Future<Map<String, String>> piEnvironment(Map<String, String> extra) async => {
+  ...piNodeEnvironment(await piNodeExecutable(await findPiRuntime()), {
+    ...Platform.environment,
+    ...extra,
+  }),
   'PI_CODING_AGENT_DIR': PiStorage.agentDirectory,
   'PI_SKIP_VERSION_CHECK': '1',
   'NO_COLOR': '1',
@@ -55,7 +57,7 @@ Future<PiCommandResult> runPiCommand(
     invocation.executable,
     [...invocation.prefix, ...arguments],
     workingDirectory: cwd,
-    environment: piEnvironment(const {}),
+    environment: await piEnvironment(const {}),
     includeParentEnvironment: false,
   );
   final out = utf8.decoder.bind(process.stdout).join();

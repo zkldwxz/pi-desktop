@@ -10,7 +10,7 @@ import '../../remote/remote_location.dart';
 import 'pi_storage.dart';
 import 'pi_transport.dart';
 import 'pi_runtime_paths_io.dart';
-import 'pi_cli_io.dart' show piCliCommand;
+import 'pi_cli_io.dart' show piCliCommand, piEnvironment;
 import 'pi_remote_ssh.dart' show startSshPi, stopRemotePiProcesses;
 
 final _live = <_ProcessPiTransport>{};
@@ -84,13 +84,9 @@ Future<PiTransport> startPi(PiLaunch launch) async {
     ],
   ];
   final environment = {
-    ...Platform.environment,
-    ...launch.environment,
-    'PI_CODING_AGENT_DIR': agentDir,
+    ...await piEnvironment(launch.environment),
     'PI_CODING_AGENT_SESSION_DIR': sessions,
-    'PI_SKIP_VERSION_CHECK': '1',
     'PI_DESKTOP_PERMISSION': launch.permission,
-    'NO_COLOR': '1',
   };
   // The inner coding agent has its own release lifecycle; the desktop ships a
   // pinned copy. Inherit neither a different agent dir nor pi-desktop's core setup.

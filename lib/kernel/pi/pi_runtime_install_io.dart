@@ -27,9 +27,7 @@ Future<void> installPiRuntime(PiRuntimeInstall state) async {
   // npm, and what npm runs, find the node that runs them.
   final directory = p.dirname(node);
   final environment = {
-    ...Platform.environment,
-    'PATH':
-        '$directory${Platform.isWindows ? ';' : ':'}${Platform.environment['PATH'] ?? ''}',
+    ...piNodeEnvironment(node, Platform.environment),
     for (final cli in [
       p.join(directory, 'node_modules', 'npm', 'bin', 'npm-cli.js'),
       p.join(

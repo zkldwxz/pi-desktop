@@ -6,7 +6,7 @@ and agents read, after an upstream merge brings in new strings.
     python3 tool/check_branding.py --fix    # rewrite the l10n values it can
 
 What is checked: the values of lib/l10n/app_*.arb, and the string literals
-that are written into agent prompts (lib/bots, lib/chat/chat_session.dart,
+that are written into agent prompts (lib/chat/chat_session.dart,
 lib/stash/stash_skill.dart, lib/usage/usage_skill.dart). Identifiers, code
 comments, tests and the internal `bao_*` packages are left alone on purpose:
 renaming them would make every upstream merge conflict (docs/upstream-sync.md).
@@ -30,7 +30,6 @@ LEGACY_KEYS = re.compile(
 NAME = re.compile(r'BaoCode|baocode\.dev')
 CLAUDE = re.compile(r'Claude Code|claude\.ai|\.claude\b|CLAUDE\.md|`claude |ANTHROPIC_|CLAUDE_CODE_')
 PROMPT_FILES = [
-    'lib/bots/bot_prompt.dart',
     'lib/chat/chat_session.dart',
     'lib/stash/stash_skill.dart',
     'lib/usage/usage_skill.dart',
