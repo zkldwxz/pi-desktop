@@ -174,6 +174,10 @@ jobs:
           # Not the servers themselves: their list, to download from.
           mkdir -p "$app/Contents/Resources/remote"
           cp build/remote-manifest/VERSION build/remote-manifest/servers.json "$app/Contents/Resources/remote/"
+          # The runtime's files (extension, config, version pin): 170 KB. Pi and
+          # Node.js are installed on first run.
+          dart run tool/bundle_pi_runtime.dart --target "$app/Contents/Resources/pi-runtime" --platform macos --arch ${{ matrix.arch }}
+          test -f "$app/Contents/Resources/pi-runtime/desktop-extension.mjs"
           arch=${{ matrix.arch }}
           [ "$arch" != x64 ] || arch=x86_64
           lipo "$app/Contents/MacOS/pi-desktop" -verify_arch "$arch"
