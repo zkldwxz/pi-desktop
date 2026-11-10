@@ -12,9 +12,9 @@
 
 `pi-v*` 标签推送触发发布，工作流验证标签与 `pubspec.yaml` 的 marketing 版本一致，并运行版本一致性测试检查更新器版本。`workflow_dispatch` 手动运行只构建并上传 Actions 产物，不注入生产更新配置。标签运行要求工作流变量 `PI_DESKTOP_UPDATE_URL` 为 HTTPS 清单地址，以及非空的 `PI_DESKTOP_UPDATE_PUBLIC_KEY`；通过 `PI_DESKTOP_UPDATE_ALLOWED_ORIGINS` 配置资源及重定向所需的额外精确 HTTPS origin，以逗号分隔。各平台构建将三者作为 Dart define 注入。签名步骤使用 secret `PI_DESKTOP_UPDATE_SIGNING_KEY` 中的 base64 私钥 seed。发布目标通过工作流变量 `PI_DESKTOP_RELEASE_REPOSITORY` 指定为 `owner/repo`；发布使用 secret `PI_DESKTOP_RELEASE_TOKEN`，未设置时使用 `github.token`。跨仓库发布需要有目标仓库 contents 写权限的 token，且目标仓库须预先有指向同一提交的同名标签。
 
-工作流构建 macOS arm64、macOS x64 和 Windows x64，上传两个 macOS ZIP、两个 DMG、Windows setup.exe 和清单；清单的更新条目指向 ZIP 和 Windows 安装器。发布先创建包含所有资源和清单的草稿，再公开草稿；已有 Release 会使发布失败，不覆盖资源。中断后检查草稿和资源，确认无人使用后手动处理草稿，或发布新版本；已公开版本应保持不变。macOS 检查主程序及 Node 包含目标架构，签名框架、运行时内的 Mach-O 文件、浏览器宿主和 Finder 扩展，再以 ad-hoc 签名封装应用；这不保证所有嵌入组件的架构均正确。重试工作流只在首次标签发布运行失败且存在失败的 `Build ` 作业时，重新运行失败作业一次。构建产物已生成，Apple Silicon 包签名与运行时验证已通过；实际交互安装和完整升级仍需真机验证。
+工作流构建 macOS arm64、macOS x64 和 Windows x64，上传两个 macOS ZIP、两个 DMG、Windows setup.exe 和清单；清单的更新条目指向 ZIP 和 Windows 安装器。发布先创建包含所有资源和清单的草稿，再公开草稿；已有 Release 会使发布失败，不覆盖资源。中断后检查草稿和资源，确认无人使用后手动处理草稿，或发布新版本；已公开版本应保持不变。macOS 先把 `flutter build` 产出的通用应用瘦成目标单架构（`ditto --arch`），检查主程序包含目标架构，并确认 `pi-runtime/desktop-extension.mjs` 在应用里，再签名框架、浏览器宿主和 Finder 扩展，以 ad-hoc 签名封装应用；这不保证所有嵌入组件的架构均正确。重试工作流只在首次标签发布运行失败且存在失败的 `Build ` 作业时，重新运行失败作业一次。构建产物已生成，Apple Silicon 包签名与运行时验证已通过；实际交互安装和完整升级仍需真机验证。
 
-远程服务器资源不由此工作流发布：Windows 打包脚本生成服务器元数据和资源，但工作流只收集安装器；macOS 路径也未打包服务器元数据。直接 SSH Pi 会话使用远程已安装的 Pi 和 Node，通过批处理/密钥认证；真实 SSH stub 对话已验证，其他远程工作流仍需验证，不保证自动安装远程 IDE 服务或语言服务器。
+远程服务器（IDE 侧，不是 Pi）不随应用携带：`remote` 作业构建 Linux x64 和 arm64 的服务器，发布为 GitHub Release `server-<版本>`（版本号由构建内容决定，只发布一次），应用只带 `VERSION` 和 `servers.json`（下载地址与 SHA-256），第一次连接 SSH 主机时下载并校验；macOS 和 Windows 作为被连接的主机暂不支持。直接 SSH Pi 会话使用远程已安装的 Pi 和 Node，通过批处理/密钥认证；真实 SSH stub 对话已验证，其他远程工作流仍需验证，不保证自动安装远程 IDE 服务或语言服务器。
 
 ## 本地打包与资源名称
 
@@ -55,7 +55,7 @@ dart run tool/release_manifest.dart \
 
 ## Pi 运行时打包
 
-桌面发布随包携带由 `runtime/pi/package-lock.json` 锁定的 Pi 运行时，当前版本为 1.5.0。macOS 和 Windows 的构建流程调用 `tool/bundle_pi_runtime.dart`，为目标平台和架构打包 Node、Pi 及桌面扩展。运行时之后可以独立更新；见 [Pi 运行时更新](auto-update.md#pi-运行时更新)。
+桌面发布不携带 Node 和 Pi（它们合计约 200 MB），只携带运行时的文件（桌面扩展、配置、运行时管理脚本和 `package.json` 与 `package-lock.json`，约 170 KB），Pi 版本由它们锁定，当前为 1.5.0。构建流程调用 `tool/bundle_pi_runtime.dart` 放入这些文件（加 `--full` 才会打包 Node 和 Pi 做离线包）。应用第一次启动时安装锁定的 Pi：用机器上 22.19 以上的 Node，没有就从 nodejs.org 下载并校验 SHA-256，进度显示在输入框上方（`lib/kernel/pi/pi_runtime_install.dart`）。之后运行时可以独立更新；见 [Pi 运行时更新](auto-update.md#pi-运行时更新)。
 
 ## 发布前配置与验证
 
