@@ -21,7 +21,7 @@ import 'package:pi_desktop/chat/panels/queue_panel.dart';
 import 'package:pi_desktop/chat/side_panel/file_open.dart';
 import 'package:pi_desktop/chat/composer/composer_embeds.dart';
 import 'package:pi_desktop/chat/widgets/activity_row.dart';
-import 'package:pi_desktop/chat/widgets/thinking_spark.dart';
+import 'package:pi_desktop/chat/widgets/pi_thinking_indicator.dart';
 import 'package:pi_desktop/chat/widgets/command_step.dart';
 import 'package:pi_desktop/chat/widgets/pixel_loader.dart';
 import 'package:pi_desktop/ide/ide_hover.dart';
@@ -969,7 +969,7 @@ void main() {
         home: Scaffold(body: ActivityRow(label: 'Planning next move')),
       ),
     );
-    expect(find.byType(ThinkingSpark), findsOneWidget);
+    expect(find.byType(PiThinkingIndicator), findsOneWidget);
     expect(caret, findsOneWidget);
     expect(shownStatus(tester), '');
     await tester.pump(const Duration(milliseconds: 400));
@@ -994,16 +994,48 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  test('the spark blooms from a dot and folds back', () {
+  test('the Pi indicator breathes gently without disappearing', () {
+    expect(PiThinkingIndicator.opacityAt(Duration.zero), 1);
     expect(
-      [
-        for (var i = 0; i < 12; i++)
-          ThinkingSpark.shapeAt(ThinkingSpark.frameTime * i),
-      ],
-      [0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0, 1],
+      PiThinkingIndicator.opacityAt(PiThinkingIndicator.period ~/ 2),
+      closeTo(0.7, 0.0001),
     );
-    // A turn holds whole bounces: it goes round without a jump.
-    expect(ThinkingSpark.shapeAt(ThinkingSpark.turn), 0);
+    expect(PiThinkingIndicator.opacityAt(PiThinkingIndicator.period), 1);
+  });
+
+  testWidgets('the Pi indicator rests with reduced motion and hidden tickers', (
+    tester,
+  ) async {
+    Widget indicator({bool still = false, bool visible = true}) => MediaQuery(
+      data: MediaQueryData(disableAnimations: still),
+      child: TickerMode(
+        enabled: visible,
+        child: const Center(child: PiThinkingIndicator(size: 15)),
+      ),
+    );
+    await tester.pumpWidget(indicator());
+    expect(
+      tester.getSize(find.byType(PiThinkingIndicator)),
+      const Size.square(15),
+    );
+    expect(
+      tester
+          .widget<PiThinkingIndicator>(find.byType(PiThinkingIndicator))
+          .color,
+      isNull,
+    );
+    expect(tester.hasRunningAnimations, false);
+    await tester.binding.delayed(const Duration(milliseconds: 200));
+    expect(tester.binding.hasScheduledFrame, true);
+    await tester.pump();
+
+    for (final resting in [indicator(still: true), indicator(visible: false)]) {
+      await tester.pumpWidget(resting);
+      await tester.pump();
+      await tester.binding.delayed(const Duration(seconds: 1));
+      expect(tester.binding.hasScheduledFrame, false);
+    }
+    await tester.pumpWidget(const SizedBox());
   });
 
   testWidgets('a whimsical status row muses: each phrase typed out from the '
@@ -1122,7 +1154,7 @@ void main() {
         .value;
 
     await show(false);
-    expect(find.byType(ThinkingSpark), findsNothing);
+    expect(find.byType(PiThinkingIndicator), findsNothing);
     expect(height(), 0);
 
     await show(true);
@@ -1139,7 +1171,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100));
     expect(height(), inExclusiveRange(0, open));
     await tester.pump(const Duration(milliseconds: 200));
-    expect(find.byType(ThinkingSpark), findsNothing);
+    expect(find.byType(PiThinkingIndicator), findsNothing);
     expect(height(), 0);
     await tester.pumpWidget(const SizedBox());
   });

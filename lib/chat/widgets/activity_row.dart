@@ -9,9 +9,9 @@ import '../../theme/app_theme.dart';
 import '../chat_models.dart';
 import 'markdown_view.dart';
 import 'step_header.dart';
-import 'thinking_spark.dart';
+import 'pi_thinking_indicator.dart';
 
-/// What the agent is busy with out of sight, after Claude's spark: typed
+/// What the agent is busy with out of sight, after Pi's indicator: typed
 /// out, then dots counting up behind it ("Compacting conversation..").
 /// [whimsical] (a wait with nothing to name, the model yet to answer), it
 /// muses instead, a passing phrase at a time: mostly on the step just done,
@@ -116,7 +116,9 @@ class ActivityRow extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SelectionContainer.disabled(child: ThinkingSpark(size: 15)),
+            const SelectionContainer.disabled(
+              child: PiThinkingIndicator(size: 15),
+            ),
             const SizedBox(width: 6),
             Flexible(
               child: _Musing(

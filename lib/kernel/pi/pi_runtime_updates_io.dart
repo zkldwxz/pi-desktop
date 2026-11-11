@@ -5,16 +5,23 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 
 import '../../platform/data_dir.dart';
+import 'pi_node_io.dart' show piNodeEnvironment;
 import 'pi_runtime_paths_io.dart';
 import 'pi_runtime_updates.dart';
 
 Future<PiRuntimeUpdateInfo> piRuntimeCommand(String command) async {
   final runtime = await findPiRuntime();
-  final process = await Process.start(await piNodeExecutable(runtime), [
-    p.join(runtime.path, 'runtime-manager.mjs'),
-    command,
-    p.join(DataDirectory.current.path, 'pi-runtime'),
-  ], workingDirectory: runtime.path);
+  final node = await piNodeExecutable(runtime);
+  final process = await Process.start(
+    node,
+    [
+      p.join(runtime.path, 'runtime-manager.mjs'),
+      command,
+      p.join(DataDirectory.current.path, 'pi-runtime'),
+    ],
+    workingDirectory: runtime.path,
+    environment: piNodeEnvironment(node, Platform.environment),
+  );
   final output = utf8.decoder.bind(process.stdout).join();
   var diagnostic = '';
   final stderr = process.stderr.transform(utf8.decoder).listen((text) {

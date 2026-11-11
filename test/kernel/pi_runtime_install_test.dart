@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:ffi' show Abi;
+import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:path/path.dart' as p;
 
 import 'package:pi_desktop/kernel/pi/pi_node_io.dart';
 import 'package:pi_desktop/kernel/pi/pi_runtime_install.dart';
@@ -59,6 +61,39 @@ void main() {
         expect(piNodeChecksum('zz  file.zip\n', 'file.zip'), isNull);
       },
     );
+  });
+
+  group('Node subprocess PATH', () {
+    test('keeps other variables and prepends the selected Node directory', () {
+      final bin = p.join(Directory.current.path, 'downloaded-node', 'bin');
+      final pathKey = Platform.isWindows ? 'Path' : 'PATH';
+      final separator = Platform.isWindows ? ';' : ':';
+      final original = {pathKey: 'existing', 'OTHER': 'kept'};
+      final environment = piNodeEnvironment(p.join(bin, 'node'), original);
+      expect(environment[pathKey], '$bin${separator}existing');
+      expect(environment['OTHER'], 'kept');
+      expect(original, {pathKey: 'existing', 'OTHER': 'kept'});
+      if (Platform.isWindows) expect(environment.containsKey('PATH'), isFalse);
+    });
+
+    test('does not add the working directory for a bare node command', () {
+      expect(piNodeEnvironment('node', const {'PATH': 'kept'}), {
+        'PATH': 'kept',
+      });
+    });
+
+    test('a missing or empty PATH has no empty search entry', () {
+      final bin = p.join(Directory.current.path, 'downloaded-node', 'bin');
+      for (final environment in [
+        <String, String>{},
+        {'PATH': ''},
+      ]) {
+        expect(
+          piNodeEnvironment(p.join(bin, 'node'), environment)['PATH'],
+          bin,
+        );
+      }
+    });
   });
 
   group('setting Pi up', () {

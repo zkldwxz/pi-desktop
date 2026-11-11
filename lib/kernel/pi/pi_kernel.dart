@@ -110,6 +110,7 @@ class PiKernel
   int _generation = 0;
   int _providerRevision = 0;
   bool _disposed = false;
+  bool _releaseWanted = false;
   bool _draining = false;
   bool _cancelled = false;
   bool _resumeHistory = false;
@@ -207,6 +208,7 @@ class PiKernel
     if (_starting case final starting?) {
       return starting.then((_) {
         if (!_disposed &&
+            !_releaseWanted &&
             _transport == null &&
             _health.status != KernelHealthStatus.failed) {
           return _ensure();
@@ -222,6 +224,7 @@ class PiKernel
     _launches.add(starting);
     return starting.then((_) {
       if (!_disposed &&
+          !_releaseWanted &&
           _transport == null &&
           _health.status != KernelHealthStatus.failed) {
         return _ensure();
@@ -454,7 +457,9 @@ class PiKernel
 
   @override
   void prepare() {
-    if (!_disposed) unawaited(_ensure().catchError((Object _) {}));
+    if (_disposed) return;
+    _releaseWanted = false;
+    unawaited(_ensure().catchError((Object _) {}));
   }
 
   @override
@@ -581,6 +586,8 @@ class PiKernel
         _selectedModel = _providers.configuredModel(_selectedModel);
         model.reported = _selectedModel;
         _setHealth(KernelHealth.idle);
+      } else if (_releaseWanted && _queue.isEmpty) {
+        release();
       } else if (_transport != null) {
         unawaited(_refresh().catchError((Object _) {}));
       }
@@ -991,6 +998,7 @@ class PiKernel
 
   @override
   void release() {
+    _releaseWanted = true;
     if (_turn == null && !_disposed) {
       _disconnect();
       _setHealth(KernelHealth.idle);
