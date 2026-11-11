@@ -46,6 +46,8 @@ Future<PiTransport> startPi(PiLaunch launch) async {
   final invocation = await piCliCommand();
   final agentDir = PiStorage.agentDirectory;
   final sessions = PiStorage.sessionsDirectory(launch.cwd);
+  final sessionPath = launch.sessionPath;
+  final saved = sessionPath != null && await File(sessionPath).exists();
   await Directory(agentDir).create(recursive: true);
   await Directory(sessions).create(recursive: true);
   await _children.reaped;
@@ -61,9 +63,9 @@ Future<PiTransport> startPi(PiLaunch launch) async {
     else ...[
       '--session-dir',
       sessions,
-      if (launch.sessionPath case final path?) ...[
+      if (saved) ...[
         '--session',
-        path,
+        sessionPath,
       ] else ...[
         '--session-id',
         launch.sessionId,

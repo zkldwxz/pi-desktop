@@ -20,6 +20,59 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
 void main() {
+  test(
+    'switching away from an empty Pi chat keeps its session identity',
+    () async {
+      final oldData = DataDirectory.current;
+      final root = await Directory.systemTemp.createTemp('pi-chat-switch-');
+      DataDirectory.current = DataDirectory(p.join(root.path, 'data'));
+      final providers = ModelProviders.memory(
+        providers: const [
+          ModelProvider(
+            id: 'switch-test',
+            name: 'Local test',
+            protocol: ProviderProtocol.openaiChat,
+            baseUrl: 'http://127.0.0.1:1/v1',
+            models: [
+              ProviderModel(id: 'test-model', efforts: ['none']),
+            ],
+          ),
+        ],
+      );
+      final kernel = PiKernel(
+        KernelRegistry.pi,
+        KernelContext(cwd: root.path),
+        providers: providers,
+      );
+      final id = kernel.sessionId;
+      try {
+        for (var i = 0; i < 3; i++) {
+          kernel.prepare();
+          final deadline = DateTime.now().add(const Duration(seconds: 15));
+          while (kernel.health.status == KernelHealthStatus.idle ||
+              kernel.health.status == KernelHealthStatus.starting) {
+            if (DateTime.now().isAfter(deadline)) fail('Pi startup timed out');
+            await Future<void>.delayed(const Duration(milliseconds: 20));
+          }
+          expect(
+            kernel.health.status,
+            KernelHealthStatus.ready,
+            reason: kernel.health.message,
+          );
+          expect(kernel.sessionId, id, reason: 'reopened $i times');
+          kernel.release();
+          await kernel.stopped;
+        }
+      } finally {
+        kernel.dispose();
+        await kernel.stopped;
+        providers.dispose();
+        DataDirectory.current = oldData;
+        await root.delete(recursive: true);
+      }
+    },
+  );
+
   test('real Pi edits through desktop approval, streams its answer, and resumes its own history', () async {
     final oldData = DataDirectory.current;
     final oldLedger = UsageLedger.current;
@@ -196,6 +249,30 @@ void main() {
             .last
             .text,
         'Finished from Pi.',
+      );
+      final sessionId = kernel.sessionId;
+      final userEvents = events
+          .whereType<ItemUpserted>()
+          .where((event) => event.item is UserMessageItem)
+          .length;
+      kernel.release();
+      await kernel.stopped;
+      final reopened = kernel.events.firstWhere(
+        (_) =>
+            kernel.health.status == KernelHealthStatus.ready ||
+            kernel.health.status == KernelHealthStatus.failed,
+      );
+      kernel.prepare();
+      await reopened.timeout(const Duration(seconds: 15));
+      await Future<void>.delayed(Duration.zero);
+      expect(kernel.health.status, KernelHealthStatus.ready);
+      expect(kernel.sessionId, sessionId);
+      expect(
+        events.whereType<ItemUpserted>().where(
+          (event) => event.item is UserMessageItem,
+        ),
+        hasLength(userEvents),
+        reason: 'switching back must not replay messages already on screen',
       );
       kernel.dispose();
       await kernel.stopped;

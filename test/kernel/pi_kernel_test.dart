@@ -59,7 +59,9 @@ void main() {
         transport.launch = launch;
         transport.model = launch.model ?? 'model-a';
         launches.add(transport);
-        return startGate == null ? transport : await startGate.future;
+        return startGate == null || launches.length > 1
+            ? transport
+            : await startGate.future;
       },
       providers: providers,
       configureProviders:
@@ -111,6 +113,104 @@ void main() {
       await stopping;
       expect(stopped, true);
       expect(transport.writes, isEmpty);
+    },
+  );
+
+  test(
+    'releasing during startup does not relaunch a hidden conversation',
+    () async {
+      final gate = Completer<PiTransport>();
+      await ready(startGate: gate);
+      kernel.release();
+      gate.complete(transport);
+      await pumpEventQueue();
+      expect(launches, hasLength(1));
+      expect(kernel.health.status, KernelHealthStatus.idle);
+      expect(transport.writes, isEmpty);
+
+      kernel.prepare();
+      await pumpEventQueue();
+      expect(launches, hasLength(2));
+      expect(kernel.health.status, KernelHealthStatus.ready);
+    },
+  );
+
+  test(
+    'rapidly returning to a starting conversation launches it only once more',
+    () async {
+      final gate = Completer<PiTransport>();
+      await ready(startGate: gate);
+      final abandoned = transport;
+      kernel.release();
+      kernel.prepare();
+      gate.complete(abandoned);
+      await pumpEventQueue();
+      expect(launches, hasLength(2));
+      expect(abandoned.writes, isEmpty);
+      expect(kernel.health.status, KernelHealthStatus.ready);
+    },
+  );
+
+  test(
+    'switching chats lets an active turn finish before releasing Pi',
+    () async {
+      await ready();
+      kernel.send(const KernelTurn(id: 'turn-1', text: 'hello'));
+      await pumpEventQueue();
+      final running = transport;
+      kernel.release();
+      expect(kernel.health.status, KernelHealthStatus.ready);
+      expect(running._exited.isCompleted, false);
+      running.add({'type': 'agent_settled'});
+      await pumpEventQueue();
+      expect(kernel.health.status, KernelHealthStatus.idle);
+      expect(running._exited.isCompleted, true);
+
+      kernel.prepare();
+      await pumpEventQueue();
+      expect(kernel.health.status, KernelHealthStatus.ready);
+      expect(transport.launch!.sessionPath, '/own/pi-session.jsonl');
+      expect(events.whereType<TurnEnded>(), hasLength(1));
+    },
+  );
+
+  test(
+    'a hidden conversation releases Pi after its queued turns finish',
+    () async {
+      await ready();
+      kernel.send(const KernelTurn(id: 'turn-1', text: 'first'));
+      kernel.send(const KernelTurn(id: 'turn-2', text: 'queued'));
+      await pumpEventQueue();
+      final running = transport;
+      kernel.release();
+      running.add({'type': 'agent_settled'});
+      await pumpEventQueue();
+      expect(events.whereType<TurnStarted>(), hasLength(2));
+      expect(running._exited.isCompleted, false);
+
+      running.add({'type': 'agent_settled'});
+      await pumpEventQueue();
+      expect(events.whereType<TurnEnded>(), hasLength(2));
+      expect(kernel.health.status, KernelHealthStatus.idle);
+      expect(running._exited.isCompleted, true);
+      expect(launches, hasLength(1));
+    },
+  );
+
+  test(
+    'returning to an active conversation cancels its deferred release',
+    () async {
+      await ready();
+      kernel.send(const KernelTurn(id: 'turn-1', text: 'hello'));
+      await pumpEventQueue();
+      kernel.release();
+      kernel.prepare();
+      await pumpEventQueue();
+      transport.add({'type': 'agent_settled'});
+      await pumpEventQueue();
+      expect(kernel.health.status, KernelHealthStatus.ready);
+      expect(transport._exited.isCompleted, false);
+      expect(launches, hasLength(1));
     },
   );
 
